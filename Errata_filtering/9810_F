@@ -1,0 +1,24 @@
+
+
+---
+
+## Issue 1 — Conflicting normative guidance for `KemBMParameter.len`
+
+**Errata title:** Conflicting guidance for `KemBMParameter.len` (prose MUST vs ASN.1 comment SHOULD)
+
+**Concise explanation:**  
+The prose definition of `KemBMParameter.len` says `len` **MUST** be “the desired size of the key to be used for MAC-based message protection,” while the ASN.1 module comment says `len` **SHOULD** be “the maximum key length of the MAC function.” These are not equivalent, especially for MACs that accept variable key lengths.
+
+**Justification **  
+- The two statements can lead to different interpretations of “correct” `len`:
+  - Prose: any policy-chosen key length is allowed, as long as the MAC key actually used is of that length.
+  - ASN.1 comment: prefers (and could be read as requiring absent justification) always using the MAC’s maximum key length.
+- While this probably won’t break interoperability (both sides still derive the same `ssk` because `len` is explicit), it *can* cause:
+  - differing conformance checks (some implementations rejecting non-maximal `len` values), and/or
+  - inconsistent security posture across implementations/profiles.
+
+**Minimal fix shape:**  
+Make the ASN.1 comment align with the prose, e.g.:
+- “`len` MUST equal the MAC key length actually used; in many cases it SHOULD be chosen as the MAC’s maximum supported key length.”
+
+---
