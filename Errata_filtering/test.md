@@ -1,189 +1,157 @@
 # Errata Reports
 
-Total reports: 4
+Total reports: 3
 
 ---
 
-## Report 1: 9810-4-1
+## Report 1: 9810-1-1
 
-**Label:** Ambiguous 'next update' validity rule for 'new with new' certificate
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The specification requires the 'new with new' certificate to have a notAfter time that is after the notBefore time of the next update, but the term 'next update of this certificate' is undefined and reverses the clearer rule from RFC 4210.
-
-**Justification:**
-
-- The text states: The ‘new with new’ certificate must have a validity period with a notBefore time that is before the notAfter time of the ‘old with old’ certificate and a notAfter time that is after the notBefore time of the next update of this certificate.
-- For comparison, RFC 4210 clearly required the validity to end at or before the CA’s next key update event.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The ‘new with new’ certificate must have a validity period with a notBefore time that is before the notAfter time of the ‘old with old’ certificate and a notAfter time that is after the notBefore time of the next update of this certificate.
-
-- **E2:**
-
-  RFC 4210 wording (for comparison): “The ‘new with new’ certificate must have a validity period starting at the generation time of the new key pair and ending at or before the time by which the CA will next update its key pair.”
-
-**Evidence Summary:**
-
-- (E1) specifies an ambiguous validity period requirement referencing an undefined 'next update'.
-- (E2) shows the clear requirement from RFC 4210 that is not maintained in the current text.
-
-**Fix Direction:**
-
-Replace the ambiguous phrase with a directive tied to the CA’s next key-update event (e.g., 'ending at or before the time by which the CA will next update its key pair') and clearly state the intended inequality.
-
-**Severity:** Low
-  *Basis:* The undefined term 'next update of this certificate' forces operators to guess at a concrete validity interval, potentially leading to inconsistent rollover semantics without breaking on‐the‐wire interoperability.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- Temporal Expert: T1
-- Quantitative Expert: Issue-1
-- Deontic Expert: Issue-1
-- CrossRFC Expert: Issue-1
-
----
-
-## Report 2: 9810-4-2
-
-**Label:** Optional link certificates omitted vs. verification procedures assuming their presence
-
-**Bug Type:** Both
-
-**Explanation:**
-
-While the specification marks the link certificates (newWithOld and oldWithNew) as OPTIONAL, the verification procedures for Cases 2 and 3 assume their presence, leaving no guidance for implementations that legitimately omit them.
-
-**Justification:**
-
-- The document notes that 'RootCaKeyUpdateContent is updated to specify these link certificates as optional' and states that their usage is use-case specific.
-- However, the verification procedures instruct verifiers to always 'get the ‘new with new’ and ‘new with old’ certificates' (or 'get the ‘old with new’ certificate') without describing a fallback when they are absent.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Note: The usage of link certificates has been shown to be very specific for each use case, and no assumptions are done on this aspect. RootCaKeyUpdateContent is updated to specify these link certificates as optional.
-
-- **E2:**
-
-  In case 2, the verifier must get access to the new public key of the CA. The verifier does the following: 1. Get the ‘new with new’ and ‘new with old’ certificates.
-
-**Evidence Summary:**
-
-- (E1) establishes that link certificates are optional and not to be assumed.
-- (E2) shows that the verification procedure unconditionally requires these certificates.
-
-**Fix Direction:**
-
-Either condition the verification procedures on the presence of the link certificates or provide alternative trust-anchor update mechanisms when they are omitted.
-
-**Severity:** Medium
-  *Basis:* Omitting link certificates is permitted by the data model; however, the fixed verification steps force an implementation error or fallback with no clear normative guidance.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- Temporal Expert: T2
-- Scope Expert: Issue-1
-- Causal Expert: Issue-2
-- Deontic Expert: Issue-2
-- Structural Expert: Issue-2
-
----
-
-## Report 3: 9810-4-3
-
-**Label:** Misnamed LDAP/X.509 CA certificate attribute ('caCertificate' vs 'cACertificate')
+**Label:** Misattribution of Security Considerations Sections in RFC 9810 Section 1.3
 
 **Bug Type:** Inconsistency
 
 **Explanation:**
 
-The specification inconsistently refers to the LDAP attribute for CA certificates; it is first identified using the standard 'cACertificate' but later referred to as 'caCertificate', which does not match the X.500/LDAP standard.
+RFC 9810’s change log incorrectly claims that Sections 8.1, 8.5, 8.8, and 8.11 are newly added, even though Sections 8.1 and 8.5 were already present in RFC 4210, leading to a misleading historical record.
 
 **Justification:**
 
-- The document correctly states that certificates are stored as cACertificate attribute values when published in an LDAP directory.
-- Later, instructions to 'look up the certificates in the caCertificate attribute' conflict with the standardized attribute name.
+- Section 1.3 states that the document 'added Sections 8.1, 8.5, 8.8, and 8.11' while evidence shows that Section 8.1 (and 8.5) appeared in RFC 4210 (E1, E2).
+- The terminology analysis further clarifies that only Sections 8.8 and 8.11 are new, whereas 8.1 and 8.5 are updated, not newly introduced.
 
 **Evidence Snippets:**
 
 - **E1:**
 
-  When an LDAP directory is used to publish root CA updates, the old and new root CA certificates together with the two link certificates are stored as cACertificate attribute values.
+  Section 1.3 of RFC 9810 states that “this document” added Sections 8.1, 8.5, 8.8, and 8.11 to the security considerations. However, RFC 4210 already contains a Section 8.1 (“On the Necessity of POP”), and RFC 9480’s updates add new sections 8.4–8.7 without removing or renumbering 8.1 in that document. RFC 9810’s Section 8.1 covers the same conceptual ground and clearly derives from the long‑standing POP security discussion in RFC 4210, so it is misleading to present 8.1 as newly “added” by RFC 9810. An implementer tracing the provenance of Section 8.1 may incorrectly conclude that the POP discussion did not exist prior to RFC 9810, which is historically and cross‑document inaccurate and can confuse readers trying to map older deployments or profiles (that cite RFC 4210’s Section 8.1) to the new specification.
 
 - **E2:**
 
-  If a repository is available, look up the certificates in the caCertificate attribute.
+  Section 1.3 bullet:  
+          *  Added Sections 8.1, 8.5, 8.8, and 8.11 to the security considerations.
+Security Considerations in RFC 9810 include:  
+          8.1 On the Necessity of POP  
+          8.2 POP with a Decryption Key  
+          8.3 POP by Exposing the Private Key  
+          8.4 Attack Against DH Key Exchange  
+          8.5 Perfect Forward Secrecy  
+          8.6 Private Keys for Certificate Signing and CMP Message Protection  
+          8.7 Entropy of Random Numbers, Key Pairs, and Shared Secret Information  
+          8.8 Recurring Usage of KEM Keys for Message Protection  
+          8.9 Trust Anchor Provisioning Using CMP Messages  
+          8.10 Authorizing Requests for Certificates with Specific EKUs  
+          8.11 Usage of CT Logs
 
 **Evidence Summary:**
 
-- (E1) shows the correct, standard attribute name 'cACertificate'.
-- (E2) demonstrates the later inconsistent use of 'caCertificate'.
+- (E1) RFC 9810 Section 1.3 misattributes Section 8.1 as newly added despite its earlier existence in RFC 4210.
+- (E2) The change log bullet lists Sections 8.1, 8.5, 8.8, and 8.11 without distinguishing between pre‑existing and newly introduced content.
 
 **Fix Direction:**
 
-Replace 'caCertificate' with 'cACertificate' in all procedural instructions to align with the X.500/LDAP standard and earlier text.
+In Section 1.3, replace the phrase 'Added Sections 8.1, 8.5, 8.8, and 8.11 to the security considerations.' with 'Updated Sections 8.1 and 8.5 and added new Sections 8.8 and 8.11 to the security considerations.'
 
 **Severity:** Low
-  *Basis:* Although LDAP attribute names are typically treated case-insensitively, the inconsistency can mislead implementers and documentation authors.
+  *Basis:* The issue is editorial and creates historical confusion but does not impact the protocol functionality.
 
 **Confidence:** High
 
 **Experts mentioning this issue:**
 
-- Structural Expert: Issue-1
+- CrossRFC Expert: Issue-1
 - Terminology Expert: Issue-1
-- CrossRFC Expert: Issue-2
 
 ---
 
-## Report 4: 9810-4-4
+## Report 2: 9810-1-2
 
-**Label:** Case 2 signature verification error: using old CA key for 'new with new' certificate
+**Label:** Ambiguous Introduction of CMP Version 3 (cmp2021) in RFC 9810
 
-**Bug Type:** Causal Inconsistency
+**Bug Type:** Inconsistency
 
 **Explanation:**
 
-In the Case 2 verification procedure, the specification instructs verifiers to verify the 'new with new' certificate using the old CA key, which is incorrect because 'new with new' is signed with the new key.
+RFC 9810 contains phrasing that ambiguously suggests it newly introduces CMP version 3, even though that version (pvno cmp2021(3)) was already defined in RFC 9480, which may mislead readers about its provenance.
 
 **Justification:**
 
-- The procedure states to 'Verify the signatures using the old root CA key (which the verifier has locally)' even though the 'new with new' certificate is self‐signed by the new key.
-- This error leads to a situation where the verification process will always fail for honest deployments.
+- Section 1.2 correctly attributes the introduction of CMP version 3 to RFC 9480, yet Section 1.3 reiterates that 'CMP version 3 is introduced', leading to ambiguity (E1, E2).
+- This redundancy in language causes confusion over whether RFC 9810 is presenting a new version or extending the existing one.
 
 **Evidence Snippets:**
 
 - **E1:**
 
-  In case 2, the verifier must get access to the new public key of the CA. The verifier does the following: 1. Get the ‘new with new’ and ‘new with old’ certificates. … Verify the signatures using the old root CA key (which the verifier has locally).
+  Section 1.2 of RFC 9810 correctly describes RFC 9480 as introducing CMP version 3 (pvno value cmp2021(3)) “in case a transaction is supposed to use EnvelopedData,” which aligns with RFC 9480’s update to PKIHeader and version negotiation: cmp2021 is used when EnvelopedData or hashAlg is needed. Later, Section 1.3, describing changes made “by this document,” states that “CMP version 3 is introduced for changes to the ASN.1 syntax, which support EnvelopedData, certConf with hashAlg, POPOPrivKey with agreeMAC, and RootCaKeyUpdateContent in ckuann messages.” Taken literally, this reads as though RFC 9810 is newly introducing version 3, even though Section 1.2 (and RFC 9480 §2.3 and §2.20) already attribute that introduction to RFC 9480. The intent seems to be that RFC 9810 *extends the use* of cmp2021 to additional syntax (agreeMAC and RootCaKeyUpdateContent) while keeping the same version number, but the “is introduced” wording contradicts the earlier description and may mislead readers about where CMP v3 first appeared. This is mostly historical/documentation confusion rather than a wire‑level interoperability problem.
+
+- **E2:**
+
+  Section 1.2 (describing RFC 9480):  
+          “To properly differentiate the support of EnvelopedData instead of EncryptedValue, CMP version 3 is introduced in case a transaction is supposed to use EnvelopedData.”
+Section 1.3 (describing RFC 9810 itself):  
+          “CMP version 3 is introduced for changes to the ASN.1 syntax, which support EnvelopedData, certConf with hashAlg, POPOPrivKey with agreeMAC, and RootCaKeyUpdateContent in ckuann messages.”
+Protocol version definition in PKIHeader:  
+          “pvno INTEGER { cmp1999(1), cmp2000(2), cmp2021(3) }”  
+Version negotiation rules:  
+          “Version cmp2021 SHOULD only be used if cmp2021 syntax is needed for the request being sent or for the expected response.”
 
 **Evidence Summary:**
 
-- (E1) illustrates that the verification instruction incorrectly applies the old key to the 'new with new' certificate.
+- (E1) Section 1.3’s wording implies RFC 9810 is introducing CMP version 3, contradicting Section 1.2 and earlier RFC 9480 attributions.
+- (E2) Multiple excerpts reveal conflicting statements about the introduction of CMP version 3, creating ambiguity.
 
 **Fix Direction:**
 
-Revise the verification algorithm so that the old CA key is used solely for verifying the 'new with old' certificate, while the 'new with new' certificate is verified using the new CA public key or appropriate self-signature checks.
+In Section 1.3, adjust the wording to acknowledge that CMP version 3 (pvno cmp2021(3)) was originally introduced in RFC 9480 and is merely extended in RFC 9810 for additional syntax support.
 
-**Severity:** Medium
-  *Basis:* Using the wrong key for signature verification directly prevents the certificate chain from being established in normal operations, causing valid updates to be rejected.
+**Severity:** Low
+  *Basis:* This is a documentation ambiguity that may confuse historical understanding but does not affect protocol interoperability.
+
+**Confidence:** Medium
+
+**Experts mentioning this issue:**
+
+- CrossRFC Expert: Issue-3
+- Terminology Expert: Issue-2
+
+---
+
+## Report 3: 9810-1-3
+
+**Label:** Incorrect Historical Appendix Reference for Algorithm Profile in RFC 9810 Section 1.2
+
+**Bug Type:** Inconsistency
+
+**Explanation:**
+
+RFC 9810 erroneously refers to Appendix C.2 as the location of the deleted mandatory algorithm profile from RFC 4210, whereas the profile is actually found in Appendix D.2, potentially misleading readers.
+
+**Justification:**
+
+- RFC 9810 Section 1.2 states that RFC 9480 'Deleted the mandatory algorithm profile in Appendix C.2', but RFC 4210’s algorithm profile is located in Appendix D.2 (E1).
+- RFC 9480’s explicit reference in §2.29 confirms that Appendix D.2 of RFC 4210 provided the algorithm list, making the reference in RFC 9810 historically inaccurate.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  In Section 1.2, RFC 9810 says that RFC 9480 “Deleted the mandatory algorithm profile in Appendix C.2 and instead referred to Section 7 of [RFC9481].” However, RFC 4210’s mandatory algorithm profile is actually in Appendix D.2, and RFC 9480 explicitly refers to and replaces Appendix D.2, not C.2, when it redirects implementations to the CMP Algorithms specification. RFC 9480 §2.29 states that “Appendix D.2 of [RFC4210] provides a list of algorithms…” and that this is replaced by a pointer to Section 7.1 of RFC 9481. RFC 9810 later reorganizes appendices so that its own algorithm profile is in Appendix C.2, but Section 1.2 is specifically describing what RFC 9480 did to RFC 4210, so the correct historical reference should be “Appendix D.2”, not “Appendix C.2”. This mismatch can cause confusion for readers who go back to RFC 4210 looking for Appendix C.2 and do not find the algorithm profile there.
+
+**Evidence Summary:**
+
+- (E1) RFC 9810 incorrectly references Appendix C.2 instead of Appendix D.2 for RFC 4210’s mandatory algorithm profile, conflicting with the explicit guidance in RFC 9480 §2.29.
+
+**Fix Direction:**
+
+In Section 1.2, update the reference from 'Appendix C.2' to 'Appendix D.2' to correctly reflect the historical location of the algorithm profile in RFC 4210.
+
+**Severity:** Low
+  *Basis:* This error is an editorial inconsistency that might mislead readers checking historical documents but does not impact protocol behavior.
 
 **Confidence:** High
 
 **Experts mentioning this issue:**
 
-- Causal Expert: Bug 1
+- CrossRFC Expert: Issue-2
 
 ---
