@@ -1,6 +1,6 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
 
@@ -44,42 +44,4 @@ RFC9762 incorrectly points to RFC4862 for the definition of the Prefix Informati
 In Section 3 of RFC9762, update the PIO entry to reference RFC4861 (or both RFC4861 and RFC4862) to clearly delineate the definition of the on‐wire format.
 
 
----
 
-## Report 2: 9762-3-2
-
-**Label:** On-link/off-link terminology abbreviated but consistent with RFC4861
-
-**Bug Type:** None
-
-**Explanation:**
-
-The document uses shortened definitions for on-link and off-link addresses that refer back to RFC4861 and are consistent with the full definitions, though the brevity might be seen as overly simplified.
-
-**Justification:**
-
-- RFC9762’s Section 3 provides abbreviated definitions for on-link addresses and off-link terms with explicit reference to RFC4861 (E1).
-- Context from RFC4861 Section 2.1 confirms that the abbreviated versions in RFC9762 accurately reflect the full semantics without contradiction (E2).
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Section 3 of RFC 9762:
-        On-link address:  an address that is assigned to an interface on a specified link [RFC4861]
-        On-link prefix:  a prefix that is assigned to a specified link
-        Off-link:  the opposite of "on-link" (see [RFC4861])
-
-- **E2:**
-
-  RFC 4861, Section 2.1:
-        on-link  - an address that is assigned to an interface on a specified link.  A node considers an address to be on-link if: ...
-        off-link    - the opposite of "on-link"; an address that is not assigned to any interfaces on the specified link.
-
-**Evidence Summary:**
-
-- (E1) Presents the abbreviated on-link and off-link definitions as given in RFC9762.
-- (E2) Provides contextual full definitions from RFC4861, confirming consistency.
-
-
----
