@@ -1,6 +1,6 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
 
@@ -8,7 +8,7 @@ Total reports: 2
 
 **Label:** Stray closing parenthesis in Section 6.24.2 for NAT Threshold Event registry URL
 
-**Bug Type:** Editorial punctuation error
+**Bug Type:** Inconsistency
 
 **Explanation:**
 
@@ -33,35 +33,4 @@ A stray closing parenthesis appears after the NAT Threshold Event registry URL i
 Remove the stray closing parenthesis from the affected registry URL in Section 6.24.2.
 
 
----
 
-## Report 2: 9710-6-2
-
-**Label:** Overly high-level reference for NAT46 using RFC6144 may cause ambiguity
-
-**Bug Type:** Editorial/reference clarity issue
-
-**Explanation:**
-
-The text notes that RFC6144 is used as the reference for NAT46 in a high-level manner, which may benefit from further clarification despite not causing direct conflict.
-
-**Justification:**
-
-- The analysis comments that using RFC6144 as the reference for NAT46 is somewhat high‑level, suggesting that a more precise reference (such as RFC6145 for IP/ICMP translation) might improve clarity.
-
-**Evidence Snippets:**
-
-- **E2:**
-
-  Using RFC6144 as the reference for NAT46 is somewhat high‑level (6144 is the framework for IPv4/IPv6 translation and terminology , while RFC6145 carries the IP/ICMP translation algorithm), but it is not contradictory and still points implementers at the correct family of specs.
-
-**Evidence Summary:**
-
-- (E2) The analysis observes that the use of RFC6144 as the reference for NAT46 is notably high-level, which could be perceived as less precise compared to referencing RFC6145.
-
-**Fix Direction:**
-
-Consider clarifying the rationale for using RFC6144 for NAT46 and, if appropriate, include additional or more specific references to provide clearer guidance.
-
-
----
