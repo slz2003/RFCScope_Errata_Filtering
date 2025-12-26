@@ -8,7 +8,7 @@ Total reports: 1
 
 **Label:** Malformed Sentence and Oversimplified 'Enable DHCPv6' Wording in Section 11
 
-**Bug Type:** Editorial Clarity / Copyediting Issue
+**Bug Type:** Inconsistency
 
 **Explanation:**
 
