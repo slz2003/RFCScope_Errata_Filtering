@@ -44,41 +44,6 @@ Section 8.6 describes the BGP‐LS SR Policy Metric Types registry as applying o
 Update the wording in Section 8.6 to reference both the Metric Type fields in Sections 5.6.6 and 5.7.2.
 
 
----
-
-## Report 2: 9857-8-2
-
-**Label:** Ambiguous Creation of SR Policy Protocol‐Origin Registry Relative to RFC 9256
-
-**Bug Type:** Procedural Inconsistency
-
-**Explanation:**
-
-The document claims to create and maintain a new SR Policy Protocol‐Origin registry (Section 8.4) for the Protocol‐Origin field (Section 4), which may cause confusion given the reference to RFC 9256 where related semantics are defined.
-
-**Justification:**
-
-- The text in Section 4 ties the Protocol‐Origin field to RFC 9256, while Section 8.4 states that a new registry is being created with initial values.
-- Although internal consistency is maintained, the approach to registry creation diverges from typical cross‐RFC registry assignment practices, possibly leading to procedural ambiguity.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  “Protocol-Origin:  1-octet field … as specified in Section 2.3 of [RFC9256].  The protocol-origin code points to be used are listed in Section 8.4.”
-
-- **E2:**
-
-  “Per this document, IANA has created and maintains a new registry called ‘SR Policy Protocol-Origin’ … This registry contains the code points allocated to the ‘Protocol-Origin’ field defined in Section 4. IANA has assigned the initial values as follows: [Table 5].”
-
-**Evidence Summary:**
-
-- (E1) Section 4 indicates that the Protocol‐Origin field relies on values as specified by RFC9256.
-- (E2) Section 8.4 asserts the creation of a new registry for these code points, suggesting a potential overlap or duplication.
-
-**Fix Direction:**
-
-Consider adding an editorial note that clarifies alignment with RFC 9256, or adjust the registry description to reflect any pre‐existing assignments if applicable.
 
 
 ---
