@@ -8,7 +8,7 @@ Total reports: 3
 
 **Label:** Ambiguous Boolean Condition in RA 'No DHCPv6 info' Note Mixing RA Header and PIO P Flag
 
-**Bug Type:** Both (Logical and Structural)
+**Bug Type:** Inconsistency
 
 **Explanation:**
 
@@ -50,7 +50,7 @@ Replace the note with explicit language that states: 'If both the M and O flags 
 
 **Label:** Conflict Between RA Note Negative Interpretation and P Flag's Purely Positive Semantics
 
-**Bug Type:** Both (Semantic and Interpretive)
+**Bug Type:** Inconsistency
 
 **Explanation:**
 
@@ -87,7 +87,7 @@ Clarify that the RA note describes only the content of the advertisement and tha
 
 **Label:** Inconsistent Naming of Prefix Information Option
 
-**Bug Type:** Inconsistency (Editorial)
+**Bug Type:** Inconsistency 
 
 **Explanation:**
 
