@@ -1,6 +1,6 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
 
@@ -46,40 +46,3 @@ RFC 9774 mandates treat‐as‐withdraw for UPDATE messages containing AS_CONFED
 Clarify the intended scope by either explicitly stating in RFC 9774 that it updates RFC 6793 for AS4_PATH error handling (thereby overriding the discard-and-continue behavior) or by narrowing the treat‐as‐withdraw requirement to only apply to AS_PATH.
 
 
----
-
-## Report 2: 9774-3-2
-
-**Label:** Normative tightening for AS_SET in AS4_PATH in RFC 9774
-
-**Bug Type:** Normative Change
-
-**Explanation:**
-
-RFC 9774 mandates treat‐as‐withdraw for any UPDATE containing AS_SET in AS4_PATH, even though RFC 6793 permits AS_SET as a valid segment type, resulting in a stricter behavior than that originally specified.
-
-**Justification:**
-
-- RFC 9774 Section 3 requires treat‐as‐withdraw for UPDATEs containing AS_SET in the AS_PATH or AS4_PATH, thereby deprecating AS_SET usage (refer to E3).
-- RFC 6793, however, treats AS_SET in AS4_PATH as valid without imposing a mandatory withdrawal, so the new rule effectively tightens the error handling.
-- This change could lead to unexpected route withdrawals and interoperability differences between implementations that expect the legacy behavior versus the stricter approach.
-
-**Evidence Snippets:**
-
-- **E3:**
-
-  Boundary Expert Finding-2:  
-        - ExcerptEvidence:
-          - RFC 6793 allows AS_SET as a valid AS4_PATH segment type and does not define any special error handling for it beyond the generic malformed-AS4_PATH rules.    
-          - RFC 9774 requires “treat-as-withdraw” for any UPDATE containing AS_SET in either AS_PATH or AS4_PATH (unless explicitly configured otherwise).
-
-**Evidence Summary:**
-
-- (E3) RFC 6793 permits AS_SET in AS4_PATH as a valid segment, whereas RFC 9774 unconditionally mandates treat‐as‐withdraw for such cases.
-
-**Fix Direction:**
-
-Either align RFC 9774 with RFC 6793 by allowing AS_SET in AS4_PATH to be processed without withdrawal or explicitly document and justify the tighter error handling for improved clarity.
-
-
----
