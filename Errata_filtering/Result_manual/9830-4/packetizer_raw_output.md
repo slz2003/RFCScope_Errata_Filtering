@@ -50,7 +50,7 @@ Specify that the 4‑octet Global Administrator field of the IPv4‑address‑sp
 
 **Label:** Conflicting Treatment of Unsupported/Unrecognized Tunnel Encapsulation Sub‑TLVs for SR Policy Usability
 
-**Bug Type:** Underspecification and Internal Inconsistency
+**Bug Type:** Inconsistency
 
 **Explanation:**
 
