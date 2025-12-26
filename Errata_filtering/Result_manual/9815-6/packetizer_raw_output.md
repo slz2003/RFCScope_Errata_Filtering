@@ -34,6 +34,11 @@ The SPF algorithm’s unnumbered link matching rule repeats the same identifier 
 Replace the duplicated clause with a symmetric check: verify that the Current-Link’s Local Identifier matches the Remote-Link’s Remote Identifier as well as ensuring Current-Link’s Remote Identifier matches Remote-Link’s Local Identifier.
 
 
+**Severity:** Medium
+  *Basis:* An incorrect bidirectional match can lead to mis-pairing of unnumbered links and incorrect SPF topology computation, especially under misconfiguration or parallel link scenarios.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9815-6-2
@@ -71,6 +76,11 @@ The document does not explicitly state that the NLRI selection rules, particular
 Add explicit language stating that the NLRI selection rules are to be applied in the listed order, with rule (1) (self-originated) taking precedence over rule (3) (highest sequence number).
 
 
+**Severity:** High
+  *Basis:* Incorrect rule ordering can force routers to keep stale routes, undermining the convergence guarantee after sequence number resets.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9815-6-3
@@ -107,6 +117,11 @@ The specification does not clearly define whether a Prefix NLRI lacking the mand
 
 Clarify in Section 5.2.3 or 7.1 that a Prefix NLRI missing the Prefix Metric TLV must either be treated as malformed (triggering a withdrawal) or preserved solely for LS propagation while being excluded from SPF calculations.
 
+
+**Severity:** Low
+  *Basis:* While divergent treatments do not affect basic route installation, they can result in inconsistent SPF topology views across different implementations.
+
+**Confidence:** High
 
 ---
 
@@ -149,6 +164,11 @@ The document provides conflicting statements about whether the SPF-based Decisio
 Clarify that the SPF-based Decision Process strictly applies only to BGP-LS-SPF NLRI and does not affect the decision process for standard IPv4/IPv6 unicast SAFIs.
 
 
+**Severity:** High
+  *Basis:* Misinterpreting the scope could lead to applying SPF semantics to inappropriate SAFIs, causing severe routing anomalies.
+
+**Confidence:** High
+
 ---
 
 ## Report 5: 9815-6-5
@@ -185,6 +205,11 @@ There is a conflict between the requirement for mandatory TLVs (such as the Sequ
 
 Revise the language to specify that TLVs are mandatory only for NLRIs that participate in SPF computation, and that attr-discarded NLRI may be preserved without these TLVs.
 
+
+**Severity:** Medium
+  *Basis:* Divergent interpretations may lead to inconsistencies in LSDB contents and SPF calculation, affecting interoperability.
+
+**Confidence:** High
 
 ---
 
@@ -223,6 +248,11 @@ The term 'Node-ID' is used in the context of NLRI recency determination without 
 Replace 'Node-ID' with a clearly defined term, such as 'Node Descriptors', or provide an explicit definition of 'Node-ID' in the document.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguity in key identifiers can lead to mismatches in NLRI selection and misidentification of self-originated routes.
+
+**Confidence:** High
+
 ---
 
 ## Report 7: 9815-6-7
@@ -254,6 +284,11 @@ The document incorrectly refers to link-specific TLVs (e.g., TLV 259–262) as '
 
 Change references from 'Node Descriptors' to 'Link Descriptors' in the context of link NLRI advertisement.
 
+
+**Severity:** Medium
+  *Basis:* This terminology error can lead to incorrect encoding or interpretation of NLRI contents in BGP-LS-SPF implementations.
+
+**Confidence:** High
 
 ---
 
@@ -292,6 +327,11 @@ The specification inconsistently refers to prefix NLRIs using both 'BGP-LS-Prefi
 Standardize all references to use 'BGP-LS-SPF Prefix NLRI' consistently throughout the document.
 
 
+**Severity:** Low
+  *Basis:* The naming inconsistency is primarily cosmetic but could lead to minor implementation confusion.
+
+**Confidence:** High
+
 ---
 
 ## Report 9: 9815-6-9
@@ -323,6 +363,11 @@ The document introduces the terms 'Local-RIB' and 'GLOBAL-RIB' in a manner that 
 
 Include a clarifying note to distinguish the algorithm-specific 'Local-RIB' and 'GLOBAL-RIB' from the standard Loc-RIB and RIB as defined in RFC 4271.
 
+
+**Severity:** Low
+  *Basis:* This issue is mainly a clarity concern and is unlikely to cause major interoperability problems if addressed.
+
+**Confidence:** High
 
 ---
 
@@ -356,4 +401,10 @@ The specification does not define the behavior when a self-originated NLRI is re
 Define explicit behavior for self-originated NLRI reception when the sequence number is lower than the local value, such as treating the update as stale and ignoring it.
 
 
+
+
+**Severity:** Medium
+  *Basis:* Ambiguity in this case may lead to inconsistencies in LSDB state and slow or erratic convergence in the network.
+
+**Confidence:** High
 ---

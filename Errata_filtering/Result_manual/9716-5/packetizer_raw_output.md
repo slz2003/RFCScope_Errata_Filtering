@@ -39,6 +39,11 @@ When the initiator copies the Reply Path TLV from an echo reply into the next ec
 Add an explicit normative requirement that when the Reply Path TLV is reused for an echo request, its internal Reply Path return code field MUST be set to 0x0000.
 
 
+**Severity:** Medium
+  *Basis:* Non‐conformance with RFC 7110 may lead to inconsistent behavior or confusion during conformance testing.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9716-5-2
@@ -75,6 +80,11 @@ There is a divergence between the mandatory inclusion of the Reply Path TLV in e
 
 Clarify the normative text to require that an echo reply MUST include a Reply Path TLV whenever it was present in the echo request, and adjust the examples accordingly.
 
+
+**Severity:** Medium
+  *Basis:* The inconsistent treatment may lead to divergent implementations and confusion in diagnostic tools relying on a one‐to‐one correspondence.
+
+**Confidence:** High
 
 ---
 
@@ -113,6 +123,11 @@ The document inconsistently uses the unqualified term 'Return Code' for values 0
 Revise the document to consistently use 'Reply Path Return Code' when discussing 0x0006/0x0007 and explicitly state that these codes apply only to the TLV’s internal field, not to the MPLS echo header Return Code.
 
 
+**Severity:** Medium
+  *Basis:* This ambiguity can lead to implementations misusing reserved header values and adversely affecting interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9716-5-4
@@ -149,6 +164,11 @@ The instruction to increment 'the TTL' in dynamic traceroute is ambiguous, leavi
 
 Clarify that the TTL increment applies exclusively to the outer MPLS echo request TTL as defined in RFC 8029.
 
+
+**Severity:** Low
+  *Basis:* While unlikely to cause major interoperation failures, the ambiguity may lead to minor misinterpretations of the probe progression.
+
+**Confidence:** High
 
 ---
 
@@ -187,6 +207,11 @@ RFC 9716 requires that the Reply Path TLV carry the SR path as an ordered list o
 Define that for Reply Mode 5 the Reply Path TLV MUST contain at least one segment, or explicitly describe the expected behavior if the TLV is empty.
 
 
+**Severity:** Medium
+  *Basis:* This underspecification may lead to divergent behaviors in implementations affecting OAM diagnostics.
+
+**Confidence:** Medium
+
 ---
 
 ## Report 6: 9716-5-6
@@ -223,5 +248,10 @@ There is a conflict between the requirement to set the Reply Path Return Code to
 
 Clarify the normative behavior for the scenario when the dynamic return path is enabled but the specified SR path is unreachable, indicating which rule takes precedence.
 
+
+**Severity:** Medium
+  *Basis:* This conflict may cause implementations to diverge in handling failure scenarios, impairing diagnostic accuracy.
+
+**Confidence:** Medium
 
 ---

@@ -39,6 +39,11 @@ The specification is unclear whether a client may begin sending UTF-8 quoted-str
 Modify the text to clearly require that clients may only send UTF-8 quoted-strings after successful ENABLE (or explicitly state the intended timeline), in order to resolve the conflict between the MUST and MAY wording.
 
 
+**Severity:** Medium
+  *Basis:* Inconsistent timing may lead to interoperability failures between clients and servers regarding when UTF-8 quoted strings are allowed.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9755-3-2
@@ -76,6 +81,11 @@ The APPEND command section contains contradictory instructions by both accepting
 Revise the APPEND command requirement so that acceptance of UTF-8 headers is explicitly conditioned on the client having successfully issued ENABLE UTF8=ACCEPT.
 
 
+**Severity:** Medium
+  *Basis:* The contradiction can result in servers or clients behaving inconsistently, leading to potential interoperability issues.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9755-3-3
@@ -112,6 +122,11 @@ The specification does not clearly state whether a SEARCH command containing a c
 
 Clarify in the specification whether the prohibition applies from the moment the ENABLE command is sent or only after an ENABLED response is received.
 
+
+**Severity:** Low
+  *Basis:* Although the ambiguity is subtle and likely limited to pipelining scenarios, it may still lead to minor interoperability inconsistencies.
+
+**Confidence:** High
 
 ---
 
@@ -155,6 +170,11 @@ While the document claims that UTF8=ACCEPT 'affects' NAMESPACE and ACL, it fails
 Explicitly define the requirements for NAMESPACE prefixes and ACL mailbox arguments, such that these elements must adhere to the same UTF‑8 Net‑Unicode rules as other mailbox names when UTF8=ACCEPT is enabled.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguity in encoding requirements may cause inconsistent implementations across servers and clients, damaging interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 5: 9755-3-5
@@ -191,6 +211,11 @@ The document unconditionally mandates that mailbox names comply with the Net‑U
 
 Clarify that the Net‑Unicode requirement applies only to mailbox names represented in UTF‑8 under the UTF8=ACCEPT extension while allowing modified UTF‑7 representations for legacy client compatibility, or clearly delineate the transition boundary.
 
+
+**Severity:** Medium
+  *Basis:* Without clear scoping, implementers may make divergent choices for mailbox name encoding, risking interoperability with legacy systems.
+
+**Confidence:** High
 
 ---
 
@@ -229,6 +254,11 @@ The text erroneously refers to the media type 'message/rfc' instead of the regis
 Change all instances of 'message/rfc' to 'message/rfc822' to align with the proper registered media type.
 
 
+**Severity:** Medium
+  *Basis:* Incorrect media type naming can lead to confusion in MIME handling and interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 7: 9755-3-7
@@ -265,5 +295,10 @@ The document incorrectly indicates that the 'UTF8=ACCEPT' option is defined in S
 
 Revise the reference to indicate that the 'UTF8=ACCEPT' capability is defined in Section 3 or remove the erroneous section reference entirely.
 
+
+**Severity:** Low
+  *Basis:* This is an editorial error that may mislead readers but is unlikely to affect the implementation of the protocol.
+
+**Confidence:** High
 
 ---

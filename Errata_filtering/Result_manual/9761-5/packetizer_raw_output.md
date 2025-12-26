@@ -45,6 +45,11 @@ Section 5.3 incorrectly attributes spki-pin-set and certificate-authority parame
 Clarify in Section 5.3 that spki-pin-set and certificate-authority are not part of the iana-tls-profile module; update the text and associated IANA registry descriptions to reflect that these parameters are device-specific and defined in the ietf-acl-tls module, or remove unused references.
 
 
+**Severity:** High
+  *Basis:* This mis-scoping can lead to serious interoperability issues and confusion for both implementers and IANA maintainers regarding parameter ownership.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9761-5-2
@@ -81,6 +86,11 @@ The specification ambiguously attributes the implementation of the match-on-tls-
 
 Revise Section 5.4 to clarify that match-on-tls-dtls is solely an ACL server capability, and that the presence of the ietf-mud-tls extension indicates that the network security service must support this feature.
 
+
+**Severity:** Medium
+  *Basis:* Incorrect feature attribution may lead to configuration mismatches, though it is less likely to completely break interoperability.
+
+**Confidence:** High
 
 ---
 
@@ -125,6 +135,11 @@ The specification mandates that certificate authority distinguished names be pro
 Either change the certificate-authority typedef to 'type binary' to carry DER-encoded data (with appropriate RFC 7951 encoding rules) or update the prose to specify a canonical textual representation such as RFC 4514, ensuring both prose and model are aligned.
 
 
+**Severity:** High
+  *Basis:* This inconsistency can critically affect security policy enforcement by causing mismatches in certificate authority comparisons across different implementations.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9761-5-4
@@ -156,6 +171,11 @@ The profile name is described as prohibiting spaces and special characters, yet 
 
 Either add a pattern restriction to the YANG type to enforce the prohibition on spaces and special characters or update the description to reflect that only the length is constrained.
 
+
+**Severity:** Low
+  *Basis:* This issue affects configuration consistency and interoperability of profile identifiers, but its impact is limited to management-plane validation.
+
+**Confidence:** High
 
 ---
 
@@ -199,6 +219,11 @@ There are multiple discrepancies in node naming across the tree diagram, JSON ex
 Update the tree diagram and JSON examples to precisely match the YANG node names (e.g., using 'supported-group' and 'client-profiles') as dictated by the normative model.
 
 
+**Severity:** Medium
+  *Basis:* While these naming mismatches mainly affect documentation and example correctness, they can lead to implementation errors if developers rely on the provided examples.
+
+**Confidence:** High
+
 ---
 
 ## Report 6: 9761-5-6
@@ -236,6 +261,11 @@ The JSON example provided in Section 7 contains several errors—such as boolean
 Revise the JSON example to use proper boolean literals and to exactly match the YANG structure and node names per RFC 7951, ensuring that nodes such as 'client-profiles' and 'tls-dtls-profile' are correctly named and placed.
 
 
+**Severity:** High
+  *Basis:* Non-conformance in the example can mislead implementers and result in parsing or validation errors, directly impacting interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 7: 9761-5-7
@@ -272,5 +302,10 @@ The security considerations claim that the NACM default-deny-write extension has
 
 Either add the NACM annotations (import ietf-netconf-acm and add nacm:default-deny-write statements) to the YANG modules or update the security considerations to accurately describe the current schema behavior.
 
+
+**Severity:** Medium
+  *Basis:* The lack of NACM extensions could lead implementers to a false sense of access-control security, potentially impacting secure deployments.
+
+**Confidence:** High
 
 ---

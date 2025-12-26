@@ -43,6 +43,11 @@ The document contains conflicting statements about which handshake messages are 
 Update Section 4 to state that in (D)TLS 1.3 only the handshake messages after the ServerHello (and HelloRetryRequest in DTLS) are encrypted, and clarify that EncryptedExtensions is a handshake message that is sent under encryption rather than a trigger for encryption.
 
 
+**Severity:** Medium
+  *Basis:* This inconsistency could mislead implementers regarding which handshake parameters are observable for middlebox inspection, even though it does not break protocol operation.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9761-4-2
@@ -79,6 +84,11 @@ The document instructs a (D)TLS 1.3 proxy that does not support the ECH extensio
 
 Clarify that only proxies which implement the ECH extension may follow Section 6.1.6, and provide separate, unambiguous guidance for proxies that do not support ECH.
 
+
+**Severity:** High
+  *Basis:* This misassignment may lead to non-interoperable behavior and failed handshakes when ECH is deployed, as it forces an unsupported role on certain proxies.
+
+**Confidence:** High
 
 ---
 
@@ -129,5 +139,10 @@ leaf-list supported-group
 
 Update the JSON example to use the exact node names defined in the YANG module (e.g., 'ietf-acl-tls:client-profiles', 'tls-dtls-profile', 'supported-tls-version', 'extension-type', 'supported-group').
 
+
+**Severity:** High
+  *Basis:* Incorrect node naming in the example leads to JSON files that do not conform to the schema, resulting in interoperability and validation issues.
+
+**Confidence:** High
 
 ---

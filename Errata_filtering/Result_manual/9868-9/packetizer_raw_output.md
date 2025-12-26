@@ -39,6 +39,11 @@ The specification contains conflicting descriptions of the checksum invariant: S
 Clarify Section 8 to explicitly state that the invariant applies to the combination of the 16-bit surplus-length field and the surplus area, ensuring that their one’s complement sum equals 0xFFFF (the negative zero), which aligns with the formal definition in Section 9.
 
 
+**Severity:** High
+  *Basis:* This inconsistency may lead implementers to follow different interpretations, resulting in divergent OCS computations and potential interoperability failures, especially regarding middlebox checksum recalculations.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9868-9-2
@@ -75,5 +80,10 @@ The document does not specify how to handle the case when the computed 16-bit In
 
 Introduce an explicit mapping rule (for example, mapping a computed 0x0000 to an on‑wire value of 0xFFFF) for cases where the checksum naturally evaluates to zero while the UDP checksum is non-zero, analogous to the handling in UDP/TCP protocols.
 
+
+**Severity:** High
+  *Basis:* Without a defined rule, rare packets with a naturally computed zero OCS may be inconsistently handled between different implementations, leading to misinterpretation of OCS usage and potential loss of option processing.
+
+**Confidence:** High
 
 ---

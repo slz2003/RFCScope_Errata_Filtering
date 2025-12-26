@@ -44,6 +44,11 @@ The specification does not clearly define how resolvers should handle the CO fla
 Clarify in Section 5.1 the normative requirements for resolver behavior – including when to set or mirror the CO flag on upstream queries and how to manage cached NXNAME responses – to ensure consistent NXDOMAIN restoration across hops.
 
 
+**Severity:** Medium
+  *Basis:* This ambiguity affects the visible negative response (NXDOMAIN) optimization across resolver chains without impacting DNSSEC validation, potentially leading to divergent behaviors.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9824-5-2
@@ -80,6 +85,11 @@ The document defines non‑DNSSEC‑enabled queries solely by the absence of the
 
 Clarify in Section 5 that non‑DNSSEC‑enabled queries include both queries with an OPT RR and DO=0 and queries lacking an OPT RR entirely.
 
+
+**Severity:** Medium
+  *Basis:* This underspecification may lead to inconsistent handling of non‑EDNS queries across implementations.
+
+**Confidence:** High
 
 ---
 
@@ -118,6 +128,11 @@ The specification inconsistently applies the term 'NODATA response' by describin
 Revise Section 5.1 to either refrain from using the term 'NODATA response' when RCODE=NXDOMAIN is employed, or introduce a distinct term that accurately describes the Compact Answers response with NXDOMAIN.
 
 
+**Severity:** Medium
+  *Basis:* The conflicting terminology may mislead implementers about the expected header values and the classification of negative responses.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9824-5-4
@@ -155,6 +170,11 @@ The document’s diagram places the CO flag in the second most significant bit o
 Revise Section 9, Table 2 to assign the CO flag the correct bit number (e.g., Bit 14) so that it aligns with the diagram and the standard EDNS header flags numbering.
 
 
+**Severity:** High
+  *Basis:* An incorrect bit assignment can change the wire encoding, leading to interoperability failures between implementations following different interpretations.
+
+**Confidence:** High
+
 ---
 
 ## Report 5: 9824-5-5
@@ -191,5 +211,10 @@ The specification does not explicitly define the behavior when the CO flag is se
 
 Explicitly state in the specification that the CO flag is only applicable when DO=1, or provide detailed guidance on how CO should be handled when DO=0.
 
+
+**Severity:** Medium
+  *Basis:* Ambiguity in the DO/CO interaction could lead to implementations erroneously treating non‑DNSSEC queries with CO, potentially violating established DNSSEC requirements.
+
+**Confidence:** High
 
 ---

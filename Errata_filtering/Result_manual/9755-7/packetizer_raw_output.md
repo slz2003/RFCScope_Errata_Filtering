@@ -44,6 +44,11 @@ There is a temporal inconsistency between Sections 3 and 7 regarding when a UTF8
 Clarify that a UTF8=ONLY server shall only send UTF-8 in quoted-strings after the client has successfully issued ENABLE UTF8=ACCEPT.
 
 
+**Severity:** Medium
+  *Basis:* The conflicting instructions could cause servers to prematurely send UTF-8, potentially breaking legacy client behavior.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9755-7-2
@@ -85,6 +90,11 @@ The specification requires sending a 'NO [CANNOT]' response for pre-ENABLE comma
 
 Either adopt a different response code for transient pre-ENABLE failures or adjust the definition of [CANNOT] so that its use is consistent with RFC 5530.
 
+
+**Severity:** Medium
+  *Basis:* Misusing a permanent failure code for a temporary condition may lead clients to improperly cease retrying recoverable commands, harming interoperability.
+
+**Confidence:** High
 
 ---
 
@@ -128,6 +138,11 @@ The document does not clearly define which commands 'might require UTF‑8 suppo
 Provide a clear, normative list or specific criteria for which commands are considered to require UTF‑8 support, or specify that the gating decision is made on a per-invocation basis.
 
 
+**Severity:** Low
+  *Basis:* Although the ambiguity may lead to some interoperability differences, compliant clients are expected to issue ENABLE UTF8=ACCEPT immediately, minimizing practical impact.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9755-7-4
@@ -164,6 +179,11 @@ The instruction that clients must use ENABLE UTF8=ACCEPT 'before using this serv
 
 Clarify that 'using the server' refers specifically to post-ENABLE operations and that the client should issue ENABLE UTF8=ACCEPT immediately after authentication.
 
+
+**Severity:** Low
+  *Basis:* The potential ambiguity affects only a narrow transition period and is unlikely to cause significant interoperability issues if clients follow recommended practices.
+
+**Confidence:** High
 
 ---
 
@@ -202,6 +222,11 @@ The document mistakenly refers to the definition of the UTF8=ACCEPT option as be
 Correct the cross-reference in Section 3 so that it points to the section where UTF8=ACCEPT is actually defined (or modify the text to state it is defined in the current section).
 
 
+**Severity:** Medium
+  *Basis:* Incorrect cross-references can hinder implementers’ ability to correctly interpret the specification.
+
+**Confidence:** High
+
 ---
 
 ## Report 6: 9755-7-6
@@ -237,5 +262,10 @@ The document incorrectly uses the non-existent media type 'message/rfc' where 'm
 
 Replace all instances of 'message/rfc' with 'message/rfc822' in the document to align with standard media type definitions.
 
+
+**Severity:** Medium
+  *Basis:* Using an incorrect media type can cause confusion when interfacing with MIME systems and referencing external standards.
+
+**Confidence:** High
 
 ---

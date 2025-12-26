@@ -51,6 +51,11 @@ Explanatory text in RFC 9755 Section 6 mistakenly uses 'message/rfc' instead of 
 Replace the phrase '[RFC9051], Section 7.5.2 treats message/global like message/rfc,' with '[RFC9051], Section 7.5.2 treats message/global like message/rfc822,' in RFC 9755 Section 6.
 
 
+**Severity:** High
+  *Basis:* The misnaming could lead implementers to use a non-existent MIME subtype, risking interoperability issues.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9755-B-2
@@ -88,4 +93,8 @@ RFC 9755 Section B.1 inconsistently refers to the mechanism as a 'UTF8 data item
 - (E2) RFC 6855 Section 4 defines the mechanism as 'UTF8 data extension' with matching ABNF.
 
 
+**Severity:** Low
+  *Basis:* The issue is primarily editorial; despite the inconsistent terminology, the intended reference is clear and does not impact interoperability.
+
+**Confidence:** High
 ---

@@ -42,6 +42,11 @@ The XML Schema’s uniqueness constraint on the @for attribute restricts the inc
 Modify the uniqueness constraint to include the @custom attribute for elements where for="custom", or revise the data model so that the @for attribute directly represents the DNS RR type, eliminating the need for a separate custom attribute.
 
 
+**Severity:** High
+  *Basis:* This inconsistency forces a choice between schema validity and fulfilling the protocol’s normative requirements, potentially breaking interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9803-2-2
@@ -81,6 +86,11 @@ The normative sections do not explicitly define how a server should behave when 
 
 Insert an explicit normative statement that an omitted policy attribute must be treated as if its value were 'false' (i.e., Default Mode applies).
 
+
+**Severity:** Medium
+  *Basis:* While the gap does not render the extension unimplementable, it may cause inconsistent server behavior and interoperability issues among implementations that do or do not apply XML Schema defaulting.
+
+**Confidence:** High
 
 ---
 

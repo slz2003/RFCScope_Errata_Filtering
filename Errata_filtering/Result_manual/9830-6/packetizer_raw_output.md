@@ -39,6 +39,11 @@ The document defines Color-Only Type 3 as reserved with mandatory receiver behav
 Update the IANA registry in Section 6.9 to indicate that Type 3 is reserved, for example by changing its entry to 'Reserved; on reception treat as Type 0', thereby aligning the registry with the normative text in Section 3.
 
 
+**Severity:** Medium
+  *Basis:* Multiple experts noted that while the normative text clearly defines receiver behavior, the 'Unassigned' label in the registry may mislead implementers and future authors regarding the code point's intended use.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9830-6-2
@@ -93,6 +98,17 @@ There is a conflict in the bit assignment for the B-Flag: the flag diagram in Se
 **Fix Direction:**
 
 Align the IANA registry table in Section 6.8 with the flag diagram in Section 2.4.4.2.3 by reassigning the B-Flag to the appropriate bit (e.g., bit 2) to ensure consistent wire encoding.
+
+
+**Severity:** High
+  *Basis:* This inconsistency directly impacts wire-level encoding and decoding, causing potential misinterpretation of the presence of the SRv6 Endpoint Behavior & SID Structure.
+
+**Confidence:** High
+
+**Severity:** High
+  *Basis:* This inconsistency directly impacts wire-level encoding and decoding, causing potential misinterpretation of the presence of the SRv6 Endpoint Behavior & SID Structure.
+
+**Confidence:** High
 
 
 ---

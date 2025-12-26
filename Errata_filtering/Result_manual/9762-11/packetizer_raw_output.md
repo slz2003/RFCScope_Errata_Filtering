@@ -39,4 +39,9 @@ Section 11 of RFC 9762 contains a grammatically malformed sentence that ambiguou
 Revise the problematic sentence to clearly state that implementing P flag support will cause the host to engage in DHCPv6-PD per the normative instructions in Section 7.1; for example, replace it with: 'Implementing support for the P flag on a host will cause the host to start using DHCPv6-PD when it receives an RA containing a PIO with the P bit set, as described in Section 7.1.'
 
 
+**Severity:** Low
+  *Basis:* The issue is editorial in nature; it does not affect protocol implementability or interoperability but may cause misinterpretation.
+
+**Confidence:** High
+
 ---

@@ -50,6 +50,11 @@ The specification does not define what an implementation should do if dynamic ro
 Clarify in Section 5.2 the expected behavior when the desired origin AS is not present in the aggregated AS_PATH due to route evolution.
 
 
+**Severity:** Low
+  *Basis:* This is a corner-case underspecification that may lead to modest interoperability issues without affecting normative protocol operation.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9774-B-2
@@ -92,6 +97,11 @@ The document does not clarify whether AS_PATH truncation occurs before or after 
 Specify in Section 5.2 whether the truncation of the AS_PATH should be performed before or after prepending the local AS, in accordance with RFC 4271.
 
 
+**Severity:** Low
+  *Basis:* This underspecification may lead to moderate interoperability differences in deployments using proxy aggregation, though its impact is limited.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9774-B-3
@@ -128,5 +138,10 @@ The worked example in Scenario 3 erroneously shows the aggregate AS_PATH for R3 
 
 Replace the first aggregate AS_PATH line in Scenario 3 with '64504 64502' to match the defined route for R3 and comply with RFC 4271 aggregation rules.
 
+
+**Severity:** Medium
+  *Basis:* Although the error is limited to a non‑normative illustrative example, it can significantly confuse readers regarding proper aggregation behavior.
+
+**Confidence:** High
 
 ---

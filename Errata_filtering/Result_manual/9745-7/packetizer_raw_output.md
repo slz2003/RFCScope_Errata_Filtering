@@ -45,6 +45,11 @@ The RFC contains contradictory guidance: Section 5 asserts that deprecation does
 Clarify the temporal semantics by explicitly distinguishing between the current behavior observed at deprecation and the future assumptions clients should make beyond the deprecation date.
 
 
+**Severity:** Medium
+  *Basis:* This ambiguity can lead to diverging client implementations and inconsistent risk assessments about resource stability once the deprecation date is passed.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9745-7-2
@@ -80,5 +85,10 @@ The specification does not explicitly state how to interpret a deprecation date 
 
 Define explicitly how the deprecation header should be interpreted when the deprecation date equals the current time, such as specifying whether it should be treated as expired or not yet effective.
 
+
+**Severity:** Low
+  *Basis:* This ambiguity is mainly interpretative and unlikely to cause severe interoperability issues since the header is advisory.
+
+**Confidence:** High
 
 ---

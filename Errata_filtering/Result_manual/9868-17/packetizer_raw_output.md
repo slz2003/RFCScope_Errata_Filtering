@@ -44,6 +44,11 @@ RFC 9868 erroneously refers to a 'UDP Length' field in UDP-Lite instead of its p
 Replace references to 'UDP Length field' with 'Checksum Coverage field' in UDP-Lite contexts, particularly in Section 17.
 
 
+**Severity:** Medium
+  *Basis:* The misnaming introduces conceptual confusion about UDP-Lite's header structure, which may mislead implementers even though it does not directly affect core functionality.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9868-17-2
@@ -80,5 +85,10 @@ Section 17 asserts that UDP-Lite cannot support UDP Options 'in any other form',
 
 Rephrase the prohibition to specifically disallow only the surplus-area based UDP Options mechanism for UDP-Lite, rather than a general ban on any form of UDP Options.
 
+
+**Severity:** Low
+  *Basis:* The issue is chiefly editorial and does not immediately impact interoperability, though it may unnecessarily constrain future protocol developments.
+
+**Confidence:** High
 
 ---

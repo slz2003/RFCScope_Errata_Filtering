@@ -44,6 +44,11 @@ The specification mandates that if Segment sub-TLVs 46–48 appear in TLVs 1 or 
 Clarify the exact error handling by specifying the precise Return Code/Subcode and diagnostic behavior (e.g., inclusion of an Errored TLVs TLV) for cases where sub-TLVs 46–48 appear in TLVs 1 or 16.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguity in error handling can result in inconsistent diagnostics and interoperability issues between different implementations.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9716-4-2
@@ -88,6 +93,11 @@ Specify explicit precedence rules—for example, state that when an optional SID
 
 
 
+**Severity:** High
+  *Basis:* Divergent interpretations of label selection can lead to inconsistent MPLS label stacks and misrouted echo replies, which undermines the reliability of the OAM mechanism.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9716-4-4
@@ -124,5 +134,10 @@ RFC 9716 allocates Segment sub-TLV types 46–48 from a common registry used for
 
 Either adjust the registry allocation so that sub-TLVs 46–48 are exclusive to TLV 21, or revise the prohibition in RFC 9716 to allow their use in TLVs 1 and 16 consistently with RFC 7110 and RFC 8287.
 
+
+**Severity:** Medium
+  *Basis:* This inconsistency between registry use and prohibitive text can lead to divergent interpretations and non-interoperable implementations.
+
+**Confidence:** High
 
 ---

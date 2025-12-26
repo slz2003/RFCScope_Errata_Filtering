@@ -44,4 +44,9 @@ The document ambiguously defines the scope of the RFC 4271 modifications by stat
 Revise Section 1 (and Section 9, if applicable) to explicitly state that the modifications to RFC 4271 apply solely to the BGP‑LS‑SPF SAFI (AFI 16388/SAFI 80) used for underlay topology and prefix information, and clarify that the standard IPv4/IPv6 unicast SAFIs remain unaffected.
 
 
+**Severity:** Medium
+  *Basis:* Misinterpretation of the document’s scope could lead implementers to erroneously apply the SPF-based Decision Process to traditional IPv4/IPv6 unicast routing, potentially causing significant interoperability issues.
+
+**Confidence:** High
+
 ---

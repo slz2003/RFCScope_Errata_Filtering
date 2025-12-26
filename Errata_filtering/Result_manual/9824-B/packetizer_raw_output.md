@@ -40,4 +40,9 @@ The RFC text refers to 'Oracle Cloud Initiative' rather than the widely recogniz
 In Section B (Historical Implementation Notes), replace ‘Oracle Cloud Initiative implemented Compact Denial of Existence using NSEC3 in October 2024.’ with ‘Oracle Cloud Infrastructure (OCI) implemented Compact Denial of Existence using NSEC3 in October 2024.’
 
 
+**Severity:** Low
+  *Basis:* The error is editorial in nature and does not affect protocol behavior, though it may cause confusion when correlating RFC content with industry-standard naming.
+
+**Confidence:** High
+
 ---

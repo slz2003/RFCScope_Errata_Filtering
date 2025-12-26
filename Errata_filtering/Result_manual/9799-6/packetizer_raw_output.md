@@ -44,6 +44,11 @@ inBandOnionCAARequired (optional, boolean): If true, the ACME server requires th
 Align the naming by replacing 'inBandOnionCAARequired' with 'onionCAARequired' in Section 6.4.1 and the JSON example to match the IANA registration.
 
 
+**Severity:** High
+  *Basis:* The mismatch directly affects the discovery of server capabilities and may cause clients to miss the requirement for in‐band CAA, leading to interoperability and issuance errors.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9799-6-2
@@ -80,6 +85,11 @@ The specification contains conflicting requirements for handling the caa-critica
 
 Clarify the protocol so that the caa-critical mandate always requires descriptor-based CAA processing, or restrict the in-band CAA shortcut to cases where the caa-critical flag is not present.
 
+
+**Severity:** Medium
+  *Basis:* The conflicting instructions can lead to divergent implementation behaviors, undermining the intended issuance safeguards and resulting in unpredictable certificate issuance.
+
+**Confidence:** High
 
 ---
 
@@ -118,6 +128,11 @@ The specification does not clearly define how the expiry timestamp in the in-ban
 Introduce explicit normative requirements for expiry validation, including rejecting records past their expiry, defining acceptable clock skew, and clarifying reuse conditions.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguous expiry enforcement can lead to interoperability issues and security vulnerabilities by allowing stale CAA policies to be erroneously accepted or rejected.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9799-6-4
@@ -154,5 +169,10 @@ The document does not specify a canonical method for keying the onionCAA diction
 
 Specify that the onionCAA dictionary must be keyed by the base ".onion" service name, with all subdomains and wildcard identifiers mapping to that key.
 
+
+**Severity:** Medium
+  *Basis:* Insufficient keying specification can result in mismatches between client-supplied and server-expected CAA data, leading to unnecessary errors and interoperability problems.
+
+**Confidence:** High
 
 ---

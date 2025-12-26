@@ -39,6 +39,11 @@ RFC 9811 mistakenly characterizes the digest fields defined in RFC 9530 as provi
 Revise Section 5, item 2 to accurately describe the RFC 9530 digest fields as complementary, non-authenticated integrity checks that must be used with proper transport security (e.g., TLS), rather than implying they offer standalone security.
 
 
+**Severity:** Medium
+  *Basis:* Overstating the security properties can lead implementers to mistakenly rely on digest fields for integrity, potentially compromising security even though the issue is primarily one of miscommunication.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9811-5-2
@@ -76,6 +81,11 @@ RFC 9811 contains contradictory instructions regarding the use of HTTP metadata 
 Clarify the guidance in Section 5 by distinguishing between scenarios where HTTP metadata may inform delivery reliability (when authenticated by TLS or similar mechanisms) and where it must not be used to alter the CMP transaction state itself.
 
 
+**Severity:** Medium
+  *Basis:* The contradictory guidance could result in divergent and insecure implementations; while the issue is primarily editorial, its impact on protocol behavior and interoperability is significant.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9811-5-3
@@ -107,5 +117,10 @@ RFC 9811 generically refers to 'HTTP digest [RFC9530]' without specifying whethe
 
 Specify in RFC 9811 which RFC 9530 digest field(s) (Content-Digest, Repr-Digest, or a combination) are intended for use with CMP over HTTP to ensure uniform implementation.
 
+
+**Severity:** Medium
+  *Basis:* While the issue primarily affects consistency and interoperability rather than core security, differing interpretations may lead to mismatches in message verification.
+
+**Confidence:** Medium
 
 ---

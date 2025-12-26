@@ -44,6 +44,11 @@ The specification permits intermediate BGP nodes to filter and/or remove the Rou
 Clarify in the specification that if an intermediate BGP node removes the RT extended community, it must either not propagate the update or must apply a compensating action (e.g., adding NO_ADVERTISE) to ensure the update remains valid.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguous handling of RT removal can lead to propagation of malformed SR Policy updates, adversely affecting proper BGP behavior.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9830-1-2
@@ -86,6 +91,11 @@ Section 1’s descriptive list implies that SR Policy updates always include one
 Revise Section 1 to explicitly state that the inclusion of Route Target extended communities applies only to scenarios involving propagation (via RRs or across ASes), while direct headend sessions may use the NO_ADVERTISE community exclusively.
 
 
+**Severity:** Low
+  *Basis:* Although the normative sections are clear, the introductory text could mislead implementers by overstating the universal requirement for RTs.
+
+**Confidence:** Medium
+
 ---
 
 ## Report 3: 9830-1-3
@@ -124,5 +134,10 @@ The normative text in Section 3 mandates that Color-Only Type 3 is reserved and 
 
 Update the IANA table and associated registry text to reflect the normative status of Type 3 as 'Reserved; SHOULD NOT be used. Upon reception, treat as Type 0', ensuring consistency with Section 3.
 
+
+**Severity:** Low
+  *Basis:* While this discrepancy is unlikely to cause direct interoperability issues, it can lead to confusion about the correct handling of Type 3.
+
+**Confidence:** High
 
 ---

@@ -45,3 +45,7 @@ Section 10 mandates that the MUD URL MUST be encrypted and shared only with auth
 Clarify the requirement by explicitly stating which emission methods are subject to encryption and specifying acceptable encryption mechanisms (e.g., TEAP/EAP-TLS, MACsec) and the responsible network component, or limit the mandate to new TEE storage contexts.
 
 
+**Severity:** High
+  *Basis:* The ambiguity retroactively tightens privacy guarantees and may render existing RFC 8520-compliant deployments non-compliant, potentially leading to security vulnerabilities and interoperability issues. (E1, E2, E3)
+
+**Confidence:** High

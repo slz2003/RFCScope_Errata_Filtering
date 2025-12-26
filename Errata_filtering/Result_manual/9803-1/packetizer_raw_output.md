@@ -41,6 +41,11 @@ The XML Schema’s uniqueness constraint on the '@for' attribute forces all <ttl
 Change the uniqueness constraint so that for entries with for="custom" the constraint is applied to the pair (@for, @custom) rather than to @for alone, while keeping uniqueness on @for for built‐in types.
 
 
+**Severity:** High
+  *Basis:* It directly prevents encoding the intended support for multiple custom DNS record types, causing serious interoperability issues.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9803-1-2
@@ -82,6 +87,11 @@ The normative text requires that the 'custom' attribute conform to the RFC 6895 
 Either remove the 'A' special case from the XML Schema to enforce the RFC 6895 regex, or modify the normative text to state that the allowed pattern is that defined by the schema.
 
 
+**Severity:** Medium
+  *Basis:* This divergence might lead to varying validation outcomes between implementations that rely on textual interpretation versus schema validation.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9803-1-3
@@ -119,6 +129,11 @@ The specification relies on XML Schema defaulting to treat a missing policy attr
 Add explicit language stating that if the 'policy' attribute is absent, it MUST be interpreted as 'false'.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguity in default behavior can lead to interoperability issues if different implementations handle the absence of the attribute inconsistently.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9803-1-4
@@ -150,5 +165,10 @@ The specification does not clarify how to interpret a <ttl:ttl> element that inc
 
 Include a clarifying statement indicating that any 'custom' attribute should be ignored if the 'for' attribute is not 'custom'.
 
+
+**Severity:** Low
+  *Basis:* Although this ambiguity is less likely to cause major issues, it may still lead to minor interoperability differences.
+
+**Confidence:** High
 
 ---

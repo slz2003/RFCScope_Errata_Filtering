@@ -44,4 +44,9 @@ RFC 9773 specifies that RenewalInfo resources are accessed via unauthenticated G
 Explicitly update the normative text to state that servers implementing ARI MUST accept unauthenticated GET for RenewalInfo and clarify whether POST-as-GET is also permitted or deprecated for these resources.
 
 
+**Severity:** Medium
+  *Basis:* The ambiguity may lead to interoperability issues as different implementations could interpret the renewalInfo access methods inconsistently.
+
+**Confidence:** High
+
 ---

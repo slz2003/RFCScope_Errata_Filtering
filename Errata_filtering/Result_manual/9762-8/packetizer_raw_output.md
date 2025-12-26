@@ -44,6 +44,11 @@ Section 8 instructs hosts to associate delegated prefixes with the link‑local 
 Clarify the text to explicitly require that the delegated prefix be associated with the actual default router (as determined via RA advertisements) or clearly define under which conditions the DHCPv6 server/relay's link‑local address may be used for Rule 5.5.
 
 
+**Severity:** Medium
+  *Basis:* Incorrect or inconsistent association of prefixes with router identities in multihomed deployments can lead to suboptimal source address selection, even though overall connectivity remains unaffected.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9762-8-2
@@ -80,5 +85,10 @@ Section 8 mandates associating each delegated prefix with the link‑local addre
 
 Define the fallback behavior when a DHCPv6 REPLY is received from a non-link‑local address, either by mandating that REPLYs must use a link‑local source or by specifying how to derive an appropriate association when they do not.
 
+
+**Severity:** Medium
+  *Basis:* This underspecification can result in inconsistent implementations in environments where DHCPv6 REPLYs may originate from non-link‑local addresses, thus affecting the intended source address selection mechanism.
+
+**Confidence:** High
 
 ---

@@ -39,6 +39,11 @@ The specification provides conflicting guidance on handling RenewalInfo objects 
 Clarify the normative treatment by explicitly stating that invalid RenewalInfo objects MUST be handled as long-term errors with a fixed six-hour retry interval, overriding temporary error backoff.
 
 
+**Severity:** Medium
+  *Basis:* Divergent interpretations could lead to inconsistent polling behavior and affect client responsiveness and server load.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9773-4-2
@@ -75,6 +80,11 @@ The six-hour mandatory retry interval for long-term errors does not clearly acco
 
 Clarify that the six-hour retry rule applies only if the certificate is still valid and has not been replaced.
 
+
+**Severity:** Low
+  *Basis:* Although the conflict may only affect edge cases, the ambiguity could lead to divergent implementations when a certificate nears expiry.
+
+**Confidence:** High
 
 ---
 
@@ -113,6 +123,11 @@ The spec classifies all non-5xx HTTP errors, including 4xx rate-limited response
 Refine the error classification to exempt specific 4xx errors (e.g., rateLimited with a valid Retry-After) from the mandatory six-hour retry rule.
 
 
+**Severity:** Medium
+  *Basis:* This ambiguity may force clients into inappropriately long wait times, undermining the CA's control over client polling behavior and affecting service responsiveness.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9773-4-4
@@ -149,5 +164,10 @@ The specification does not require servers to include a valid Retry-After header
 
 Add a normative requirement that servers MUST include a valid Retry-After header on all successful 2xx RenewalInfo responses.
 
+
+**Severity:** Low
+  *Basis:* This issue primarily affects quality-of-service by reducing the CA's ability to manage client polling frequency, without causing protocol breakage.
+
+**Confidence:** Medium
 
 ---

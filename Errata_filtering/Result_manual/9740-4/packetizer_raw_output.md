@@ -39,4 +39,9 @@ The specification initially defines tcpOptionsFull with a universal rule for set
 Clarify the tcpOptionsFull semantics by explicitly excluding Kinds 253 and 254 from the general 'bit set if present' rule when ExID list IEs are used, and add collector guidance to rely solely on the ExID lists for these options.
 
 
+**Severity:** Low
+  *Basis:* This issue is primarily semantic and editorial; while it does not impede overall protocol operation, it may lead to misinterpretation by collectors that rely only on the tcpOptionsFull bitmap.
+
+**Confidence:** High
+
 ---

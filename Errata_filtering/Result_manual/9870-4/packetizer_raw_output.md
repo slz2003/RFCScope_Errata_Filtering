@@ -39,6 +39,11 @@ The specification does not clearly define whether udpSafeExIDList/udpUnsafeExIDL
 Clarify the IE definitions to state that each list MUST contain each distinct ExID observed in a Flow exactly once and, if desired, define a canonical ordering.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguity in aggregation and deduplication may lead to inconsistent Flow metrics across implementations.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9870-4-2
@@ -75,6 +80,11 @@ The document defines that a bit is set to 1 if the corresponding option is obser
 
 Revise the wording to explicitly state that the generic ‘observed’ rule does not apply to EXP/UEXP bits when the corresponding ExID list is present.
 
+
+**Severity:** Low
+  *Basis:* The conflict is primarily a wording issue and is mitigated by the explicit MUST NOT rule; it is unlikely to impact interoperability.
+
+**Confidence:** High
 
 ---
 
@@ -113,6 +123,11 @@ The documentation claims that reporting mandatory SAFE Options using a single mu
 Correct the explanatory text to accurately reflect the reduced-size encoding calculations based on the mandatory option range.
 
 
+**Severity:** Low
+  *Basis:* This error is confined to the explanatory text and does not affect the normative wire format, though it may confuse implementers about overhead expectations.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9870-4-4
@@ -150,6 +165,11 @@ The document specifies that reduced-size encoding per RFC 7011 applies to an uns
 Amend the specification to clarify that udpSafeOptions remains an unsigned256 field with a reduced field length achieved by dropping leading zero octets, and explicitly extend or reference the appropriate update that permits this behavior.
 
 
+**Severity:** Medium
+  *Basis:* This ambiguity can lead to divergent exporter implementations and confusion over the allowed encoded lengths on the wire.
+
+**Confidence:** High
+
 ---
 
 ## Report 5: 9870-4-5
@@ -186,5 +206,10 @@ The specification uses the terms 'EXP flag/bit' and 'UEXP flag' without explicit
 
 Revise the document to explicitly state that the 'EXP flag/bit' is the bit corresponding to UDP Option Kind 127 in udpSafeOptions and that the 'UEXP flag/bit' corresponds to UDP Option Kind 254 in udpUnsafeOptions.
 
+
+**Severity:** Low
+  *Basis:* This is a minor clarity issue that does not affect protocol functionality but may confuse implementers regarding the mapping of option kinds.
+
+**Confidence:** High
 
 ---

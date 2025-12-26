@@ -39,4 +39,9 @@ RFC 9869 provides conflicting normative requirements for validating ICMP PTB mes
 Clarify the normative language in Sections 5.2 and 8 by either explicitly scoping the requirement on the REQ token (e.g., making it optional or mandatory uniformly) to eliminate the ambiguity.
 
 
+**Severity:** Medium
+  *Basis:* The inconsistency can lead to divergent interpretations in implementations and varied security behavior, potentially weakening off-path PTB spoofing protection under some interpretations.
+
+**Confidence:** Medium
+
 ---

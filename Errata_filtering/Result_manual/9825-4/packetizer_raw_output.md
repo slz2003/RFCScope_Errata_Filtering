@@ -39,6 +39,11 @@ There is an ambiguity between the ECMP rule in Section 4.1 and the exclusion rul
 Clarify Section 4.1 to apply only to ECMP of identical prefixes and explicitly exempt summary/aggregated routes, or provide guidance on reconciling the conflicting rules.
 
 
+**Severity:** Medium
+  *Basis:* The conflict between a MUST requirement and a SHOULD NOT recommendation in overlapping conditions could lead to inconsistent tag propagation and policy discrepancies across implementations.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9825-4-2
@@ -75,6 +80,11 @@ The requirement that an OSPF router must advertise and interpret a tag for 'all 
 
 Amend the requirement to clarify that 'all types of prefixes' refers only to those prefixes carried in the TLVs defined in Section 3 and for AS‑External/NSSA prefixes using the existing External Route Tag field.
 
+
+**Severity:** Medium
+  *Basis:* The ambiguity in the scope of the normative requirement could lead to divergent implementations and interoperability issues.
+
+**Confidence:** High
 
 ---
 
@@ -113,6 +123,11 @@ The specification mandates that the order of tags be preserved when propagating 
 Define a normative rule that, by default, routers MUST retain the first N tags in the received order when their capacity is exceeded.
 
 
+**Severity:** Medium
+  *Basis:* Without a specific rule for tag subset selection, different implementations may propagate inconsistent tag sets, undermining policy consistency across areas.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9825-4-4
@@ -149,5 +164,10 @@ The specification allows local policy to control tag propagation, yet Section 4.
 
 Clarify whether local policy may override the ECMP requirement or if the ECMP rule applies regardless, and update the text to resolve the conflicting directives.
 
+
+**Severity:** Medium
+  *Basis:* This ambiguity may cause inconsistent behavior across implementations, leading to operational surprises in environments where local policies are used to control tag propagation.
+
+**Confidence:** High
 
 ---

@@ -54,6 +54,11 @@ when "derived-from-or-self(../../../../../../../.."
 Increase the '../' depth in the when expressions so that the path inside derived-from-or-self() correctly reaches the rt:control-plane-protocol ancestor.
 
 
+**Severity:** High
+  *Basis:* Since the mis-scoped expression always evaluates to false, the intended admin-tag sub-TLV nodes will never be instantiated, rendering parts of the YANG module non‐functional.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9825-7-2
@@ -115,6 +120,11 @@ augment "/rt:routing/.../ospfv3-e-lsa:e-nssa
 Replace the absolute XPath check with a relative, instance-scoped derived-from-or-self() expression that specifically validates the current protocol instance's rt:type.
 
 
+**Severity:** Medium
+  *Basis:* The overly broad when condition does not currently prevent the nodes from being instantiated, but it undermines the intended instance-specific semantics and may lead to future mis-attachments if the subtree is reused.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9825-7-3
@@ -148,3 +158,7 @@ Clarify in the design whether these tag configurations were intentionally omitte
 
 
 
+**Severity:** Low
+  *Basis:* This omission does not currently affect operational behavior but creates ambiguity regarding the full intended scope of administrative tag support.
+
+**Confidence:** Medium

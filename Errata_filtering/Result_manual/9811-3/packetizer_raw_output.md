@@ -34,6 +34,11 @@ The specification does not clearly define key timing parameters for announcement
 Clarify the announcement retry semantics by explicitly defining the start event for timing, setting any upper bounds on retries, and detailing the behavior when 202 responses continue to be received.
 
 
+**Severity:** Low
+  *Basis:* Ambiguities in timing may lead to divergent retry implementations but are not catastrophic for interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9811-3-2
@@ -71,3 +76,7 @@ The normative requirement to 'MUST forward CMP messages when an HTTP error statu
 Either scope the forwarding requirement to exclude announcement acknowledgments or add an explicit note clarifying that the empty-content rule in Section 3.5 overrides the general forwarding rule.
 
 
+**Severity:** Low
+  *Basis:* While the ambiguity may lead to divergent interpretations, it does not cause catastrophic interoperability issues.
+
+**Confidence:** High

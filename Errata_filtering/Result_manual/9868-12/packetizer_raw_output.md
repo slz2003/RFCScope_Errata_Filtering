@@ -44,6 +44,11 @@ The framework lacks a clear, normative rule specifying what to do when a support
 In Section 12 (or in related sections such as 14/19), add a clear, BCP‑14–style normative rule stating that any internal failure of a supported UNSAFE option (e.g., decryption, MAC, or decompression failure) MUST result in the UDP user data being dropped (or delivered as a zero-length datagram).
 
 
+**Severity:** Medium
+  *Basis:* Multiple experts highlighted that the underspecification could lead to divergent implementations, posing interoperability and security risks.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9868-12-2
@@ -85,5 +90,10 @@ There is a conflict between sections: while Section 12 mandates that user data b
 
 Harmonize the text in Sections 12, 11.4, and 19 so that all UNSAFE option failures—whether due to unsupported kinds, misplacement, or internal processing errors—consistently result in dropping the UDP user data (or delivering a zero-length datagram) in line with the intended fate-sharing semantics.
 
+
+**Severity:** High
+  *Basis:* The conflicting MUST statements can lead to divergent, non‑compliant implementation behavior with potential security and interoperability consequences.
+
+**Confidence:** High
 
 ---

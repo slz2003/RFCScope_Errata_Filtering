@@ -43,6 +43,11 @@ Nowhere in the body text is a directory "meta" field named "onionCAARequired" de
 Align the registry and the normative text: either update Section 7.3 to register 'inBandOnionCAARequired' or revise Section 6.4.1 and its examples to consistently use 'onionCAARequired'.
 
 
+**Severity:** High
+  *Basis:* The mismatch in the JSON field name is likely to result in divergent implementations, leading to interoperability issues between ACME clients and servers.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9799-7-2
@@ -78,5 +83,10 @@ Earlier in 6.4.1: “If an ACME server does not support fetching a service's CAA
 
 Clarify the flag's intended scope by either revising the introductory text to indicate that a true value denotes an in-band requirement or by adjusting the definition to consistently indicate support for Tor-based fetching.
 
+
+**Severity:** Medium
+  *Basis:* The conflicting descriptions may cause confusion among implementers, potentially resulting in divergent behaviors, though the risk is less immediately severe than the naming mismatch.
+
+**Confidence:** High
 
 ---

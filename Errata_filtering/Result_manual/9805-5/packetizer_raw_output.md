@@ -44,6 +44,11 @@ The document does not clearly define the boundary between 'new protocols' and 'f
 Clarify the criteria by explicitly defining what constitutes a 'new protocol' versus a 'future version' and explain how each category should handle Router Alert usage.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguous classification can lead to inconsistent interpretations and divergent implementations in future revisions, potentially affecting interoperability and security.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9805-5-2
@@ -86,6 +91,11 @@ RFC 9805 claims to mitigate all security considerations related to the IPv6 Rout
 Revise Section 6 to restrict the security mitigation claim to new protocols and clarify that existing RA-dependent protocols continue to retain their inherent security risks.
 
 
+**Severity:** Medium
+  *Basis:* The overly broad security statement may lead to misinterpretation by implementers and network operators, resulting in insufficient mitigation measures for known vulnerabilities.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9805-5-3
@@ -117,5 +127,10 @@ The document omits details of the pre-RFC 9805 IPv6 Router Alert Option Values r
 
 Add clarifying details or an explanatory note in RFC 9805 to specify how experimental Router Alert values are handled in the context of the IANA registry.
 
+
+**Severity:** Low
+  *Basis:* While not directly affecting current protocol operation, the lack of clarity could lead to confusion in future interpretations of the registry status and its implications.
+
+**Confidence:** Medium
 
 ---

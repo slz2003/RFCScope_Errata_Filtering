@@ -49,6 +49,11 @@ RFC 9716 allocates sub‐TLVs 46–48 from a shared registry for TLVs 1, 16, and
 Clarify the IANA and processing text in RFC 9716 to explicitly state that sub‐TLVs 46–48 are valid only when used in the Reply Path TLV (TLV 21) and must be treated as invalid in TLVs 1 and 16.
 
 
+**Severity:** Medium
+  *Basis:* The ambiguous scoping may lead to diverging interpretations among implementers, potentially causing interoperability or error-handling inconsistencies.
+
+**Confidence:** Low
+
 ---
 
 ## Report 2: 9716-7-2
@@ -79,5 +84,10 @@ There is an inconsistency in naming where the field is sometimes referred to as 
 
 Replace 'Reply Path TLV Return Code' with 'Reply Path Return Code' in Section 5.5 to ensure naming consistency.
 
+
+**Severity:** Low
+  *Basis:* This issue is editorial in nature and does not affect the protocol semantics or interoperability.
+
+**Confidence:** High
 
 ---

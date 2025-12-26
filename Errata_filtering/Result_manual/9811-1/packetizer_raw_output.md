@@ -39,4 +39,9 @@ RFC 9811 Section 1.2 uses a normative statement requiring implementations to 'MU
 Reword the Section 1.2 bullet to align with Section 3.1. For example, replace the current text with 'Implementations (in particular, CMP clients) MUST support handling CMP messages contained in the content of HTTP responses, including when an HTTP error status code (4xx or 5xx) occurs; see Section 3.1.'
 
 
+**Severity:** Medium
+  *Basis:* Ambiguity in normative language can mislead implementers and potentially result in divergent behaviors, affecting interoperability.
+
+**Confidence:** High
+
 ---

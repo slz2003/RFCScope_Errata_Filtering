@@ -39,4 +39,9 @@ The RFC cites [MALWARE-TLS] as evidence that malware uses privacy-enhancing tool
 Replace [MALWARE-TLS] with a reference that actually documents malware use of Tor, Psiphon, and Ultrasurf, or remove the parenthetical citation to avoid misleading readers.
 
 
+**Severity:** Low
+  *Basis:* The issue is bibliographic and does not impact protocol operation or security; it only affects evidentiary accuracy and scholarly correctness.
+
+**Confidence:** Medium
+
 ---

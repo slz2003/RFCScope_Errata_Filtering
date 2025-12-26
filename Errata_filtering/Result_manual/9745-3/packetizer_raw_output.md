@@ -40,4 +40,9 @@ The specification’s normative text (Section 3) allows the deprecation policy t
 Align the IANA registration description with Section 3 by removing or rephrasing the phrase '(intended for human consumption)' to acknowledge that machine-readable representations are also allowed.
 
 
+**Severity:** Medium
+  *Basis:* Interoperability and semantic understanding could be impaired if implementers follow only the IANA description, leading to fragmented implementations.
+
+**Confidence:** High
+
 ---

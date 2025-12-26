@@ -58,6 +58,11 @@ The XML Schema enforces uniqueness solely on the @for attribute, which prevents 
 Modify the XML Schema uniqueness constraints so that for built-in types uniqueness is enforced on @for, while for custom types uniqueness is enforced on the combination of @for and @custom (or by separating the constraints), thereby allowing multiple custom TTL entries.
 
 
+**Severity:** High
+  *Basis:* This issue directly conflicts with the forward‐compatibility design, as it prevents a server from representing TTLs for more than one custom DNS record type per object, potentially leading to schema-validation failures and interoperability problems.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9803-8-2
@@ -98,5 +103,10 @@ The XML Schema’s definition of customRRType uses the pattern 'A|[A-Z][A-Z0-9\-
 
 Either update the XML Schema to enforce a pattern that fully matches the RFC 6895 requirements (including the exclusion of patterns like '(TYPE|CLASS)[0-9]*') or modify the normative text to clarify that the schema pattern is the authoritative constraint.
 
+
+**Severity:** Low
+  *Basis:* The discrepancy affects lexical validation of the custom RRTYPE mnemonics; although it might lead to minor interoperability inconsistencies, the IANA registration requirement mitigates the risk.
+
+**Confidence:** High
 
 ---

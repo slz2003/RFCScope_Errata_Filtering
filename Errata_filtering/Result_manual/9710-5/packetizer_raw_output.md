@@ -39,4 +39,8 @@ The table caption: Table 1: Cite an IANA Registry Under Additional Information
 - (E3) Terminology Expert provides evidence of the abbreviated registry names used in the table, showing that they differ slightly from the full, official IANA registry titles.
 
 
+**Severity:** Low
+  *Basis:* The issue is purely editorial, affecting only stylistic presentation without impacting interoperability or data encoding.
+
+**Confidence:** High
 ---

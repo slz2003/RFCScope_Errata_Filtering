@@ -30,6 +30,10 @@ The RFC text uses a /60 example that implies only 15 available /64 prefixes with
 - (E1) The excerpt indicates that the /60 example implies only 15 usable /64 prefixes, although standard arithmetic would allow 16, leaving ambiguity regarding an unstated reserved prefix.
 
 
+**Severity:** Low
+  *Basis:* The issue represents a non‑normative background text ambiguity that does not cause interoperability failure but may confuse a careful reader.
+
+**Confidence:** Medium
 ---
 
 ## Report 2: 9762-1-2
@@ -73,4 +77,13 @@ The modified RFC 4861 note groups the P flag with the RA header flags (M and O) 
 Clarify Section 9.1 by explicitly stating: 'If neither the M nor O flags in the Router Advertisement header are set and no Prefix Information Option in the RA has the P flag set, then no DHCPv6 information is available.'
 
 
+
+
+
+
+
+**Severity:** Medium
+  *Basis:* The conflation of the P flag with RA header flags may lead to misinterpretation of its scope, potentially impacting proper implementation.
+
+**Confidence:** High
 ---

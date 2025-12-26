@@ -44,6 +44,11 @@ The specification ambiguously defines how GREASE values should be treated, allow
 Amend Section 6 to explicitly state that GREASE values, even if numerically recognized, MUST be treated as unrecognized for the purposes of enforcement, and provide a clear definition of 'recognized' for TLS parameters.
 
 
+**Severity:** High
+  *Basis:* Blocking GREASE values can lead to ossification and interoperability failures, directly contradicting the intended extensibility benefits of GREASE.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9761-6-2
@@ -80,6 +85,11 @@ The specification fails to provide normative guidance on how to handle live traf
 
 Add explicit normative language specifying that if a parameter is present in the MUD (D)TLS profile but not recognized by the firewall, the firewall MUST treat the parameter as unenforceable (i.e., ignore it for admission decisions) while still triggering an alert.
 
+
+**Severity:** High
+  *Basis:* This underspecification can lead to either inadvertent blocking of valid traffic or weak enforcement that undermines the security intent, thereby risking ossification.
+
+**Confidence:** High
 
 ---
 
@@ -118,6 +128,11 @@ The specification does not clearly reconcile the parameter-level non-blocking ru
 Clarify that for TLS parameters, the non-blocking rule explicitly overrides the default deny rule from RFC 8520 for unrecognized or extra parameters.
 
 
+**Severity:** Medium
+  *Basis:* If not resolved, the conflict may lead to inconsistent firewall behavior and inadvertently block valid sessions.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9761-6-4
@@ -154,6 +169,11 @@ The document claims functional equivalence between its handling of unrecognized 
 
 Revise the text to accurately describe the differences from RFC 8446 §9.3 and remove or qualify the equivalence claim.
 
+
+**Severity:** Medium
+  *Basis:* Incorrect equivalence may lead to design decisions that compromise proper TLS processing and security invariants.
+
+**Confidence:** Medium
 
 ---
 
@@ -192,6 +212,11 @@ The JSON example provided in Section 7 does not correctly reflect the YANG node 
 Correct the JSON example to use the exact YANG node names: 'client-profiles', 'tls-dtls-profile', 'supported-tls-version', and 'extension-type'.
 
 
+**Severity:** Medium
+  *Basis:* Naming inconsistencies may lead to JSON validation errors and interoperability issues with YANG-based tooling.
+
+**Confidence:** High
+
 ---
 
 ## Report 6: 9761-6-6
@@ -228,5 +253,10 @@ The document incorrectly attributes the spki-pin-set and certificate-authority p
 
 Revise the text in Section 5.3 to correctly attribute the spki-pin-set and certificate-authority parameters to the ietf-acl-tls module.
 
+
+**Severity:** Low
+  *Basis:* The error is primarily editorial and is unlikely to cause significant technical problems, though it may mislead implementers.
+
+**Confidence:** High
 
 ---

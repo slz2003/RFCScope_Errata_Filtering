@@ -69,4 +69,15 @@ Some socket option identifiers in Table 3 are rendered with embedded spaces (e.g
 Clarify and normalize the socket option names in Table 3 so that all entries follow the underscore-based naming. Replace 'UDP OPT MDS' with 'UDP_OPT_MDS', 'UDP OPT MRDS' with 'UDP_OPT_MRDS', 'UDP OPT REQ' with 'UDP_OPT_REQ', 'UDP OPT RES' with 'UDP_OPT_RES', 'UDP OPT AUTH' with 'UDP_OPT_AUTH', 'UDP OPT EXP' with 'UDP_OPT_EXP', and 'UDP OPT UEXP' with 'UDP_OPT_UEXP'.
 
 
+**Severity:** Medium
+  *Basis:* The issue is primarily editorial affecting API clarity; while the inconsistency may mislead implementers, it does not impact on‐the‐wire interoperability. Terminology Expert explicitly rated it as Medium, and Structural Expert’s high likelihood relates to the consistency goal rather than critical operational failure.
+
+**Confidence:** High
+
+**Severity:** Medium
+  *Basis:* The issue is primarily editorial affecting API clarity; while the inconsistency may mislead implementers, it does not impact on‐the‐wire interoperability. Terminology Expert explicitly rated it as Medium, and Structural Expert’s high likelihood relates to the consistency goal rather than critical operational failure.
+
+**Confidence:** High
+
+
 ---

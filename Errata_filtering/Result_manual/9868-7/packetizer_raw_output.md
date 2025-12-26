@@ -38,6 +38,11 @@ The document mandates that the UDP Length field must be at least 8 bytes, yet al
 Specify separate normative conditions for UDP Length when handling IPv6 Jumbograms to reconcile the general minimum length requirement with the special case of UDP Length==0.
 
 
+**Severity:** High
+  *Basis:* The inconsistency may lead to valid UDP Jumbogram packets being dropped, resulting in interoperability failures.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9868-7-2
@@ -74,6 +79,11 @@ The formula for the UDP Length upper bound in IPv6 does not account for the Jumb
 Clarify in Section 7 that the IPV6 payload length formula applies only when no Jumbo Payload option is present or provide a separate computation rule for Jumbo Payload scenarios.
 
 
+**Severity:** Medium
+  *Basis:* The ambiguity may result in miscalculation of UDP Length in implementations handling Jumbo Payloads, leading to potential validation errors.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9868-7-3
@@ -109,5 +119,10 @@ The method for calculating the 'IP transport payload' in IPv6 ignores non-extens
 
 Provide clear guidance on computing the IP transport payload in IPv6 when IPComp (or other shim headers) is present, or explicitly disallow UDP Options in such configurations.
 
+
+**Severity:** Medium
+  *Basis:* The lack of guidance may lead to inconsistent implementation regarding UDP Options when IPComp is involved, causing ambiguity in UDP processing.
+
+**Confidence:** Medium
 
 ---

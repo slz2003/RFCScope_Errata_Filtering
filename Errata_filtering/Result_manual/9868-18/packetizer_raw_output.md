@@ -39,6 +39,11 @@ Section 18’s statement that it has 'always been permissible' for the UDP Lengt
 Revise the wording in Section 18 to clarify that the permissibility of a UDP Length and IP payload length mismatch is context-specific and does not override specific requirements such as those in ROHC profiles.
 
 
+**Severity:** Low
+  *Basis:* The issue is principally an editorial ambiguity that could mislead implementers, though it does not constitute a normative error.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9868-18-2
@@ -75,5 +80,10 @@ The document comments that an embedded device passing the entire IP datagram to 
 
 Clarify the embedded device comment in Section 18 to distinguish normative UDP API requirements from optional raw datagram delivery features, ensuring consistency with RFC 1122.
 
+
+**Severity:** Low
+  *Basis:* The issue arises from ambiguous wording that may cause interpretative confusion but does not conflict with explicit normative specifications.
+
+**Confidence:** High
 
 ---

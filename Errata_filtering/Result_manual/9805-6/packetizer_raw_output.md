@@ -45,4 +45,9 @@ RFC 9805 Section 6 asserts that the document mitigates all security consideratio
 Revise Section 6 to clarify that the mitigation claim applies only to new protocols by deprecating RAO usage, and explicitly state that existing RAO-related security risks must continue to be addressed using the standard mitigation practices outlined in RFC 6398 and RFC 6192.
 
 
+**Severity:** Medium
+  *Basis:* The misleading claim could result in operators and implementers neglecting necessary protections, leaving systems vulnerable to denial-of-service attacks via continued RAO usage.
+
+**Confidence:** High
+
 ---

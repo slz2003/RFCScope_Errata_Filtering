@@ -43,6 +43,11 @@ The YANG augments for OSPFv3 prefix TLVs employ an absolute XPath in their 'when
 Change the absolute XPath 'when' conditions to relative, parent‑anchored tests using 'derived-from-or-self(...)' to ensure the condition applies only to the containing control‐plane-protocol instance.
 
 
+**Severity:** Medium
+  *Basis:* Mis‑scoping may cause administrative tag sub‑TLVs to appear under non‑OSPFv3 protocol entries, affecting management visibility and validation.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9825-2-2
@@ -81,6 +86,11 @@ RFC 9825 does not specify how to handle the occurrence of multiple Administrativ
 Amend RFC 9825 to explicitly state whether multiple Administrative Tag sub‑TLVs are forbidden or, if allowed, to define that either only the first instance is processed or that all tag values must be concatenated in order.
 
 
+**Severity:** High
+  *Basis:* Ambiguity in processing multiple sub‑TLVs can lead to inconsistent tag sets and conflicting routing policies across implementations.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9825-2-3
@@ -112,5 +122,10 @@ The Security Considerations section erroneously refers to the YANG module as 'ie
 
 Correct the Security Considerations reference to use 'ietf-ospf-admin-tags' so that it aligns with the module header and IANA registration.
 
+
+**Severity:** Low
+  *Basis:* This is a minor editorial inconsistency that may cause confusion but does not affect the functionality of implementations.
+
+**Confidence:** High
 
 ---

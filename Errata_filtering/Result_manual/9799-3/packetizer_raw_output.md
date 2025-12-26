@@ -39,6 +39,11 @@ Section 4 ambiguously uses the term 'client', causing confusion over whether it 
 Clarify in Section 4 that only the Hidden Service operator (acting via the ACME client) is responsible for republishing the Hidden Service Descriptor and waiting for its propagation.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguity in specifying actor roles can lead to incorrect implementations and operational issues.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9799-3-2
@@ -75,6 +80,11 @@ The specification requires that the CSR public key corresponds to the .onion ide
 
 Add explicit normative text referencing the Tor specification that describes how to derive the expected Ed25519 public key from the .onion identifier and perform a byte-for-byte comparison with the CSR's subjectPublicKeyInfo.
 
+
+**Severity:** Medium
+  *Basis:* The lack of an explicit algorithm may lead to inconsistent implementations and compromise interoperability.
+
+**Confidence:** High
 
 ---
 
@@ -113,6 +123,11 @@ The RFC mandates that the applicantSigningNonce attribute contain at least 64 bi
 Revise the specification to require a minimum length (e.g., at least 8 bytes) for the applicantSigningNonce, using byte-length as a proxy for entropy rather than attempting to measure statistical entropy.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguity in the entropy verification requirement can lead to inconsistent implementations and interoperability issues.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9799-3-4
@@ -150,6 +165,11 @@ The RFC presents a discrepancy by using inBandOnionCAARequired in the normative 
 Harmonize the field name throughout the document and IANA registration by choosing a single canonical name and updating all related textual references and examples.
 
 
+**Severity:** Medium
+  *Basis:* An inconsistent field name can lead to misinterpretation of server policies and cause interoperability failures between clients and servers.
+
+**Confidence:** High
+
 ---
 
 ## Report 5: 9799-3-5
@@ -182,6 +202,11 @@ The specification only prohibits the use of onion-csr-01 for issuing certificate
 Explicitly state that the onion-csr-01 challenge is exclusively applicable to .onion identifiers by providing clear validation rules for acceptable identifier formats.
 
 
+**Severity:** Low
+  *Basis:* Although primarily a documentation ambiguity, it may cause minor interoperability confusion without affecting core protocol functionality.
+
+**Confidence:** Medium
+
 ---
 
 ## Report 6: 9799-3-6
@@ -213,5 +238,10 @@ The specification introduces an authKey field for the onion-csr-01 challenge and
 
 Clarify the intended conditions, presence, and usage of the authKey field for onion-csr-01 challenges within Section 4 and related sections.
 
+
+**Severity:** Low
+  *Basis:* This ambiguity is unlikely to impact core functionality but may cause minor implementation inconsistencies.
+
+**Confidence:** High
 
 ---

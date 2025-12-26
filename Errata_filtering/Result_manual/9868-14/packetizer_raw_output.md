@@ -40,6 +40,11 @@ The specification defines two contradictory behaviors for options whose Length o
 Revise the text in Section 14 to explicitly align with Section 10 by either requiring that an option that overruns the surplus area causes the entire options area to be discarded or by amending Section 10 so that only the offending option is skipped. The normative language (MUST vs SHOULD) must be reconciled.
 
 
+**Severity:** High
+  *Basis:* This ambiguity affects the fundamental parsing behavior of the options, potentially leading to divergent implementations and interoperability issues as well as impacting security assumptions when processing malformed packets.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9868-14-2
@@ -78,6 +83,11 @@ The pseudocode in Section 14 unconditionally mandates delivery of UDP user data 
 Adjust the pseudocode in Section 14 so that it explicitly excludes UNSAFE options from its 'deliver data regardless of support' clause and mandates a separate check that drops the UDP user data in accordance with Section 12.
 
 
+**Severity:** High
+  *Basis:* Failing to properly account for UNSAFE options can lead to a violation of the intended safety properties and security guarantees of the protocol, resulting in potentially hazardous and divergent behavior in implementations.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9868-14-3
@@ -115,5 +125,10 @@ There is an ambiguity in the specification regarding packets that contain FRAG o
 
 Clarify the intended behavior for FRAG-carrying packets when OCS fails by explicitly specifying that such packets, due to their fragment status, must not be delivered—even as zero-length datagrams—in order to conform with the mandate against forwarding individual UDP fragments.
 
+
+**Severity:** Low
+  *Basis:* Although the ambiguity applies only in error conditions and may not affect well-formed packets, it could still lead to inconsistent handling of fragments across implementations.
+
+**Confidence:** High
 
 ---

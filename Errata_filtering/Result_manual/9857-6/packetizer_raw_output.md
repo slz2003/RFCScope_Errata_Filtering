@@ -44,6 +44,11 @@ The document uses the term 'originator' in two different senses – one for the 
 Clarify the terminology by introducing distinct terms such as 'SR Policy Originator' for the entity that creates the candidate path and 'BGP‑LS Producer' for the node sending the update.
 
 
+**Severity:** Low
+  *Basis:* The ambiguity could lead to minor implementation misinterpretations without necessarily breaking interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9857-6-2
@@ -85,6 +90,11 @@ Section 6 describes the inclusion of TLVs such as the SR Candidate Path State TL
 
 Revise Section 6 to explicitly state which TLVs are mandatory and which remain optional, using RFC 2119 language (e.g., MUST, SHOULD).
 
+
+**Severity:** Medium
+  *Basis:* Ambiguity in TLV mandatory status could lead to interoperability issues if different implementations adopt divergent interpretations.
+
+**Confidence:** High
 
 ---
 
@@ -132,5 +142,10 @@ Section 6 refers to a singular 'SR BSID TLV' even though Sections 5.1 and 5.2 de
 
 Update Section 6 to explicitly refer to the two distinct TLVs—'SR Binding SID TLV' (Type 1201) and 'SRv6 Binding SID TLV' (Type 1212)—and clarify their individual roles and allowed multiplicity.
 
+
+**Severity:** Medium
+  *Basis:* This inconsistency can lead to confusion among implementers and potential misinterpretation of BSID reporting rules, affecting protocol interoperability.
+
+**Confidence:** High
 
 ---

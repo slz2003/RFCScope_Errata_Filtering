@@ -45,6 +45,11 @@ No statement anywhere on whether type 3 or type 4 TLVs may, must, or must not ap
 Explicitly state the allowed cardinality for TLV types 3 and 4, such as specifying whether only one instance is permitted or if multiple instances are allowed with defined semantics.
 
 
+**Severity:** Low
+  *Basis:* The lack of explicit cardinality guidelines may lead to inconsistencies between implementations, but typical deployments are unlikely to experience interoperability failures.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9736-3-2
@@ -78,3 +83,7 @@ Remove the extraneous 'a' so that the phrase reads 'There is no requirement to t
 
 
 
+**Severity:** Low
+  *Basis:* The error is strictly editorial and has no impact on protocol operation or interoperability.
+
+**Confidence:** High

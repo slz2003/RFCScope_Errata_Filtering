@@ -38,6 +38,11 @@ The document restricts NXNAME to the NSEC type bitmap in Section 3.5, yet other 
 Amend Section 3.5 to clarify that the exception for NXNAME applies to the Type Bit Maps field of both NSEC and NSEC3 resource records in Compact Answer responses.
 
 
+**Severity:** Medium
+  *Basis:* This inconsistency may lead to divergent implementation interpretations, potentially affecting interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9824-3-2
@@ -69,6 +74,11 @@ RFC 9824 mandates inclusion of NXNAME in NSEC3 Type Bit Maps, but RFC 5155 requi
 
 Either update RFC 5155 to accommodate the NXNAME Meta-TYPE in NSEC3 bit maps or revise RFC 9824 to use an alternative encoding that does not conflict with RFC 5155.
 
+
+**Severity:** High
+  *Basis:* This is a direct normative conflict between RFCs that can lead to interoperability failures if implementations follow different interpretations.
+
+**Confidence:** High
 
 ---
 
@@ -102,6 +112,11 @@ The procedure of adding a leading null label to generate the Next Domain Name is
 Revise the description to remove or qualify the 'immediate lexicographic successor' claim and include explicit instructions to check that the generated [owner, Next) interval does not cover any existing names.
 
 
+**Severity:** Medium
+  *Basis:* While the degenerate interval does not break DNSSEC validation, misleading instructions may result in non-minimally covering NSEC records.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9824-3-4
@@ -133,6 +148,11 @@ The epsilon function for constructing the Next Domain Name in unsigned referrals
 
 Amend Section 3.4 to explicitly require that authoritative servers verify no other owner name falls between the constructed Next Domain Name and the owner name.
 
+
+**Severity:** Medium
+  *Basis:* Omitting this check could cause an NSEC record to falsely assert nonexistence for valid names in the zone.
+
+**Confidence:** Medium
 
 ---
 
@@ -166,6 +186,11 @@ The specification does not address how to handle cases where adding a leading nu
 Provide explicit fallback behavior or additional conditions for selecting an alternative epsilon function when the standard construction would result in an invalid DNS name.
 
 
+**Severity:** Medium
+  *Basis:* This gap may lead to divergent behavior in extreme cases, affecting robustness and interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 6: 9824-3-6
@@ -198,6 +223,11 @@ While the document mandates that receiving an explicit NXNAME query must result 
 Clarify the complete expected response behavior for resolvers handling NXNAME queries, including any use of Extended DNS Error codes, to ensure consistency.
 
 
+**Severity:** Low
+  *Basis:* Although this gap does not impact fundamental DNSSEC validation, inconsistent error signaling may hinder troubleshooting and client expectations.
+
+**Confidence:** High
+
 ---
 
 ## Report 7: 9824-3-7
@@ -229,5 +259,10 @@ There is a discrepancy between the textual description claiming the CO flag occu
 
 Revise the documentation and IANA table to use consistent EDNS flag numbering (with the CO flag in the second most significant bit, e.g. Bit 14 in standard RFC6891 terms) or update both to a consistent alternate numbering.
 
+
+**Severity:** Medium
+  *Basis:* This inconsistency may lead to incorrect interpretation and handling of the CO flag by different implementations.
+
+**Confidence:** High
 
 ---

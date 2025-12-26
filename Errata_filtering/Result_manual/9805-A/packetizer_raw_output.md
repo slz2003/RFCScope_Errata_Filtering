@@ -44,6 +44,11 @@ The text ambiguously ties the permission to continue using the IPv6 Router Alert
 Revise the text to clarify that the normative permission to use the IPv6 Router Alert option is based on actual RAO usage rather than solely on inclusion in Appendix A, and explain that the appendix is a snapshot rather than a binding enumeration.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguous phrasing could lead to misinterpretation by implementers regarding which protocols are allowed to continue using the IPv6 RAO, potentially resulting in interoperability issues.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9805-A-2
@@ -86,6 +91,11 @@ The global rule permitting continued use of the IPv6 Router Alert option conflic
 Amend the guidance to indicate that MPLS Ping must adhere to the deprecation established by RFC 9570, thereby exempting it from the generic 'MAY continue' rule applied to other protocols.
 
 
+**Severity:** Medium
+  *Basis:* The contradiction could mislead protocol designers regarding whether future MPLS Ping implementations can legitimately use the IPv6 RAO, risking inconsistent deployments.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9805-A-3
@@ -122,5 +132,10 @@ RFC 9805 classifies PGM as a protocol that uses the IPv6 Router Alert option, ev
 
 Either revise Appendix A to remove PGM from the list of IPv6 RAO users or update the PGM specification to include a defined IPv6 RAO usage.
 
+
+**Severity:** Medium
+  *Basis:* This inconsistency may mislead implementers into expecting IPv6 RAO behavior in PGM, potentially leading to interoperability problems when the IPv6 mechanism is not actually defined.
+
+**Confidence:** Medium
 
 ---

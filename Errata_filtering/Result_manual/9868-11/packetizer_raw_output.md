@@ -45,6 +45,11 @@ There is an ambiguity in how APC option lengths are handled, where the global ru
 Clarify that the APC‐specific unrecognized lengths rule applies only to lengths greater than or equal to the defined minimum (6 bytes), and that lengths below the minimum must trigger the global error handling.
 
 
+**Severity:** Medium
+  *Basis:* The inconsistency affects error recovery and interoperability, potentially leading to divergent implementations in handling malformed APC options.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9868-11-2
@@ -87,6 +92,11 @@ The fragmentation procedure does not explicitly define how to account for additi
 Provide an explicit formula or guidance for subtracting the size of all additional per‐fragment options when determining S.
 
 
+**Severity:** Low
+  *Basis:* Although the underspecification could lead to oversize fragments, competent implementers are likely to adjust S to account for extra options, minimizing critical failures.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9868-11-3
@@ -123,6 +133,11 @@ The specification misleadingly states that the transport payload is contained in
 
 Reword the UNSAFE options rule to indicate that the transport payload is carried in the fragment data area associated with the FRAG Option, rather than within its TLV body.
 
+
+**Severity:** Low
+  *Basis:* This is primarily a terminology issue that is unlikely to cause major interoperability problems.
+
+**Confidence:** High
 
 ---
 
@@ -161,6 +176,11 @@ The document provides conflicting instructions by requiring that options with le
 Harmonize the treatment of overlong option lengths by specifying a single consistent rule for all cases.
 
 
+**Severity:** Medium
+  *Basis:* This discrepancy can lead to divergent receiver behaviors when processing malformed packets.
+
+**Confidence:** High
+
 ---
 
 ## Report 5: 9868-11-5
@@ -197,6 +217,11 @@ The caption for Figure 11 incorrectly labels the terminal FRAG Option format as 
 
 Correct the caption of Figure 11 to read 'UDP Terminal FRAG Option Format' (optionally noting Len=12 and inclusion of the RDOS field).
 
+
+**Severity:** Low
+  *Basis:* This labeling error is unlikely to impact protocol interoperability but may cause temporary confusion during implementation.
+
+**Confidence:** High
 
 ---
 
@@ -235,6 +260,11 @@ For fragments experiencing an OCS failure, the generic processing rules imply de
 Clarify that OCS failures in a fragmented datagram must result in reassembly failure without delivering any zero-length fragments to the user.
 
 
+**Severity:** High
+  *Basis:* This inconsistency can cause observable differences in packet delivery, impacting application behavior and protocol robustness.
+
+**Confidence:** High
+
 ---
 
 ## Report 7: 9868-11-7
@@ -272,6 +302,11 @@ The specification contains contradictory requirements for packets that include a
 
 Specify a clear precedence or revised rule that resolves how to handle packets with FRAG options, non-empty user data, and UNSAFE options.
 
+
+**Severity:** High
+  *Basis:* This conflict is security-sensitive and may lead to widely divergent behaviors among implementations.
+
+**Confidence:** High
 
 ---
 
@@ -314,5 +349,10 @@ The specification does not define receiver behavior when the FRAG pointer fields
 
 Define explicit receiver behavior and validation checks for FRAG pointer fields, specifying actions for out-of-range values.
 
+
+**Severity:** High
+  *Basis:* Improper handling of pointer values is critical for correct reassembly and may open security vulnerabilities if not uniformly addressed.
+
+**Confidence:** High
 
 ---

@@ -44,4 +44,9 @@ RFC 9774 incorrectly cites RFC 4271 Section 9.1.2.2 instead of Section 9.2.2.2 f
 Replace the reference '[RFC4271], Section 9.1.2.2' in the RFC 9774 Introduction with '[RFC4271], Section 9.2.2.2'.
 
 
+**Severity:** Low
+  *Basis:* Although the mis-citation is misleading, it is unlikely to cause operational issues because the correct procedure is cited later and the overall prose is clear.
+
+**Confidence:** High
+
 ---

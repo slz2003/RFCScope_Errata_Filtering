@@ -39,6 +39,10 @@ The specification does not explicitly enumerate which IMAP data items count as h
 - (E2) The ResidualUncertainties section clarifies that a complete enumeration of header items is missing, requiring implementers to cross-reference other RFCs.
 
 
+**Severity:** Low
+  *Basis:* The ambiguity is unlikely to break protocol compliance since implementers can derive the intended set using RFC 3501/5322, but it may lead to inconsistent implementations.
+
+**Confidence:** High
 ---
 
 ## Report 2: 9755-9-2
@@ -80,4 +84,8 @@ The document leaves the method for ensuring 7‑bit header output for legacy cli
 - (E3) Causal Expert remarks that the resulting divergent user experience is an anticipated outcome of this design choice.
 
 
+**Severity:** Low
+  *Basis:* The open-ended downgrade/hiding strategy is a deliberate design trade-off that does not impair protocol interoperability, though it may result in variable client experiences.
+
+**Confidence:** High
 ---

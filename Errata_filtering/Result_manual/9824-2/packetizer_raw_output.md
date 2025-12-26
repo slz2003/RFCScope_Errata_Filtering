@@ -44,6 +44,11 @@ RFC 9824 mandates that the NXNAME Meta-TYPE bit be set in NSEC3 responses for no
 Update RFC 5155 to include an exception for NXNAME similar to the update made for RFC 4034, allowing the NXNAME bit to be set and interpreted in NSEC3 responses.
 
 
+**Severity:** High
+  *Basis:* This conflict creates mutually exclusive normative requirements that can force implementations to choose between two standards, potentially undermining the intended NXNAME signaling mechanism.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9824-2-2
@@ -80,6 +85,11 @@ The document ambiguously states that resolvers require no special handling for N
 
 Clarify the intended resolver behavior by explicitly distinguishing between standard processing for ordinary responses and mandatory handling for explicit NXNAME queries.
 
+
+**Severity:** Medium
+  *Basis:* Ambiguous resolver instructions may result in divergent implementations, though core DNS functionality is maintained.
+
+**Confidence:** High
 
 ---
 
@@ -118,6 +128,11 @@ The initial part of Section 2 describes a pre-NXNAME behavior for Compact Answer
 Revise Section 2 to clearly separate historical behavior (pre-NXNAME) from the updated normative requirements that include NXNAME.
 
 
+**Severity:** Low
+  *Basis:* This ambiguity is primarily editorial and may mislead a reader who skims the section, though full normative details are provided later.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9824-2-4
@@ -155,6 +170,11 @@ Section 3.5 restricts NXNAME to the NSEC type bitmap, while Section 4 explicitly
 Modify Section 3.5 to refer to the 'Type Bit Maps field of an NSEC or NSEC3 record' rather than exclusively the NSEC type bitmap.
 
 
+**Severity:** Medium
+  *Basis:* The terminology discrepancy may lead to inconsistent implementations regarding where NXNAME should appear.
+
+**Confidence:** High
+
 ---
 
 ## Report 5: 9824-2-5
@@ -191,5 +211,10 @@ RFC 9824 updates RFC 4034 to allow NXNAME to appear in responses for nonexistent
 
 Explicitly exempt NXNAME from the 'must be ignored' requirement in the updated RFC 4034 text to ensure validators can interpret the NXNAME signal.
 
+
+**Severity:** Medium
+  *Basis:* The incomplete update may lead to validators disregarding the NXNAME signal, thereby nullifying its distinguishing purpose in responses.
+
+**Confidence:** High
 
 ---

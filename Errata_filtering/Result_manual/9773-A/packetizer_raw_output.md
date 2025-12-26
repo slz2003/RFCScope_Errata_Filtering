@@ -43,6 +43,11 @@ There is a conflict between the requirement to stop polling after a certificate 
 Clarify that the Retry-After and six-hour re-fetch obligations apply only if the certificate remains valid and un-replaced, or adjust the polling rules to resolve the conflicting mandates.
 
 
+**Severity:** Medium
+  *Basis:* The conflicting MUST-level requirements can force clients into diverging behaviors, potentially causing inadvertent polling after expiry or replacement.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9773-A-2
@@ -84,6 +89,11 @@ The document does not clearly specify how the recommended renewal-time algorithm
 Explicitly specify whether the polling dictated by Retry-After should continue even after a renewal attempt is scheduled or whether it should be suppressed to avoid redundant requests.
 
 
+**Severity:** Low
+  *Basis:* The underspecification could lead to divergent client behaviors that impact server load and renewal responsiveness, though it does not cause a complete functional breakdown.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9773-A-3
@@ -119,6 +129,11 @@ The spec defines Retry-After as indicating an exact desired delay while simultan
 
 Clarify the acceptable range of deviation from the Retry-After value and specify explicit bounds for client-imposed adjustments.
 
+
+**Severity:** Low
+  *Basis:* Although the discrepancy is semantic, it may lead to inconsistent polling frequencies, impacting server load distribution without causing outright protocol failure.
+
+**Confidence:** High
 
 ---
 
@@ -161,6 +176,11 @@ The specification assumes that the identifier constructed from the base64url enc
 Explicitly require that the (AKI keyIdentifier, serial) tuple be unique within the ACME server’s issuance domain or define a deterministic mechanism to handle collisions.
 
 
+**Severity:** Medium
+  *Basis:* Failure to guarantee uniqueness in environments with key reuse across issuers may lead to ambiguous RenewalInfo lookups and misinterpretation of the 'replaces' field.
+
+**Confidence:** High
+
 ---
 
 ## Report 5: 9773-A-5
@@ -201,5 +221,10 @@ While ARI defines suggestedWindow timestamps using RFC3339, it does not clarify 
 
 Clarify whether ARI timestamps MUST conform to the same strict RFC3339 subset as ACME core or if the full RFC3339 specification is acceptable.
 
+
+**Severity:** Low
+  *Basis:* Inconsistent timestamp formats could lead clients to misinterpret valid RenewalInfo objects and trigger fallback error handling.
+
+**Confidence:** Medium
 
 ---

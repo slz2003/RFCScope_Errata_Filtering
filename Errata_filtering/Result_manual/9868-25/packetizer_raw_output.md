@@ -48,4 +48,9 @@ Section 25.3 uses imprecise language by stating that 'required options come firs
 In Section 25.3, replace the phrase 'required options' with 'must‑support options (other than NOP and EOL)' and use consistent terminology by replacing 'non-zero TLVs' with 'non‑padding TLVs'. This clarification will align the security guidance with the precise normative rules in Section 10.
 
 
+**Severity:** Medium
+  *Basis:* While the normative requirements remain clear in Section 10, the ambiguous language in Section 25.3 could mislead implementers and result in over-restrictive DoS mitigations.
+
+**Confidence:** High
+
 ---

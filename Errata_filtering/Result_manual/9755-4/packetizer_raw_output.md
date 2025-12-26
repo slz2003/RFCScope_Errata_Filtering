@@ -40,6 +40,11 @@ Section 4 is ambiguous because it states that a server accepts UTF‑8 headers b
 Revise the first sentence of Section 4 to explicitly condition acceptance on the client having issued ENABLE UTF8=ACCEPT, for example by specifying: 'If the server supports UTF8=ACCEPT and the client has issued ENABLE UTF8=ACCEPT, then the server MUST accept UTF‑8 headers in the APPEND command message argument.'
 
 
+**Severity:** Low
+  *Basis:* The ambiguity could lead to divergent implementations regarding when UTF‑8 headers must be accepted, but it does not create an unimplementable or self‑contradictory behavior.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9755-4-2
@@ -82,5 +87,10 @@ The rejection rule in Section 4 for APPEND commands is ambiguous because it does
 
 Provide a clear definition of 'message header fields' for APPEND literals, and specify how servers should handle cases where the literal does not strictly conform to RFC 5322 formatting.
 
+
+**Severity:** Low
+  *Basis:* The ambiguity could lead to interoperability issues as different servers might interpret the boundaries of header fields differently, but it is not a critical contradiction.
+
+**Confidence:** High
 
 ---

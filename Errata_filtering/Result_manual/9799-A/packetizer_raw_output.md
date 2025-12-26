@@ -38,6 +38,11 @@ Section 4 uses the term 'client' ambiguously, making it unclear whether the ACME
 Clarify the text by explicitly assigning the re-signing and republishing of the Hidden Service Descriptor to the Hidden Service (or its operator) and specifying that the ACME client is separately responsible for delaying its challenge response.
 
 
+**Severity:** Medium
+  *Basis:* While in practical deployments the same operator controls both roles, the ambiguity may lead to divergent implementations and confusion.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9799-A-2
@@ -74,6 +79,11 @@ The RFC inconsistently defines the JSON field name used to signal in-band CAA re
 
 Align the IANA registration in Section 7.3 with Section 6.4.1 by using the same field name (e.g., change the registered name to 'inBandOnionCAARequired') to ensure a unique, canonical JSON member name.
 
+
+**Severity:** High
+  *Basis:* Because JSON field names are used literally in implementations, this mismatch can cause clients and servers to misinterpret the in-band CAA requirement, leading to interoperability failures.
+
+**Confidence:** High
 
 ---
 
@@ -112,6 +122,11 @@ The RFC presents conflicting rules by mandating that issuance must not proceed w
 Clarify the normative text so that the in-band CAA bypass does not apply when a caa-critical flag is present, ensuring that descriptor-based CAA checks remain mandatory in such cases.
 
 
+**Severity:** High
+  *Basis:* This conflict may lead to divergent behaviors in issuance, undermining the intended security guarantees provided by the caa-critical flag.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9799-A-4
@@ -148,5 +163,10 @@ The RFC misreferences CA/B Forum Baseline Requirements by citing Appendix B.2.a.
 
 Correct the cross-reference in Appendix A by either updating the subsection reference to the proper part of the CA/B Forum Baseline Requirements that addresses allowed validation methods or by revising the descriptive text to accurately reflect the content of B.2.a.ii.
 
+
+**Severity:** Low
+  *Basis:* This misreference is informational and does not affect protocol operation, but it may mislead implementers and compliance auditors regarding the applicable CA/B Forum guidelines.
+
+**Confidence:** Medium
 
 ---

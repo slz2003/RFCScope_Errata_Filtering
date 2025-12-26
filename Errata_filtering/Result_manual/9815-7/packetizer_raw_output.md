@@ -39,6 +39,11 @@ RFC 9815 mandates treating certain semantic violations (e.g., missing IGP Metric
 Clarify that the 'malformed' designation for SAFI 80 applies only to consumer-side SPF computation (or use distinct terminology for semantic failures) so as not to conflict with RFC 9552's restrictions on semantic validation in BGP‑LS propagation.
 
 
+**Severity:** High
+  *Basis:* This ambiguity may lead to inconsistent error handling and divergent LSDB states across implementations, adversely affecting SPF computation and overall interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9815-7-2
@@ -76,6 +81,11 @@ Section 5.2.2.1 defines the Address Family Link Descriptor TLV (Type 1185) as a 
 Amend Section 7.1 to indicate that the Address Family Link Descriptor TLV is located in the Link NLRI’s descriptor set rather than in the BGP‑LS Attribute.
 
 
+**Severity:** Low
+  *Basis:* Although this misreference is unlikely to affect essential SPF functionality, it creates an underspecification that may lead to implementation confusion.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9815-7-3
@@ -112,5 +122,10 @@ Section 7.4 improperly directs implementers to RFC 4271 Section 3 for the defini
 
 Correct the normative reference in Section 7.4 to point to RFC 9815 Section 8.6 (or the relevant IANA registry) instead of RFC 4271 Section 3.
 
+
+**Severity:** Low
+  *Basis:* While the misreference is primarily a documentation issue, it can cause confusion during implementation if left uncorrected.
+
+**Confidence:** High
 
 ---

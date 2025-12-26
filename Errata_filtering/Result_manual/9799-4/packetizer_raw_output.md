@@ -39,6 +39,11 @@ The specification lacks clear, concrete timing bounds for the client’s waiting
 Define explicit quantitative timing requirements or clearly bound the conditions under which these timeouts apply specifically to .onion challenges.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguous timing can cause the server and client to operate with incompatible assumptions, leading to systematic validation failures.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9799-4-2
@@ -76,6 +81,11 @@ The specification uses different names for the same directory metadata field in 
 Align the field name across the document and the IANA registration—either update IANA to use inBandOnionCAARequired or clarify the intended mapping between the two names.
 
 
+**Severity:** High
+  *Basis:* A mismatch in the JSON field names can directly lead to incompatibility between implementations, causing miscommunication of CAA requirements.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9799-4-3
@@ -110,6 +120,11 @@ Section 4: “an additional field in the challenge object is defined … authKey
 Explicitly state in the specification which challenge types (e.g., http-01 and tls-alpn-01) must or may include the authKey field when validating .onion domains.
 
 
+**Severity:** Medium
+  *Basis:* Ambiguity in which challenge objects include authKey could lead to non-interoperable implementations.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9799-4-4
@@ -142,6 +157,11 @@ Section 6.2: “If the Hidden Service has client authentication enabled, then it
 
 Revise the test so that a non-matching CLIENT-ID indicates that the ACME server is not yet authorized, rather than that the service does not require client authentication at all.
 
+
+**Severity:** Medium
+  *Basis:* This mis-scoping may lead to premature assumptions about service configuration, resulting in failed descriptor decryption and validation.
+
+**Confidence:** High
 
 ---
 
@@ -176,5 +196,10 @@ According to the provided tor-spec summary, 'Authentication during the introduct
 
 Revise the reference to point to the correct tor-spec sections governing descriptor-level client authorization and CLIENT-ID computation, or clarify how the current reference maps to descriptor retrieval.
 
+
+**Severity:** High
+  *Basis:* An incorrect tor-spec reference may lead implementers to adopt the wrong authentication mechanism, resulting in failures to retrieve or decrypt Hidden Service Descriptors.
+
+**Confidence:** Medium
 
 ---

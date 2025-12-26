@@ -45,3 +45,7 @@ In Section 3 of RFC9762, update the PIO entry to reference RFC4861 (or both RFC4
 
 
 
+**Severity:** Low
+  *Basis:* The misreference is unlikely to cause severe issues but can lead to minor confusion regarding the proper normative source for the option format.
+
+**Confidence:** High

@@ -45,4 +45,9 @@ The ABNF for the integer authentication parameter 's' enforces that non-zero val
 Adjust the ABNF to allow a non-zero digit to be followed by zero to four additional digits (for example, change '1*4(DIGIT)' to '*4(DIGIT)' or '0*4(DIGIT)'), so that single-digit non-zero integers are accepted while still enforcing no leading zeros.
 
 
+**Severity:** Medium
+  *Basis:* Interoperability issues may arise if implementations interpret the syntax differently, especially if future TLS SignatureScheme assignments include single-digit values or if out-of-range 5-digit numbers are accepted without extra checking.
+
+**Confidence:** High
+
 ---

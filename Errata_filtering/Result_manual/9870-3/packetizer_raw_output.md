@@ -42,3 +42,7 @@ In Section 3 of RFC 9870, rephrase the statement to clarify that only UDP Option
 
 
 
+**Severity:** Low
+  *Basis:* The issue is editorial; it may cause misinterpretation of ExID scope but does not affect the correct encoding or interoperability of UDP Options.
+
+**Confidence:** High

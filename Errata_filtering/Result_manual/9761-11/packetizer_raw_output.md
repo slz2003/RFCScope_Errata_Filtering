@@ -49,6 +49,11 @@ The IANA text and JSON example refer to a non-existent node 'client‐profile' a
 Update Section 11.1 and the JSON example in Section 7 to reference the correct node names ('client-profiles' and 'tls-dtls-profile') and to encode Boolean values properly as JSON booleans.
 
 
+**Severity:** Medium
+  *Basis:* This inconsistency may lead to confusion for implementers and IANA personnel, as tools relying on the normative YANG model may reject or misinterpret the JSON data.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9761-11-2
@@ -85,6 +90,11 @@ Section 5.3 erroneously claims that the spki-pin-set and certificate-authority p
 
 Revise Section 5.3 to correctly attribute spki-pin-set and certificate-authority to the ietf-acl-tls module, or update the iana-tls-profile module if that was the intended design.
 
+
+**Severity:** Medium
+  *Basis:* Misattribution may lead to misunderstandings regarding module boundaries and IANA’s role in maintaining parameter definitions.
+
+**Confidence:** High
 
 ---
 
@@ -123,6 +133,11 @@ Section 11.2 directs IANA to add a new 'type' statement with substatements for n
 Modify Section 11.2 so that it instructs the use of a new 'typedef' statement (with an inner 'type' and description) in order to align with standard YANG syntax.
 
 
+**Severity:** Medium
+  *Basis:* This normative inconsistency may cause confusion during module updates, potentially leading to invalid YANG if interpreted literally.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9761-11-4
@@ -159,6 +174,11 @@ The ietf-acl-tls YANG module declares its prefix as 'acl-tls', but the IANA regi
 
 Update the IANA registry entry in Section 11.1 to reflect the correct YANG prefix 'acl-tls' for the ietf-acl-tls module.
 
+
+**Severity:** Medium
+  *Basis:* This mismatch can confuse tool developers and implementers who rely on the registry for accurate module metadata.
+
+**Confidence:** High
 
 ---
 
@@ -197,6 +217,11 @@ Although Sections 9.3 and 9.4 claim that the NACM extension 'default-deny-write'
 Either update the YANG modules to import ietf-netconf-acm and attach the nacm:default-deny-write extension to all appropriate nodes, or modify the descriptive text to remove the incorrect claim.
 
 
+**Severity:** Medium
+  *Basis:* Operators might assume enhanced security controls are enforced by the schema when they are not, leading to misconfigurations.
+
+**Confidence:** High
+
 ---
 
 ## Report 6: 9761-11-6
@@ -228,5 +253,10 @@ Section 11.5 does not explicitly clarify that the tls-version and dtls-version v
 
 Clarify in Section 11.5 that the tls-version and dtls-version values are specifically drawn from the ACL TLS/DTLS Version Codes registries.
 
+
+**Severity:** Low
+  *Basis:* While the ambiguity is minor and likely inferrable by experienced implementers, explicit clarification would help prevent potential misunderstandings.
+
+**Confidence:** Medium
 
 ---

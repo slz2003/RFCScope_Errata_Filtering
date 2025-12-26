@@ -49,6 +49,11 @@ The specification does not clearly define the action required when the maximum w
 Clarify in Section 10.4 with normative language what action must be taken upon expiry of the maximum wait timer when no EoR is received.
 
 
+**Severity:** Low
+  *Basis:* Although the ambiguity might lead to different convergence behaviors, its limited scope reduces the overall impact.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9815-10-2
@@ -85,6 +90,11 @@ Section 10.4 inconsistently refers to the NLRI type by using 'BGP-LS Link NLRI' 
 
 Replace all occurrences of 'BGP-LS Link NLRI' in Section 10.4 with 'BGP-LS-SPF Link NLRI' to maintain consistency.
 
+
+**Severity:** Medium
+  *Basis:* Being in a normative section, the inconsistency may lead to misinterpretation of which NLRI type is subject to EoR gating, affecting operational behavior.
+
+**Confidence:** High
 
 ---
 
@@ -123,6 +133,11 @@ Section 10.5 refers to the SPF back-off parameter as 'TIME_TO_LEARN' rather than
 Replace 'TIME_TO_LEARN' with 'TIME_TO_LEARN_INTERVAL' in Section 10.5 for consistency with RFC 8405.
 
 
+**Severity:** Low
+  *Basis:* The issue is minor and editorial in nature, with limited risk of operational impact.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9815-10-4
@@ -153,6 +168,11 @@ The phrase 'BGP SPF instance level' is used in Section 10.4 without a clear defi
 
 Provide a clear definition of 'BGP SPF instance level' in the specification, specifying whether it applies at the BGP process, AFI/SAFI, BGP‑LS Instance‑ID, or VRF level.
 
+
+**Severity:** Low
+  *Basis:* While primarily affecting configuration clarity, the ambiguity may lead to minor interoperability or management issues.
+
+**Confidence:** Medium
 
 ---
 
@@ -185,5 +205,10 @@ Section 10.2 conflates prefix and link metrics by discussing loopback/non–loop
 
 Revise Section 10.2 to clearly differentiate and separately address prefix metric recommendations and link IGP metric configuration.
 
+
+**Severity:** Low
+  *Basis:* This is an editorial clarity issue which may cause confusion but has limited impact on protocol behavior.
+
+**Confidence:** Medium
 
 ---

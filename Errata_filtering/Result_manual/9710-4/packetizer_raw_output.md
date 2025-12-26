@@ -44,6 +44,11 @@ The collectorTransportPort Information Element (IE) incorrectly references '16�
 Replace '16-bit source port identifiers' with '16-bit destination port identifiers' in the collectorTransportPort description.
 
 
+**Severity:** Low
+  *Basis:* This is an editorial inconsistency that does not affect the underlying operational or encoding behavior, but could cause confusion during implementation.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9710-4-2
@@ -80,5 +85,10 @@ The forwardingStatus IE update specifies that only the least-significant byte is
 
 Clarify the forwardingStatus specification by explicitly stating that exporters SHOULD set bits 8–31 to zero and that collectors SHALL ignore these bits.
 
+
+**Severity:** Low
+  *Basis:* The ambiguity is limited to wording and does not impact interoperability in compliance with IPFIX reduced‑size encoding rules, though it may lead to minor implementation differences.
+
+**Confidence:** High
 
 ---

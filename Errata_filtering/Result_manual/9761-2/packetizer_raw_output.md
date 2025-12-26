@@ -44,6 +44,11 @@ The document’s definition of (D)TLS in Section 2 exclusively ties DTLS to RFC6
 Revise the (D)TLS definition in Section 2 to include both RFC6347 and RFC9147 (or otherwise clarify that both DTLS 1.2 and 1.3 are in scope).
 
 
+**Severity:** Medium
+  *Basis:* Expert analyses indicate that using two different normative references for DTLS creates ambiguity that may mislead implementers.
+
+**Confidence:** Medium
+
 ---
 
 ## Report 2: 9761-2-2
@@ -82,3 +87,7 @@ Modify the Section 2 Middlebox definition to reference (D)TLS traffic instead of
 
 
 
+**Severity:** Low
+  *Basis:* The issue is minor and terminological, unlikely to lead to interoperability problems but may cause temporary confusion.
+
+**Confidence:** Inferred

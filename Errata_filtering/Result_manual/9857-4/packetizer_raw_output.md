@@ -45,6 +45,11 @@ The specification does not explicitly state that exactly one instance of TLV 554
 Clarify that exactly one SR Policy Candidate Path Descriptor TLV MUST be present per NLRI and specify receiver behavior if duplicates appear.
 
 
+**Severity:** Medium
+  *Basis:* The underspecification may result in inconsistent handling by different implementations, affecting candidate path correlation and interoperability.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9857-4-2
@@ -91,5 +96,10 @@ The specification leaves the conversion of the compact 4- or 16-octet Originator
 
 Add a clarifying statement that explicitly indicates a 4-octet Originator Address must be zero-extended to form the 128-bit Node Address as defined in RFC 9256 §2.4 for IPv4, while a 16-octet field is used for IPv6.
 
+
+**Severity:** Medium
+  *Basis:* The implicit mapping can lead to inconsistent interpretation when comparing Originator values across different protocols, potentially causing interoperability issues.
+
+**Confidence:** Medium
 
 ---

@@ -54,4 +54,9 @@ Section 2’s wording on altering the Decision Process and suppressing optional 
 Modify Section 2 to clearly state that both the altered Decision Process and the optional attribute suppression apply only to BGP-LS-SPF NLRI, ensuring that other BGP SAFIs retain standard RFC4271 behavior.
 
 
+**Severity:** Low
+  *Basis:* The ambiguity is mostly editorial; although a misinterpretation could mislead implementers, the full document provides sufficient constraints to prevent protocol breakage if read in entirety.
+
+**Confidence:** High
+
 ---

@@ -44,6 +44,11 @@ The specification defines Deprecation as a singleton Structured Field with a sin
 Clarify the processing rules for when multiple Deprecation header values are present and specify how conflicting deprecation dates across responses should be handled.
 
 
+**Severity:** Low
+  *Basis:* Temporal analysis indicates that although ambiguous, the field is advisory and does not affect protocol correctness.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9745-2-2
@@ -91,6 +96,11 @@ The specification is ambiguous about which resource is deprecated, leaving it un
 Revise the Deprecation header description to clearly state that it applies to the target resource that returns the response, irrespective of any Content-Location header.
 
 
+**Severity:** Medium
+  *Basis:* Multiple expert analyses indicate that the ambiguity can lead to inconsistent migration decisions in edge cases.
+
+**Confidence:** Medium
+
 ---
 
 ## Report 3: 9745-2-3
@@ -127,5 +137,10 @@ The example provided for the Sunset header in RFC 9745 uses 'UTC' as the timezon
 
 Update the Sunset header example in Section 4 of RFC 9745 to replace 'UTC' with 'GMT' so that it conforms to the HTTP-date syntax.
 
+
+**Severity:** Medium
+  *Basis:* The inconsistency between the spec example and the normative HTTP-date format may mislead implementers and cause parsing errors.
+
+**Confidence:** High
 
 ---

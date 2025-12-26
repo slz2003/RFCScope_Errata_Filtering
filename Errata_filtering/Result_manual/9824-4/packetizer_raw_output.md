@@ -45,6 +45,11 @@ RFC 9824 mandates that for responses to nonexistent names the NXNAME bit must be
 Update RFC 5155 §3.2.1 to explicitly permit the NXNAME Meta‑TYPE in NSEC3 Type Bit Maps for Compact Denial of Existence, similar to the exception provided for NSEC in RFC 9824 §7.1.
 
 
+**Severity:** High
+  *Basis:* The conflict is normative and could lead to diverging behavior in authoritative implementations and validators, undermining the intended signaling of nonexistent names.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9824-4-2
@@ -88,6 +93,11 @@ RFC 9824 specifies that the Next Hashed Owner Name is computed by simply adding 
 Clarify in RFC 9824 that for Compact Denial of Existence the Next Hashed Owner Name may be computed as hash+1 (using modular arithmetic) and that it is exempt from forming a complete chain as defined in RFC 5155.
 
 
+**Severity:** Medium
+  *Basis:* Although validators typically do not use the Next field in Compact Denial proofs, the inconsistency can lead to confusion and issues in tooling or implementations that rely on full NSEC3 chain properties.
+
+**Confidence:** High
+
 ---
 
 ## Report 3: 9824-4-3
@@ -125,6 +135,11 @@ RFC 9824 instructs that the Next Hashed Owner Name is computed by adding one to 
 Define the hash+1 operation as modular arithmetic (mod 2^N, where N is the hash length in bits) to ensure a well-defined wrap-around behavior.
 
 
+**Severity:** Low
+  *Basis:* While the occurrence of a maximal hash is extremely unlikely, the lack of definition could lead to inconsistent handling across implementations.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9824-4-4
@@ -159,4 +174,8 @@ RFC 9824 alternately uses the terms 'pseudo-type' and 'Meta-TYPE' when referring
 - (E2) NXNAME is later referred to as a pseudo-type in Section 7.1.
 
 
+**Severity:** Low
+  *Basis:* This issue is primarily editorial and does not impact the operational behavior or interoperability of implementations.
+
+**Confidence:** High
 ---

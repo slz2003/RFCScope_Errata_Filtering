@@ -45,3 +45,7 @@ Change the example in RFC 9745 Section 4 to use 'GMT' instead of 'UTC', e.g., 'S
 
 
 
+**Severity:** High
+  *Basis:* Using an invalid timezone token may lead to non-conformant HTTP-date values, resulting in interoperability issues with strict HTTP parser implementations.
+
+**Confidence:** High

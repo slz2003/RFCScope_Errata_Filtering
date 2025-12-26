@@ -39,6 +39,11 @@ RFC 9824 permits the NXNAME bit to be set in responses but does not clearly exem
 Clarify RFC 9824 §7.1 to explicitly state that the 'MUST be ignored upon being read' rule does not apply to the NXNAME bit when used for Compact Denial of Existence.
 
 
+**Severity:** Medium
+  *Basis:* This normatively ambiguous exemption undermines the intended use of NXNAME as a signaling mechanism, potentially leading to inconsistent resolver behavior, even though it does not affect DNSSEC cryptographic validation.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9824-7-2
@@ -75,6 +80,11 @@ RFC 5155’s rules still require that Meta‑TYPE bits be clear and ignored, con
 
 Modify RFC 5155 to explicitly incorporate an NXNAME exception, or state that the NXNAME exception in RFC 9824 applies to both NSEC and NSEC3 Type Bit Maps.
 
+
+**Severity:** Medium
+  *Basis:* The conflict forces implementers to choose between two incompatible normative requirements, which may lead to interoperability issues in the handling of Compact Denial responses.
+
+**Confidence:** High
 
 ---
 
@@ -113,6 +123,11 @@ The general rule in RFC 4034 that a set bit indicates an RRset exists does not e
 Revise RFC 4034 §4.1.2 to explicitly exclude NXNAME from implying the presence of an RRset, clarifying its role as a non-data-bearing signal in Compact Denial responses.
 
 
+**Severity:** Medium
+  *Basis:* This underspecification may lead to inconsistent interpretations of NXNAME, causing downstream tools and validators to misrepresent its purpose.
+
+**Confidence:** High
+
 ---
 
 ## Report 4: 9824-7-4
@@ -149,5 +164,10 @@ NXNAME is inconsistently referred to as both a Meta‑TYPE and a pseudo‑type w
 
 Harmonize the terminology by either consistently referring to NXNAME as a Meta‑TYPE or by clarifying that it is a Meta‑TYPE used in a pseudo‑type context as per RFC 4034.
 
+
+**Severity:** Low
+  *Basis:* While the naming discrepancy may cause confusion among implementers, it does not affect the underlying protocol behavior.
+
+**Confidence:** High
 
 ---

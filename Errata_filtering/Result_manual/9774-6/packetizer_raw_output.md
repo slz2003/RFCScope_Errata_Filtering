@@ -44,4 +44,9 @@ The document presents ambiguity regarding whether the ATOMIC_AGGREGATE attribute
 Clarify the text in Section 6.1 to explicitly state that the ATOMIC_AGGREGATE attribute is attached only when the AS_PATH is truncated as specified in Section 5.2, or alternatively adjust Section 5.2 to reflect an unconditional attachment if that is the intended behavior.
 
 
+**Severity:** Low
+  *Basis:* The ambiguity affects clarity and may lead to divergent interpretations but does not impact interoperability or security.
+
+**Confidence:** High
+
 ---

@@ -54,4 +54,9 @@ RFC 9736 Section 2 uses generic terminology ("TLV's Length field") to define str
 Revise Section 2 to explicitly state that the 'TLV's Length field' is the 'Information Length' field as used in BMP TLV diagrams and clarify which string TLVs are covered by the definition.
 
 
+**Severity:** Low
+  *Basis:* The ambiguity is primarily editorial and is unlikely to impact interoperability, though it may lead to misinterpretation of the specification's scope.
+
+**Confidence:** High
+
 ---

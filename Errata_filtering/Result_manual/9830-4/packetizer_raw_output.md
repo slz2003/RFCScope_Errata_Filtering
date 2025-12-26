@@ -44,6 +44,11 @@ The specification does not clearly define how an IPv4-address‑specific Route T
 Specify that the 4‑octet Global Administrator field of the IPv4‑address‑specific Route Target MUST equal the receiver’s BGP Identifier, and explicitly state that the 2‑octet Local Administrator field shall be ignored in the matching process.
 
 
+**Severity:** Medium
+  *Basis:* This ambiguity can lead to divergent implementations where some routers deem an SR Policy usable while others do not, undermining interoperable headend selection.
+
+**Confidence:** High
+
 ---
 
 ## Report 2: 9830-4-2
@@ -88,3 +93,7 @@ Clarify the specification by explicitly separating the treatment of sub‑TLVs: 
 
 
 
+**Severity:** Medium
+  *Basis:* The conflicting instructions may lead to inconsistent behavior across vendors, with some implementations ignoring such sub‑TLVs and others rejecting the update for SR Policy instantiation.
+
+**Confidence:** High
