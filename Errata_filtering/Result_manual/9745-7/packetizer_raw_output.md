@@ -8,7 +8,7 @@ Total reports: 2
 
 **Label:** Conflicting guidance on resource behavior after deprecation date in Sections 5 vs. 7
 
-**Bug Type:** Inconsistency/Ambiguity
+**Bug Type:** Inconsistency
 
 **Explanation:**
 
@@ -49,9 +49,9 @@ Clarify the temporal semantics by explicitly distinguishing between the current 
 
 ## Report 2: 9745-7-2
 
-**Label:** Ambiguity at the deprecation date equality boundary
+**Label:** Underspecification at the deprecation date equality boundary
 
-**Bug Type:** Ambiguity
+**Bug Type:** Underspecification
 
 **Explanation:**
 
