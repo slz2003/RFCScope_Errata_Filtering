@@ -1,6 +1,6 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
 
@@ -52,43 +52,6 @@ Section 2’s wording on altering the Decision Process and suppressing optional 
 **Fix Direction:**
 
 Modify Section 2 to clearly state that both the altered Decision Process and the optional attribute suppression apply only to BGP-LS-SPF NLRI, ensuring that other BGP SAFIs retain standard RFC4271 behavior.
-
-
----
-
-## Report 2: 9815-2-2
-
-**Label:** Interaction between suppression of optional attributes and SPF algorithm handling
-
-**Bug Type:** None
-
-**Explanation:**
-
-There is a potential for misinterpretation because Section 2 advises that optional path attributes SHOULD NOT be advertised, yet Section 6.1 explains that certain attributes are preserved for loop detection even while being ignored by the SPF computation.
-
-**Justification:**
-
-- Section 2 instructs that, absent explicit specification, optional attributes should be suppressed in the context of BGP SPF.
-- Section 6.1 clarifies that attributes like ORIGIN, MULTI_EXIT_DISC, and LOCAL_PREF are ignored by the SPF algorithm but still propagated for base BGP functions, potentially causing confusion about their handling.
-
-**Evidence Snippets:**
-
-- **E6:**
-
-  Unless explicitly specified in the context of BGP SPF, all optional path attributes SHOULD NOT be advertised. If received, all path attributes MUST be accepted, validated, and propagated consistently with the BGP protocol [RFC4271], even if not needed by BGP SPF. (Section 2)
-
-- **E7:**
-
-  As a result, any other BGP attributes that would influence the BGP Decision Process defined in [RFC4271] including ORIGIN, MULTI_EXIT_DISC, and LOCAL_PREF attributes are ignored by the SPF algorithm. … The AS_PATH and AS4_PATH attributes … are preserved and used for loop detection [RFC4271]. They are ignored during the SPF computation for BGP-LS-SPF NLRIs. (Section 6.1)
-
-**Evidence Summary:**
-
-- (E6) Section 2 advises suppression of optional attributes in the BGP SPF context.
-- (E7) Section 6.1 describes that while some attributes are ignored in SPF computation, they must still be accepted and propagated.
-
-**Fix Direction:**
-
-Clarify in the text that the suppression of advertising optional attributes applies specifically to the creation of BGP-LS-SPF updates, while their acceptance and propagation—as well as their treatment in SPF computations—follow separate, defined rules.
 
 
 ---
