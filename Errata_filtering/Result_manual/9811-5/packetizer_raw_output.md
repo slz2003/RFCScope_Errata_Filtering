@@ -8,7 +8,7 @@ Total reports: 3
 
 **Label:** Mischaracterization of RFC 9530 Digest Fields as Effective Security Protocol
 
-**Bug Type:** Security Mis-specification / Terminology Issue
+**Bug Type:** Inconsistency
 
 **Explanation:**
 
