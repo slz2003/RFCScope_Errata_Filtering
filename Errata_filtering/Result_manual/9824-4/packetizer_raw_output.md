@@ -131,7 +131,7 @@ Define the hash+1 operation as modular arithmetic (mod 2^N, where N is the hash 
 
 **Label:** Inconsistent use of 'pseudo-type' and 'Meta-TYPE' terminology for NXNAME
 
-**Bug Type:** Editorial
+**Bug Type:** Inconsistency
 
 **Explanation:**
 
