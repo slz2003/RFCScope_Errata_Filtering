@@ -1,32 +1,6 @@
 # Errata Reports
 
-Total reports: 4
-
----
-
-## Report 1: 9811-6-1
-
-**Label:** No Structural or Syntactic Issues in IANA Instructions (Section 6 IANA Considerations)
-
-**Bug Type:** None
-
-**Explanation:**
-
-The analysis explains that the IANA instructions in Section 6 of RFC 9811 properly update registry references without altering any structural or syntactic elements.
-
-**Justification:**
-
-- The expert analysis notes that the IANA Considerations merely change the Reference fields from older CMP documents to RFC 9811 without affecting ABNF, ASN.1, field layout, URI syntax, or encoding rules (E1).
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The IANA Considerations bullets in Section 6 request that existing registry entries simply change their “Reference” field to point from older CMP documents (RFC 2510, RFC 4210, RFC 9480) to RFC 9811. RFC 9811 normatively uses the application/pkixcmp media type for HTTP transfer and explicitly defines the use of “/.well-known/cmp” and the “p” path segment, so it is a structurally consistent reference target for those registry entries. For the CoAP Content-Formats registry, the entry in question is keyed by the media type “application/pkixcmp”; having its “Reference” field point to RFC 9811 (which in turn normatively points to the CMP core specification RFC 9810 for the PKIMessage structure) still gives a clear and unambiguous chain to the actual payload syntax. The CoAP transfer details themselves remain defined in RFC 9482, but the choice of which document appears in the registry’s “Reference” column is a matter of editorial/policy preference, not a structural or syntactic constraint on the wire format. None of these reference changes alter any ABNF, ASN.1, field layout, URI syntax, or encoding rules, and there are no contradictions between what the registries describe (media type name, well-known path, and path segments) and how RFC 9811 uses those same identifiers. Therefore, there is no structural or syntactic inconsistency or underspecification that would prevent interoperable implementation.
-
-**Evidence Summary:**
-
-- (E1) Section 6 instructs IANA to update registry references without altering structural specifications, and no contradictions or underspecifications were identified.
+Total reports: 3
 
 
 ---
