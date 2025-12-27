@@ -1,6 +1,6 @@
 # Errata Reports
 
-Total reports: 4
+Total reports: 3
 
 ---
 
@@ -95,51 +95,6 @@ Amend Section 5 to narrow the ech_required requirement so that it applies only t
 - Deontic Expert: Issue-1
 - Terminology Expert: Issue-1
 
----
-
-## Report 3: draft-ietf-tls-esni-25-10-3
-
-**Label:** Incorrect Rationale for ClientHelloInner.random’s Role in Handshake Key Derivation
-
-**Bug Type:** Descriptive Error
-
-**Explanation:**
-
-The draft incorrectly claims that the secrecy of ClientHelloInner.random prevents an attacker from producing the correct handshake keys, even though TLS 1.3 derives keys from the (EC)DHE secret and transcript hash rather than from any secret random value.
-
-**Justification:**
-
-- Section 10.12.1 asserts that “ClientHelloInner.random prevents this attack” by keeping attackers from computing the necessary handshake keys. (E1)
-- In reality, TLS 1.3 key derivation relies on the (EC)DHE secret and transcript hash, and ClientHello.random is transmitted in clear text. (E2)
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Section 10.12.1: “ClientHelloInner.random prevents this attack. In particular, since the attacker does not have access to this value, it cannot produce the right transcript and handshake keys needed for encrypting the Certificate message. Thus, the client will fail to decrypt the Certificate and abort the connection.”
-
-- **E2:**
-
-  TLS 1.3 specifies that handshake traffic keys are derived from the (EC)DHE secret (and/or PSK) and a transcript hash of the handshake messages, with ClientHello.random being sent in the clear.
-
-**Evidence Summary:**
-
-- (E1) The draft claims that the secrecy of ClientHelloInner.random is critical for preventing an attack.
-- (E2) However, TLS 1.3 key derivation does not use ClientHelloInner.random as a secret input, relying instead on (EC)DHE and the handshake transcript.
-
-**Fix Direction:**
-
-Revise the explanatory text in Section 10.12.1 to accurately describe the role of ClientHelloInner.random and the actual derivation of handshake keys in TLS 1.3.
-
-**Severity:** Low
-  *Basis:* This error is confined to the non-normative rationale and does not affect the actual cryptographic processing.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- Causal Expert: Issue 2
-- CrossRFC Expert: Issue-1
 
 ---
 
