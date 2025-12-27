@@ -123,7 +123,7 @@ Replace all instances of 'retry_config' in Section 6.1.6 with 'retry_configs' to
 
 **Label:** Ambiguous Application of ech_required Alert for GREASE ECH
 
-**Bug Type:** Ambiguity
+**Bug Type:** Underspecification
 
 **Explanation:**
 
