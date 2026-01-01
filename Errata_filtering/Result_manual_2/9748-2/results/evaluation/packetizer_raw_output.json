@@ -1,0 +1,37 @@
+{
+  "reports": [
+    {
+      "label": "Candidate Issue: Extension Field Types Registry Known Issues Not Detailed",
+      "bug_type": "Candidate / Editorial",
+      "explanation": "Section 2 of RFC 9748 notes known issues with the Extension Field Types registry without providing further details, and a candidate issue is listed with missing specifics (empty label and dimensions).",
+      "justification": [
+        "The excerpt summary describes that Section 2 'notes known issues with the Extension Field Types registry', indicating a reference to unresolved or unspecified problems.",
+        "Additionally, the candidate issues section lists one issue with 'Type: None' and an empty label and dimensions, highlighting an underspecified candidate issue."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Excerpt Summary: Section 2 of RFC 9748 provides a brief description of the existing NTP and NTS-related IANA registries (Reference IDs, Kiss‑o'-Death codes, and Extension Field Types), their syntax and registration policies, and notes known issues with the Extension Field Types registry; it also summarizes the NTS registries from RFC 8915 without changing them."
+          },
+          {
+            "id": "E2",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) Section 2 notes known issues with the Extension Field Types registry alongside a summary of IANA registries.",
+          "(E2) A candidate issue is listed with no explicit type, label, or detailed dimensions, indicating an underspecified problem."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "The issue is based on a descriptive reference to known registry problems and is not associated with a direct protocol malfunction or high-impact behavior.",
+      "confidence": "Medium",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "9748-2-1"
+    }
+  ]
+}

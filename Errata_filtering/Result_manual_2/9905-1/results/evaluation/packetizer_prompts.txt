@@ -1,0 +1,235 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Section 1 of RFC 9905 introduces the motivation for deprecating SHA‑1 in DNSSEC, points operators to IANA registries for alternative algorithms, and defines the BCP 14 requirements notation. IANA registry naming and references in this section can be cross‑checked against the later IANA considerations and the actual registries.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Misnamed DS digest IANA registry in Introduction
+    - LocationHint: RFC 9905, Section 1, first paragraph (registry names for [DNSKEY-IANA] and [DS-IANA])
+    - Evidence:
+      - Snippet1: Section 1 text:  
+        “Operators are encouraged to consider switching to one of the recommended algorithms listed in the ‘DNS Security Algorithm Numbers’ [DNSKEY-IANA ] and ‘DNS Security Algorithm Numbers’ [DS-IANA ] registries, respectively.”
+      - Snippet2: Section 5 text:  
+        “IANA has updated the SHA-1 (1) entry in the ‘Digest Algorithms’ registry [DS-IANA ] [RFC9904] as follows…”  
+        and  
+        “IANA has updated the RSASHA1 (5) and RSASHA1-NSEC3-SHA1 (7) algorithm entries in the ‘DNS Security Algorithm Numbers’ registry [DNSKEY-IANA ] [RFC9904] as follows…”
+      - Snippet3: DS‑IANA registry summary: it is the “DNSSEC Delegation Signer (DS) RR Type Digest Algorithms” / “Digest Algorithms” registry, distinct from the “DNS Security Algorithm Numbers” registry used for DNSKEY/RRSIG/DS Algorithm fields.
+    - TechnicalExplanation: |
+        The Introduction intends to direct operators to two different IANA registries: (1) the “DNS Security Algorithm Numbers” registry for DNSKEY/RRSIG/DS Algorithm values (referenced by [DNSKEY-IANA]) and (2) the DS digest registry (referenced by [DS-IANA]) for DS digest algorithms. However, Section 1 names both registries identically as “DNS Security Algorithm Numbers”, even for the [DS-IANA] reference.
+
+        Later in the same RFC, Section 5 correctly distinguishes these registries, using “Digest Algorithms” for [DS-IANA] and “DNS Security Algorithm Numbers” for [DNSKEY-IANA]. The external IANA registry referenced by [DS-IANA] is indeed the DS digest (“Digest Algorithms”) registry, not the “DNS Security Algorithm Numbers” registry. This creates a structural inconsistency between Section 1 and Section 5, and between the quoted registry title and the actual registry that [DS-IANA] denotes.
+
+        While a careful reader can still reach the correct registry via the [DS-IANA] citation, the misnaming conflates two distinct IANA registries that define different code spaces (digest algorithms vs. DNSSEC algorithm numbers) and can mislead implementation work that relies on the correct mapping from text to registry.
+    - PatchSuggestion: |
+        In Section 1, update the quoted name of the second registry so it matches the actual DS digest registry and the usage in Section 5. For example, replace the sentence:
+
+          “Operators are encouraged to consider switching to one of the recommended algorithms listed in the ‘DNS Security Algorithm Numbers’ [DNSKEY-IANA ] and ‘DNS Security Algorithm Numbers’ [DS-IANA ] registries, respectively.”
+
+        with:
+
+          “Operators are encouraged to consider switching to one of the recommended algorithms listed in the ‘DNS Security Algorithm Numbers’ [DNSKEY-IANA] and ‘Digest Algorithms’ [DS-IANA] registries, respectively.”
+
+        (Optionally, use the full IANA title for clarity, e.g., “‘DNSSEC Delegation Signer (DS) RR Type Digest Algorithms’ [DS-IANA]”.)
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 1 of RFC 9905 motivates deprecating SHA‑1 in DNSSEC, gives historical context, points operators to IANA registries for alternative algorithms, and defines BCP 14 requirements notation. Its claims touch DNSSEC’s original specification, SHA‑1’s use in DNSSEC RRSIG/DS, and the IANA “DNS Security Algorithm Numbers” and DS digest registries.  
+- OverallCrossRFCLikelihood: High  
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: DNSSEC “originally defined in RFC 3110” is incorrect
+    - Description: RFC 9905 says: “DNSSEC [RFC9364] (originally defined in [RFC3110]) made extensive use of SHA‑1…”. RFC 3110’s own introduction explicitly treats DNSSEC as already defined in RFC 2535: “The DNS has been extended to include digital signatures and cryptographic keys as described in [RFC2535]” and then states “This document describes how to produce RSA/SHA1 SIG RRs … and … RSA KEY RRs…”  . Thus RFC 3110 is an algorithm/profile update (defining use of algorithm number 5, RSA/SHA1, for SIG and KEY RRs), not the original DNSSEC specification. RFC 4034’s IANA considerations also confirm that DNSSEC-related resource record types and the “DNS Security Algorithm Numbers” registry were created earlier by RFC 2535, with RFC 3110 merely assigning value 5 in that registry  . RFC 9364, cited by RFC 9905, describes DNSSEC as a best-current-practice evolution, not as originally defined in RFC 3110  . An implementer reading RFC 9905 literally could wrongly assume that RFC 3110 is the foundational DNSSEC spec (and overlook RFC 2535 and/or the 4033/4034/4035 base specs), which is historically and normatively incorrect.
+    - EntitiesInvolved: ["RFC 9905 Section 1", "RFC 3110 Section 1", "RFC 4034 Section 7 (DNS Security Algorithm Numbers registry history)", "RFC 9364 Section 1.1"]
+    - CrossRefsUsed: ["RFC 3110 Introduction", "RFC 4034 Section 7 (IANA Considerations)", "RFC 9364 Section 1.1"]
+    - Confidence: High
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: Wrong IANA registry name and pairing for DS vs DNSKEY algorithms
+    - Description: RFC 9905 Section 1 says: “Operators are encouraged to consider switching to one of the recommended algorithms listed in the ‘DNS Security Algorithm Numbers’ [DNSKEY-IANA] and ‘DNS Security Algorithm Numbers’ [DS-IANA] registries, respectively.” The IANA registry referenced by [DNSKEY‑IANA] is correctly named “DNS Security Algorithm Numbers” and contains algorithm numbers for DNSKEY/RRSIG/DS/CERT, including the RSASHA1 and RSASHA1-NSEC3-SHA1 entries that RFC 9905 later updates in Section 5  . However, the registry referenced by [DS‑IANA] is the DS digest registry (“DNSSEC Delegation Signer (DS) RR Type Digest Algorithms” / “Digest Algorithms”), which assigns values to digest algorithms like SHA‑1, SHA‑256, etc., not “DNS Security Algorithm Numbers”  . RFC 9905 itself uses [DS‑IANA] later in Section 5 with the correct name “Digest Algorithms”, demonstrating that Section 1’s second quoted registry name is wrong. In addition, the “respectively” construction pairs “DS records” with the DNSKEY-IANA registry and “RRSIG and DNSKEY records” with the DS-IANA digest registry, which is the opposite of the natural mapping (DS → DS digest registry; DNSKEY/RRSIG → DNS Security Algorithm Numbers). This misnaming and mispairing can mislead implementers about which registry governs DS digest algorithms versus DNSKEY/RRSIG signature algorithms, even though the bare references [DNSKEY‑IANA] and [DS‑IANA] themselves point to the correct IANA pages.
+    - EntitiesInvolved: ["RFC 9905 Section 1", "RFC 9905 Section 5", "IANA DNS Security Algorithm Numbers registry (DNSKEY-IANA)", "IANA DS RR Type Digest Algorithms / Digest Algorithms registry (DS-IANA)"]
+    - CrossRefsUsed: ["RFC 9905 text quoted above", "IANA DNS Security Algorithm Numbers summary", "IANA DS Digest Algorithms summary", "RFC 4034 Section 7 (IANA registries)", "RFC 4034 Appendix A.2 (DS digest types)"]
+    - Confidence: High
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Low
+    - ShortLabel: Misattribution of “originally defined” DNSSEC specification to RFC 3110
+    - Evidence:
+      - ExcerptSnippets:
+        - `"DNSSEC [RFC9364] (originally defined in [RFC3110]) made extensive use of SHA-1, for example, as a cryptographic hash algorithm in Resource Record Signature (RRSIG) and Delegation Signer (DS) records."`
+      - ContextSnippets:
+        - RFC 3110 Introduction: `"The DNS has been extended to include digital signatures and cryptographic keys as described in [RFC2535]. Thus the DNS can now be secured and used for secure key distribution."` and `"This document describes how to produce RSA/SHA1 SIG RRs in Section 3 and, so as to completely replace RFC 2537, describes how to produce RSA KEY RRs in Section 2."`
+        - RFC 4034, Appendix A.1 table: `Value 5   RSA/SHA-1 [RSASHA1]  ... References [RFC3110]` showing RFC 3110 is attached specifically to the RSA/SHA1 algorithm entry, not to DNSSEC as a whole.
+    - Reasoning:
+      - Section 1 of RFC 9905 asserts that “DNSSEC ... (originally defined in [RFC3110]) made extensive use of SHA-1 … in RRSIG and DS records”. This uses the term “DNSSEC” in a way that implies RFC 3110 is the original defining specification of DNSSEC itself.
+      - However, RFC 3110 explicitly treats DNSSEC (the use of SIG/KEY RRs, etc.) as already specified elsewhere (“described in [RFC2535]”) and limits itself to describing how to use **RSA/SHA1** (algorithm 5) within that framework, along with the RSA KEY format  .
+      - Further, RFC 9905’s own narrative ties SHA-1 usage to RRSIG, DNSKEY, and DS records whose formats and DNSSEC semantics are defined in RFC 4034, not in RFC 3110  .
+      - Thus, attributing “originally defined” DNSSEC to RFC 3110 is historically and normatively incorrect, and it conflates:
+        - DNSSEC as a protocol suite (key and signature RR types, validation semantics), vs.
+        - A particular RSA/SHA1 algorithm profile (algorithm 5) defined in RFC 3110.
+      - While this misattribution is unlikely to cause direct interoperability failures (an implementer who follows the references will quickly see that RFC 3110 is only an algorithm/profile RFC), it is a real specification error about what document defines DNSSEC. It could mislead readers about where to look for the authoritative DNSSEC protocol definitions.
+    - PatchSuggestion:
+      - In Section 1, revise the introductory sentence to remove the incorrect parenthetical. For example:
+        - Change  
+          `DNSSEC [RFC9364] (originally defined in [RFC3110]) made extensive use of SHA-1, ...`  
+          to  
+          `DNSSEC [RFC9364] made extensive use of SHA-1, ...`
+      - This minimal change avoids the incorrect association of DNSSEC’s original definition with RFC 3110 and requires no new references.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: Misnaming the DS digest algorithm registry as “DNS Security Algorithm Numbers”
+    - Evidence:
+      - ExcerptSnippets:
+        - `“Operators are encouraged to consider switching to one of the recommended algorithms listed in the "DNS Security Algorithm Numbers" [DNSKEY-IANA ] and "DNS Security Algorithm Numbers" [DS-IANA ] registries, respectively.”`
+      - ContextSnippets:
+        - RFC 9905 Section 5 uses the [DS-IANA] reference as follows:  
+          - `“IANA has updated the SHA-1 (1) entry in the "Digest Algorithms" registry [DS-IANA ] [RFC9904] ...”`  
+          - `“IANA has updated the RSASHA1 (5) and RSASHA1-NSEC3-SHA1 (7) algorithm entries in the "DNS Security Algorithm Numbers" registry [DNSKEY-IANA ] [RFC9904] ...”`
+        - The DS-IANA summary: the registry is titled “DNSSEC Delegation Signer (DS) RR Type Digest Algorithms” / “Digest Algorithms” and lists DS **digest** algorithms (e.g., value 1 = SHA‑1, value 2 = SHA‑256) with a “Status” column, not DNSSEC signing algorithm numbers  .
+        - RFC 4034’s IANA considerations describe “DNS Security Algorithm Numbers” as the registry used by DNSKEY, RRSIG, and (for the Algorithm field) DS records  , while Section A.2 separately defines DS “Digest Types”.
+    - Reasoning:
+      - The introductory sentence in RFC 9905 names **both** referenced registries as `"DNS Security Algorithm Numbers"`, even though:
+        - [DNSKEY-IANA] correctly refers to the “DNS Security Algorithm Numbers” registry.
+        - [DS-IANA] actually refers to the **DS digest algorithm** registry, titled “Digest Algorithms” / “DNSSEC Delegation Signer (DS) RR Type Digest Algorithms”  .
+      - Later in the same RFC, Section 5 correctly distinguishes these registry names:
+        - SHA‑1 as a DS digest is updated in the `"Digest Algorithms"` registry [DS‑IANA].
+        - RSASHA1 and RSASHA1‑NSEC3‑SHA1 are updated in the `"DNS Security Algorithm Numbers"` registry [DNSKEY‑IANA].
+      - Using the same name (“DNS Security Algorithm Numbers”) for both in the Introduction is therefore an internal inconsistency and a concrete terminology/naming bug.
+      - Practically, this can mislead operators or implementers reading Section 1 into thinking that DS “algorithms” (in this context, digest algorithms) reside in the same “DNS Security Algorithm Numbers” registry as DNSKEY/RRSIG signing algorithms, when in fact DS digest algorithms are in a distinct “Digest Algorithms” registry. Someone following only the prose name (and not the DS‑IANA reference) might look in the wrong IANA table or misinterpret which parameters are being recommended.
+      - Because the DS‑IANA reference itself is correct, a careful reader can recover the intended meaning, but the naming error is sufficiently concrete and potentially confusing to justify an erratum.
+    - PatchSuggestion:
+      - In Section 1, correct the second registry name so that it matches both the actual IANA registry and Section 5. For example:
+        - Change  
+          `... listed in the "DNS Security Algorithm Numbers" [DNSKEY-IANA ] and "DNS Security Algorithm Numbers" [DS-IANA ] registries, respectively.`  
+          to  
+          `... listed in the "DNS Security Algorithm Numbers" [DNSKEY-IANA ] and "Digest Algorithms" [DS-IANA ] registries, respectively.`
+      - This maintains the intended guidance (look at both registries) while using the proper and distinct names for each.
+
+- Notes:
+  - UsedRouterIssues: Confirmed both router CandidateIssues:
+    - Misstatement that DNSSEC was “originally defined” in RFC 3110 (Issue‑1).
+    - Incorrect naming of the DS digest registry as “DNS Security Algorithm Numbers” (Issue‑2).
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - The analysis relies on the provided excerpts and summaries of RFCs 3110, 4034, 9364, and the IANA registries. Full texts of RFC 4033/4035 and the current live IANA pages were not included, so historical attributions beyond what is shown are inferred from standard DNSSEC practice. However, the identified naming inconsistencies are fully supported by the provided material.
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+
+Vector Stores Used: vs_6954b3a84d088191b965d17d5b7b01d3
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "reports": [
+    {
+      "label": "Ambiguous Dual Assignment for Field Type 0x0204 (Autokey vs NTS Cookie)",
+      "bug_type": "Both (Underspecification and Inconsistency)",
+      "explanation": "The specification assigns the same Field Type value (0x0204) to both Autokey Message Request and NTS Cookie without providing explicit, normative rules for disambiguating the two meanings.",
+      "justification": [
+        "RFC 9748’s note and Table 1 list two entries for 0x0204, one for Autokey Message Request (RFC5906) and one for NTS Cookie (RFC8915), but state that 'other parts of the message' determine the proper interpretation.",
+        "Several expert analyses (Scope, Deontic, Structural, CrossRFC, and Boundary) note that relying on context rather than a clear, normative condition creates ambiguity for implementations that support both Autokey and NTS."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Both NTS Cookie and Autokey Message Request have the same Field Type; in practice this is not a problem as the field semantics will be determined by other parts of the message."
+          },
+          {
+            "id": "E2",
+            "text": "Table 1 has two rows with Field Type 0x0204: one “Autokey Message Request” [RFC5906] and one “NTS Cookie” [RFC8915, Section 5.4]."
+          }
+        ],
+        "summary": [
+          "(E1) RFC 9748 explicitly notes the dual use of 0x0204 with disambiguation left to 'other parts of the message'.",
+          "(E2) The registry table shows two different entries for 0x0204 under different RFCs."
+        ]
+      },
+      "fix_direction": "Add explicit normative disambiguation rules (for example, tie the interpretation of 0x0204 to the presence of NTS-specific elements such as the 0x0404 extension field or specific NTP modes) to clearly determine when 0x0204 is to be read as NTS Cookie versus Autokey Message Request.",
+      "severity": "Medium",
+      "severity_basis": "The ambiguity may lead to inconsistent interpretation in implementations that support both security schemes, risking interoperability issues despite not breaking on‐wire operation.",
+      "confidence": "High",
+      "experts": [
+        "Scope: Issue-1",
+        "Deontic: Issue-1",
+        "Structural: Issue-1",
+        "CrossRFC: Issue-1",
+        "Boundary: Finding-1"
+      ],
+      "report_id": "9748-4-1"
+    },
+    {
+      "label": "Conflicting Registration-Policy Scope for Private/Experimental Use Range",
+      "bug_type": "Both (Inconsistency and Underspecification)",
+      "explanation": "Section 3’s blanket statement that all registry entries require Specification Required conflicts with Section 4.3’s reservation of the 0xF000–0xFFFF range for Private/Experimental Use, creating an ambiguous registration-policy scope.",
+      "justification": [
+        "Section 3 states that the policy for each registry is 'Specification Required', while Section 4.3 and Table 1 explicitly reserve the 0xF000–0xFFFF range for private or experimental use where IANA assigns no values.",
+        "This discrepancy may mislead future authors or IANA reviewers into assuming uniform policy across the entire registry."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Section 3: “The following general guidelines apply to the NTP registries: … The policy for each registry is now Specification Required, as defined in [RFC8126], Section 4.6.”"
+          },
+          {
+            "id": "E2",
+            "text": "Section 4.3 Note: “Field Types in the range 0xF000 through 0xFFFF, inclusive, are reserved for experimentation and development. IANA cannot assign them.”"
+          }
+        ],
+        "summary": [
+          "(E1) Section 3 mandates a uniform Specification Required policy for all registry entries.",
+          "(E2) Section 4.3 explicitly reserves the 0xF000–0xFFFF range, contradicting the uniform policy."
+        ]
+      },
+      "fix_direction": "Revise Section 3 to clarify that the Specification Required policy applies only to assignable portions of the registry, or explicitly partition the registry to reflect the different policies.",
+      "severity": "Low",
+      "severity_basis": "While the inconsistency may lead to confusion for future registry management and review, it does not impact on-wire operation.",
+      "confidence": "High",
+      "experts": [
+        "Scope: Issue-2",
+        "CrossRFC: Issue-2"
+      ],
+      "report_id": "9748-4-2"
+    },
+    {
+      "label": "Inconsistency in 'Replace Existing Entry' Directive in the NTP Extension Field Types Registry",
+      "bug_type": "Inconsistency",
+      "explanation": "The preamble in Section 4 states that each new entry should replace an existing one with the same name; however, the NTP Extension Field Types registry adds a new NTS Cookie entry (0x0204) alongside the existing Autokey Message Request entry, violating the replacement claim.",
+      "justification": [
+        "RFC 9748 Section 4 declares that 'Each entry described in the subsections below is intended to completely replace the existing entry with the same name,' yet in Section 4.3 a second entry for Field Type 0x0204 is added without replacing any existing entry.",
+        "This mismatch between the stated intent and the actual registry changes may mislead IANA reviewers and implementers."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Section 4: “Each entry described in the subsections below is intended to completely replace the existing entry with the same name.”"
+          },
+          {
+            "id": "E2",
+            "text": "Section 4.3: Table 1 adds a second entry for Field Type 0x0204 (“NTS Cookie”) alongside the 'Autokey Message Request' entry."
+          }
+        ],
+        "summary": [
+          "(E1) The RFC preamble indicates that new entries should replace existing ones by name.",
+          "(E2) The registry table shows an additional NTS Cookie entry for 0x0204, contradicting the replacement directive."
+        ]
+      },
+      "fix_direction": "Clarify the language in Section 4 to accurately indicate when entries are replaced versus when new entries are added, and explicitly address the dual assignment for 0x0204.",
+      "severity": "Low",
+      "severity_basis": "This is an editorial and descriptive inconsistency that may cause confusion during IANA actions but does not affect protocol behavior.",
+      "confidence": "High",
+      "experts": [
+        "CrossRFC: Issue-2"
+      ],
+      "report_id": "9748-4-3"
+    },
+    {
+      "label": "Editorial Inconsistency in Field Type Column Definition for Private/Experimental Use Range",
+      "bug_type": "Editorial Inconsistency",
+      "explanation": "The 'Field Type (required)' column is defined to hold a single two-byte hexadecimal value, yet a range (0xF000–0xFFFF) is used in the registry to denote reserved values, creating an editorial inconsistency.",
+      "justification": [
+        "RFC 9748 defines the Field Type column as a two-byte hexadecimal value, implying individual values should be listed.",
+        "The final row of Table 1 uses a range to denote that all values from 0xF000 to 0xFFFF are reserved for Private or Experimental Use, which deviates from the column’s defined format."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "RFC 9748 defines the “Field Type (required)” column as “a two-byte value in hexadecimal.”"
+          },
+          {
+            "id": "E2",
+            "text": "The last row of Table 1 is “0xF000-0xFFFF | Reserved for Private or Experimental Use | RFC 9748” and is accompanied by the note stating that these values are reserved for experimentation and development."
+          }
+        ],
+        "summary": [
+          "(E1) The column definition specifies individual two-byte hexadecimal values.",
+          "(E2) The use of a range in the registry table contradicts the individual value format."
+        ]
+      },
+      "fix_direction": "Either update the column definition to indicate that ranges are permitted as shorthand for reserving blocks, or revise the reserved entry to list individual values.",
+      "severity": "Low",
+      "severity_basis": "This is an editorial issue with no impact on protocol operations but may affect clarity in registry documentation.",
+      "confidence": "High",
+      "experts": [
+        "Boundary: Finding-2"
+      ],
+      "report_id": "9748-4-4"
+    }
+  ]
+}

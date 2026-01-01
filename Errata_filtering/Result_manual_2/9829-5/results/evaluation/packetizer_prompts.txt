@@ -1,0 +1,407 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: RFC 9829’s security text leans heavily on the notion of a “current” manifest and its fileList hash to single out the authoritative CRL and to block replay. The underlying manifest machinery in RFC 9286 does provide a temporal ordering (manifestNumber, thisUpdate/nextUpdate) and content binding (fileList hashes), but section 5 of RFC 9829 overstates what the hash alone guarantees about “most recent” CRLs and replay. This can mislead implementers about which replay vectors are actually prevented and which still require careful manifest freshness handling and anti‑rollback checks.
+  OverallTemporalRisk: Medium
+  CandidateIssues:
+    - Id: T1
+      Type: Underspecification
+      ShortLabel: Overbroad “removes replay vectors” claim for manifest‑bound CRLs
+      Description: |
+        Section 5 asserts that the hash of the CRL in the issuer’s current manifest “provides a cryptographic guarantee” that this is the most recent CRL and “removes possible replay vectors.” In temporal terms, this conflates (a) a content‑binding property at the time the manifest was issued with (b) the ongoing wall‑clock freshness of the CRL relative to later revocations and later manifests. The hash and signature ensure that a CRL is exactly the one the CA listed on that manifest, but they do not by themselves prevent replay or rollback of an older, self‑consistent manifest+CRL pair that predates some revocations. RFC 9286 explicitly models manifests to *help detect* stale or replayed objects using manifestNumber and time fields, not to make replay impossible, and RFC 5280 still emphasizes the importance of “availability and freshness of revocation information.” The text in RFC 9829 does not clearly describe the temporal preconditions under which replay is actually mitigated, nor does it distinguish the remaining replay/rollback scenarios that an RP must still handle.
+      TemporalReasoning: |
+        The intended sequence in RPKI is:
+
+        1. A CA periodically issues CRLs. For each publication point, the “most recent CRL issued by this CA” is listed in the manifest’s fileList, with its file name and a hash of the CRL contents.
+        2. The CA issues manifests with monotonically increasing manifestNumber and increasing thisUpdate values; each RP must verify that a purported “new” manifest has both a higher manifestNumber and more recent thisUpdate than previously validated manifests. A manifest is “nominally current” until nextUpdate or until a manifest with a higher manifestNumber is issued.
+        3. When validating, each RP “MUST use the current manifest of a CA to control addition of listed files” and MUST NOT use files not listed; if it cannot retrieve all listed files, the fetch is considered to have failed and must be retried.
+        4. Given a selected “current” manifest, the RP checks that the retrieved CRL’s hash matches the fileList entry, thereby confirming that this exact CRL is the one the CA intended to list when that manifest was issued.
+
+        That sequence does *not* guarantee that the CRL is “the most recent” in an absolute temporal sense. Consider this execution scenario:
+
+        - t1: CA issues manifest M1 (manifestNumber = 1, thisUpdate = T1, nextUpdate = T1+Δ) listing CRL1; certificate C is not yet revoked.
+        - t2 > t1: CA revokes C, issues CRL2, and issues manifest M2 (manifestNumber = 2, thisUpdate = T2, nextUpdate = T2+Δ) listing CRL2.
+        - RP_A synchronizes at t1 < t < t2 and sees M1+CRL1.
+        - After t2, an attacker with control over the repository replays (or rolls back to) the old state containing only M1+CRL1 to RP_B. RP_B has never seen M2 before.
+
+        From RP_B’s perspective:
+        - M1’s manifestNumber is higher than any previously validated manifest (there are none), and T1 is the most recent thisUpdate it has ever seen, so the manifestNumber/thisUpdate checks pass.
+        - The CRL1 hash matches the M1 fileList entry, so the RP concludes that this CRL is exactly what the CA intended for that manifest.
+        - However, CRL1 is *not* the most recent CRL anymore (CRL2 exists and contains C’s revocation), and the replay has successfully hidden that fact. This is precisely the sort of “stale object substitution” or manifest replay that RFC 9286 notes manifests are intended to *help detect*, not something that signatures and hashes by themselves universally preclude.
+
+        Thus, the hash provides a strong binding between CRL content and a particular manifest but does not, by itself, ensure global temporal freshness or prevent all replay vectors. Robust replay detection still depends on the ordering rules for manifestNumber and thisUpdate/nextUpdate, the RP’s local cache history, and correct handling when a “new” manifest is older or equal to what has already been seen. Moreover, RFC 5280 continues to warn that untimely or unavailable revocation information reduces assurance, emphasizing that “availability and freshness of revocation information” remain a live concern even when CRLs are correctly signed and distributed via untrusted channels.
+
+        Section 5 of RFC 9829 instead states that the hash “provides a cryptographic guarantee on the Certification Authority’s intent that this is the most recent CRL and removes possible replay vectors,” without qualifying that this is conditional on the RP’s correct enforcement of manifest freshness and on an adversary *not* being able to roll back the entire manifest+CRL state before any newer manifest has been observed. That is a temporal over-claim: it collapses (1) content authenticity at issuance time and (2) long-term, across-time replay resistance into a single guarantee.
+      KeyEvidence:
+        ExcerptPoints:
+          - “This document explicates that, in the RPKI, the CRL listed on the certificate issuer's current manifest is the one relevant and appropriate for determining the revocation status of a resource certificate. The hash in the manifest's fileList provides a cryptographic guarantee on the Certification Authority's intent that this is the most recent CRL and removes possible replay vectors.”
+          - “Together, these properties guarantee that RPKI RPs will always be able to unambiguously identify exactly one current CRL for each RPKI CA.”
+        ContextPoints:
+          - RFC 9286 §2: each manifest lists “the most recent CRL issued by this CA.”
+          - RFC 9286 §4.2.1: manifestNumber and thisUpdate are monotonically increasing; the manifest is current until nextUpdate or until a manifest with greater manifestNumber is issued. RPs must reject purported “new” manifests with non-increasing manifestNumber or less recent thisUpdate.
+          - RFC 9286 §5.1–5.2: manifests include the file name and hash of each object, including “the most recent CRL,” binding the CRL to the manifest contents.
+          - RFC 9286 §6: RPs MUST use the current manifest to control which files are accepted; inability to fetch all listed files is a fetch failure and the RP MUST retry later.
+          - RFC 9286 §1 and §2: manifests are “intended to allow an RP to detect unauthorized object removal or the substitution of stale versions of objects” and are “modeled on CRLs” where stale/replay problems are similar.
+          - RFC 5280 §8: availability and freshness of revocation information affect assurance; if revocation information is untimely or unavailable, assurance is reduced.
+      ImpactOnImplementations: |
+        Implementers reading RFC 9829 §5 might infer that once they verify a CRL’s hash against the current manifest’s fileList, all meaningful replay risks around that CRL are eliminated, and thus they need not apply more nuanced anti‑rollback logic (e.g., strict enforcement of manifestNumber and thisUpdate monotonicity across time, careful handling of old-but-valid manifests, or policies for repository rollback). In an environment where repositories or communication channels can be adversarial, this misinterpretation can lead RPs to accept stale, replayed manifest+CRL pairs that predate important revocations, undermining revocation freshness while appearing “cryptographically guaranteed” and self‑consistent. The temporal ordering and replay handling rules from RFC 9286 remain essential; the hash alone does not provide the strong, across-time anti‑replay guarantee that the current text suggests.
+      AffectedArtifacts:
+        - RFC 9829 Section 5, second paragraph (security considerations text about the manifest hash and replay)
+        - RFC 9829 Introduction and Summary text that speak of “current” and “most recent” CRLs and “always” unambiguous identification
+      Severity: Medium
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 5 of RFC 9829 states that the security considerations of RFCs 3779, 5280, and 6487 apply, and then adds a specific security claim: that in the RPKI the CRL listed on the issuer’s *current* manifest (with a matching hash) is the authoritative CRL, and that the manifest hash “provides a cryptographic guarantee” that this is the “most recent CRL” and “removes possible replay vectors.” The surrounding sections earlier in RFC 9829 describe how manifests and CRLDPs together ensure that RPs can unambiguously select a single CRL per CA.
+
+- ScopeModel:
+  - Targets:
+    - All RPKI Resource Certificates and CRLs, via: “The Security Considerations of [RFC3779], [RFC5280], and [RFC6487] apply to Resource Certificates and CRLs.”
+    - The “certificate issuer’s current manifest” for a given RPKI CA, and the single CRL object listed there with a matching hash, as the CRL “relevant and appropriate for determining the revocation status of a resource certificate.”
+    - Replay attacks involving CRLs in the RPKI publication/validation model, implicitly: “The hash in the manifest's fileList provides a cryptographic guarantee … and removes possible replay vectors.”
+  - Conditions:
+    - The context is explicitly “in the RPKI,” i.e., RPKI CAs and RPs operating according to RFC 6487 and the manifest specification (RFC 9286).
+    - The CRL must be:
+      - the target of the certificate’s CRL Distribution Points extension, and
+      - listed on the issuing CA’s *current* manifest with a matching hash (per earlier Sections 1–2 of RFC 9829).
+    - The manifest and its fileList are assumed to be valid and correctly processed (including signature and hash verification).
+    - No explicit conditions are stated around anti-replay behaviour (e.g., treatment of older but self-consistent manifest+CRL pairs, manifestNumber ordering, or time-based staleness checks).
+  - NotedAmbiguities:
+    - “Current manifest” is not re-scoped or restated here; it implicitly relies on RFC 9286’s semantics (manifestNumber, thisUpdate/nextUpdate, and staleness rules). RPs reading only this section might take “current” as “whatever manifest is presently retrievable,” which is weaker than the intended notion.
+    - The phrase “cryptographic guarantee on the Certification Authority's intent that this is the most recent CRL” is ambiguous about *which* “most recent” is meant: most recent CRL issued by the CA, most recent CRL listed on any manifest the RP has ever seen, or just “the CRL that this particular manifest intends to associate”?
+    - “Removes possible replay vectors” is not scoped to a particular class of replay attacks (e.g., ambiguity between multiple concurrently-published CRLs vs. repository rollback to an older yet self-consistent manifest+CRL set). It reads as a broad, potentially absolute statement.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Overbroad and under-scoped claim that the manifest hash “removes possible replay vectors” and guarantees the “most recent CRL”
+    - ScopeProblemType: Overly broad / unqualified security scope for replay protection and “most recent” semantics of the CRL
+    - Evidence:
+      - “This document explicates that, in the RPKI, the CRL listed on the certificate issuer's current manifest is the one relevant and appropriate for determining the revocation status of a resource certificate.”
+      - “The hash in the manifest's fileList provides a cryptographic guarantee on the Certification Authority's intent that this is the most recent CRL and removes possible replay vectors.”
+      - Earlier, the document frames manifests as ensuring a *unique* CRL, not explicitly as a complete anti-replay mechanism: “Together, these properties guarantee that RPKI RPs will always be able to unambiguously identify exactly one current CRL for each RPKI CA. Thus, in the RPKI, the ordering functionality provided by CRL Numbers is fully subsumed by monotonically increasing manifest numbers…” (Section 1 / 2 of RFC 9829 excerpt).
+      - RFC 5280’s security considerations explicitly warn about freshness and “suitably recent CRL” under untrusted distribution, highlighting that CRLs (and their distribution) are vulnerable to replay/rollback unless additional checks are performed.
+    - DetailedReasoning:
+      - The security text attributes two properties *specifically* to the manifest fileList hash: (1) “a cryptographic guarantee on the CA’s intent that this is the most recent CRL” and (2) that it “removes possible replay vectors.” Both are stated without conditions or narrowing language and thus read as general properties of RPKI manifests and CRLs.
+      - In reality, the fileList hash serves primarily to bind a particular manifest instance to particular repository objects, including a specific CRL: it ensures that for a given manifest, an attacker cannot undetectably substitute a *different* CRL file under the same name, and it helps detect missing or altered files. That is a *per-manifest* integrity guarantee, not a temporal guarantee that no more recent CRL (on a later manifest) exists.
+      - The “most recent CRL” concept in RPKI actually depends on both the manifestNumber ordering and the time/validity semantics for manifests and CRLs (as specified in RFC 9286 and 6487), plus RP behaviour around staleness, cache state, and detection of rollback/withholding. The hash alone does not prevent, for example, a repository operator from replaying an older but self-consistent manifest+CRL pair that is still within its validity period.
+      - Thus, if the statement is read literally, it expands the *scope* of what the hash guarantees: from “this CRL is exactly the one that this manifest intends” to “this CRL is the most recent CRL the CA has issued, and replay of older CRLs is precluded.” The latter is not ensured by the hash; it depends on other mechanisms and assumptions (manifestNumber monotonicity, RP anti-rollback policies, and timely publication).
+      - Similarly, the phrase “removes possible replay vectors” is not tied to a particular class of replay attacks. A precise reading would scope it to ambiguity/replay *among multiple CRLs* that might otherwise be in circulation for the same CA; given a correctly selected *current* manifest, the hash and unique mapping do indeed eliminate certain ambiguity- or substitution-based replay scenarios. However, the unqualified wording suggests a wider class of replay attacks, including repository rollback or stale-publication scenarios, which are explicitly known residual risks in the RPKI model and in RFC 5280’s CRL distribution model.
+      - This mismatch in scope is not merely stylistic: an RP implementer or reviewer could reasonably infer from this text that, once they verify the manifest and its fileList hash, they need not be concerned with CRL-related replay/rollback beyond that—potentially leading them to under-implement manifestNumber and freshness checks, or to ignore the subtleties of “suitably recent” revocation information described in RFC 5280.
+      - The section also does not explicitly restate that the property holds *only* if the RP has already correctly identified the issuer’s “current manifest” according to RFC 9286 semantics; that precondition is essential to talk about “most recent” in any meaningful sense, yet here it is left implicit.
+      - A safer and more accurate formulation would explicitly constrain the scope, e.g., “the hash in the manifest’s fileList provides a cryptographic guarantee that the CRL used by the RP is exactly the CRL that the CA associated with this manifest, thereby preventing substitution or confusion among multiple CRLs. When combined with the manifestNumber and freshness checks defined in RFC 9286, this mitigates certain replay vectors.” The current text’s unqualified “guarantee” and “removes possible replay vectors” language is therefore an underspecified and overbroad scope claim.
+
+- ResidualUncertainties:
+  - The analysis relies partly on the general behaviour of RFC 9286 (manifests) and common RPKI threat models, which are not fully reproduced in the provided excerpt. A very strict reading might interpret “removes possible replay vectors” as referring only to a narrow, implicit set of replay scenarios (e.g., confusion among multiple CRLs listed or referenced at once), in which case the text is less misleading—but that narrow scope is not stated, and typical readers are likely to understand the claim more broadly.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Section 5’s claim that the manifest hash “provides a cryptographic guarantee on the CA’s intent that this is the most recent CRL and removes possible replay vectors” is not strictly correct in the RPKI threat model. The hash does prevent some replay/manipulation of the CRL relative to a given manifest, but it does not (and cannot) prevent replay of an older, self-consistent manifest+CRL set from an untrusted repository. This is a security-property overclaim rather than a direct algorithmic bug.
+
+---
+
+2. **Causal Analysis**
+
+Walk through what the RFC 9829 text actually causes an RP to do:
+
+- Normative behavior (Sections 2–3):
+  - There is exactly one relevant CRL: the object that is
+    - the target of the certificate’s CRLDP, and  
+    - listed in the issuer’s **current manifest** with a matching hash.  
+  - RPs MUST ignore the CRL Number extension except to check non-criticality and bounds.
+  - A resource certificate cannot be validated without consulting the issuer’s current manifest.
+
+- Section 5 (Security Considerations) then states:
+  - “The hash in the manifest's fileList provides a cryptographic guarantee on the Certification Authority's intent that this is the most recent CRL and removes possible replay vectors.”
+
+Mechanically, what the manifest hash actually guarantees:
+
+- The manifest is signed by the CA; the fileList includes a hash of the CRL.
+- An RP that has selected a **current manifest** per RFC 9286:
+  - Can detect any attempt to swap in a different CRL object than the one that manifest names, because the hash won’t match.
+  - Therefore, **within a fixed manifest**, the CRL cannot be replaced or tampered with without detection.
+
+Where this *doesn’t* match the claim in Section 5:
+
+1. **Replay of old manifest+CRL pairs (repository rollback)**
+
+   Consider the common RPKI threat where the publication point or cache is malicious or stale:
+
+   - Time T1: CA issues CRL1 and manifest M1 (listing hash(CRL1)).
+   - Time T2: CA issues CRL2 and manifest M2 (with a higher manifestNumber, different thisUpdate, and hash(CRL2)), revoking additional certificates.
+   - An attacker who controls the repository rewinds it to the older state {M1, CRL1} after T2.
+
+   For a relying party that either:
+   - has never seen M2/CRL2 (cold start or long outage), or
+   - has lost state and doesn’t persist previous manifestNumber,
+
+   the following holds:
+
+   - M1’s signature is valid.
+   - CRL1’s hash matches M1’s fileList.
+   - All checks described in RFC 9829 and the referenced RFC 5280/6487 material succeed, assuming time values are still within acceptance windows.
+
+   Yet the RP is now using **outdated revocation information** and missing revocations that appear only in CRL2. This is a classic replay/rollback vector that the manifest hash does not prevent:
+
+   - The hash only binds CRL1 to M1. It does **not** cryptographically indicate that “M1+CRL1 is the most recent state” of the CA’s publication point.
+   - The “most recent” property in RPKI is governed by `manifestNumber`, `thisUpdate`/`nextUpdate`, and the RP’s logic for choosing a “current manifest” from RFC 9286, not by the hash alone.
+
+   So the causal chain “hash ⇒ cryptographic guarantee of most recent CRL ⇒ removes replay” is false in the face of a malicious or stale repository, which is a central assumption in RPKI security (mirroring the “availability and freshness” concerns in RFC 5280’s Security Considerations).
+
+2. **Scope of “removes possible replay vectors”**
+
+   What the hash *does* remove:
+
+   - A replay or substitution where an attacker serves an **old CRL** while the RP has already selected a **newer manifest** that lists a different CRL hash:
+     - If repo serves {M2, CRL1}, the RP will detect a mismatch between hash(CRL served) and the hash in M2.
+   - Similarly, confusion between multiple CRLs from the same CA at the same time is prevented: the manifest’s fileList uniquely points to a single CRL by name and hash.
+
+   What it *does not* remove:
+
+   - Replay of a self-consistent older snapshot {old manifest, matching CRL(s), and associated objects}, i.e., repository rollback.
+   - Any attack relying on withholding newer manifests/CRLs, which directly maps to RFC 5280’s warning that if revocation information is “untimely or unavailable, the assurance…is clearly reduced.”
+
+   Those residual replay vectors are exactly the concern behind:
+   - Manifest freshness and manifestNumber in RFC 9286, and
+   - The general freshness considerations for CRLs in RFC 5280 Section 3.3 and 8.
+
+   RFC 9829 does not restate those checks in Section 5; instead, it implies that the hash *alone* “removes” replay. That is not true unless “replay vectors” is understood in a very narrow sense (only “CRL substitution under a fixed manifest”).
+
+3. **How this could mislead an implementer**
+
+   The normative parts of RFC 9829 never tell an RP to stop doing the manifest freshness / manifestNumber / time checks from RFC 9286, and they still rely on the notion of a “current manifest.” So a strictly standards-conforming implementation that obeys RFC 6487, RFC 9286, and RFC 9829 will behave correctly.
+
+   However, Section 5’s wording can plausibly lead to *weakened* implementations in two ways:
+
+   - An implementer might infer that **once the CRL matches the hash in a manifest, no other replay/rollback protection is necessary**, de-emphasizing or omitting manifestNumber tracking or freshness policies.
+   - The phrase “cryptographic guarantee … that this is the most recent CRL” is stronger than what the cryptographic construction actually provides in the assumed attacker model (untrusted repositories). It could give a false sense that repository rollback is not a concern for CRLs anymore, contrary to the broader security guidance in RFC 5280 and RFC 6487.
+
+   In other words: the algorithms are implementable, but the described security property is overstated relative to the actual behavior under attack.
+
+---
+
+3. **Problem Classification**
+
+- **Primary issue**: The sentence in Section 5 overclaims the security property of the manifest hash by implying it *guarantees* “most recent CRL” and *removes* replay vectors, whereas it only prevents CRL substitution *conditional on a chosen manifest*.
+- This is best classified as **Causal Underspecification / Mis-scoped Security Claim**:
+  - The text does not clearly scope which replay vectors are prevented (CRL substitution under a given manifest) vs which remain (rollback of an older manifest+CRL set).
+  - The mismatch is in the *stated security effect*, not in the defined state machine or message formats.
+
+There is no direct causal inconsistency (no unimplementable step, no inevitable failure of validation logic), but there is a risk of mis-implementations that underweight freshness/rollback handling if the sentence is taken at face value.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+A local, non-invasive repair would be to:
+
+- Soften and scope the claim, for example:
+
+  - Replace “provides a cryptographic guarantee … that this is the most recent CRL and removes possible replay vectors” with something like:
+
+    > “provides a cryptographic guarantee that the CRL used by the RP is exactly the CRL intended by the CA for that manifest, preventing substitution of a different CRL under the same manifest. Replay or rollback of older manifest+CRL sets remains possible and is addressed by the manifestNumber and freshness procedures in [RFC9286].”
+
+This keeps the algorithm unchanged but correctly characterizes the security contribution of the manifest hash.
+
+---
+
+5. **Non-Issues**
+
+- **Ignoring the CRL Number extension**:  
+  RFC 9829’s requirement that RPs ignore CRL Number (beyond basic sanity checks) does not introduce a *new* replay vulnerability. In the RPKI design, selection of the “current” CRL is already anchored on the issuer’s current manifest, not on CRL Number ordering, and CRL Number does not help against full repository rollback where an attacker replays an entirely older publication set.
+
+- **Executability and interoperability**:  
+  All specified behaviors (using manifest+hash to identify the CRL, ignoring CRL Number, updating step 5 of path validation to rely on the issuer’s current manifest) are fully implementable and coherent with the rest of the RPKI profile in RFC 6487 and the manifest procedures in RFC 9286.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 5 of RFC 9829 asserts that the CRL listed on the issuer’s current manifest, together with the hash in the manifest’s fileList, is authoritative and that this hash “provides a cryptographic guarantee” that this is the most recent CRL and “removes possible replay vectors.” This relies on behavior defined in the RPKI manifest specification (RFC 9286) and the repository profile (RFC 6481), plus generic PKIX security considerations from RFCs 3779 and 5280. Cross-RFC text in RFC 9286 and RFC 6481 is more cautious, explicitly stating that manifests cannot detect all replay/substitution attacks involving older but still-valid objects.
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Overstated replay protection from manifest hash vs RFC 9286/6481
+    - Description: RFC 9829 Section 5 says that the hash in the manifest’s fileList “provides a cryptographic guarantee on the Certification Authority's intent that this is the most recent CRL and removes possible replay vectors.” In contrast, RFC 9286 describes the manifestNumber and thisUpdate/nextUpdate as mechanisms for RPs to detect some stale or out-of-order manifests, and it explicitly warns that “forms of replay attacks within finer-grained time frames are not necessarily detectable by the manifest structure.”   RFC 6481 likewise notes that even with manifests and CRLs, “a relying party [cannot] detect all forms of substitution attacks based on older (but not expired) valid objects.”  The hash in fileList does provide integrity and binding between a specific manifest instance and a specific CRL, but it does not, by itself, guarantee that this CRL is the most recent one the CA has issued (e.g., in the presence of replay of an older but still-valid manifest+CRL set), nor does it eliminate all replay vectors, which still exist within the allowed validity window and depend on manifestNumber and time checks. Thus, an implementer who takes RFC 9829 literally might wrongly conclude that replay/rollback of CRLs is fully prevented once the hash matches, contradicting the more nuanced security model described in RFC 9286 and RFC 6481. The statement in RFC 9829 should instead be scoped (e.g., that the hash prevents substitution of a different CRL for the one referenced by that manifest) and acknowledge residual replay risks that 9286 and 6481 already document.
+    - EntitiesInvolved: ["RFC 9829 Section 5 (Security Considerations)", "Manifest fileList hash", "RFC 9286 Section 4.2.1 (manifestNumber, thisUpdate/nextUpdate)", "RFC 9286 Section 6 (RP processing of manifests)", "RFC 9286 Section 8 (Security Considerations, replay attacks)", "RFC 6481 Section 6 (Security Considerations, substitution of older objects)"]
+    - CrossRefsUsed: ["RFC9286.txt excerpts on manifestNumber, time checks, and replay limitations", "RFC6481.txt Security Considerations on substitution of older valid objects"]
+    - Confidence: High
+- IfNoIssues:
+  - Comment:
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  The excerpt defines how RPKI relies on manifests to identify a single “current” CRL per CA, and mandates that RPs ignore the CRL Number extension except for basic sanity checks. Section 5 (Security Considerations) then asserts that the CRL listed on the issuer’s current manifest, with a matching hash, is authoritative and that the manifest hash “removes possible replay vectors.” The overall security model still inherits the generic PKIX assumptions of untrusted distribution and potential staleness of revocation information.
+
+- OverallBoundaryBugLikelihood: Medium
+
+- Findings:
+
+  - Finding-1:
+    - BugType: Underspecification
+    - ShortLabel: Overbroad “removes possible replay vectors” claim for manifest+CRL replay
+    - BoundaryAxis: Repository replay / rollback of older but self-consistent manifest+CRL sets (stale “current” state)
+    - ExcerptEvidence:  
+      Section 5 of RFC 9829 states:  
+      “This document explicates that, in the RPKI, the CRL listed on the certificate issuer's current manifest is the one relevant and appropriate for determining the revocation status of a resource certificate. The hash in the manifest's fileList provides a cryptographic guarantee on the Certification Authority's intent that this is the most recent CRL and removes possible replay vectors.”  
+      The broader context asserts that there is “exactly one CRL that is appropriate” and that it is “listed in the issuing CA's current manifest fileList and has a matching hash” (Section 2).
+    - Reasoning:  
+      1. The security model inherited from RFC 5280 explicitly assumes CRLs are distributed via untrusted channels and that “availability and freshness of revocation information” are separate concerns; stale or untimely CRLs reduce assurance but are not prevented by signatures alone  .  
+      2. In RPKI, a manifest cryptographically binds a specific CRL object to a filename via a hash, and manifests themselves are versioned via a monotonically increasing manifestNumber (per RFC 9286, referenced but not reproduced).  
+      3. The hash *does* prevent an attacker from substituting a different CRL object for the one referenced in a given manifest (e.g., putting an older CRL with the same name but different contents under that manifest entry). However, nothing in the excerpt prevents an attacker (or faulty repository) from replaying an *older manifest together with its matching older CRL* as a self-consistent pair. In that replay scenario:  
+         - The manifest’s fileList hash still matches the replayed CRL, so the “cryptographic guarantee” that this is the CRL the CA once intended for that manifest holds.  
+         - But this pair may no longer represent the CA’s *current* or *most recent* intent if newer manifests/CRLs exist but are being withheld or have been rolled back in the repository.  
+      4. The statement that the hash “provides a cryptographic guarantee on the Certification Authority's intent that this is the most recent CRL” is only true *conditional* on already having correctly identified the truly current manifest; the hash alone does not encode “most recent” semantics, and its protection is orthogonal to freshness.  
+      5. The phrase “removes possible replay vectors” is underspecified: it does not delimit which replay vectors are being claimed as removed (e.g., substitution of an alternate CRL under the same manifest vs. full repository rollback or stale publication). In realistic boundary scenarios (partial or full rollback of a repository snapshot, on-path cache replay, or offline RPs resynchronizing), replay of an older but self-consistent manifest+CRL set is still possible, and the hash does not prevent it.  
+      6. Since the Security Considerations section explicitly attributes stronger replay resistance to the hash than it actually provides in these stale/rollback cases, the text is ambiguous about the remaining replay surface and does not clearly point back to the need for manifestNumber / time-based freshness checks (left to RFC 9286).
+    - ImpactAssessment:  
+      This overbroad security claim risks misleading implementers or operators into overestimating the replay resistance provided purely by the manifest fileList hash and the “current manifest” abstraction. While normative behavior for RPs (manifest handling, freshness checks) is primarily defined in other RFCs, the claim that the hash “removes possible replay vectors” without scoping could encourage implementers to under-appreciate or under-test stale-publication/rollback scenarios, which remain security-relevant boundary cases. Clarifying that the hash removes *some* replay vectors (e.g., CRL substitution under a given manifest) but not repository rollback would make the security posture more accurately specified.
+
+  - Finding-2:
+    - BugType: Underspecification
+    - ShortLabel: Undefined RP behavior when CRL Number extension fails the required checks
+    - BoundaryAxis: Malformed / non-conforming CRL Number (critical flag or out-of-range value)
+    - ExcerptEvidence:  
+      Section 3.1 (second change to RFC 6487 Section 5) says:  
+      “An RPKI CA MUST include exactly two extensions in every CRL that it issues: an Authority Key Identifier (AKI) and a CRL Number. No other CRL extensions are allowed.  
+      -  RPs MUST process the AKI extension.  
+      -  RPs MUST ignore the CRL Number extension except for checking that it is marked as non-critical and contains a non-negative integer less than or equal to 2^159-1.”  
+      Step 5 of the path validation (Section 3.2) refers to “the issuer's current CRL” and adds “The CRL is itself valid…” but does not define validity beyond signature and standard checks.
+    - Reasoning:  
+      1. The normative text for RPs draws a very clear line: they MUST ignore the CRL Number extension *except* for two syntactic constraints: (a) the extension is non-critical and (b) its value is a non-negative integer ≤ 2^159-1.  
+      2. However, the excerpt never states what an RP is required to do if either check fails — e.g.:  
+         - The CRL Number extension is present and marked *critical*.  
+         - The CRL Number value is outside the allowed range or has an invalid encoding.  
+         - The CRL Number extension is missing entirely (despite the CA-side MUST).  
+      3. There are at least two plausible, but incompatible, behaviors RPs might choose in these boundary cases:  
+         - Treat the CRL as invalid / unusable for RPKI validation because it does not conform to the profile.  
+         - Proceed as if the CRL Number extension were simply absent or ignored entirely, relying only on manifest linkage.  
+      4. The existing RFC 6487 text that “No other CRL extensions are allowed” and that CAs “MUST issue certificates and CRLs consistent with this profile” constrains CAs but does not clearly mandate a specific RP action when encountering non-conforming CRLs (malicious or buggy)  . Likewise, the phrase in step 5 that “The CRL is itself valid” is not defined precisely enough in this excerpt to resolve the ambiguity.  
+      5. Because the document explicitly tells RPs to ignore CRL Number semantics, the only remaining normative processing they are required to do on that extension is these sanity checks; but leaving the post-check behavior undefined means that in precisely the exceptional cases where CRLNumber is malformed or mis-profiled, RP behavior can legitimately diverge.
+    - ImpactAssessment:  
+      Divergent RP behavior on malformed or profile-violating CRL Number extensions affects security and robustness in edge scenarios: a compromised or misconfigured CA (or an attacker who can cause malformed CRLs to appear in the repository) could cause some RPs to accept a CRL while others reject it, leading to inconsistent revocation handling. Since these are exactly the kinds of exceptional cases where the ecosystem relies on clear failure semantics, the omission of any normative RP requirement for handling CRL Number check failures is a real boundary-condition underspecification.
+
+- Notes:
+  - Not a bug: The use of the manifest (current manifest + CRLDP) to identify a unique “current CRL” per CA is internally consistent in the excerpt, provided that “current manifest” and its selection rules are imported from RFC 9286 as intended. The potential issues arise not from the uniqueness property, but from (a) replay/rollback of manifest+CRL sets over time, and (b) malformed CRLNumber extensions, which are only partially addressed.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+
+Vector Stores Used: vs_6954b8208e048191882274909a84f96b
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

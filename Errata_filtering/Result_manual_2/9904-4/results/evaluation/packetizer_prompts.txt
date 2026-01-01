@@ -1,0 +1,561 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: >
+    The excerpt defines four IANA registry columns for DNSSEC algorithms, split by role:
+    authoritative servers vs validating resolvers, and “Use” vs “Implement”. It then populates
+    initial values for both DNSKEY algorithms (Table 2) and DS/CDS digest algorithms (Table 3),
+    drawing from RFC 8624 and related documents.
+- OverallAssessment: PlausibleBug
+
+- FindingsOnRoutedIssues:
+  - Issue-1:
+    - RelatedIssueId: "Issue-1"
+    - Assessment: PlausibleBug
+    - BugType: Both
+    - Summary: >
+        There is a tension between how RFC 9904 assigns “MUST NOT” to digest type 0 (“NULL
+        (CDS only)”) for authoritative servers and the earlier RFC 8624 description of this
+        value as a special CDS-only mechanism to signal DS removal at the parent (per RFC 8078).
+        RFC 9904 explicitly scopes the “DNSSEC Delegation” columns to “authoritative servers”,
+        so a literal reading could be taken to forbid authoritative implementations from
+        implementing or using digest type 0 at all, including for CDS, even though its only
+        defined use is precisely in CDS at child authoritative servers. This is not an outright
+        contradiction inside RFC 9904 itself, but the actor scoping and the combination of
+        “CDS only” with four “MUST NOT” values create an ambiguous and potentially conflicting
+        set of instructions for authoritative server roles.
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9904 §2.1: “Use for DNSSEC Delegation: Indicates the recommendation for using the algorithm within authoritative servers.”
+        - RFC 9904 §2.1: “Implement for DNSSEC Delegation: Indicates the recommendation for implementing the algorithm within authoritative servers.”
+        - RFC 9904 Table 3 (Value 0): “NULL (CDS only) | Use DNSSEC Delegation: MUST NOT | Use DNSSEC Validation: MUST NOT | Implement for DNSSEC Delegation: MUST NOT | Implement for DNSSEC Validation: MUST NOT”
+        - RFC 8624 §3.3: Table row for 0 “NULL (CDS only)” with “MUST NOT [*] / MUST NOT [*]” and footnote: “This is a special type of CDS record signaling removal of DS at the parent in [RFC8078].  NULL is a special case; see [RFC8078].”
+      - Reasoning: >
+          From an actor/direction standpoint, RFC 9904 makes the column semantics explicit:
+          “Use for DNSSEC Delegation” and “Implement for DNSSEC Delegation” both apply
+          “within authoritative servers” (§2.1), without distinguishing parent vs child or DS vs CDS RRTYPEs. In Table 3, digest value 0 is labeled “NULL (CDS only)” but gets “MUST NOT”
+          in all four columns, including both “Use” and “Implement” for DNSSEC Delegation
+          (authoritative servers).  
+
+          RFC 8624, which 9904 claims to be transcribing, explicitly states that value 0 is a
+          “special type of CDS record signaling removal of DS at the parent” and “NULL is a
+          special case; see [RFC8078].” That description implies there is a legitimate use of
+          digest type 0 by child authoritative servers when publishing CDS records to trigger
+          DS removal.  
+
+          If implementers follow RFC 9904’s clarified column semantics naively, they may
+          conclude that *authoritative servers MUST NOT implement or use digest type 0 at all*
+          in any delegation-related context, which would effectively preclude the CDS-based DS
+          removal mechanism that is described in 8624’s footnote and RFC 8078. On the other
+          hand, one can salvage a reading where “DNSSEC Delegation” is implicitly scoped only
+          to DS RRs in the parent, with CDS semantics left to RFC 8078; in that reading, the
+          “MUST NOT” only forbids DS use, not CDS use. Because RFC 9904 does not restate the
+          CDS special-case note and its column definitions explicitly cover all authoritative
+          use, there is both an inconsistency risk (vs the CDS semantics) and an underspecified
+          actor scope (parent vs child authoritative), but the conflict is not absolutely
+          inescapable. Hence this is best classified as a plausible, rather than conclusively
+          proven, actor/direction bug.
+
+- AdditionalActorIssues:
+  # No additional clear actor/direction issues beyond the routed one
+  # (DNSKEY algorithm rows and validator vs signer recommendations are internally coherent.)
+
+- IfNoActorIssues:
+  - Comment: >
+      Aside from the ambiguity around digest type 0 for CDS/DS and authoritative servers,
+      the rest of the excerpt assigns roles (authoritative vs validating resolvers, signers vs
+      validators, IANA vs implementers) and message/usage directions in a coherent way.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 4 of RFC 9904 defines initial “Use” and “Implement” recommendation values for each digest algorithm in the DNSSEC DS/CDS “Digest Algorithms” IANA registry, via four new columns that give guidance to authoritative servers and validators. These recommendations are said to be transcribed from RFC 8624 and intended to become the canonical, registry-based algorithm policy. The handling of digest algorithm 0 (“NULL (CDS only)”) is where the main scope question arises.
+
+- ScopeModel:
+  - Targets:
+    - Entries in the IANA “Digest Algorithms” registry under the “DNSSEC Delegation Signer (DS) Resource Record (RR) Type Digest Algorithms” registry group (values 0–6 in Table 3 of RFC 9904).
+    - Four recommendation columns for each digest type:
+      - “Use for DNSSEC Delegation” – algorithms “within authoritative servers”.
+      - “Use for DNSSEC Validation” – algorithms “in DNSSEC validators”.
+      - “Implement for DNSSEC Delegation” – algorithms “within authoritative servers”.
+      - “Implement for DNSSEC Validation” – algorithms “within validating resolvers”.
+    - For digest value 0 specifically: the registry row “0 / NULL (CDS only)” with all four columns set to “MUST NOT”.
+    - DNSSEC authoritative servers on both parent and child sides of a delegation (since CDS RRs live at the child and DS RRs at the parent, but both are served authoritatively).
+    - DNSSEC validators (recursive resolvers), which consume DS RRs but not CDS RRs.
+  - Conditions:
+    - RFC 9904 states that the “Implement for” column values are “transcribed from [RFC8624]” and that “Use for” is initially set equal to “Implement for”.
+    - RFC 8624 §3.3’s DS digest table explicitly states: “These recommendations also apply to the Child Delegation Signer (CDS) RRTYPE as specified in [RFC7344].” and lists number 0 “NULL (CDS only)” with “MUST NOT [*]” for both “DNSSEC Delegation” and “DNSSEC Validation”, with a footnote: “This is a special type of CDS record signaling removal of DS at the parent in [RFC8078].” and “NULL is a special case; see [RFC8078].”
+    - RFC 9904 does not restate that its “DNSSEC Delegation” recommendations also apply to CDS, nor does it carry forward the special-case CDS footnote for value 0.
+    - Column descriptions for “DNSSEC Delegation” in RFC 9904 are given purely in terms of authoritative servers, without distinguishing DS vs CDS RRTYPE: “Indicates the recommendation for using the algorithm within authoritative servers” and “for implementing the algorithm within authoritative servers”.
+  - NotedAmbiguities:
+    - Whether “Use/Implement for DNSSEC Delegation” in the Digest Algorithms registry are meant to apply only to DS RRs at the parent, or also to CDS RRs at the child (as RFC 8624 explicitly did).
+    - How to reconcile “MUST NOT” for “Use/Implement for DNSSEC Delegation” for digest 0 with its description “NULL (CDS only)” and its documented special use in CDS records to signal DS removal per RFC 8078.
+    - Whether the absence of an RFC 8624-style footnote in RFC 9904 means that the special CDS signaling use is outside the scope of these columns, or is unintentionally being proscribed as well.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Mis-scoped “MUST NOT” recommendations for digest 0 (NULL) relative to its special CDS-only use
+    - ScopeProblemType: Ambiguous / overly broad scope of “DNSSEC Delegation” columns for digest type 0, and loss of explicit CDS exception carried in RFC 8624
+    - Evidence:
+      - RFC 9904 defines for the Digest Algorithms registry the columns “Use for DNSSEC Delegation” and “Implement for DNSSEC Delegation”, saying they indicate, respectively, the recommendation “for using the algorithm within authoritative servers” and “for implementing the algorithm within authoritative servers”.
+      - Table 3 in RFC 9904 shows for value 0, description “NULL (CDS only)”, and sets all four columns (both “Use for …” and both “Implement for …”) to “MUST NOT”.
+      - RFC 9904 states that the “Implement for” column values are transcribed from RFC 8624, and “Use for” is initially equal to “Implement for”.
+      - RFC 8624 §3.3 states that its DS digest algorithm recommendations “also apply to the Child Delegation Signer (CDS) RRTYPE as specified in [RFC7344]” and lists digest 0 “NULL (CDS only)” as MUST NOT for both Delegation and Validation, but with a footnote: “This is a special type of CDS record signaling removal of DS at the parent in [RFC8078]. NULL is a special case; see [RFC8078].”
+    - DetailedReasoning:
+      1. RFC 9904’s column descriptions for the Digest Algorithms registry define “Use for DNSSEC Delegation” and “Implement for DNSSEC Delegation” in terms of usage and implementation “within authoritative servers”, without limiting this to a particular RR type (DS vs CDS) or to the parental side of the delegation.
+      2. In practice, authoritative servers participate in DNSSEC delegation with both DS RRs (published by the parent) and CDS RRs (published by the child); RFC 8624 explicitly scoped its DS digest recommendations to “also apply to the Child Delegation Signer (CDS) RRTYPE”.
+      3. In RFC 8624, digest 0 is designated “NULL (CDS only)” and still marked MUST NOT for Delegation/Validation, but critically a footnote clarifies that this value is “a special type of CDS record signaling removal of DS at the parent in [RFC8078]” and that “NULL is a special case; see [RFC8078].” This makes clear that the general “MUST NOT” judgment is about ordinary DS/CDS cryptographic use, while leaving a narrow but important CDS signaling use explicitly in scope.
+      4. RFC 9904 copies the numeric recommendation levels into the registry (and describes them as “transcribed from [RFC8624]”) and labels value 0 as “NULL (CDS only)”, but it omits the explanatory footnote and any mention that these Delegation recommendations also apply to CDS. As a result, an implementer consulting only the registry (as intended by RFC 9904’s “canonical status” move) will see “MUST NOT” under “Implement for DNSSEC Delegation” and “Use for DNSSEC Delegation” for digest 0, apparently as an unconditional prohibition even on CDS use.
+      5. If “DNSSEC Delegation” is interpreted, consistently with RFC 8624, as covering both DS and CDS RRs, these MUST NOT entries read as forbidding authoritative implementations from implementing or using digest 0 in *any* delegation context, including the CDS mechanism defined in RFC 8078. That would directly contradict the standardized CDS signaling mechanism, which relies on authoritative child software being able to generate digest-type-0 CDS records and on parental systems being able to consume them to remove DS records.
+      6. Conversely, if an implementer tries to avoid this conflict by interpreting RFC 9904’s “DNSSEC Delegation” columns as applying only to DS RRs, not CDS, then the document silently narrows the scope relative to RFC 8624 §3.3, which said its delegation digest recommendations “also apply to the … CDS RRTYPE”. In that reading, the new canonical registry-based recommendations would cover DS but leave CDS algorithm usage underspecified, which is at odds with the stated intent that RFC 9904 moves the canonical status of the algorithms (rather than changing their applicability domain).
+      7. The presence of the text “NULL (CDS only)” in the Description column of Table 3 without the explanatory footnote further blurs the scope: it flags that this digest is only meaningful for CDS, while every Delegation column simultaneously states “MUST NOT”, with no explicit carve-out for the very CDS-only usage that justified allocating value 0 in the first place.
+      8. In operational terms, a strict reading of RFC 9904’s table in isolation could lead implementers or operators to conclude that they must not implement or deploy the digest 0 CDS signaling mechanism at all, undermining automated DS removal as specified in RFC 8078. Equally, different implementers may resolve the ambiguity in different ways (DS-only vs DS+CDS scope), leading to inconsistent behavior and interoperability surprises.
+      9. Because the problem arises from both a mismatch against the earlier, more precisely scoped RFC 8624 text (inconsistency of implied scope) and the loss of an essential scoping qualifier for a special-case algorithm (underspecification of when the “MUST NOT” does or does not apply), this is best characterized as a mix of Inconsistency and Underspecification.
+      10. A likely repair would be to add explicit registry notes clarifying that: (a) the Delegation recommendations apply to both DS and CDS RRs; (b) for digest 0, the “MUST NOT” values apply to ordinary cryptographic use and to DS RRs, but *do not* deprecate its defined special-use CDS signaling semantics from RFC 8078; or, alternatively, to scope the Delegation columns explicitly to DS RRs while adding parallel text in RFC 9904 (or the registry) preserving the CDS-specific guidance from RFC 8624.
+
+- ResidualUncertainties:
+  - The exact intended relationship between RFC 9904 and RFC 8624 for CDS-specific guidance is not spelled out: RFC 9904 says it moves “canonical status” to the registries and transcribes values from RFC 8624, but it does not explicitly say whether all of RFC 8624’s narrative guidance (including CDS applicability and the NULL special case) remains authoritative alongside the registry. Clarifying that relationship in an update or erratum would help resolve the ambiguity.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following RFC 9904 literally does not break DNSSEC validation or DS processing, but it does create a real risk that some implementers will think they are *forbidden* from implementing the standardized CDS “NULL” mechanism (digest type 0 from RFC 8078) and therefore silently drop support for automated DS removal. That’s not a cryptographic or state-machine failure, but it is a cross-RFC ambiguity that can impair an existing mechanism.
+
+---
+
+2. **Causal Analysis**
+
+**What 9904 actually says for digest type 0**
+
+In Table 3 of RFC 9904 (Digest Algorithms registry):
+
+- Value 0 is labeled: `NULL (CDS only)`.
+- The recommendation values are:
+
+  - Use for DNSSEC Delegation: **MUST NOT**
+  - Use for DNSSEC Validation: **MUST NOT**
+  - Implement for DNSSEC Delegation: **MUST NOT**
+  - Implement for DNSSEC Validation: **MUST NOT**
+
+Section 2.1 defines the column meanings for the *Digest Algorithms* registry:
+
+- **Use for DNSSEC Delegation**: “Indicates the recommendation for using the algorithm within authoritative servers.”
+- **Implement for DNSSEC Delegation**: “Indicates the recommendation for implementing the algorithm within authoritative servers.”
+- **Use/Implement for DNSSEC Validation**: recommendations for DNSSEC validators.
+
+So, read literally and in isolation, the table says:
+
+- Authoritative servers MUST NOT implement digest type 0.
+- Authoritative servers MUST NOT *use* digest type 0.
+- Validators MUST NOT implement or use digest type 0.
+
+**What earlier specs say**
+
+From RFC 8624 §3.3, which 9904 claims to be transcribing:
+
+- Digest 0: `NULL (CDS only)` with:
+
+  - DNSSEC Delegation: **MUST NOT [*]**
+  - DNSSEC Validation: **MUST NOT [*]**
+
+- With a footnote:
+
+  - “[*] – This is a special type of CDS record signaling removal of DS at the parent in [RFC8078].”
+  - “NULL is a special case; see [RFC8078].”
+
+So 8624 already had the tension: the table says MUST NOT, but the footnote carves out a special CDS-only use for DS removal signaling.
+
+RFC 8078 (not quoted here, but standard behavior) defines:
+
+- Digest type 0 in CDS as a **standardized mechanism**:
+  - A CDS RR with digest type 0 (“NULL”) is a signal to the parent that existing DS records should be removed.
+- This use is **only** for CDS, not for DS RRs themselves.
+
+**How 9904 changes the picture**
+
+- 9904’s Table 3 adds the new “Use for / Implement for DNSSEC Delegation/Validation” columns to the *DS Digest Algorithms* registry and populates them.
+- It explicitly says the values in the “Implement for” columns are transcribed from RFC 8624, and “Use for” is set to the same values.
+- But 9904 **does not reproduce** 8624’s explanatory footnote about CDS/NULL and does not mention RFC 8078 at all.
+- All 4 columns for value 0 are simply “MUST NOT”.
+
+The only remaining hint of the CDS semantics is in the *Description* field: `NULL (CDS only)`.
+
+**Concrete behavior if an implementer follows 9904 “literally”**
+
+Consider an authoritative server implementer who:
+
+- Uses 9904 as the current, canonical algorithm recommendation document (which is its stated purpose).
+- Reads §2.1 (columns for Digest Algorithms) and Table 3, but does *not* recall or cross-check the older 8624 + 8078 CDS special case.
+
+They can reasonably conclude:
+
+- Digest type 0 is an algorithm that:
+  - MUST NOT be implemented in authoritative servers (Implement for DNSSEC Delegation = MUST NOT).
+  - MUST NOT be used in any DNSSEC delegation-related function running on an authoritative server (Use for DNSSEC Delegation = MUST NOT).
+- The parenthetical “(CDS only)” in the Description could be taken merely as historical trivia (i.e., it used to be CDS-only before being deprecated), not as permission.
+
+If they act on that:
+
+- Their software will not allow configuration or publication of CDS records using digest type 0.
+- Existing or future operators cannot use the RFC 8078 CDS-NULL mechanism through that implementation.
+- Parent-side automation that expects to see a CDS type 0 from children to trigger DS deletion will never see it (the child cannot publish it), so automated DS removal for zones on that software silently fails; DS removal must be done manually/out-of-band.
+
+This does *not* break DNSSEC validation or the core DS/DNSKEY chain:
+
+- No resolver ever relies on digest type 0 in DS — DS type 0 has always been forbidden.
+- CDS is not a validated component in resolver-side DNSSEC processing; it’s used between child and parent operational tooling.
+
+But it *does* impair an existing standardized automation path:
+
+- Some children (running software that still implements 8078 semantics) will be capable of signaling DS deletion with CDS type 0.
+- Others (running new software that followed RFC 9904 literally and chose to forbid digest 0 entirely) will not.
+- Parents that rely on CDS-NULL for DS removal will see behavior differences depending on the child’s implementation, even when both sides think they’re following current IETF guidance.
+
+So from a causal standpoint:
+
+- RFC 8078 establishes: “If a CDS with digest type 0 appears, it signals DS removal.”
+- RFC 9904’s Table 3, read naively, says: “Authoritative servers MUST NOT implement or use digest type 0 at all.”
+- You *can* technically satisfy both by simply not implementing CDS-NULL in the first place, but then the standardized mechanism from 8078 is effectively disabled for that implementation.
+
+This is not an impossible state machine, but it is a spec layering problem that can cause interoperable, standardized behavior (automatic DS deletion via CDS) to go missing.
+
+---
+
+3. **Problem Classification**
+
+- **Primary**: **Causal Underspecification / Cross-RFC ambiguity**
+  - RFC 9904 never explicitly reconciles its “MUST NOT” values for digest type 0 with the special CDS-only semantics defined in RFC 8078.
+  - The only remnant is the non-normative description string “NULL (CDS only)”, which is easy to misinterpret.
+  - As a result, a careful implementer who bases their implementation decisions on 9904 alone can believe they must *not* implement digest type 0 even for CDS, undermining a standardized mechanism.
+
+- **Not a strong Causal Inconsistency**
+  - It is still possible to build an implementation that complies with both 8078 and 9904 by interpreting:
+    - The table’s “MUST NOT” as applying to **DS RRs** (the registry’s primary scope), and
+    - The “(CDS only)” description as preserving the CDS-NULL special case.
+  - But this reconciliation is not stated; it relies on prior knowledge of 8078 and 8624’s lost footnote.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+A very small, local clarification would remove the ambiguity:
+
+- In §4 (Digest Algorithms Registry Column Values), immediately around the row for value 0, add text such as:
+
+  - “The ‘MUST NOT’ recommendations for value 0 apply to use in DS RRs. Use of digest type 0 (‘NULL’) in CDS RRs as specified in RFC 8078 to signal DS removal is unchanged by this document.”
+
+or
+
+- Restore the RFC 8624 footnote semantics explicitly:
+
+  - “Value 0 (NULL) is a special case used only in CDS RRs to signal removal of DS at the parent, as specified in RFC 8078. It MUST NOT be used in DS RRs and is not used in DNSSEC validation.”
+
+No change to the numeric table entries is required; only the explanatory text needs to clearly scope those “MUST NOT”s to DS, not to CDS.
+
+---
+
+5. **Non-Issues**
+
+- There is no mechanical breakage of DNSSEC validation:
+  - Validators never rely on DS digest type 0; it is effectively unused in DS, as intended.
+- There is no unimplementable state or cryptographic incoherence:
+  - The DS digest computations (SHA-1, SHA-256, SHA-384, GOST variants) are all well defined and consistent with their defining RFCs.
+- The change in DS digest registry policy (from RFC 9157’s RFC Required to RFC 9904’s “Standards Action or Specification Required” split) is operational/IANA process and does not impact protocol execution.
+
+The only substantive, behavior-affecting risk is that implementers may (reasonably) conclude that digest type 0 must not be implemented at all, thereby disabling the CDS-NULL DS-removal mechanism from RFC 8078 in some implementations.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 4 of RFC 9904 defines initial “Use” and “Implement” recommendation values for each DS/CDS digest algorithm in the “Digest Algorithms” IANA registry, by adding four BCP 14‑valued columns and populating them (largely by transcription from RFC 8624). Digest type 0 (“NULL (CDS only)”) is given `MUST NOT` in all four columns, while earlier RFCs treat this value as a special CDS‑only signaling mechanism (per RFC 8078 via RFC 8624). The surrounding text explains the scope of each column and the registration policy for changing values.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+  - Issue-1:
+    - BugType: Both
+    - Title: Digest type 0 (“NULL (CDS only)”) marked MUST NOT in all columns without clearly preserving its standardized CDS-only use
+    - Description: RFC 9904’s Table 3 assigns digest value 0 (“NULL (CDS only)”) `MUST NOT` for “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, and “Implement for DNSSEC Validation”.   Section 2.1 defines the “Delegation” columns as recommendations “for using” and “for implementing the algorithm within authoritative servers”, without carving out an exception for CDS, and 9904 otherwise describes these new IANA columns as the canonical place for algorithm status.   By contrast, RFC 8624 §3.3 gives the same MUST NOT values for digest 0 but explicitly says that the recommendations also apply to the CDS RRTYPE and adds a footnote: “This is a special type of CDS record signaling removal of DS at the parent in [RFC8078]… NULL is a special case; see [RFC8078].”   In 9904, that explanatory footnote is effectively lost, leaving only the parenthetical “NULL (CDS only)” in the Description field and a blanket set of MUST NOTs that, read literally together with §2.1, appear to forbid authoritative implementations from implementing or using digest 0 at all, including in CDS. That creates a latent inconsistency with the earlier, standardized CDS‑only use of digest 0 (as referenced in RFC 8624), and at the same time under‑specifies how the new “Use/Implement … Delegation” columns are meant to interact with that special CDS signaling function. A minimal fix would be to clarify in the text (or via a registry note) that the `MUST NOT` values for digest 0 apply to DS use and to DNSSEC validation, but do not prohibit use of digest type 0 in CDS records as specified by RFC 8078, and/or to explicitly restate (as RFC 8624 does) that NULL is a special CDS‑only case.
+    - KeyTextSnippets:
+      - `|0    |NULL (CDS  |MUST NOT   |MUST NOT   |MUST NOT  | MUST NOT    |`  
+      - `Use for DNSSEC Delegation:  Indicates the recommendation for using the algorithm within authoritative servers.`  
+      - `Implement for DNSSEC Delegation:  Indicates the recommendation for implementing the algorithm within authoritative servers.`  
+      - `The following table lists the recommendations for Delegation Signer Digest Algorithms... These recommendations also apply to the Child Delegation Signer (CDS) RRTYPE...` and the row `| 0      | NULL (CDS only) | MUST NOT [*]      | MUST NOT [*]      |` and footnote `[*] - This is a special type of CDS record signaling removal of DS at the parent in [RFC8078].  NULL is a special case; see [RFC8078].`  
+    - Impact: Implementers or operators who treat the 9904/IANA table as the sole normative source and read the “Delegation” columns as covering all authoritative use (including CDS) could conclude that they MUST NOT implement or use digest type 0 even for CDS, thereby conflicting with the established CDS‑only signaling mechanism and breaking interoperability with RFC 8078‑style DS removal workflows. Even cautious implementers are left without clear guidance on how the `MUST NOT` values interact with the “(CDS only)” designation, which can cause inconsistent behavior across authoritative implementations.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: The excerpt defines four new recommendation columns for the DNSSEC algorithm and digest IANA registries, constrains their allowed values, and populates initial values in tabular form for DNSKEY algorithms (Table 2) and DS/ CDS digest algorithms (Table 3), referencing earlier RFCs for the base registry entries.
+- OverallBugLikelihood: None
+
+Issues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: "No structural or syntactic issues detected"
+    - TechnicalExplanation: |
+        I checked the definitions of the four recommendation columns, the constraints on allowed values in Section 2.2, and the populated values in Tables 2 and 3. The tables respect the allowed vocabularies (e.g., no "MUST" in any "Use for" column, only permitted terms in "Implement for" columns), and the digest algorithm rows line up with the underlying registry structure from RFC 4034, RFC 4509, RFC 5933, and RFC 6605.
+
+        For digest type 0 ("NULL (CDS only)"), the row in Table 3 uses only allowed recommendation values and is structurally consistent with the DS Digest Algorithms registry (which originally marked 0 as Reserved) and with RFC 8624’s treatment of digest recommendations. Any tension with RFC 8078 about when implementations should support CDS NULL records is a normative/operational policy issue, not an encoding or grammar conflict.
+
+        Overall, the registries, column definitions, and example tables are internally consistent at the structural and syntactic level, and they do not introduce ambiguities in field sizes, encodings, or permitted value syntax.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9904 Section 4 populates new “Use for …” and “Implement for …” recommendation columns in the IANA “Digest Algorithms” registry for DS/CDS, claiming to base the initial values on RFC 8624’s DS/CDS algorithm guidance and on earlier defining RFCs for the digest codepoints. The key cross-RFC question is whether those new recommendation values, especially for digest type 0 (“NULL (CDS only)”), remain consistent with RFC 8624’s CDS semantics (and its reference to RFC 8078) and with the DS digest registry’s intended scope.
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Digest type 0 “NULL (CDS only)” conflicts with CDS usage from RFC 8624 / RFC 8078
+    - Description:  
+      RFC 8624 §3.3 defines digest value 0 as “NULL (CDS only)” and gives it “MUST NOT [*]” for both “DNSSEC Delegation” and “DNSSEC Validation”, but with a crucial footnote: it is “a special type of CDS record signaling removal of DS at the parent in [RFC8078]” and “NULL is a special case; see [RFC8078].” This makes clear that the “MUST NOT” is about use in DS records / DS validation, *not* a prohibition on implementing or using digest type 0 in CDS for its special “remove DS” signaling role. RFC 9904’s Table 3, however, assigns digest value 0 (“NULL (CDS only)”) a recommendation of `MUST NOT` in *all four* new columns: “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, and “Implement for DNSSEC Validation.” Section 2.1 defines the “Delegation” columns as recommendations for use and implementation “within authoritative servers”, and 9904 elsewhere says that the “Implement for” values are transcribed from RFC 8624 and that “Use for” is initially set equal to “Implement for.” Because 8624 explicitly states that its recommendations “also apply to the Child Delegation Signer (CDS) RRTYPE” and then carves out a special CDS-only use for digest 0 via the footnote, a literal reading of 9904 in isolation can lead an implementer to conclude that authoritative software MUST NOT implement or use digest type 0 *even in CDS*, in tension with RFC 8624’s and RFC 8078’s intended semantics for the same codepoint. Conversely, an implementer following RFC 8078 (as referenced by RFC 8624) will support and use digest type 0 in CDS to request DS removal, while another implementer following RFC 9904’s table literally may refuse to implement or use that value at all, causing operational non‑interoperability in CDS‑based DS management. The bug thus has two aspects: (1) a normative inconsistency between the blanket `MUST NOT` recommendations in RFC 9904 and the CDS-specific usage mandated by the RFC 8624/RFC 8078 combination, and (2) underspecification in RFC 9904, which repeats the “NULL (CDS only)” description but omits any explicit reference back to the special CDS semantics, thereby failing to clarify that the `MUST NOT` values do *not* prohibit implementing and using digest 0 for CDS removal signaling.
+    - EntitiesInvolved: [
+        "RFC 9904 Section 2.1 (definitions of Digest Algorithms registry columns)",
+        "RFC 9904 Section 4 Table 3 (digest algorithm values, especially value 0)",
+        "IANA 'DNSSEC Delegation Signer (DS) Resource Record (RR) Type Digest Algorithms' registry",
+        "RFC 8624 Section 3.3 table and footnote for value 0 (NULL (CDS only))",
+        "RFC 8078 CDS NULL digest semantics (as referenced by RFC 8624)",
+      ]
+    - CrossRefsUsed: [
+        "RFC 9904 Section 2.1 and 2.2 describing column meanings and initial population rules",
+        "RFC 9904 Section 4 Table 3 row for value 0 (NULL (CDS only))",
+        "RFC 8624 Section 3.3 table for DS/CDS algorithms and its footnote pointing to RFC 8078",
+      ]
+    - Confidence: High
+- IfNoIssues:
+  - Comment: Not applicable, as there is a high-likelihood cross-RFC/registry issue centered on digest algorithm 0 and its CDS-only usage semantics.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: None
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Severity: Low
+    - ShortLabel: Terminology for Digest Algorithms registry and columns is consistent with earlier RFCs
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9904, Table 1 (new registry columns):  
+          `"Digest Algorithms" | Use for DNSSEC Delegation` / `Use for DNSSEC Validation` / `Implement for DNSSEC Delegation` / `Implement for DNSSEC Validation`
+        - RFC 9904, Section 2.1 (column descriptions for Digest Algorithms):  
+          `Use for DNSSEC Delegation: Indicates the recommendation for using the algorithm within authoritative servers.`  
+          `Use for DNSSEC Validation: Indicates the recommendation for using the algorithm in DNSSEC validators.`  
+          `Implement for DNSSEC Delegation: Indicates the recommendation for implementing the algorithm within authoritative servers.`  
+          `Implement for DNSSEC Validation: Indicates the recommendation for implementing the algorithm within validating resolvers.`
+        - RFC 9904, Section 4 (Table 3 header):  
+          `Value | Description | Use for DNSSEC Delegation | Use for DNSSEC Validation | Implement for DNSSEC Delegation | Implement for DNSSEC Validation`
+        - RFC 9904, Section 4, Table 3 entries (algorithm names and values):  
+          `0 | NULL (CDS only)`  
+          `1 | SHA-1`  
+          `2 | SHA-256`  
+          `3 | GOST R 34.11-94`  
+          `4 | SHA-384`  
+          `5 | GOST R 34.11-2012`  
+          `6 | SM3`
+        - RFC 9904, Section 4 preamble:  
+          `Initial values for the use and implementation recommendation columns in the "Digest Algorithms" registry under the "DNSSEC Delegation Signer (DS) Resource Record (RR) Type Digest Algorithms" registry group are shown in Table 3.`
+      - ContextSnippets:
+        - RFC 4034, Appendix A.2 title and description:  
+          `DNSSEC Digest Types` and `A "Digest Type" field in the DS resource record types identifies the cryptographic digest algorithm...` with table entries including `1 SHA-1`.
+        - RFC 4509, Section 2:  
+          `digest type code 2 has been assigned to SHA-256 ... for use within DS records.`
+        - RFC 5933, Section 4:  
+          `The GOST R 34.11-94 digest algorithm is denoted in DS RRs by the digest type 3.`
+        - RFC 6605, Section 2 and Section 7:  
+          `SHA-384 ... the digest type code is 4.` and IANA entry: `Value 4, Digest Type SHA-384` in the `"Delegation Signer (DS) Resource Record (RR) Type Digest Algorithms"` registry.
+        - RFC 8624, Section 3.3 table:  
+          `Number | Mnemonics | DNSSEC Delegation | DNSSEC Validation` with rows  
+          `0 | NULL (CDS only) | MUST NOT [*] | MUST NOT [*]`  
+          `1 | SHA-1 | MUST NOT | MUST`  
+          `2 | SHA-256 | MUST | MUST`  
+          `3 | GOST R 34.11-94 | MUST NOT | MAY`  
+          `4 | SHA-384 | MAY | RECOMMENDED`  
+          and text: `These recommendations also apply to the Child Delegation Signer (CDS) RRTYPE as specified in [RFC7344].`
+        - RFC 9157, Section 4:  
+          `In the "DNSSEC Delegation Signer (DS) Resource Record (RR) Type Digest Algorithms" registry, the registration procedure for "Digest Algorithms" has been changed from "Standards Action" to "RFC Required"...`
+    - Reasoning:
+      - Registry naming:  
+        RFC 4034 originally describes “DNSSEC Digest Types” but already explains that the field identifies a “cryptographic digest algorithm”. RFC 6605 explicitly states that the relevant IANA registry is *currently called* `"Delegation Signer (DS) Resource Record (RR) Type Digest Algorithms"`, which matches the registry group name used in RFC 9904 Section 4. There is no conflicting registry name (e.g., no mix‑up between multiple different registries); the variation “Digest Types” vs. “Digest Algorithms” is historical and already reconciled by RFC 6605.
+      - Column naming and use between RFC 8624 and RFC 9904:  
+        RFC 8624 defines a table for DS digest algorithms with columns “DNSSEC Delegation” and “DNSSEC Validation” and explicitly says that those recommendations *also* apply to CDS. RFC 9904 creates IANA registry columns named “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, and “Implement for DNSSEC Validation” for the same digest‑algorithm registry and then populates them in Table 3. The column names in RFC 9904 are a straightforward, consistent refinement of the RFC 8624 terminology for use and implementation recommendations. There is no change of meaning in the names themselves; they merely distinguish “Use for” vs. “Implement for”, as already described generically in Section 2.1.
+      - Algorithm names and numbers:  
+        For digest types 1–4, the names in RFC 9904 Table 3 (“SHA-1”, “SHA-256”, “GOST R 34.11-94”, “SHA-384”) line up exactly with the defining RFCs (4034, 4509, 5933, 6605). The value 0 description “NULL (CDS only)” is inherited verbatim from RFC 8624’s “Mnemonics” column and correctly indicates the special CDS‑only semantics. The new entries 5 “GOST R 34.11‑2012” and 6 “SM3” match the names in the IANA registry (per RFCs not included here but referenced by 9904/IANA) and do not conflict with any earlier terminology in the provided context.
+      - Potential confusions considered but rejected as bugs:
+        - The phrase “Use for DNSSEC Delegation” could, in principle, be misread as *excluding* CDS, while RFC 8624 states the recommendations apply to CDS as well. However, RFC 9904 simply defines IANA columns for the existing DS digest registry; it does not re‑define the scope of “DNSSEC Delegation”. The table values for digest types 1–4 match RFC 8624 one‑for‑one, so a careful reader will see that RFC 8624’s “DS and CDS” interpretation still governs; there is no *terminology* contradiction introduced by 9904.
+        - The row for `0 | NULL (CDS only)` being “MUST NOT” for all four columns could look, at first glance, like “do not implement NULL even for CDS”. But the descriptor “(CDS only)” and the prior explanation in RFC 8624 (footnote about the special CDS record that signals DS removal) make this clearly a special case for the registry entry rather than an outright prohibition of the CDS mechanism. This is a subtle semantic topic, but not a naming/labeling inconsistency in 9904 itself.
+        - For digest columns, RFC 9904 does not separately restate the constraint on allowed BCP 14 values (MAY/RECOMMENDED/MUST/MUST NOT/NOT RECOMMENDED) the way it does for the DNSKEY algorithm columns. That is a small *procedural* or *normative‑scope* gap, but not a misnaming of any term or field; the column labels themselves remain unambiguous.
+      - Because the registry name, column names, and algorithm mnemonics are all consistent with the referenced RFCs and IANA’s terminology, and any potential confusion stems from underlying semantics rather than incorrect or conflicting names, there is no concrete terminology/naming defect that would justify an erratum.
+    - PatchSuggestion:
+      - None.
+
+- Notes:
+  - UsedRouterIssues: Considered the router’s concern about interaction of “DNSSEC Delegation”, “Validation”, and “NULL (CDS only)”; concluded that while the semantics around CDS are subtle, RFC 9904 does not introduce a terminology inconsistency relative to RFC 8624 and the defining algorithm RFCs.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - The provided context does not include the full text of the RFCs that define digest types 5 (GOST R 34.11‑2012) and 6 (SM3), so confirmation that those names exactly match their defining documents relies on IANA conventions and general knowledge rather than direct excerpts. However, no conflict with any *other* names in the supplied text is evident, so this does not affect the conclusion about terminology consistency in RFC 9904 Section 4.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: This excerpt defines new “Use” and “Implement” recommendation columns for DNSSEC algorithm registries (DNSKEY and DS/CDS digest algorithms), then gives the initial values that populate those columns. For the “Digest Algorithms” registry, it assigns values like MUST/MUST NOT/RECOMMENDED/MAY for each digest type (0–6), separately for delegation (authoritative servers) and validation (validators). Digest type 0 (“NULL (CDS only)”) is a special, non-cryptographic value used only in CDS for signaling DS removal (per RFC 8078, via RFC 8624’s footnote).
+
+- OverallBoundaryBugLikelihood: Low
+
+- Findings:
+  - Finding-1:
+    - BugType: None
+    - ShortLabel: NULL digest type 0 vs CDS-only semantics
+    - BoundaryAxis: Special sentinel value (digest type 0) with non-cryptographic, CDS-only semantics
+    - ExcerptEvidence:
+      - RFC 9904 Table 3 gives for value 0 “NULL (CDS only)” and sets all four columns to MUST NOT: “Use for DNSSEC Delegation: MUST NOT”, “Use for DNSSEC Validation: MUST NOT”, “Implement for DNSSEC Delegation: MUST NOT”, “Implement for DNSSEC Validation: MUST NOT”.
+      - Section 2.1 says these columns for the Digest Algorithms registry are recommendations “for using the algorithm within authoritative servers” and “within validating resolvers”.
+      - Section 2.2 says the “Implement for” values are transcribed from RFC 8624, which had number 0 “NULL (CDS only)” with “MUST NOT [*] / MUST NOT [*]” and a footnote: “This is a special type of CDS record signaling removal of DS at the parent in [RFC8078].”
+    - Reasoning:
+      - Digest type 0 is a clear exceptional/sentinel value: it is not a real digest algorithm, and RFC 8624 explicitly ties it to the special CDS signaling semantics in RFC 8078, not to normal DS/CDS cryptographic validation.
+      - RFC 9904 copies the RFC 8624 recommendation levels (MUST NOT/MUST NOT) into more finely distinguished “Use” vs “Implement” columns and keeps the description “NULL (CDS only)”, but does not copy the explanatory footnote about RFC 8078’s CDS-removal mechanism.
+      - At first glance, “Implement for DNSSEC Delegation: MUST NOT” could be read as a prohibition on authoritative software supporting digest type 0 at all, which might look to conflict with the RFC 8078 mechanism where a child publishes CDS(0, NULL) to request DS removal.
+      - However, the scope of these columns is narrowly defined: they concern “using the algorithm within authoritative servers” and “within validating resolvers” for DNSSEC *cryptographic* delegation and validation. Digest type 0 is *not* a cryptographic digest algorithm and is not used to validate a chain of trust; RFC 8078’s CDS(0) is a control-plane signal for parental agents, not a DNSSEC validation step.
+      - An authoritative server that simply stores and serves arbitrary CDS RRs (including type 0) is not “implementing” a digest algorithm in the sense these columns are about; similarly, a parental agent that recognizes CDS type 0 as a delete request is not using digest type 0 to validate DNSSEC signatures. So the statement “MUST NOT implement [0] for DNSSEC Delegation/Validation” is naturally read as “MUST NOT use 0 as a DNSSEC digest algorithm,” which is entirely consistent with both RFC 8624 and RFC 8078.
+      - The description text “NULL (CDS only)” plus the cross-reference to RFC 8624 (which itself references RFC 8078) gives a clear enough indication that 0 has special CDS semantics outside the normal “Use/Implement” scope governed by this registry. An implementation that decides *not* to support CDS(0) after reading this document still remains compliant with RFC 8078, which describes an optional mechanism; it merely omits an optional automation feature, not a core interoperability requirement.
+    - ImpactAssessment:
+      - The apparent tension is mostly terminological: “MUST NOT implement/use” for digest type 0 in the DNSSEC delegation/validation sense does not actually conflict with its use as a non-cryptographic CDS signal, and does not create undefined behavior for DNSSEC validation. Different implementations can safely choose whether or not to support the optional CDS(0) removal mechanism without breaking DNSSEC interoperability, so this does not rise to a true specification bug.
+
+- Notes:
+  - Not a bug: For other digest types (e.g., 1 = SHA-1, 2 = SHA-256), the boundary behavior between “Use” and “Implement” is consistent with RFC 8624’s guidance: SHA-1 is MUST for validation but MUST NOT for new delegation, SHA-256 is MUST to implement and RECOMMENDED to use, and SHA-384 is MAY/RECOMMENDED as a higher-strength alternative. The rule that “Use for” is RECOMMENDED when “Implement for” is MUST is applied consistently, including in Table 3.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+
+Vector Stores Used: vs_6954b396867881918c52be4a34d151ab
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

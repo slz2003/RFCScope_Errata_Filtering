@@ -1,0 +1,148 @@
+# Errata Reports
+
+Total reports: 3
+
+---
+
+## Report 1: 9859-2-1
+
+**Label:** Ambiguous DSYNC Port Field Bit‐Width: 16-bit vs 8-bit Conflict
+
+**Bug Type:** Inconsistency
+
+**Explanation:**
+
+The DSYNC specification defines the Port field as a 16-bit unsigned integer in the text, but the wire-format diagram allocates only 8 bits for the Port field, creating an ambiguity that can lead to misinterpretation of the subsequent Target field.
+
+**Justification:**
+
+- The diagram (Figure 1) shows a single 32-bit row for RRtype, Scheme, and Port, implying that after 16 bits for RRtype and 8 bits for Scheme only 8 bits remain for Port.
+- In contrast, the prose explicitly states that the Port field is a 16-bit unsigned integer in network byte order, which would require 2 octets and shift the start of the Target field.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  Figure 1 shows a single 32‑bit row labeled “| RRtype | Scheme | Port” before “Target ...” starts on the next line.
+
+- **E2:**
+
+  The Scheme description: “This is an 8‑bit unsigned integer.”
+
+- **E3:**
+
+  The Port description: “This is a 16‑bit unsigned integer in network byte order. Records with value 0 are ignored by consumers.”
+
+**Evidence Summary:**
+
+- (E1) The diagram allocates only one 32-bit row for RRtype, Scheme, and Port.
+- (E2) The Scheme field is defined as 8 bits.
+- (E3) The Port field is defined as 16 bits in the text.
+
+**Fix Direction:**
+
+Revise Figure 1 so that it clearly allocates 16 bits (2 octets) to the Port field, for example by splitting its representation over two rows or explicitly marking the bit allocation, to match the textual definition.
+
+**Severity:** High
+  *Basis:* This discrepancy affects the fundamental layout of the DSYNC RDATA, potentially leading to misalignment and non-interoperable implementations.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Scope Expert: Issue-1
+- Causal Expert
+- Quantitative Expert: Issue-1
+- Structural Expert: Issue-1
+
+---
+
+## Report 2: 9859-2-2
+
+**Label:** Ambiguous DSYNC Scheme Registry Scope: Global vs. Per-RRtype
+
+**Bug Type:** Inconsistency
+
+**Explanation:**
+
+The registry for DSYNC schemes mixes blank RRtype entries with specific RRtype entries, causing uncertainty about whether scheme values should be considered globally or in association with particular RRtypes.
+
+**Justification:**
+
+- Section 2.1 defines the scheme as an 8-bit value and directs readers to the registry in Section 6.2, while Section 2.3 asserts that schemes are independent of RRtype.
+- The registry table in Section 6.2 contains both entries with a blank RRtype and entries tied to specific RRtypes (e.g., CDS and CSYNC), making the intended scoping ambiguous.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  Section 2.1: “Scheme: The mode used for contacting the desired notification address. This is an 8-bit unsigned integer. Records with value 0 (null scheme) are ignored by consumers. Value 1 is described in this document, and values 128-255 are Reserved for Private Use. Other values are currently unassigned. Future assignments are maintained in the registry created in Section 6.2.”
+
+- **E2:**
+
+  Section 2.3: “Schemes are independent of the RRtype. They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).”
+
+- **E3:**
+
+  Section 6.2 table: rows with blank RRtype for Scheme 0 (“Null scheme (no-op)”), for “2-127 Unassigned”, and for “128-255 Reserved for Private Use,” alongside rows for (RRtype=CDS, Scheme=1) and (RRtype=CSYNC, Scheme=1).
+
+**Evidence Summary:**
+
+- (E1) establishes the definition of scheme and references the registry.
+- (E2) states that schemes are independent of the RRtype.
+- (E3) shows the registry table mixing blank and specific RRtype entries.
+
+**Fix Direction:**
+
+Clarify the registry design by explicitly stating whether scheme values are global or specific to an RRtype, and define the interpretation of blank RRtype entries.
+
+**Severity:** Medium
+  *Basis:* While this ambiguity may not immediately affect wire-format parsing, it can lead to inconsistent registrations and differing interpretations among implementers.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Scope Expert: Issue-2
+
+---
+
+## Report 3: 9859-2-3
+
+**Label:** Underspecified DSYNC RRtype Handling for Unsupported Values
+
+**Bug Type:** Underspecification
+
+**Explanation:**
+
+The document states that only CDS and CSYNC are supported DSYNC RRtype values, but it does not specify how consumers should handle DSYNC records with any other RRtype values.
+
+**Justification:**
+
+- The text indicates “for now, only CDS and CSYNC are supported values” without providing normative guidance on how to process records that use other RRtype values.
+- This lack of specification can lead to inconsistent behavior among implementations when encountering such DSYNC records.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  The text says “for now, only CDS and CSYNC are supported values” for the DSYNC RRtype field but does not normatively state what consumers must do if they encounter a DSYNC RR whose RRtype field is another value (ignore, treat as error, etc.).
+
+**Evidence Summary:**
+
+- (E1) The specification does not define consumer behavior for DSYNC records with RRtype values other than CDS or CSYNC.
+
+**Fix Direction:**
+
+Define normative behavior for DSYNC records whose RRtype is not CDS or CSYNC, for example by specifying that such records should be ignored or trigger an error.
+
+**Severity:** Low
+  *Basis:* This underspecification primarily affects error handling in edge cases and is less likely to cause broad interoperability failures.
+
+**Confidence:** Medium
+
+**Experts mentioning this issue:**
+
+- Scope Expert: ResidualUncertainty
+
+---

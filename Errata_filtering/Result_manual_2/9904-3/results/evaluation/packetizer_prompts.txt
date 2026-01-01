@@ -1,0 +1,251 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 3 of RFC 9904 populates the new “Use for …” and “Implement for …” columns in the “DNS Security Algorithm Numbers” registry with initial values, by mapping the DNSKEY algorithm requirement levels from RFC 8624 and extending them to a few additional algorithms. The surrounding sections define the semantics and allowed values of these columns and the IANA procedures for adding/changing entries.
+
+- ScopeModel:
+  - Targets:
+    - Entries in the IANA “DNS Security Algorithm Numbers” registry (“Domain Name System Security (DNSSEC) Algorithm Numbers” registry group), i.e., all algorithm numbers in that registry, some of which are DNSSEC zone-signing algorithms and some of which are transaction-security-only or reserved values    .
+    - The four new columns added to that registry:
+      - “Use for DNSSEC Signing” (authoritative DNSSEC signers)    
+      - “Use for DNSSEC Validation” (DNSSEC validators)    
+      - “Implement for DNSSEC Signing” (DNSSEC signing software)    
+      - “Implement for DNSSEC Validation” (DNSSEC validators)  .
+    - Specific algorithm numbers listed in Table 2 (1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16, 17, 23, 253, 254) for which explicit initial column values are given  .
+  - Conditions:
+    - The BCP 14 keywords in the document (and thus in the table entries) are normative when in all capitals  .
+    - Only “MAY”, “RECOMMENDED”, “MUST NOT”, “NOT RECOMMENDED” are allowed for the two “Use for …” columns, and only “MAY”, “RECOMMENDED”, “MUST”, “MUST NOT”, “NOT RECOMMENDED” for the two “Implement for …” columns  .
+    - New entries with all four columns set to “MAY” may be registered via “Specification Required”; any entry where any of these columns is not “MAY” requires “Standards Action”  .
+    - Historically, per RFC 4034, some algorithm numbers in this registry are usable only for transaction security (SIG(0)/TSIG) and not for DNSSEC zone signing; only those with “Zone Signing” = “y” may appear in DNSKEY, RRSIG, and DS RRs  .
+  - NotedAmbiguities:
+    - Section 3 says “Initial values … are shown in Table 2” for the entire “DNS Security Algorithm Numbers” registry, but Table 2 does not include all existing registry values (e.g., 0, 2, 4, 252, 255, and any newer TSIG‑only/transaction‑only algorithms), and the document does not state how the new columns apply (or do not apply) to those omitted entries    .
+    - The text never explicitly states whether algorithms that are *not* usable for DNSSEC zone signing (e.g., transaction‑security‑only algorithms) are in scope for the “Use for DNSSEC Signing/Validation” and “Implement for DNSSEC Signing/Validation” columns, and if so, what their values must be (e.g., “MUST NOT” vs. left blank).
+    - The interaction between the historical “Zone Signing”/“Trans. Sec.” flags in the registry (described in RFC 4034) and the new “Use/Implement for DNSSEC …” columns is not spelled out, leaving unclear which is authoritative when they appear to conflict in scope    .
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Scope of the new “DNSSEC” columns for non‑DNSSEC and omitted algorithm numbers is undefined
+    - ScopeProblemType: Missing scope specification for registry entries that are not DNSSEC zone-signing algorithms, and incomplete coverage of the registry by Table 2 despite language suggesting full coverage
+    - Evidence:
+      - RFC 4034 notes that the “DNS Security Algorithm Numbers” registry contains algorithms with different usage domains: “Some algorithms are usable only for zone signing (DNSSEC), some only for transaction security mechanisms (SIG(0) and TSIG), and some for both. Those usable for zone signing may appear in DNSKEY, RRSIG, and DS RRs. Those usable for transaction security would be present in SIG(0) and KEY RRs…”  .
+      - The same section lists values such as 2 (Diffie‑Hellman) and 252 (Indirect), whose “Zone Signing” field is “n”, indicating they are not for DNSSEC zone signing  .
+      - RFC 9904 defines the new columns specifically in terms of DNSSEC roles: “Use for DNSSEC Signing: Indicates the recommendation for using the algorithm within authoritative servers. … Use for DNSSEC Validation: Indicates the recommendation for using the algorithm in DNSSEC validators. … Implement for DNSSEC Signing … Implement for DNSSEC Validation …”  .
+      - Section 3 then states: “Initial values for the use and implementation recommendation columns in the ‘DNS Security Algorithm Numbers’ registry under the ‘Domain Name System Security (DNSSEC) Algorithm Numbers’ registry group are shown in Table 2.”  , but Table 2 only includes a subset of values (1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16, 17, 23, 253, 254) and omits others known to exist in the registry (e.g., 0, 2, 4, 252, 255, and any newer entries).
+      - Section 2.2 further constrains what *values* may appear in the new columns (“Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Use for DNSSEC Signing’ and ‘Use for DNSSEC Validation’ columns. Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Implement for DNSSEC Signing’ and ‘Implement for DNSSEC Validation’ columns.”) but does not allow for an “N/A” or empty state, nor does it say that some registry entries simply lie outside the scope of these DNSSEC columns  .
+      - Section 7.1 says IANA “has updated the ‘DNS Security Algorithm Numbers’ registry … with the following columns and has populated these columns with the values from Table 2 of this document”  , without any exception for transaction‑security‑only or non‑DNSSEC entries.
+    - DetailedReasoning:
+      - The “DNS Security Algorithm Numbers” registry, as described in RFC 4034, clearly contains multiple categories of algorithms: some intended for DNSSEC zone signing, some intended only for transaction security (SIG(0)/KEY), and some for both  . Only the first and possibly third categories are meaningful for DNSSEC “Signing” and “Validation” as defined in RFC 9904, whereas transaction‑only algorithms cannot appear in DNSKEY/RRSIG/DS RRs at all.
+      - RFC 9904’s new columns are explicitly scoped to DNSSEC use — they are labelled and described only in terms of “DNSSEC Signing”, “DNSSEC Validation”, and “DNSSEC validators”  . Nonetheless, Section 3 and Section 7.1 speak generically of adding these columns to *the entire* “DNS Security Algorithm Numbers” registry and populating them with the values from Table 2, without distinguishing which registry entries are in scope.
+      - Table 2 itself only lists a subset of registry values (the active DNSSEC signing algorithms and a few additional ones such as SM2SM3, ECC‑GOST12, and the private‑use codes)  . It does not include, for example, value 2 (Diffie‑Hellman), value 252 (Indirect), value 0, 4, or 255, despite RFC 4034 explicitly listing them as part of the same registry and marking some of them as *not* usable for zone signing  .
+      - Because Section 3 uses broad wording (“Initial values … are shown in Table 2”) and Section 7.1 says IANA “has populated these columns with the values from Table 2”  , an implementer or IANA maintainer cannot tell from this RFC alone whether:
+        - (a) algorithms omitted from Table 2 are intended to have no values (i.e., the DNSSEC‑specific columns are conceptually “not applicable” to them), or
+        - (b) they are intended to receive some default value such as “MUST NOT” derived from their non‑DNSSEC nature, and the omission from the table is accidental.
+      - This is compounded by the rule in Section 2.2 that only specific BCP 14 tokens may be “placed into” the new columns  . That rule implicitly assumes that every in‑scope registry entry *will* have one of these values; it provides no textual hook for leaving the fields empty or marking them as “N/A” for transaction‑only algorithms.
+      - For new assignments, Section 2.2 likewise talks about “Adding a new entry to the ‘DNS Security Algorithm Numbers’ registry” and setting its recommended values (MAY vs. other values) in the four DNSSEC columns  , but never states how to register an algorithm that is *only* for SIG(0)/transaction security and is explicitly unusable in DNSSEC. The only way to represent “no DNSSEC use” in the new scheme would be to set all four DNSSEC columns to “MUST NOT”, but the document does not say that this is the required or expected mapping for such cases.
+      - The net effect is a scope gap: the RFC defines DNSSEC‑specific columns over a registry that also contains non‑DNSSEC entries, but it does not normatively say whether those entries are outside the scope of the columns (and must be left blank/ignored) or inside the scope (and therefore must be given explicit “MUST NOT” values). Different readers could reasonably implement different interpretations.
+      - This can lead to concrete inconsistencies: for example, an overly literal reading might lead someone to populate omitted entries with “MAY” to match the generic IANA rules, which would incorrectly advertise algorithms like Diffie‑Hellman (value 2) as permissible for DNSSEC signing/validation — contradicting RFC 4034’s “Zone Signing: n” semantics  . Conversely, others may treat missing cells as “no guidance at all,” which is a different semantics from explicit “MUST NOT”.
+      - The issue is squarely about scope: the RFC does not clearly delimit which subset of registry entries the DNSSEC “Use for …” and “Implement for …” columns apply to, nor how non‑DNSSEC entries should be represented. Clarifying that these columns apply only to algorithms usable for DNSSEC (and that for transaction‑only or reserved entries they MUST be set to “MUST NOT” or left explicitly “N/A”) would remove this ambiguity.
+
+- ResidualUncertainties:
+  - RFC 9157 (referenced but not included) may have restructured or clarified the “DNS Security Algorithm Numbers” registry and its fields; without that text and without the current live IANA view, it is difficult to be certain how IANA actually handled omitted algorithm numbers when applying RFC 9904.
+  - It is unclear from the provided context whether, in current practice, there remain any algorithm numbers in this registry that are truly transaction‑security‑only (as opposed to historic or reserved), which affects how serious the ambiguity is in real deployments, though the underlying scope gap in the text still exists.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 3 of RFC 9904 (together with Sections 2.2–4) defines the new “Use for …” and “Implement for …” columns in the DNSSEC IANA registries and populates them with initial values, asserting that the “Implement for” values come from RFC 8624 while also inheriting earlier algorithm definitions from RFCs such as 4034, 5155, 5702, 6605, and 8080. The tables effectively encode the current mandatory / recommended / optional / forbidden status of each DNSKEY and DS digest algorithm for both use and implementation.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: Apparent conflicts with RFC 8624 and RFC 6605 are resolved by update relationships; “transcribed from 8624” is normatively harmless
+    - Description:  
+      The text states that “The values in the ‘Implement for’ columns are transcribed from [RFC8624].” and then gives Table 2 with “Implement for DNSSEC Signing/Validation” entries for algorithms 1–16 and also 17, 23, 253, and 254. For 1–16, the “Implement for” values exactly match RFC 8624’s DNSKEY table (e.g., algorithm 8 RSASHA256 is MUST/MUST, 13 ECDSAP256SHA256 is MUST/MUST, 14 ECDSAP384SHA384 is MAY/RECOMMENDED, etc.), so there is no normative discrepancy. For algorithms not explicitly listed in RFC 8624’s table (e.g., 17 SM2SM3, 23 ECC‑GOST12, 253 PRIVATEDNS, 254 PRIVATEOID), RFC 8624 contains a generic normative rule: “Any algorithm listed in the [DNSKEY‑IANA] and [DS‑IANA] registries that are not mentioned in this document MAY be implemented.” That is, 8624 assigns an effective requirement level of “MAY” to all unmentioned algorithms. RFC 9904’s choice of “MAY” for all the “Implement for” columns for 17, 23, 253, and 254 is therefore consistent with 8624’s normative guidance, even though it is not taken from a per‑algorithm row. The phrase “transcribed from [RFC8624]” is slightly loose editorially (it mixes explicit table rows with the generic “MAY” rule), but it does not create any contradictory obligations.  
+      The second candidate concern involves RFC 6605’s Section 4 requirement that conformant implementations “MUST implement signing and verification for both of the above algorithms” (ECDSAP256SHA256, 13, and ECDSAP384SHA384, 14) and that verifiers “MUST implement verification for both of the above algorithms,” versus RFC 8624 and RFC 9904, which treat algorithm 14 as MAY for signing and RECOMMENDED for validation in the “Implement for …” columns. In the IETF document series, RFC 8624 explicitly Updates RFC 6605 in its front matter and is intended to revise earlier algorithm‑implementation requirements across the DNSSEC algorithm RFCs. RFC 9904 in turn does not invent new requirement levels; it states that the “Implement for” values come from 8624 and simply moves those requirement levels into the registries. Thus, what looks like a MUST–vs–MAY/RECOMMENDED conflict is in fact a deliberate relaxation by a later Updating RFC, and implementers are expected to follow the updated requirements in 8624/9904 rather than the original MUSTs in 6605.  
+      Given this, there is no remaining deontic inconsistency: the registry values in RFC 9904 are aligned with RFC 8624’s normative framework, and RFC 8624 explicitly supersedes RFC 6605’s stronger MUSTs for algorithm 14. The only potential issue is a minor wording imprecision around “transcribed,” which does not change the substance of any normative requirement and so does not rise to the level of a deontic bug.
+    - KeyTextSnippets:
+      - “The following sections state the initial values that have been populated into these columns. The values in the ‘Implement for’ columns are transcribed from [RFC8624].”
+      - RFC 8624 Section 1.2: “Any algorithm listed in the [DNSKEY‑IANA] and [DS‑IANA] registries that are not mentioned in this document MAY be implemented.”
+      - RFC 8624 Section 3.1 table entries for algorithms 1–16 (matching Table 2’s “Implement for …” columns).
+      - RFC 6605 Section 4: “Conformant implementations that create records to be put into the DNS MUST implement signing and verification for both of the above algorithms… Conformant DNSSEC verifiers MUST implement verification for both of the above algorithms.”
+    - Impact: Because the tables in RFC 9904 correctly reflect RFC 8624’s normative requirements (including its generic “MAY” rule for unmentioned algorithms) and RFC 8624 explicitly updates RFC 6605, implementers and IANA get a coherent, non‑contradictory set of obligations. At most, a reader might momentarily misinterpret “transcribed” as meaning “from explicit table rows only,” but this does not change what they are required or permitted to implement or use.
+
+- IfNoRealIssue:
+  - The two apparent tensions identified by the router—(1) the presence of algorithms not explicitly listed in RFC 8624’s table, and (2) the weaker requirement level for ECDSAP384SHA384 compared to RFC 6605—are both resolved by the normative structure of the later documents. RFC 8624 assigns “MAY implement” to all algorithms it does not list explicitly, and RFC 9904’s “MAY” entries for those algorithms are faithful to that rule. RFC 8624 also explicitly updates RFC 6605 (and other algorithm‑defining RFCs), meaning its more recent requirement levels for algorithms 13 and 14, which RFC 9904 copies into the registries, are intended to supersede the older “MUST implement both” language. Consequently, there is no actual deontic inconsistency or underspecification in the excerpted text.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: The excerpt defines four new “Use for …” and four “Implement for …” columns in the DNSSEC algorithm and digest IANA registries and gives initial values for them in Tables 2 and 3, claiming that the “Implement for” values are transcribed from RFC 8624.
+- OverallBugLikelihood: Medium
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Over‑broad claim that all “Implement for” values are transcribed from RFC 8624
+    - LocationHint: RFC 9904 Section 2.2 (paragraph before Section 3) and Section 3 Table 2 (rows 17, 23, 253, 254), plus Section 4 Table 3 (rows 5 and 6)
+    - Evidence:
+      - Snippet1 (RFC 9904 text in the excerpt):  
+        “The following sections state the initial values that have been populated into these columns.  **The values in the ‘Implement for’ columns are transcribed from [RFC8624].**  The ‘Use for’ columns are set to the same values as those in the ‘Implement for’ columns…”
+      - Snippet2 (RFC 8624 DNSKEY table):  
+        Section 3.1 of RFC 8624 lists implementation recommendations for DNSKEY algorithms only for numbers 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, and 16, with columns “DNSSEC Signing” and “DNSSEC Validation”; there are no rows for algorithms 17 (SM2SM3), 23 (ECC-GOST12), 253 (PRIVATEDNS), or 254 (PRIVATEOID).   
+      - Snippet3 (RFC 4034 private algorithms table):  
+        Appendix A.1 of RFC 4034 lists 253 [PRIVATEDNS] and 254 [PRIVATEOID] with “Status” = OPTIONAL, but without any BCP 14 “MUST/SHOULD/MAY” implementation requirement levels. 
+      - Snippet4 (RFC 8624 DS digest table):  
+        Section 3.3 of RFC 8624 lists digest types 0–4 only; there are no rows for digest algorithms 5 or 6. 
+    - TechnicalExplanation: |
+        Section 2.2 of RFC 9904 states, without qualification, that “The values in the ‘Implement for’ columns are transcribed from [RFC8624].” In the DNSKEY algorithm table of RFC 8624, only algorithms 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, and 16 have defined “DNSSEC Signing” and “DNSSEC Validation” requirement levels; 17 (SM2SM3), 23 (ECC-GOST12), 253 (PRIVATEDNS), and 254 (PRIVATEOID) simply do not appear at all.  Thus, the “Implement for DNSSEC Signing/Validation” values of “MAY” for algorithms 17, 23, 253, and 254 in RFC 9904’s Table 2 cannot literally have been “transcribed” from RFC 8624; they are newly assigned recommendation levels.
+        
+        A parallel situation exists for DS digest algorithms: RFC 8624 defines recommendations only for digest types 0–4 and says nothing about 5 (GOST R 34.11‑2012) or 6 (SM3).  Yet RFC 9904’s Table 3 assigns “MAY” in both “Implement for DNSSEC Delegation” and “Implement for DNSSEC Validation” for 5 and 6. These assignments are compatible with the general policy in RFC 9157 that algorithms not mentioned in RFC 8624 “MAY be implemented”  and also line up with the “OPTIONAL” status for private algorithms 253/254 in RFC 4034’s registry, which naturally maps to “MAY”. 
+        
+        Structurally, the registry tables themselves are well‑formed and internally consistent with the allowed value sets in Section 2.2 and the derived “Use for” semantics. The inconsistency is specifically between the provenance claim (“are transcribed from RFC 8624”) and the fact that several “Implement for” entries are newly defined in RFC 9904 for algorithms and digest types that RFC 8624 never covered. This is a factual inconsistency about how the tabulated values relate to the referenced RFC, and could mislead implementers or IANA reviewers who expect that every “Implement for” cell is merely a restatement of RFC 8624.
+    - PatchSuggestion: |
+        Narrow the provenance statement in Section 2.2 so that it only applies where RFC 8624 actually defines requirement levels, and explicitly acknowledge that RFC 9904 assigns “MAY” where RFC 8624 is silent. For example, replace:
+
+          “The values in the ‘Implement for’ columns are transcribed from [RFC8624].  The ‘Use for’ columns are set to the same values as those in the ‘Implement for’ columns….”
+
+        with text along the lines of:
+
+          “For algorithms and digest types that have implementation requirement levels defined in [RFC8624], the values in the ‘Implement for’ columns are transcribed from [RFC8624].  For other existing entries in the registries that are not covered by [RFC8624], the initial ‘Implement for’ values are set to ‘MAY’.  The ‘Use for’ columns are set to the same values as those in the corresponding ‘Implement for’ columns, except that when an ‘Implement for’ value is ‘MUST’, the corresponding ‘Use for’ value is ‘RECOMMENDED’.”
+
+        Optionally, RFC 9904 could add a brief note in Sections 3 and 4 stating explicitly that the “MAY/MAY” values for algorithms 17, 23, 253, 254 and digest types 5, 6 are new recommendations chosen in accordance with RFC 9157’s guidance for algorithms not covered by RFC 8624.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 3 of RFC 9904 populates the new “Use for …” and “Implement for …” columns in the IANA “DNS Security Algorithm Numbers” registry (and, in Section 4, the “Digest Algorithms” registry) by stating that the “Implement for” values are taken from RFC 8624 and that “Use for” initially tracks them. It thereby attempts to encode, in the IANA registries, the DNSKEY and DS algorithm implementation recommendations that were previously expressed only in RFC 8624.
+- OverallCrossRFCLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Over‑broad claim that all “Implement for” values are transcribed from RFC 8624
+    - Description: RFC 9904 Section 2.2 says “The values in the ‘Implement for’ columns are transcribed from [RFC8624].” It then provides Table 2 (DNS Security Algorithm Numbers) with “Implement for DNSSEC Signing/Validation” values for algorithms 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, and 16, and additionally for algorithms 17 (SM2SM3), 23 (ECC-GOST12), 253 (PRIVATEDNS), and 254 (PRIVATEOID). In RFC 8624 Section 3.1, the DNSKEY algorithm table only gives explicit requirement levels for algorithms 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, and 16; it does not define per‑algorithm requirement levels for 17, 23, 253, or 254. Similarly, RFC 8624 Section 3.3 gives DS digest recommendations only for digest types 0–4, not for the newer digest types 5 and 6 that appear in RFC 9904’s Table 3. For these algorithms and digest types, RFC 8624 only provides a generic statement that “Any algorithm listed in the [DNSKEY‑IANA] and [DS‑IANA] registries that are not mentioned in this document MAY be implemented.” RFC 9904 therefore makes a slightly inaccurate cross‑reference when it implies that every individual “Implement for …” entry is a direct transcription from RFC 8624; for algorithms/digests not explicitly listed in 8624, the “MAY/MAY” values in RFC 9904 are new, albeit consistent with the generic “MAY be implemented” guidance. This is unlikely to cause interop problems—an implementer who follows RFC 9904 will still be consistent with RFC 8624—but the textual claim is factually too strong and would be better phrased as “where defined in RFC 8624” or “for algorithms and digests explicitly covered in RFC 8624.”
+    - EntitiesInvolved: ["RFC 9904 Section 2.2 & Table 2/Table 3", "RFC 8624 Section 3.1 (DNSKEY algorithms)", "RFC 8624 Section 3.3 (DS/CDS digest algorithms)", "DNS Security Algorithm Numbers registry", "DNSSEC DS Digest Algorithms registry", "Algorithms 17, 23, 253, 254; Digest types 5, 6"]
+    - CrossRefsUsed: ["RFC 9904 text and tables for Implement/Use columns", "RFC 8624 DNSKEY algorithm table and DS digest table", "RFC 8624 para on algorithms not mentioned MAY be implemented"]
+    - Confidence: High
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: ECDSAP384SHA384 implementation requirements conflict (RFC 6605 vs RFC 8624/9904)
+    - Description: RFC 6605 Section 4 states that “Conformant implementations that create records to be put into the DNS MUST implement signing and verification for both of the above algorithms” (ECDSAP256SHA256, algorithm 13, and ECDSAP384SHA384, algorithm 14), and that “Conformant DNSSEC verifiers MUST implement verification for both of the above algorithms.” This makes support for algorithm 14 a normative MUST for both signing (for implementations that create DNS records) and for validation. By contrast, RFC 8624’s DNSKEY algorithm table sets ECDSAP384SHA384 (14) to “MAY” for signing and “RECOMMENDED” for validation, while algorithm 13 is “MUST/MUST.” RFC 9904 then copies those RFC 8624 values into the new IANA columns: in Table 2, algorithm 14 has “Implement for DNSSEC Signing: MAY” and “Implement for DNSSEC Validation: RECOMMENDED,” and the corresponding “Use for” columns mirror them. RFC 8624 does not declare that it updates RFC 6605, and RFC 9904 likewise does not say it updates RFC 6605; RFC 9157 only updates RFC 8624 for non‑standards‑track algorithms. Thus, RFC 6605 still normatively requires all “conformant” implementations to implement algorithm 14 for both signing and verification, while RFC 8624/9904 treat algorithm 14 as only optional (MAY/RECOMMENDED). An implementer who aims to be conformant with RFC 6605 but follows the later BCP recommendations literally could reasonably decide not to implement signing for 14 at all, believing it optional, and thereby fail RFC 6605’s “MUST implement” requirement. This is a cross‑RFC normative conflict; it would be clearer if an RFC explicitly stated that the later BCP recommendations relax or update RFC 6605’s “MUST implement both algorithms” requirement for algorithm 14.
+    - EntitiesInvolved: ["RFC 6605 Section 4 (ECDSA DNSKEY/RRSIG)", "RFC 8624 Section 3.1 (algorithm 14 requirements)", "RFC 9904 Table 2 (algorithm 14 Implement/Use columns)", "ECDSAP256SHA256 (algorithm 13)", "ECDSAP384SHA384 (algorithm 14)"]
+    - CrossRefsUsed: ["RFC 6605 ECDSA requirements including MUST-implement language", "RFC 8624 DNSKEY algorithm recommendations", "RFC 9904 DNS Security Algorithm Numbers initial column values", "RFC 9157 update scope for RFC 8624"]
+    - Confidence: High
+
+- IfNoIssues:
+  - Comment: Not applicable; at least two real cross‑RFC/registry issues are present, although Issue‑1 is largely a documentation‑precision problem rather than a behavioral interoperability bug.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+
+Vector Stores Used: vs_6954b396867881918c52be4a34d151ab
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

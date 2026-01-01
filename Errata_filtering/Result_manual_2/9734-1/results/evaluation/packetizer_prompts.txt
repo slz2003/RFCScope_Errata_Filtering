@@ -1,0 +1,162 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 1 of RFC 9734 explains that MLS-based IM systems can use X.509 certificates whose subjectAltName contains IM URIs or XMPP URIs, and it cites RFC 3860 for IM URIs and RFC 6121 for XMPP URIs. It also points to RFC 9420 for MLS and to a MIMI identity draft for broader credential usage in IM/MIMI.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Misreference for XMPP URI specification (RFC 6121 vs XMPP-URI RFC)
+    - Description: RFC 9734 Section 1 states that a subjectAltName “can be an IM URI [RFC3860] or Extensible Messaging and Presence Protocol (XMPP) URI [RFC6121]”. RFC 3860 is indeed the defining document for the “im:” URI scheme (see its IM URI scheme text), so that part is consistent. However, RFC 6121 is a protocol specification for XMPP instant messaging and presence, not the defining document for the “xmpp:” URI/IRI scheme. In its Section 9, RFC 6121 explicitly says that XMPP stanzas use bare addresses (JIDs) and that XMPP addresses “MUST NOT be prepended with a URI scheme”; when it discusses “xmpp:” URIs/IRIs, it refers out to a separate “XMPP-URI” specification, rather than defining the URI scheme itself. In the IETF XMPP suite, the normative definition of XMPP URIs/IRIs (the “xmpp:” scheme) is provided by the XMPP-URI RFC (published as RFC 5122 and its updates), not by RFC 6121. Thus, by citing RFC 6121 as the reference for “XMPP URI”, RFC 9734 points implementers to a document that does not actually define the URI syntax/semantics they need; implementers following RFC 9734 literally might search RFC 6121 for the URI scheme definition and either miss important details (e.g., IRI-to-URI mapping and allowed character repertoire) or be confused by the in-protocol “MUST NOT be prepended with a URI scheme” language. The correct cross-RFC alignment would be to reference the XMPP-URI RFC for the definition of XMPP URIs (possibly in addition to RFC 6121 for general XMPP behavior), so this is a genuine cross-RFC citation error rather than mere editorial preference. This matches the router’s hypothesis, which I agree with and refine by clarifying that the actual defining document is the XMPP-URI RFC (e.g., RFC 5122) and that 6121 only defers to it.
+    - EntitiesInvolved: ["RFC 9734 Section 1", "RFC 3860 (IM URI scheme)", "RFC 6121 Section 9 (Handling of URIs)", "XMPP-URI specification (RFC 5122 and updates)", "X.509 subjectAltName uniformResourceIdentifier"]
+    - CrossRefsUsed: ["RFC 6121 Section 9 excerpt showing it does not define the xmpp: URI scheme and instead references XMPP-URI", "RFC 3860 sections indicating it defines the IM URI scheme"]
+    - Confidence: High
+
+[Used vector stores: vs_6954bbca662c81919c531db936e840f4]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Low
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Low
+    - ShortLabel: Misleading reference for “XMPP URI” (points to RFC 6121 instead of XMPP‑URI spec)
+    - Evidence:
+      - ExcerptSnippets:
+        - From RFC 9734 Section 1:  
+          “A subjectAltName in these certificates can be an IM URI [RFC3860] or Extensible Messaging and Presence Protocol (XMPP) URI [RFC6121], for example.”
+      - ContextSnippets:
+        - From RFC 3860 Section 5.1 and Appendix A (summarized in the excerpt):  
+          “The Instant Messaging (IM) URI scheme… The syntax of an IM URI is given in Appendix A… URI Scheme Name: im.”
+        - From RFC 6121 Section 9 (as provided):  
+          “XMPP clients are encouraged to handle addresses that are encoded as ‘xmpp:’ URIs and IRIs as specified in [XMPP-URI] and further described in [XEP‑0147].”
+        - Also from RFC 6121 Section 9:  
+          “The addresses of XMPP entities as used in communication over an XMPP network … MUST NOT be prepended with a Uniform Resource Identifier … scheme.”
+    - Reasoning:
+      - RFC 9734’s introduction explicitly ties the term “Extensible Messaging and Presence Protocol (XMPP) URI” to the citation “[RFC6121]”. This strongly suggests to the reader that RFC 6121 *defines* the “XMPP URI” scheme in the same way that RFC 3860 defines the “IM URI” scheme.
+      - However, the provided text from RFC 6121 shows that it does **not** define the XMPP URI scheme. Instead:
+        - It prohibits adding any URI scheme to on‑wire XMPP addresses.
+        - It then says that external applications “are encouraged to handle addresses that are encoded as ‘xmpp:’ URIs and IRIs as specified in [XMPP‑URI]…”.
+      - In other words, RFC 6121 only *references* another specification ([XMPP‑URI]) for the actual “xmpp:” URI/IRI scheme; it is not itself the authoritative definition of XMPP URIs, unlike RFC 3860 for IM URIs.
+      - This creates a mild inconsistency in terminology and referencing:
+        - For “IM URI”, RFC 9734 points directly at the defining spec (RFC 3860), which indeed defines the “im:” URI scheme.
+        - For “XMPP URI”, RFC 9734 points at RFC 6121, which is the instant messaging/presence protocol spec and *not* the URI‑scheme spec; the URI scheme is instead in [XMPP‑URI].
+      - An implementer following RFC 9734 and looking for the definition of “XMPP URI” will go to RFC 6121 and see only high‑level handling guidance plus an indirection to [XMPP‑URI]. They are not blocked, but the initial reference is misleading: it suggests 6121 is the URI‑defining document, whereas 6121 itself clearly delegates that role.
+      - Because this appears in an introductory, non‑normative paragraph and does not change how the EKU OID is encoded or used, the impact on interoperability is small; nevertheless, it is a real, concrete misalignment between the term “XMPP URI” and the document that actually defines that scheme.
+    - PatchSuggestion:
+      - In RFC 9734 Section 1, adjust the sentence:
+        - From:  
+          “A subjectAltName in these certificates can be an IM URI [RFC3860] or Extensible Messaging and Presence Protocol (XMPP) URI [RFC6121], for example.”
+        - To something that correctly cites the XMPP URI scheme definition, for example:  
+          “A subjectAltName in these certificates can be an IM URI [RFC3860] or an ‘xmpp:’ XMPP URI as specified in [XMPP‑URI] (and used with XMPP [RFC6121]), for example.”
+      - This keeps RFC 6121 as the main XMPP protocol reference but clearly associates the term “XMPP URI” with the actual URI‑scheme specification [XMPP‑URI]. (The exact reference label/number should match whatever is used for the XMPP URI scheme in the RFC 9734 references section.)
+
+- Notes:
+  - UsedRouterIssues: Confirmed the router’s Candidate Issue about the XMPP URI misreference; no other terminology/naming issues of substance were found.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - The precise RFC number and reference label for the XMPP URI scheme ([XMPP‑URI], e.g., RFC 5122 or any updated replacement) are not shown in the provided excerpts; the proposed patch therefore names it generically as “[XMPP‑URI]” and assumes that RFC 9734’s references can be updated accordingly.
+
+[Used vector stores: vs_6954bbca662c81919c531db936e840f4]
+
+
+Vector Stores Used: vs_6954bbca662c81919c531db936e840f4
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

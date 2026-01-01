@@ -1,0 +1,479 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 5 of RFC 9844 defines when UIs are required to support entry of IPv6 zone identifiers, and how they may present that in the UI (canonical `%` form, an alternative delimiter, or separate fields), while explicitly carving out URIs fetched by web browsers from the document’s normative scope.
+
+- ScopeModel:
+  - Targets:
+    - “A user interface (UI) that allows or requires the user to enter an IPv6 address other than a global unicast address” — i.e., any UI that accepts IPv6 literals beyond pure global-unicast addresses (per the IPv6 architecture).
+    - Within those UIs, the specific capability to enter link-local unicast addresses or scoped multicast addresses together with a zone identifier as specified by RFC 4007.
+    - Programs behind such UIs, which must store the address and zone identifier and map the latter to an interface index (via socket APIs such as `getaddrinfo()` / `if_nametoindex()`).
+    - URIs fetched by web browsers are explicitly excluded from the scope of the recommendations and normative statements in this document.
+  - Conditions:
+    - Trigger condition: The UI “allows or requires the user to enter an IPv6 address other than a global unicast address”.
+    - For such UIs:
+      - They MUST provide a means to enter a link-local or scoped-multicast address plus a zone identifier (RFC 4007).
+      - They SHOULD support the RFC 4007 textual form `<address>%<zone_id>` (e.g., `fe80::1%eth0`) when possible.
+      - If supporting `%` in the UI is “impossible for practical reasons”, they MAY accept an alternative delimiter in place of `%` (e.g., `fe80::1-eth0`).
+      - If even that is impossible, they MAY instead use multiple input fields, a list of zone identifiers, or a separate command-line parameter.
+    - General environment assumptions:
+      - The node’s stack supports RFC 4007’s model of a human-readable zone identifier; otherwise the device is out of scope of the document (Section 1).
+      - Zone identifiers are purely local to the node and must not be sent on the wire per RFC 4007 Section 11.2.
+      - All normative statements in RFC 9844 “do not apply to URIs fetched by web browsers.”
+  - NotedAmbiguities:
+    - The phrase “address other than a global unicast address” is used as the trigger, whereas RFC 4007’s textual format is defined for addresses of *non-global scope* (link-local and non-global multicast) and explicitly excludes global addresses and loopback; the mapping between these notions is left implicit.
+    - The document does not explicitly state whether the “alternative delimiter” form (e.g., `fe80::1-eth0`) is strictly a UI-input convenience that MUST be normalized to the RFC 4007 `%`-delimited form or a separate zone identifier before use with APIs or storage, or whether it is intended to be an alternative textual representation at large.
+    - The carve‑out “URIs fetched by web browsers” is partly orthogonal to the earlier UI-centric requirement. It is not entirely clear how to treat browser-provided UIs that allow entry of raw IPv6 literals (without scheme) or browser configuration dialogs that are not strictly URI fetch paths.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Scope of the “alternative delimiter” is unclear between UI-only input and the general RFC 4007 textual representation
+    - ScopeProblemType: Ambiguous domain of applicability (UI parsing vs. canonical textual syntax / APIs)
+    - Evidence:
+      - RFC 9844 Section 5: “the UI SHOULD support the complete format specified by [RFC4007] (e.g., ‘fe80::1%eth0’). If this is impossible for practical reasons, the UI MAY support an alternative delimiter in place of ‘%’. The hyphen (‘-’) is suggested (e.g., ‘fe80::1-eth0’).”
+      - RFC 4007 Section 11: defines the textual representation as `<address>%<zone_id>` and states that “`%` is a delimiter character to distinguish between <address> and <zone_id>.” It applies this format to all unicast and multicast addresses of non-global scope (excluding unspecified and loopback). It is clearly meant as the standardized textual representation used within a node.
+      - RFC 9844 Section 5 later: “In this model, the zone identifier is considered independently of the IPv6 address itself.”
+    - DetailedReasoning:
+      - RFC 4007 explicitly standardizes the textual representation of IPv6 non‑global‑scope addresses, with `%` as the delimiter between `address` and `zone_id`, and assumes that representation is what name/address libraries and tools will see. Its scope is clearly “textual representation” internal to a node, not just one particular UI.
+      - RFC 9844 introduces user‑interface requirements and, when the canonical `%` form is “impossible for practical reasons”, allows the UI to “support an alternative delimiter in place of `%`”, suggesting `fe80::1-eth0` as an example. The paragraph is written in terms of UI design, but it does not explicitly restrict this alternative-delimiter form to UI input or transient parsing.
+      - Because RFC 9844 explicitly states that it “updates [RFC4007] by adding a new requirement that user interfaces support the zone identifier as described in Section 5”, an implementer could reasonably read Section 5 as also relaxing or extending what counts as a valid textual representation of non‑global‑scope addresses, not just how the UI parses user input.
+      - If an implementation starts to accept and emit `fe80::1-eth0` in configuration files, diagnostics, or APIs, while other implementations stick to the RFC 4007 `%` form, code and scripts that rely on the standardized textual format may become non-portable across systems. Libraries that expect `%` as the delimiter might fail to parse the hyphen form, or worse, misinterpret it (given that `-` is also a legal character in some host/interface names).
+      - The text that “the zone identifier is considered independently of the IPv6 address itself” hints that the intended model is to separate address and zone internally, but it does not spell out that the alternative-delimiter syntax is purely a UI-facing shorthand that must be normalized (e.g., split into `<address>` and `<zone_id>` and then converted to an interface index or the canonical `%` form) before being used with APIs or persisted.
+      - Because RFC 4007’s Section 11.2 already allows implementation‑dependent *strings* for `<zone_id>` but keeps `%` fixed as the delimiter, conflating 9844’s UI guidance with a change to the delimiter itself would effectively broaden the scope of what “textual representation” means, without clearly stating that intention or its limits.
+      - This is, therefore, a scope underspecification: the document does not clearly constrain the alternative delimiter to the UI domain, nor does it describe how to bridge from that UI syntax back to RFC 4007’s standardized representation or directly to zone indices.
+      - A clarifying erratum could state explicitly that alternative delimiters are only UI-input conventions; implementations using them MUST treat the zone identifier separately from the address and MUST NOT redefine or extend the canonical RFC 4007 `<address>%<zone_id>` syntax used in APIs, configuration files, and other textual representations.
+
+  - Issue-2:
+    - BugType: Underspecification (minor; largely non-interoperability-impacting)
+    - ShortLabel: Trigger condition “address other than a global unicast address” only implicitly tied to non-global-scope addresses and ULA semantics
+    - ScopeProblemType: Trigger condition framed in slightly misaligned terms (“other than global unicast”) instead of directly in RFC 4007’s “non-global scope” domain
+    - Evidence:
+      - RFC 9844 Section 5: “A user interface (UI) that allows or requires the user to enter an IPv6 address other than a global unicast address MUST provide a means for entering a link-local address or a scoped multicast address and selecting a zone identifier as specified by [RFC4007]….”
+      - RFC 4007 Section 4 / 11.1: defines scopes (link-local vs global) and says the `<address>%<zone_id>` format “applies to all kinds of unicast and multicast addresses of non-global scope … [and] should not be used for global addresses… [nor] for the loopback address.”
+      - IPv6 architecture (referenced from RFC 9844 via RFC 4291 / RFC 4007) treats Unique Local Addresses (fc00::/7) as having global scope, i.e., they are “global unicast” in that architectural sense, even though they are not globally routed.
+    - DetailedReasoning:
+      - RFC 4007 defines the scope model and explicitly limits the zone-identifier textual format to non‑global‑scope addresses: link‑local unicast and multicast with less-than-global scope. From the architecture’s perspective, all unicast addresses with global scope — including both classical global unicast addresses (2000::/3) and ULAs (fc00::/7) — are “global unicast” in the scoped-address sense.
+      - RFC 9844’s normative condition uses the phrase “IPv6 address other than a global unicast address” to decide when a UI MUST provide zone‑identifier support. This is clearly intended to target cases where zone identifiers are meaningful (currently, link-local unicast and scoped multicast), but the text does not explicitly say “non-global-scope addresses as defined in [RFC4007]”.
+      - Because “global unicast address” is not defined in RFC 9844 itself, an implementer who is not fully aligned with the architecture might incorrectly equate “global unicast” with only 2000::/3, treating ULAs as “other than global unicast” and therefore believing that a UI that only accepts ULAs must implement the zone‑ID capability, even though zone identifiers have no defined semantics for ULAs. This is harmless over‑inclusion, but it shows the scope boundary is only implicit.
+      - Conversely, UIs that allow entry of only special addresses like loopback (`::1`) or unspecified (`::`) — which are “other than global unicast” but do not meaningfully use zone identifiers — are still normatively required to “provide a means for entering a link-local address or a scoped multicast address and selecting a zone identifier”, even though such address types might never be used in that application. This is arguably intentional (to push broad support for link-local+zone), but it widens the applicability beyond “UIs that actually handle non-global-scope addresses defined in RFC 4007.”
+      - From a strict architectural standpoint, if an implementer follows RFC 4291/RFC 4007 and treats ULAs as global unicast, then the gating condition aligns correctly: UIs that can handle non-global-scope addresses (link-local / scoped multicast) fall inside the requirement; UIs that only accept pure global-scope addresses (including ULAs) fall outside. The specification is, therefore, internally consistent with the architecture.
+      - The underspecification lies in the fact that this mapping is never made explicit: RFC 9844 does not directly reference RFC 4007’s “non-global scope” terminology at the trigger point nor clarify that ULAs are included in “global unicast” for the purpose of this condition.
+      - The practical impact is mostly about implementer comprehension rather than interop: misreading the condition could cause some UIs that only handle ULAs (or other global-scope-only use cases) to implement an unnecessary zone-ID UI, or could allow some edge-case UIs that handle scoped addresses but are (incorrectly) thought to deal only in “global” addresses to skip adding zone support.
+      - An erratum could tighten the condition to something like “a UI that allows or requires the user to enter any IPv6 address of non-global scope, e.g., link-local unicast or multicast with less than global scope as defined in [RFC4007]” and, optionally, add an explicit note that ULAs are treated as global unicast in this sense. This would make the scope boundary clearer without changing the intended technical behavior.
+
+- ResidualUncertainties:
+  - The extent to which the phrase “URIs fetched by web browsers” is meant to exempt *only* the browser’s URL bar and similar navigational UIs, versus all browser-hosted dialogs that might accept IPv6 literals (e.g., proxy configuration), is not fully spelled out; however, this seems more a deployment-policy nuance than a strict protocol/representation bug.
+  - It is also somewhat unclear how strictly the “impossible for practical reasons” qualifier for alternative delimiters should be interpreted (e.g., security filtering of `%` versus purely aesthetic UI choices), but that is more about policy and less directly about the scope of the technical requirements.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following RFC 9844 Section 5 literally does not lead to a protocol or API that is unimplementable or inherently broken. The two router‑flagged points are, at most, about the scope of who is obligated to implement the feature and about UI normalization, not about behavior on the wire or socket/API correctness.
+
+---
+
+2. **Causal Analysis**
+
+### 2.1 Trigger condition: “address other than a global unicast address”
+
+Normative text:
+
+> “A user interface (UI) that allows or requires the user to enter an IPv6 address **other than a global unicast address** MUST provide a means for entering a link-local address or a scoped multicast address and selecting a zone identifier as specified by [RFC4007]…”
+
+Key background from RFC 4007:
+
+- Global vs non‑global scope:
+  - IPv6 addresses have a scope; for unicast, RFC 4007 discusses:
+    - Link‑local scope (fe80::/10 style) and
+    - Global scope  .
+  - Unique Local Addresses (ULAs, RFC 4193) are part of the *global unicast* space at the architectural level, even if not globally routed.
+- RFC 4007’s zone‑id textual format applies only to **non‑global scope** addresses (unicast and multicast), excluding unspecified and loopback; the format is “meaningless and should not be used for global addresses”  .
+
+Now, interpret RFC 9844 literally, using that architecture:
+
+- “Global unicast address” includes ULAs as well as traditional global unicast.
+- “Address other than a global unicast address” therefore covers:
+  - Link‑local unicast,
+  - All multicast (of any scope, since they’re not *unicast*),
+  - The unspecified address `::`,
+  - The loopback address `::1`,
+  - Any other non‑global‑scope unicast that might exist in future.
+
+Resulting behavior:
+
+- A UI that only ever accepts **global‑scope unicast** (including ULAs) does **not** “allow or require … other than a global unicast address” and so is *not* covered by the MUST. It is free to omit link‑local+zone support. That is operationally fine, since such a UI doesn’t use zone‑ID‑relevant addresses anyway.
+- A UI that accepts **link‑local** or **non‑global‑scope multicast** clearly *is* covered and thus MUST offer a way to specify a zone identifier. That matches the actual need for zone IDs per RFC 4007.
+- A UI that accepts exotic combinations (e.g., only loopback `::1`, or only certain multicast addresses) is normatively required to also provide a way to enter link‑local or scoped multicast with zone IDs. That’s slightly odd from a product‑design perspective but is mechanically implementable and does not break anything.
+
+Potential misinterpretation scenario:
+
+- Some implementers have historically used “global unicast” to mean “globally‑routable 2000::/3 only” and mentally separate ULAs as “local”. If they read 9844 that way, then a UI that accepts ULAs but not link‑local would be considered to accept “addresses other than a global unicast address” and thus be *obligated* to support link‑local+zone.
+- The *effect* of that misinterpretation is:
+  - They would feel compelled to implement link‑local+zone support more often than the architecture strictly requires.
+  - But the specific MUST in 9844 is about **supporting link‑local / scoped‑multicast + zone**; it does *not* say that they must support zone IDs on ULAs or any other global addresses.
+- Even under that misreading, they still end up implementing more capability (zone‑ID support where it may not strictly be needed); nothing becomes impossible or incoherent. There is no way to derive from 9844 that ULAs must carry zone IDs, because the normative sentence explicitly talks about “entering a link-local address or a scoped multicast address and selecting a zone identifier”.
+
+Interaction with RFC 4007:
+
+- RFC 9844’s requirement is aligned with RFC 4007’s real use of zone identifiers: link‑local unicast and scoped multicast  .
+- There is no place where 9844 forces one to use a zone ID with a *global* address; hence it does not contradict RFC 4007’s statement that the zone‑id format is meaningless for global addresses.
+
+So causally:
+
+- The system of requirements remains executable and consistent.
+- The only “ambiguity” is *which* UIs are normatively in scope. That affects conformance claims, not on‑the‑wire behavior or the functioning of zone indices.
+
+### 2.2 Alternative UI delimiters vs RFC 4007 format and APIs
+
+Relevant text in RFC 9844 Section 5:
+
+- Normal case:
+
+  > “In this case, the UI SHOULD support the complete format specified by [RFC4007] (e.g., `fe80::1%eth0`).”
+
+- Fallback 1:
+
+  > “If this is impossible for practical reasons, the UI MAY support an **alternative delimiter in place of `%`**. The hyphen (`-`) is suggested (e.g., `fe80::1-eth0`).”
+
+- Fallback 2:
+
+  > “If this too is impossible … the UI MAY provide two separate input fields … or a separate command-line parameter for the zone identifier.”
+
+- Processing model:
+
+  > “The program providing the UI will then **store the address and the zone identifier**, converting the latter to an interface index (typically via the socket API). … The resulting interface index will be used for any subsequent socket calls using the link-local address.”
+
+- And:
+
+  > “Note that an address string such as `fe80::1%eth0` cannot be converted to binary by the POSIX socket API function `inet_pton()` … It must be converted either by using `getaddrinfo()` or by splitting it into two strings and using `inet_pton()` and `if_nametoindex()` successively…”
+
+From RFC 4007:
+
+- It standardizes the textual representation:
+
+  > `<address>%<zone_id>`, with `%` as the delimiter between address and zone_id  .
+- It says this **textual format** is to be used within a node and “MUST NOT be sent on the wire unless every node that interprets the format agrees on the semantics”  .
+- It does *not* claim exclusive control over all possible UI layouts; it talks about “textual representation” of addresses, not about GUI/CLI widget syntax.
+
+Causal behavior with alternative delimiter:
+
+1. User enters `fe80::1-eth0` in a UI that chose `-` as its delimiter.
+2. The document explicitly says:
+   - The program “will then store the address and the zone identifier” separately.
+   - It then converts the zone identifier to an interface index and uses that index in subsequent socket calls.
+3. This implies a concrete algorithm for an implementation that obeys the spec:
+   - Parse the UI string at the chosen delimiter into:
+     - `addr_str = "fe80::1"`
+     - `zone_str = "eth0"`
+   - Convert `addr_str` with `inet_pton(AF_INET6, addr_str, ...)`.
+   - Convert `zone_str` to an interface index via `if_nametoindex()` or an equivalent API.
+   - Fill out `sockaddr_in6` with the binary address and the numeric scope ID, then call `connect()`, `sendto()`, etc.
+
+This is fully implementable and consistent with both POSIX `inet_pton()` and RFC 4007’s description of zone indices.
+
+What if an implementer incorrectly assumes the **alternative-delimiter string** is itself a valid RFC 4007 textual representation and passes `fe80::1-eth0` straight into `getaddrinfo()` or `inet_pton()`?
+
+- `inet_pton()` (as defined in POSIX) does *not* accept such a syntax; it will return 0 (invalid address) or error.
+- `getaddrinfo()` similarly would not treat `fe80::1-eth0` as a valid numeric address in current stacks.
+- But the spec *already* tells you to either:
+  - Use `getaddrinfo()` with the **standard** `%` form, or
+  - Split into two strings and use `inet_pton()` + `if_nametoindex()`.
+- In other words: an implementation that just passes hyphenated strings to `inet_pton()` is not following the prescribed algorithm. The failure is due to non‑conformance, not due to contradictory or impossible requirements.
+
+Conflict with RFC 4007?
+
+- RFC 4007 defines the normative **textual format** as `%` delimited. It does not prevent a UI from:
+  - Accepting input with some other delimiter,
+  - Parsing it, and then
+  - Converting it to the canonical `%` form (if/when needed) or directly to numeric scope IDs.
+- RFC 9844’s future‑proofing clause:
+
+  > “In this model, the zone identifier is considered independently of the IPv6 address itself.”
+
+  is explicitly saying: the *conceptual* state is “address plus zone id”, *not* “opaque string in the 4007 format”. That is consistent with 4007, which already explains that zone indices are separate local metadata attached to addresses  .
+
+On‑the‑wire behavior:
+
+- RFC 9844 Security Considerations:
+
+  > “Zone identifiers are of local significance only and must not be sent on the wire. … software that obtains a zone identifier through a UI should not transmit it further.”
+
+- This matches RFC 4007’s statement that the `<address>%<zone_id>` format “MUST be used only within a node and MUST NOT be sent on the wire unless every node that interprets the format agrees…”  .
+- Using an alternative UI delimiter does not change that: the zone id is still local; it should be converted to an interface index and not transmitted as part of network protocol data.
+- A conformant implementation therefore:
+  - Never sends the UI string `"fe80::1-eth0"` or `"fe80::1%eth0"` over the network as protocol data, unless in some carefully designed, mutually agreed, non‑standard context.
+  - Sends only the binary IPv6 address and (if the protocol requires) nothing about the zone.
+
+So, if you follow the spec literally:
+
+- You can implement the required UI patterns.
+- You can correctly map them to socket APIs using either `getaddrinfo()` or the split‑and‑convert pattern.
+- You do not violate RFC 4007 or POSIX; you do not lose information, and you do not make successful operation impossible.
+
+The only thing that is a bit “soft” is that RFC 9844 does not explicitly say:
+
+> “If you use an alternative delimiter, this is *purely an input/UI convention*; you must normalize it internally (either to the RFC 4007 `%` form or directly to binary+index) before using ordinary networking APIs.”
+
+But that behavior is already implied by the later paragraph describing how the program stores address and zone and converts the zone identifier before socket calls.
+
+---
+
+3. **Problem Classification**
+
+- **Issue 1 (“other than a global unicast address”)**  
+  → At most a **Causal Underspecification**, and arguably mostly a terminological/requirements‑scope issue. It does not cause any protocol, API, or state‑machine behavior to fail or become contradictory; it only affects which UIs are formally obligated to implement the zone‑ID feature.
+
+- **Issue 2 (alternative delimiter vs RFC 4007 / APIs)**  
+  → Not a causal inconsistency. The specification gives a coherent execution model (parse, store address+zone, convert zone to index, use in sockets). There is a mild **underspecification** in that it does not explicitly label the alternative delimiter form as “UI‑only and not a general textual representation”, but following the described algorithm yields correct, interoperable behavior.
+
+None of these rise to the level of “if you implement this literally, the system can’t work”.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the working group wanted to tighten things up without changing behavior:
+
+- For Issue 1:  
+  Add a short clarifying sentence like:  
+  *“In this document, ‘global unicast address’ is used in the architectural sense, and includes Unique Local Addresses (ULAs, RFC 4193).”*  
+  This removes any temptation to treat ULAs as “non‑global” for the purpose of the MUST.
+
+- For Issue 2:  
+  Add an explicit note:  
+  *“Any alternative delimiter is a UI input convention only. Implementations MUST normalize the user’s input into the RFC 4007 `<address>%<zone_id>` form or into separate binary address and numeric zone index before calling name/address resolution or socket APIs, and MUST NOT treat the alternative‑delimiter string itself as the standardized textual representation.”*
+
+These are clarifications, not changes in the actual behavior.
+
+---
+
+5. **Non‑Issues**
+
+- No step requires data that is not available: the UI gathers both an address and zone id; the spec tells you how to convert them into the forms APIs expect.
+- No state‑machine or routing invariant from RFC 4007 is violated if you follow 9844 literally; zone indices remain local, not on the wire.
+- There is no cryptographic or security mechanism here whose inputs are ill‑defined; the primary security invariant (“zone identifiers are local only and not trusted when received as data”) is repeated and respected.
+
+So, while there are places where wording could more clearly nail down intent, there is no fundamental causal breakage in Section 5 as written.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 5 of RFC 9844 introduces a single core normative requirement: any UI that lets users enter certain kinds of IPv6 literal addresses MUST also provide a way to enter link-local or scoped-multicast addresses together with a zone identifier, in a manner consistent with RFC 4007. It then defines a preference order for how that is done (preferred "%"-format, then alternative delimiter, then separate fields), and explicitly carves out URIs fetched by web browsers from the scope of these requirements.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: “Other than a global unicast address” is consistent with RFC 4007 / IPv6 architecture and not deontically defective
+    - Description:
+      The key normative statement in Section 5 is: “A user interface (UI) that allows or requires the user to enter an IPv6 address other than a global unicast address MUST provide a means for entering a link-local address or a scoped multicast address and selecting a zone identifier as specified by [RFC4007]…”. The router’s concern is that “global unicast address” might be ambiguous, especially in relation to Unique Local Addresses (ULAs) and RFC 4007’s focus on “non-global scope” addresses. However, in the IPv6 architecture (RFC 4291 and RFC 4193, as referenced in the Introduction of RFC 9844), ULAs are explicitly defined as part of the global unicast space (they have global scope even if they are not globally routed). RFC 4007 further divides unicast into link-local scope and global scope, and its textual zone format is defined only for “unicast and multicast addresses of non-global scope” and “meaningless … for global addresses”  . Therefore, the phrase “global unicast address” in RFC 9844, read with the existing IPv6 terminology it references, correctly includes ULAs as global unicast.
+      
+      Under the architectural definitions, the trigger condition “allows or requires the user to enter an IPv6 address other than a global unicast address” cleanly selects UIs that deal with non‑global‑scope addresses (e.g., link-local unicast or scoped multicast) or other non‑unicast specials (unspecified, loopback, multicast), which are exactly the contexts where zone identifiers are meaningful per RFC 4007. A UI that only ever accepts ULAs is a UI that only accepts global‑scope unicast addresses, and thus does *not* satisfy the condition “other than a global unicast address”; such a UI is not required to support zone identifiers, which is correct because ULAs never use zone IDs in RFC 4007’s model. Conversely, a UI that accepts link-local unicast or non‑global‑scope multicast *does* satisfy the condition and is correctly required to support zone identifiers. This aligns with RFC 4007 Section 11.1, which applies the textual “%zone” format to “non-global” scope addresses and says the format is meaningless for global addresses  . The apparent ambiguity only arises if an implementer informally (and contrary to the IPv6 architecture) interprets “global unicast” as “2000::/3 only”, but that is an implementation misunderstanding, not a contradiction or underspecification within the RFCs themselves.
+      
+      The rest of Section 5’s normative structure is internally coherent: once the condition is met, the UI SHOULD support the RFC 4007 “<address>%<zone_id>” format; if that is “impossible for practical reasons,” it MAY use an alternative delimiter; if that too is impossible, it MAY fall back to separate fields or parameters. These are clearly ordered preference levels without conflicting obligations. The final paragraph of Section 5 explicitly scopes out “URIs fetched by web browsers” from “the recommendations and normative statements in this document,” which is a deliberate exception to the general UI requirement and does not conflict with the earlier claim that RFC 9844 “updates [RFC4007] by adding a new requirement that user interfaces support the zone identifier as described in Section 5,” because Section 5 itself defines the precise scope of that new requirement. The interaction with RFC 4007’s prohibition on sending zone IDs “on the wire” (MUST NOT) is also consistent: RFC 9844 quotes that property and then gives non‑BCP‑14 guidance (“software … should not transmit it further”) that reinforces, rather than weakens, the underlying MUST NOT from RFC 4007. Overall, there is no genuine deontic inconsistency or underspecification in the way “global unicast” is used or in the scope/strength of the normative requirements.
+    - KeyTextSnippets:
+      - “A user interface (UI) that allows or requires the user to enter an IPv6 address other than a global unicast address MUST provide a means for entering a link-local address or a scoped multicast address and selecting a zone identifier as specified by [RFC4007]…”
+      - “At the time of writing, they [zone identifiers] are meaningful only when attached to link-local unicast and scoped multicast addresses, but it is possible that other uses might be defined in the future.”
+      - “[RFC4007]… As already mentioned, to specify an IPv6 non-global address without ambiguity, an intended scope zone should be specified as well. As a common notation… an implementation SHOULD support the following format: <address>%<zone_id> … The format applies to all kinds of unicast and multicast addresses of non-global scope… The format is meaningless and should not be used for global addresses.”  
+      - “As explained in [RFC4007], zone identifiers are of local significance only and must not be sent on the wire. … Therefore, software that obtains a zone identifier through a UI should not transmit it further.”
+      - “Because of this, the recommendations and normative statements in this document do not apply to URIs fetched by web browsers.”
+    - Impact:
+      Since “global unicast address” is a well‑defined architectural term in the IPv6 specifications that RFC 9844 already references, a careful implementer following the IPv6 architecture will interpret it correctly and obtain unambiguous guidance: UIs that can take non‑global‑scope addresses (e.g., link-local, scoped multicast) MUST support zone identifiers; UIs that only take global‑scope unicast (including ULAs) are exempt. Any confusion would stem from pre‑existing misunderstandings of IPv6 addressing, not from contradictory or incomplete normative text in RFC 9844 itself, so this does not rise to a deontic bug in the specification.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 5 of RFC 9844 adds a UI requirement around entering IPv6 literals with zone identifiers, “as specified by RFC 4007,” and explicitly carves out browser‑fetched URIs because of unresolved issues with the URI/origin model and RFC 3986/6454. It also allows non‑`%` delimiters and non‑string representations at the UI layer, while relying on the RFC 4007 textual model and the POSIX / RFC 3493 APIs for actual processing. The surrounding sections describe the relationship to RFC 4007’s zone model and to older URI syntax changes from RFC 6874.
+
+- OverallCrossRFCLikelihood: Medium
+
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous use of “global unicast address” as the UI trigger condition
+    - Description: The core requirement in RFC 9844 §5 is keyed to a UI “that allows or requires the user to enter an IPv6 address other than a global unicast address,” which then MUST provide means to enter link-local or scoped-multicast addresses with a zone identifier “as specified by [RFC4007].” RFC 4007 and the IPv6 addressing architecture distinguish between *scope* (global vs non‑global) and address *type*, and in that model Unique Local Addresses (ULAs, RFC 4193) are part of the global‑scope unicast space even if not globally routed, whereas zone identifiers are currently meaningful only for link‑local unicast and multicast of less than global scope (RFC 4007 §4, §11.1). RFC 9844’s introductory text matches that statement (“at the time of writing, they are meaningful only when attached to link-local unicast and scoped multicast addresses”), but §5 never explicitly ties “global unicast address” back to the architectural notion of global scope, nor explicitly clarifies whether ULAs are to be treated as “global unicast” for the purpose of the trigger. As a result, a careful implementer who follows RFC 4007/4193 will treat ULAs as global and conclude that a UI that only accepts ULAs is out of scope for the new requirement, whereas an implementer who (incorrectly but plausibly) equates “global unicast” with only 2000::/3 might mistakenly believe such a UI is in scope and must implement link‑local+zone‑id handling that it will never use. This is not a hard contradiction with RFC 4007, but it leaves the cross‑document relationship (address space vs scope vs UI requirements) underspecified enough that similarly situated implementations could make opposite choices based on how “global unicast address” is interpreted.
+    - EntitiesInvolved: ["RFC 9844 Section 5 (UI MUST condition)", "RFC 9844 Introduction (current uses of zone identifiers)", "RFC 4007 Sections 4 and 11.1 (scope vs global/non-global, applicability of %zone_id format)", "IPv6 global unicast/ULA definitions from RFC 4291/RFC 4193 (not quoted but referenced by RFC 9844’s use of ‘global unicast’)"]
+    - CrossRefsUsed: ["RFC 9844 §1 and §5 text in the excerpt", "RFC 4007 §4 (scope) and §11.1 (format applies to non-global scope, meaningless for global addresses)"]
+    - Confidence: Medium
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: Alternative UI delimiters vs RFC 4007 textual format and APIs
+    - Description: RFC 4007 standardizes a textual representation for non‑global‑scope addresses as `<address>%<zone_id>` with `%` as the delimiter and recommends that implementations support this exact format (RFC 4007 §11, §11.2). RFC 9844 §5 says UIs SHOULD support that complete format but, “if this is impossible for practical reasons,” UI MAY “support an alternative delimiter in place of ‘%’. The hyphen (‘-’) is suggested (e.g., ‘fe80::1-eth0’),” and, failing that, MAY use fully separate fields. From a cross‑RFC standpoint, there is no explicit contradiction because RFC 4007 talks about standardized *textual representation*, not all possible UI input syntaxes. However, RFC 9844 never clearly states that such alternative‑delimiter strings are purely UI‑local and MUST be normalized back into the RFC 4007 `%` form (or directly into numeric scope IDs) before being passed to APIs or reused as textual IPv6 literals. This is especially relevant because the same section later discusses that “fe80::1%eth0” cannot be parsed by `inet_pton()` and must be handled via `getaddrinfo()` or by splitting and using `inet_pton()` plus `if_nametoindex()` (POSIX / RFC 3493), but says nothing about how a “fe80::1-eth0” style UI would be handled. In practice, an implementer could (mistakenly) treat `fe80::1-eth0` as a new, standards‑compliant textual representation and propagate it into configuration files, logs, or APIs that expect the RFC 4007 `%` form, causing inconsistent behavior across implementations that follow RFC 4007 literally. A short, explicit mapping rule (e.g., “alternative delimiters are a UI convenience only and MUST NOT be used as the textual representation defined in RFC 4007; implementations MUST normalize to the `%` form or to binary indices before using other APIs or storing addresses”) would better align 9844 with 4007 and with POSIX/RFC 3493 behavior.
+    - EntitiesInvolved: ["RFC 9844 Section 5 (alternative delimiter and multi-field UI options)", "RFC 4007 Section 11 and 11.2 (standardized %<zone_id> textual form)", "POSIX inet_pton() description", "RFC 3493 getaddrinfo() (referenced indirectly)"]
+    - CrossRefsUsed: ["RFC 9844 §5 text on alternative delimiters and inet_pton()", "RFC 4007 §11/§11.2 on the '%'-delimiter format", "POSIX inet_pton() summary in the excerpt"]
+    - Confidence: Medium
+
+- IfNoIssues:
+  - Comment:
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: None
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Severity: Low
+    - ShortLabel: “Global unicast address” trigger in Section 5 is terminologically consistent with RFC 4007
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9844 Section 5:  
+          “A user interface (UI) that allows or requires the user to enter an IPv6 address **other than a global unicast address** MUST provide a means for entering a link-local address or a scoped multicast address and selecting a zone identifier as specified by [RFC4007] …”
+        - RFC 9844 Introduction:  
+          “At the time of writing, [zone identifiers] are meaningful only when attached to **link-local unicast and scoped multicast addresses**…”  
+        - RFC 4007 Section 4 (Address Scope):  
+          “For unicast addresses, this document discusses two defined scopes:  
+          o  **Link-local scope** …  
+          o  **Global scope**, for uniquely identifying interfaces anywhere in the Internet.”  
+        - RFC 4007 Section 11.1 (Non-Global Addresses):  
+          “The format applies to all kinds of unicast and multicast addresses of **non-global scope** except the unspecified address… The format is meaningless and should not be used for **global addresses**.”  
+      - ContextSnippets:
+        - RFC 9844 Section 3 (on RFC 4007):  
+          “As [RFC4007] explains, each zone identifier corresponds to a numerical zone index that qualifies a link-local address.”
+        - RFC 9844 Section 3:  
+          “It also updates [RFC4007] by adding a new requirement that user interfaces support the zone identifier as described in Section 5.”
+    - Reasoning:
+      - The router’s candidate issue is that “other than a global unicast address” might be ambiguous, especially for Unique Local Addresses (ULAs), and might not line up cleanly with RFC 4007’s “global” vs “non‑global” scope terminology.
+      - From the provided RFC 4007 text, for *unicast* there are only two scopes discussed: link‑local and global.    That implies any unicast address is either link‑local scope or global scope; there is no third unicast scope class in RFC 4007’s model.
+      - RFC 4007 Section 11.1 then defines the textual `<address>%<zone_id>` format for “unicast and multicast addresses of **non‑global scope** … [and] meaningless … for global addresses.”    So, in RFC 4007 terms, the zone‑id text form is for *non‑global‑scope* addresses (which, for unicast, effectively means link‑local).
+      - RFC 9844’s first sentence in Section 5 is a *gate* for when its UI requirement applies: if a UI ever accepts an IPv6 address that is **not** a global‑scope unicast, then that UI MUST also provide a way to enter link‑local or scoped‑multicast plus a zone identifier.
+        - If the UI only ever accepts global‑scope unicast addresses (including any global‑scope unicast that are not publicly routed), then the condition “other than a global unicast address” is false, so Section 5’s MUST does not apply. That matches the intent: such UIs never need zone identifiers.
+        - If the UI accepts link‑local or other non‑global‑scope addresses, then it does satisfy “other than a global unicast address” and falls under the MUST, which is exactly what 9844 wants (these are the cases where zone identifiers matter).
+      - The router’s concern about ULAs hinges on an implementer *misinterpreting* “global unicast address” to mean “publicly routed only”, and therefore treating ULAs as *non‑global*. That would be a misunderstanding of the existing IPv6 architecture, not a new ambiguity introduced by RFC 9844:
+        - RFC 4007 already clearly distinguishes only link‑local vs global scope for unicast; there is no separate “local‑but‑not‑global‑scope unicast” category in the provided text.  
+        - RFC 9844 does not redefine “global unicast address”; it simply relies on the existing IPv6 terminology.
+      - Even if an implementer did misclassify ULAs as “other than global unicast” and thus thought the UI requirement applied in some extra cases, that would at worst cause a UI to *add* support for link‑local+zone where it wasn’t strictly necessary. This does not create protocol ambiguity or interoperability failure; it simply over‑implements the requirement.
+      - Therefore, from a terminology‑consistency standpoint:
+        - The wording “other than a global unicast address” is aligned with RFC 4007’s global vs non‑global scope concepts.
+        - It does not contradict 4007’s definition of where the textual `<zone_id>` form is meaningful.
+        - Any confusion around ULAs stems from external misunderstandings of “global unicast”, not from an internal inconsistency in RFC 9844’s terminology.
+      - Because implementations can unambiguously determine the intended applicability if they follow the IPv6 architecture terminology, this does **not** rise to an underspecification or inconsistency that would justify an erratum.
+    - PatchSuggestion:
+      - None.
+
+- Notes:
+  - UsedRouterIssues: Considered the router’s candidate about “other than a global unicast address” and concluded it is not a real terminology bug; the phrase is consistent with RFC 4007’s global vs non‑global scope model.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - The analysis assumes the standard IPv6 architectural understanding that unicast addresses have either link‑local or global scope and that “global unicast” includes all global‑scope unicast (including ULAs as defined outside the provided text). That architectural fact is not fully restated in the excerpt, but it is consistent with the RFC 4007 scope model shown here.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+
+Vector Stores Used: vs_6954b7ba9a608191955f277a83faabec
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

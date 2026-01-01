@@ -1,0 +1,658 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: >
+    The excerpt defines roles and guidance for DNSSEC actors (authoritative servers,
+    DNSSEC validators/validating resolvers, operators, and implementers) via the
+    IANA registry columns from RFC 9904, and then RFC 9905 updates some of those
+    registry values while adding explicit operational rules for validating resolvers
+    regarding SHA‑1-based algorithms.
+
+- OverallAssessment: StrongEvidenceOfBug
+
+- FindingsOnRoutedIssues:
+  - Issue-1:
+    - RelatedIssueId: "Issue-1"
+    - Assessment: StrongEvidenceOfBug
+    - BugType: Inconsistency
+    - Summary: >
+        The same actor – DNSSEC validators / validating resolvers and their
+        operators – receives contradictory instructions. RFC 9904 defines
+        “Use for DNSSEC Validation” as a recommendation for validators’ use of
+        an algorithm, targeting both operators and implementers, while RFC 9905
+        Section 2 tells operators of validating resolvers to treat RSASHA1 and
+        RSASHA1‑NSEC3‑SHA1 as unsupported and to render such responses insecure.
+        Yet RFC 9905 Section 5 leaves the IANA “Use for DNSSEC Validation”
+        column at RECOMMENDED for those algorithms, which implies validators
+        should actively use them. This is a direct role-level inconsistency in
+        what validators/operators are told to do with algorithms 5 and 7.
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9904, Section 1.1: “The columns added to the IANA "DNS Security Algorithm Numbers" and "Digest Algorithms" registries target DNSSEC operators and implementers.”
+        - RFC 9904, Section 2.1 (DNSSEC Algorithm Numbers): “Use for DNSSEC Validation: Indicates the recommendation for using the algorithm in DNSSEC validators.”
+        - RFC 9905, Section 2: “Validating resolver implementations … MUST continue to support validation using these algorithms … Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1-NSEC3-SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms.”
+        - RFC 9905, Section 5 (Number 5 and 7 entries): “Use for DNSSEC Signing: MUST NOT … Use for DNSSEC Validation: RECOMMENDED … Implement for DNSSEC Validation: MUST.”
+      - Reasoning: >
+          RFC 9904 explicitly states that the registry columns are aimed at both
+          operators and implementers, and that “Use for DNSSEC Validation”
+          expresses how an algorithm is recommended to be *used* in DNSSEC
+          validators, not merely whether it should be implemented. Thus, for
+          algorithms 5 (RSASHA1) and 7 (RSASHA1‑NSEC3‑SHA1), “Use for DNSSEC
+          Validation: RECOMMENDED” tells the validator role (and its operator) to
+          treat these algorithms as preferred choices when present. In contrast,
+          RFC 9905 separates responsibilities: implementations of validating
+          resolvers MUST support these algorithms (an implementer requirement),
+          but *operators* of validating resolvers MUST treat these algorithms as
+          unsupported, causing responses relying on them to be considered
+          insecure. Because the same actor class (validators / validating
+          resolvers under operator control) is simultaneously told “RECOMMENDED
+          to use for validation” via the IANA column semantics and “MUST treat as
+          unsupported/insecure” via RFC 9905 operational text, the combined
+          guidance is inconsistent at the actor level. The “Implement for
+          DNSSEC Validation: MUST” is coherent with “MUST continue to support,”
+          but leaving “Use for DNSSEC Validation: RECOMMENDED” in place while
+          mandating “MUST treat as unsupported” produces a direct conflict about
+          how validators should behave.
+
+- AdditionalActorIssues:
+  # No additional actor/direction issues beyond the routed one were identified.
+  # (Kept as an empty list to indicate review was done.)
+  []
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary:  
+  RFC 9905 updates operational and implementation guidance for SHA-1–based DNSSEC signature algorithms (RSASHA1 and RSASHA1‑NSEC3‑SHA1) and explicitly references the IANA registry columns and semantics defined in RFC 9904, while claiming not to change some of those column values. It also restates the SHA‑1 DS digest row from the Digest Algorithms registry. The interaction between RFC 9905’s new normative behavior for operators/implementations and the existing IANA “Use for … / Implement for …” columns raises questions about which advice actually applies and to whom.
+
+- ScopeModel:
+  - Targets:
+    - DNSSEC signing algorithms RSASHA1 (5) and RSASHA1‑NSEC3‑SHA1 (7) in the “DNS Security Algorithm Numbers” registry.
+    - DS digest algorithm SHA‑1 (value 1) in the “Digest Algorithms” registry.
+    - DNSSEC validators / validating resolvers (both their implementations and their operators).
+    - Authoritative servers / signers creating DS, DNSKEY, and RRSIG records.
+    - The IANA columns defined in RFC 9904:  
+      - For DNS Security Algorithm Numbers: “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, “Implement for DNSSEC Validation”.  
+      - For Digest Algorithms: “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, “Implement for DNSSEC Validation”.
+  - Conditions:
+    - Creation vs validation:
+      - Creation of DS, DNSKEY, and RRSIG records using RSASHA1 / RSASHA1‑NSEC3‑SHA1: RFC 9905 §2 says “MUST NOT be used when creating DS records” and “MUST NOT be used when creating DNSKEY and RRSIG records”.
+      - Validation of signatures/DS using those algorithms:  
+        - Implementations “MUST continue to support validation using these algorithms” (RFC 9905 §2).  
+        - Operators “MUST treat … as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms” (RFC 9905 §2).
+    - Registry column semantics (RFC 9904 §2.1):
+      - “Use for DNSSEC Validation”: recommendation for using the algorithm in DNSSEC validators (i.e., operator/deployment behavior).
+      - “Implement for DNSSEC Validation”: recommendation for implementing the algorithm in validators (implementation behavior).
+      - Analogous semantics for Digest Algorithms: “Use for DNSSEC Delegation/Validation” vs “Implement for DNSSEC Delegation/Validation”.
+    - RFC 9905’s IANA instructions:
+      - For Digest SHA‑1 (1): keep  
+        - Use for DNSSEC Delegation: MUST NOT  
+        - Use for DNSSEC Validation: RECOMMENDED  
+        - Implement for DNSSEC Delegation: MUST NOT  
+        - Implement for DNSSEC Validation: MUST.
+      - For RSASHA1 (5) and RSASHA1‑NSEC3‑SHA1 (7): set  
+        - Use for DNSSEC Signing: MUST NOT (stronger than NOT RECOMMENDED in RFC 9904).  
+        - Use for DNSSEC Validation: RECOMMENDED (unchanged from RFC 9904).  
+        - Implement for DNSSEC Signing: NOT RECOMMENDED (unchanged).  
+        - Implement for DNSSEC Validation: MUST (unchanged).
+    - Explicit statement in RFC 9905 §4: “‘Use for DNSSEC Validation’ and ‘Implement for DNSSEC Validation’ columns, which this document is not changing.”
+  - NotedAmbiguities:
+    - Whether the “Use for DNSSEC Validation: RECOMMENDED” registry value for algorithms 5 and 7 still applies to operator policy after RFC 9905’s mandate that operators “MUST treat [them] as unsupported”.
+    - Whether RFC 9905 intends to change only *signing* algorithms that embed SHA‑1, or also the *DS digest* algorithm SHA‑1 for validation, given the broad phrase “SHA-1-based algorithms” in §4 and the introductory discussion of SHA‑1 in DS, vs the very narrow explicit updates in §5.
+    - The scope of the phrase “this document is not changing” in §4: is it meant merely as “we are not editing the IANA columns generically” or also as “our new operational requirements should be read as consistent with those unchanged values”?
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: “Use for DNSSEC Validation: RECOMMENDED” vs “MUST treat as unsupported” for RSASHA1 / RSASHA1‑NSEC3‑SHA1
+    - ScopeProblemType: Misaligned scope between registry “Use for …” recommendations (validators/operators) and new operator requirements; failure to update the per‑algorithm “Use for DNSSEC Validation” scope in the registry when changing operator behavior.
+    - Evidence:
+      - RFC 9904 §2.1: “Use for DNSSEC Validation: Indicates the recommendation for using the algorithm in DNSSEC validators.”
+      - RFC 9904 Table 2: for RSASHA1 (5) and RSASHA1‑NSEC3‑SHA1 (7), “Use for DNSSEC Validation: RECOMMENDED; Implement for DNSSEC Validation: MUST”.
+      - RFC 9905 §2: “Validating resolver implementations … MUST continue to support validation using these algorithms … Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms.”
+      - RFC 9905 §4: references “‘Use for DNSSEC Validation’ and ‘Implement for DNSSEC Validation’ columns, which this document is not changing.”
+      - RFC 9905 §5: for numbers 5 and 7, keeps “Use for DNSSEC Validation: RECOMMENDED” and “Implement for DNSSEC Validation: MUST” while tightening only “Use for DNSSEC Signing” to MUST NOT.
+    - DetailedReasoning:
+      - RFC 9904 deliberately separates *implementation* vs *usage* guidance by adding distinct “Implement for …” and “Use for …” columns, and states that these columns “target DNSSEC operators and implementers,” explicitly making “Use for DNSSEC Validation” a recommendation for how validators *use* an algorithm, not whether they merely *implement* it.
+      - For RSASHA1 and RSASHA1‑NSEC3‑SHA1, RFC 9904’s initial registry values say: validators are RECOMMENDED to use these algorithms for validation and MUST implement them; this is a global recommendation to validator operators.
+      - RFC 9905 §2 then introduces new, stronger per‑algorithm rules: implementations “MUST continue to support validation using these algorithms” (implementation requirement), but “Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms.” That operator rule is operationally equivalent to “Use for DNSSEC Validation: MUST NOT” (or, at least, much stricter than NOT RECOMMENDED).
+      - In other words, for exactly the same target (use of algorithms 5 and 7 by validators), RFC 9904’s registry entry says “RECOMMENDED to use,” while RFC 9905 textual requirements say “MUST treat as unsupported and render responses insecure” when only those algorithms are available; these cannot both be simultaneously followed by an operator.
+      - RFC 9905 §4 explicitly asserts that the document is “not changing” the “Use for DNSSEC Validation” and “Implement for DNSSEC Validation” columns and even cites them as the “required levels” that software might still need to support. Section 5 then concretely leaves “Use for DNSSEC Validation: RECOMMENDED” unchanged for 5 and 7.
+      - The attempt to split scope into “implementations MUST support” vs “operators MUST treat as unsupported” is sensible in itself, but RFC 9904 already provided a mechanism to distinguish those scopes: “Implement for DNSSEC Validation” vs “Use for DNSSEC Validation.” RFC 9905 only updates the “Use for DNSSEC Signing” column (to MUST NOT) but not the “Use for DNSSEC Validation” column, creating a mismatch between the IANA registry’s per‑algorithm “use” guidance and the new operator behavior requirements.
+      - While one could argue that a later RFC’s “MUST” for operators overrides an earlier “RECOMMENDED” in the registry, RFC 9904 was explicitly designed so that the IANA registry *is* the canonical carrier of use/implementation requirements. By leaving the “Use for DNSSEC Validation” column as RECOMMENDED yet simultaneously requiring operators to treat the algorithms as unsupported, RFC 9905 undercuts that design and leaves two different normative‑looking sources with incompatible scopes for the same behavior.
+      - In practice, implementers or operators who consult only the IANA registry (per RFC 9904’s model) will conclude that RSA/SHA‑1 (5) and RSASHA1‑NSEC3‑SHA1 (7) are still recommended for validation use, whereas those who read RFC 9905 §2 will disable their use and mark such responses as insecure. This is exactly the kind of mis-scoped guidance RFC 9904 sought to avoid.
+      - A more coherent approach, consistent with the registry‑as‑canonical model, would have been for RFC 9905 to change the “Use for DNSSEC Validation” values for 5 and 7 (for example to NOT RECOMMENDED or MUST NOT) while retaining “Implement for DNSSEC Validation: MUST”; that would keep the “implement but don’t rely on” semantics while avoiding conflicting scopes between the registry and the new operator rules.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous scope of “SHA-1-based algorithms” vs unchanged SHA‑1 DS digest validation status
+    - ScopeProblemType: Vague domain of deprecation (“SHA-1-based algorithms”) relative to the distinct DS digest algorithm; unclear whether SHA‑1 as a DS *digest* remains RECOMMENDED for validation use.
+    - Evidence:
+      - RFC 9905 §1: notes that DNSSEC “made extensive use of SHA‑1, for example, as a cryptographic hash algorithm in … RRSIG and DS records” and concludes: “As adequate alternatives exist, the use of SHA‑1 is no longer advisable. This document thus deprecates the use of RSASHA1 and RSASHA1‑NSEC3‑SHA1 for DNS Security Algorithms.”
+      - RFC 9905 §4: “Zone owners currently making use of SHA-1-based algorithms should immediately switch to algorithms with stronger cryptographic algorithms…”
+      - RFC 9905 §5 restates the SHA‑1 (1) Digest Algorithms row with: “Use for DNSSEC Delegation: MUST NOT; Use for DNSSEC Validation: RECOMMENDED; Implement for DNSSEC Delegation: MUST NOT; Implement for DNSSEC Validation: MUST,” and adds this document as a reference, but does not change those values from RFC 9904.
+      - RFC 9904 Table 3 already had exactly those values for digest 1, making SHA‑1 DS digests disallowed for new delegations but still RECOMMENDED and MUST for validation by resolvers.
+    - DetailedReasoning:
+      - RFC 9905’s introduction explicitly acknowledges SHA‑1’s use in DS records and then uses broad wording like “the use of SHA‑1 is no longer advisable” and “SHA‑1-based algorithms,” which in the DNSSEC context naturally includes both signature algorithms (RSASHA1, RSASHA1‑NSEC3‑SHA1) and the DS digest algorithm SHA‑1 (value 1).
+      - However, when RFC 9905 becomes precise in §2, all normative “MUST NOT” and “MUST treat as insecure” rules are scoped only to RSASHA1 and RSASHA1‑NSEC3‑SHA1 as *DNS Security Algorithms* (i.e., key/signature algorithms), including when used in DS records, DNSKEYs, and RRSIGs. There is no explicit statement about changing how validators should treat DS *digest* algorithm 1.
+      - At the same time, RFC 9904 already prohibited new use of SHA‑1 as a DS digest on the authoritative side (“Use for DNSSEC Delegation: MUST NOT; Implement for DNSSEC Delegation: MUST NOT”) while keeping its use and implementation on the validation side at “RECOMMENDED” and “MUST,” and RFC 9905 §5 explicitly restates exactly those values and merely adds this document as an additional reference.
+      - This combination suggests an intended scope like: (a) do not *create* new DS digests with SHA‑1, but (b) validators should still implement and actively use SHA‑1 DS digests when present, at least for now. That is consistent with the 9904 migration philosophy (validators lag deprecation).
+      - The problem is that RFC 9905 never clearly separates “SHA‑1-based algorithms” into “signature algorithms” vs “DS digests” in its deprecation language; an operator reading §4 (“Zone owners currently making use of SHA-1-based algorithms should immediately switch…”) and seeing SHA‑1 DS digests in their delegation chain could reasonably think that even validation of SHA‑1 DS digests is now discouraged or deprecated, yet the registry continues to label “Use for DNSSEC Validation” as RECOMMENDED.
+      - Because RFC 9905 is careful and explicit about tightening “Use for DNSSEC Signing” for algorithms 5 and 7 via the registry, the lack of any similar explicit statement about digest algorithm 1 leaves its scope somewhat ambiguous: Is SHA‑1 as a *digest* algorithm still acceptable for validation (as the registry and RFC 9904 indicate), or is it intended to be treated in the same “no longer advisable” bucket as signing algorithms?
+      - The likely intent is “only signature algorithms are being deprecated; SHA‑1 as a DS digest remains RECOMMENDED for validators but MUST NOT be used for new delegations,” yet that intention must be inferred by reading RFC 9904’s tables and noticing that RFC 9905 §5 does not alter the validation‑side digest values, despite the broad “SHA‑1-based algorithms” phrasing.
+      - This is a scope underspecification issue: the document does not clearly delineate the domain of its SHA‑1 deprecation (signing algorithms vs digest algorithms), forcing readers to reconcile broad text with unchanged registry values on their own. Clarifying text such as “This document does not change the recommendations for using SHA‑1 as a DS digest in validators; only SHA‑1-based *signing* algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 are deprecated” would have removed this ambiguity.
+
+- ResidualUncertainties:
+  - It is not fully explicit whether the IESG intended, at the time of RFC 9905, to keep SHA‑1 as a DS digest RECOMMENDED for validation long-term or only as a short-term transitional measure; the scope of that transitional intent is left to reader inference.
+  - The exact precedence model between the IANA registry values defined in RFC 9904 and later RFC text such as RFC 9905 §2 is not spelled out: are operators supposed to treat the registry as the canonical “Use for” status unless or until the registry entry itself changes, or does any later RFC text automatically override registry guidance even if the registry row is left unchanged? This uncertainty amplifies the impact of the inconsistency identified in Issue‑1.
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following RFC 9905 literally is mechanically implementable: validators can keep RSASHA1/RSASHA1‑NSEC3‑SHA1 code while treating those algorithms as “unsupported” and thus not using them to make data “secure”. However, there is a **normative tension**: Section 2 tells operators to treat these algorithms as unsupported/insecure, while Section 5 leaves the IANA “Use for DNSSEC Validation” columns at **RECOMMENDED**, which 9904 defines as a positive recommendation for validators to *use* these algorithms. This does not make the protocol unimplementable, but it does create conflicting guidance that can lead to inconsistent security behavior across implementations.
+
+---
+
+2. **Causal Analysis**
+
+### 2.1 What RFC 9905 Section 2 Requires in Practice
+
+For DS:
+
+- “The RSASHA1 [RFC4034] and RSASHA1-NSEC3-SHA1 [RFC5155] algorithms MUST NOT be used when creating DS records.”
+- “Operators of validating resolvers MUST treat RSASHA1 and RSASHA1-NSEC3-SHA1 DS records as insecure. If no other DS records of accepted cryptographic algorithms are available, the DNS records below the delegation point MUST be treated as insecure.”
+
+For DNSKEY/RRSIG:
+
+- “The RSASHA1 [RFC4034] and RSASHA1-NSEC3-SHA1 [RFC5155] algorithms MUST NOT be used when creating DNSKEY and RRSIG records.”
+- “Validating resolver implementations … MUST continue to support validation using these algorithms as they are diminishing in use but still actively in use for some domains as of this publication.”
+- “Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1-NSEC3-SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms.”
+
+Mechanically, a conformant validating resolver must:
+
+- **Have code** to verify RRSIGs using algorithms 5 and 7 (to satisfy “MUST continue to support validation”).
+- But **treat them as if they were unsupported** for DNSSEC security semantics:
+  - If an RRset can only be validated with 5/7, classification must be **insecure**, not secure.
+  - This is explicitly matching the 4035-style “unsupported algorithm → treat as insecure, not bogus” behavior, but now *by policy* rather than true lack of implementation.
+
+This is implementable by:
+
+- Keeping the cryptographic verification routines for 5/7, but
+- Excluding 5/7 from the “supported signing algorithms” set used when determining if a zone/answer is “secure” vs “insecure”.
+
+So Section 2 is operationally coherent and executable.
+
+### 2.2 Meaning of the IANA Columns from RFC 9904
+
+RFC 9904 defines the columns in the registries:
+
+- For the DNS Security Algorithm Numbers registry, “Use for DNSSEC Validation”:
+
+  > Indicates the recommendation for using the algorithm in DNSSEC validators.
+
+- “Implement for DNSSEC Validation”:
+
+  > Indicates the recommendation for implementing the algorithm within DNSSEC validators.
+
+And 9904 emphasizes these are aimed at **operators and implementers** and uses BCP 14 terms (MAY, RECOMMENDED, MUST NOT, etc.) as normative recommendations.
+
+Initial values for algorithms 5 and 7 in 9904 Table 2 were:
+
+- Use for DNSSEC Signing: NOT RECOMMENDED  
+- Use for DNSSEC Validation: RECOMMENDED  
+- Implement for DNSSEC Signing: NOT RECOMMENDED  
+- Implement for DNSSEC Validation: MUST  
+
+9904 also notes:
+
+- “Validating recursive resolvers are encouraged to retain support for all algorithms not marked as MUST NOT.”
+
+So in 9904, RSASHA1 and RSASHA1‑NSEC3‑SHA1 are **positively recommended for validation** but discouraged for signing.
+
+### 2.3 What RFC 9905 Section 5 Tells IANA to Do
+
+RFC 9905 §5 updates the registry entries for 5 and 7 as follows:
+
+For 5 (RSASHA1) and 7 (RSASHA1-NSEC3-SHA1):
+
+- Use for DNSSEC Signing: **MUST NOT**
+- Use for DNSSEC Validation: **RECOMMENDED**
+- Implement for DNSSEC Signing: **NOT RECOMMENDED**
+- Implement for DNSSEC Validation: **MUST**
+
+So the only effective change vs 9904 is tightening the “Use for DNSSEC Signing” from NOT RECOMMENDED to MUST NOT. The **“Use for DNSSEC Validation: RECOMMENDED” and “Implement for DNSSEC Validation: MUST” are deliberately left unchanged.**
+
+For SHA‑1 in the Digest Algorithms registry, 9905 repeats exactly the values already defined in 9904 (MUST NOT for delegation use, RECOMMENDED / MUST for validation implementation), and Section 4 explicitly says it is not changing those validation columns.
+
+### 2.4 The Tension
+
+Putting it together:
+
+- Body text (Section 2) to **operators of validating resolvers**:
+  - MUST treat RSASHA1/RSASHA1‑NSEC3‑SHA1 as **unsupported**, making responses **insecure** if only those algorithms are available.
+
+- IANA registry (after 9905), interpreted under 9904:
+  - “Use for DNSSEC Validation: RECOMMENDED” means validators are **positively recommended** to *use* these algorithms for DNSSEC validation.
+  - “Implement for DNSSEC Validation: MUST” means validators are strongly required to implement code for them.
+
+The **implementation** requirement is coherent with Section 2: 9905 also says implementations MUST continue to support validation using these algorithms.
+
+The **use** recommendation is where the tension lies:
+
+- “Use for DNSSEC Validation: RECOMMENDED” describes active **use in validators**, which in normal DNSSEC parlance means these algorithms are enabled and used to decide that data is “secure”.
+- Section 2, however, tells operators to **treat them as unsupported**, which in the DNSSEC state machine means they are *not* used to make data “secure”; at best they lead to “insecure” classification if no other acceptable algorithms are present.
+
+Can both be followed?
+
+- Per BCP 14, RECOMMENDED/SHOULD means: do this unless there are valid reasons not to.
+- A later MUST-level requirement *is* an overriding “valid reason”. So, an operator can remain conformant by:
+  - Implementing RSASHA1/RSASHA1‑NSEC3‑SHA1 validation (to satisfy the “MUST implement” aspects).
+  - **Not** using them for security decisions, per Section 2’s MUST, thus deliberately ignoring the “Use for Validation: RECOMMENDED” guidance.
+
+So there **does exist** a behavior that satisfies all MUSTs: treat the IANA “Use for Validation: RECOMMENDED” as historical/general guidance but overridden here by the more specific deprecation text.
+
+However, the conflict is real in terms of *what the registry communicates*:
+
+- Someone who looks **only** at the IANA registry (which is the intended “canonical status” according to 9904) will see RSASHA1 and RSASHA1‑NSEC3‑SHA1 as:
+  - **RECOMMENDED for validation use**, and
+  - **MUST implement for validation**,
+  and will reasonably conclude that:
+  - Validators should both implement and **use** these algorithms in normal operation.
+- That conclusion is *directly opposed* to 9905 Section 2’s **operational** requirement to treat them as unsupported/insecure.
+
+Causally, this creates a clear divergence in real deployments:
+
+- Some resolvers (following the registry) will keep treating RSASHA1/RSASHA1‑NSEC3‑SHA1 signatures as providing full DNSSEC security.
+- Others (following 9905 Section 2) will treat zones using only those algorithms as **insecure**.
+
+This does **not** break interoperability in the sense of bits-on-the-wire (the messages still parse and validate syntactically), but it leads to **inconsistent security semantics**: the same signed response may be “secure” to one resolver and “insecure” to another.
+
+Given 9904’s intent that the IANA registry be the canonical status reference for operators and implementers, that inconsistency is likely to be a source of misconfiguration and delayed deprecation, but not a protocol deadlock or decoding failure.
+
+### 2.5 Digest Algorithm (SHA‑1) Case
+
+For completeness, note that for the **digest** algorithm SHA‑1 (DS digest type 1):
+
+- 9904 already had:
+
+  - Use for DNSSEC Delegation: MUST NOT  
+  - Use for DNSSEC Validation: RECOMMENDED  
+  - Implement for DNSSEC Delegation: MUST NOT  
+  - Implement for DNSSEC Validation: MUST  
+
+- 9905 **does not change** those validation values and explicitly says so in Section 4.
+
+This is **not** inconsistent with 9905 Section 2, because that section’s DS text is about **key algorithms** 5 and 7 in the DS “algorithm” field, not the DS **digest type**. Validators are supposed to:
+
+- Still understand SHA‑1 digests (digest type 1) for legacy DS records in general.
+- But treat DS records that *name RSASHA1/RSASHA1‑NSEC3‑SHA1 keys* as insecure.
+
+So there is no mechanical or semantic conflict in the digest algorithm registry.
+
+---
+
+3. **Problem Classification**
+
+- There is **no causal inconsistency** that makes the protocol or algorithm unimplementable:
+  - A single implementation can satisfy all MUST-level requirements by keeping validation support for 5/7 but not using them to mark data as secure.
+- However, there is a **normative inconsistency / underspecification at the policy level**:
+  - The IANA “Use for DNSSEC Validation: RECOMMENDED” for algorithms 5 and 7, as defined in RFC 9904, communicates an operational recommendation that is effectively the opposite of what RFC 9905 Section 2 demands of operators.
+  - The document does not explicitly state that, notwithstanding the registry “RECOMMENDED”, operators **must not** treat these algorithms as providing DNSSEC security. That precedence has to be inferred from general BCP 14 rules, not from the registry itself.
+
+Thus this is best described as **Causal Underspecification / Normative Tension**, not a fatal protocol bug.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+A minimal change that would align the registry with the body text and remove the tension would be:
+
+- For algorithm numbers **5** and **7** in the “DNS Security Algorithm Numbers” registry:
+  - Change **“Use for DNSSEC Validation”** from **RECOMMENDED** to **NOT RECOMMENDED** or possibly **MAY**, while leaving:
+    - **“Implement for DNSSEC Validation”** as **MUST**.
+- Optionally add a short statement (in an update or erratum) clarifying that:
+  - Despite the requirement to **implement** validation for 5/7, they **must not be treated as providing DNSSEC security**, and zones relying solely on them are to be handled as **insecure**.
+
+This preserves the intended transitional behavior: implementations retain code to process legacy data, but operators are clearly steered away from relying on these algorithms for security semantics.
+
+---
+
+5. **Non-Issues**
+
+- The use of **MUST NOT** in the “Use for DNSSEC Signing” column is consistent with 9904’s allowed values and with 9905’s text forbidding creation of new DNSKEY/RRSIG with these algorithms.
+- The digest algorithm SHA‑1 registry values and the statement in Section 4 that those validation columns are unchanged are consistent with Section 2’s DS behavior (since that section is about key algorithms, not digest types).
+- Keeping “Implement for DNSSEC Signing: NOT RECOMMENDED” while simultaneously stating “MUST NOT be used when creating DNSKEY and RRSIG records” is not a mechanical conflict: implementers may still include signing code but MUST NOT use it in compliant DNSSEC signing operations.
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary:  
+  RFC 9904 defines normative “Use for …” and “Implement for …” columns in the DNSSEC IANA registries, with BCP 14 semantics. RFC 9905 then deprecates RSASHA1 and RSASHA1‑NSEC3‑SHA1 for use in DNSSEC signing and delegations, while leaving most of the RFC 9904 column values unchanged, and adds stricter operational requirements for validators and operators.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Registry value “Use for DNSSEC Validation: RECOMMENDED” conflicts with “MUST treat as unsupported/insecure” for RSASHA1 / RSASHA1‑NSEC3‑SHA1
+    - Description:  
+      RFC 9904 defines the “Use for DNSSEC Validation” column as “the recommendation for using the algorithm in DNSSEC validators”   and restricts the possible values to BCP 14 terms, including “RECOMMENDED” but not “MUST”  . In its initial table, RSASHA1 (5) and RSASHA1‑NSEC3‑SHA1 (7) have “Use for DNSSEC Validation: RECOMMENDED” and “Implement for DNSSEC Validation: MUST”  . RFC 9905 Section 5 explicitly keeps these values (it updates the entries and shows “Use for DNSSEC Validation: RECOMMENDED” and “Implement for DNSSEC Validation: MUST” for both 5 and 7)  .  
+      However, RFC 9905 Section 2 imposes much stricter operational requirements: “Validating resolver implementations … MUST continue to support validation using these algorithms …” (an implementation requirement), but “Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms”  . It similarly says operators “MUST treat RSASHA1 and RSASHA1‑NSEC3‑SHA1 DS records as insecure”  .  
+      Under RFC 9904’s definition, “Use for DNSSEC Validation: RECOMMENDED” is a normative recommendation to validators (and, per Section 1.1, to operators and implementers) actually to use the algorithm for validation decisions  . RFC 9905, in contrast, requires operators to treat those same algorithms as unsupported and to classify responses relying solely on them as insecure, i.e., effectively not to use them as security-providing algorithms. This produces a direct normative tension: one part of the combined specification (the registry column, as defined normatively in RFC 9904) says “RECOMMENDED to use for DNSSEC validation,” while RFC 9905 says “MUST treat as unsupported/insecure and not rely on them.”  
+      Although one can attempt to reconcile this by saying “implement the algorithms but disable them by policy,” that is not what “Use for DNSSEC Validation: RECOMMENDED” communicates under RFC 9904’s own column semantics. The practical effect is inconsistent guidance: implementers and operators looking only at the IANA registry (with 9904’s semantics) are told they should actively use RSASHA1/RSASHA1‑NSEC3‑SHA1 for validation, while RFC 9905 requires operators to treat them as providing no security. This is a genuine normative inconsistency rather than a mere stylistic issue.
+    - KeyTextSnippets:
+      - RFC 9904, column semantics:  
+        “Use for DNSSEC Validation: Indicates the recommendation for using the algorithm in DNSSEC validators.”    
+        “The columns added … target DNSSEC operators and implementers.”    
+        “Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Use for DNSSEC Signing’ and ‘Use for DNSSEC Validation’ columns.”    
+      - RFC 9904, RSASHA1 / RSASHA1‑NSEC3‑SHA1 rows:  
+        “5 RSASHA1 … Use for DNSSEC Validation: RECOMMENDED … Implement for DNSSEC Validation: MUST”    
+        “7 RSASHA1‑NSEC3‑SHA1 … Use for DNSSEC Validation: RECOMMENDED … Implement for DNSSEC Validation: MUST”    
+      - RFC 9905, validator and operator requirements:  
+        “Validating resolver implementations … MUST continue to support validation using these algorithms …”    
+        “Operators of validating resolvers MUST treat RSASHA1 and RSASHA1‑NSEC3‑SHA1 DS records as insecure.”    
+        “Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms.”    
+      - RFC 9905, IANA instructions retain “Use for DNSSEC Validation: RECOMMENDED”:  
+        “Number: 5 … Use for DNSSEC Validation: RECOMMENDED … Implement for DNSSEC Validation: MUST”    
+        “Number: 7 … Use for DNSSEC Validation: RECOMMENDED … Implement for DNSSEC Validation: MUST”    
+    - Impact:  
+      Implementers and operators relying on the IANA registry (with RFC 9904’s normative column semantics) are told that RSASHA1 and RSASHA1‑NSEC3‑SHA1 remain RECOMMENDED for DNSSEC validation, while RFC 9905 requires operators to treat them as unsupported and not to rely on them for security. This inconsistency can lead to diverging implementations and operational policies: some validators may continue to treat SHA‑1–signed zones as “secure,” undermining the deprecation’s security goals, while others follow RFC 9905 and treat them as “insecure,” reducing interoperability in expectations about DNSSEC protection. A minimal fix would be to downgrade the “Use for DNSSEC Validation” registry values for 5 and 7 (e.g., to NOT RECOMMENDED or MAY) so that the registry’s normative recommendations align with the “MUST treat as unsupported/insecure” requirement.
+
+  - Issue-2:
+    - BugType: None
+    - Title: SHA‑1 DS digest row vs general “deprecate SHA‑1” language
+    - Description:  
+      The router flagged a possible issue around the SHA‑1 entry in the “Digest Algorithms” registry (value 1), which has “Use for DNSSEC Delegation: MUST NOT; Use for DNSSEC Validation: RECOMMENDED; Implement for DNSSEC Delegation: MUST NOT; Implement for DNSSEC Validation: MUST” as per RFC 9904 and reaffirmed in RFC 9905 Section 5  . RFC 9905’s prose speaks broadly about SHA‑1’s weakening security and “deprecates the use of RSASHA1 and RSASHA1‑NSEC3‑SHA1 for DNS Security Algorithms”  , and urges zone owners “currently making use of SHA‑1‑based algorithms [to] immediately switch” (lowercase “should,” therefore non‑normative)  .  
+      Normatively, RFC 9905 does not introduce any BCP 14 requirement that DS digest type 1 (SHA‑1) MUST NOT be used for validation; it only relies on RFC 9904’s existing prohibition for delegation (“Use for DNSSEC Delegation: MUST NOT; Implement for DNSSEC Delegation: MUST NOT”) while continuing to expect validators to implement and use SHA‑1 digests for validation of existing DS records  . The title and introduction of RFC 9905 are scoped to deprecating SHA‑1 in *signature algorithms*, and the concrete MUST‑level requirements target RSASHA1 and RSASHA1‑NSEC3‑SHA1 (signing algorithms) and DS records referring to those algorithms, not the DS digest type itself  .  
+      Consequently, the continued “Use for DNSSEC Validation: RECOMMENDED” and “Implement for DNSSEC Validation: MUST” for digest value 1 are consistent with the normative story: do not use SHA‑1 to *create* new delegations, but do continue to support validation of existing SHA‑1 DS digests. Any tension is at the level of high‑level design (how aggressively to phase out SHA‑1 in DS digests), not a contradiction in BCP 14 requirements.
+    - KeyTextSnippets:
+      - Digest Algorithms, SHA‑1 row: “1 SHA‑1 … Use for DNSSEC Delegation: MUST NOT … Use for DNSSEC Validation: RECOMMENDED … Implement for DNSSEC Delegation: MUST NOT … Implement for DNSSEC Validation: MUST”    
+      - RFC 9905 scope: “This document thus deprecates the use of RSASHA1 and RSASHA1‑NSEC3‑SHA1 for DNS Security Algorithms.”    
+      - Operational text: “Zone owners currently making use of SHA‑1‑based algorithms should immediately switch …” (non‑BCP‑14 “should”)    
+    - Impact:  
+      There is no clear normative contradiction here; the documents consistently say “don’t use SHA‑1 for new DS delegations, but keep validating existing SHA‑1 DS digests.” Any change to lower the “Use for DNSSEC Validation” value for digest 1 would be a design choice to accelerate deprecation, not a required fix for a deontic bug.
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: The excerpt defines and uses the IANA DNSSEC algorithm registry columns from RFC 9904, then in RFC 9905 both updates specific registry entries (Section 5) and gives operational guidance for validators (Section 2).
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: "Use for DNSSEC Validation: RECOMMENDED" vs "MUST treat as unsupported/insecure"
+    - LocationHint: RFC 9905 Section 2 vs Section 5; RFC 9904 Section 2.1/2.2 (column definitions)
+    - Evidence:
+      - Snippet1: RFC 9904 defines the "Use for DNSSEC Validation" column as indicating "the recommendation for using the algorithm in DNSSEC validators" and restricts its values to "MAY", "RECOMMENDED", "MUST NOT", and "NOT RECOMMENDED".
+      - Snippet2: RFC 9905 Section 2 states, for RSASHA1 and RSASHA1-NSEC3-SHA1: "Validating resolver implementations ... MUST continue to support validation using these algorithms ..." and "Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1-NSEC3-SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms."
+      - Snippet3: RFC 9905 Section 5 instructs IANA that for algorithm numbers 5 (RSASHA1) and 7 (RSASHA1-NSEC3-SHA1) in the "DNS Security Algorithm Numbers" registry, the columns are to be: "Use for DNSSEC Signing: MUST NOT", "Use for DNSSEC Validation: RECOMMENDED", "Implement for DNSSEC Signing: NOT RECOMMENDED", and "Implement for DNSSEC Validation: MUST".
+      - Snippet4: RFC 9904 Section 2.1 explains that the "Use for DNSSEC Validation" column is operator-facing guidance: "Indicates the recommendation for using the algorithm in DNSSEC validators."
+    - TechnicalExplanation: |
+        RFC 9904 gives precise semantics to the "Use for DNSSEC Validation" column: it is a recommendation about actually using an algorithm in validation operations, with constrained values (MAY, RECOMMENDED, MUST NOT, NOT RECOMMENDED). In RFC 9905 Section 2, operators of validating resolvers are told they "MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1-NSEC3-SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms." That is effectively a "do not use this algorithm to confer security" instruction for operational validation. 
+
+        However, in Section 5, RFC 9905 leaves the "Use for DNSSEC Validation" column in the DNS Security Algorithm Numbers registry at "RECOMMENDED" for algorithm numbers 5 and 7, while only tightening "Use for DNSSEC Signing" from NOT RECOMMENDED to MUST NOT. By RFC 9904's definition, "Use for DNSSEC Validation: RECOMMENDED" means validators are positively encouraged to use these algorithms when present. This creates a structural/normative conflict inside the same document: the registry column (a formally defined, machine- and operator-facing structure) recommends use for validation, while the surrounding normative text requires operators to treat the same algorithms as unsupported/insecure and not rely on them for secure validation outcomes.
+
+        The conflict is not about cryptographic policy but about the consistency between the specified IANA registry values and their normative column semantics. A validator or operator consulting only the IANA registry (per RFC 9904) will be told that algorithms 5 and 7 are RECOMMENDED for DNSSEC validation, whereas reading RFC 9905 Section 2 alone yields the opposite operational requirement. Because these registry fields are themselves the normative structured representation of recommendation levels, this mismatch constitutes a structural inconsistency between the registry specification and the document's operational requirements.
+    - PatchSuggestion: |
+        Align the "Use for DNSSEC Validation" column values for algorithms 5 (RSASHA1) and 7 (RSASHA1-NSEC3-SHA1) with the Section 2 requirement that operators MUST treat these algorithms as unsupported/insecure.
+
+        For example, in RFC 9905 Section 5, replace for both algorithm 5 and algorithm 7:
+
+          "Use for DNSSEC Validation:  RECOMMENDED"
+
+        with:
+
+          "Use for DNSSEC Validation:  MUST NOT"
+
+        (or, if the intent is softer deprecation rather than prohibition, with "NOT RECOMMENDED"), and instruct IANA to update the corresponding column values in the "DNS Security Algorithm Numbers" registry accordingly. This preserves "Implement for DNSSEC Validation: MUST" for backward-compatibility in software, while making the structured IANA recommendation for actual validation use consistent with the normative text that these algorithms are to be treated as unsupported/insecure.
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9905 Section 5 modifies specific entries in the IANA “Digest Algorithms” and “DNS Security Algorithm Numbers” registries using the column model and constraints defined by RFC 9904. At the same time, RFC 9905 Section 2 gives strong normative requirements about how RSASHA1 and RSASHA1‑NSEC3‑SHA1 MUST and MUST NOT be used by signers and validators. The key question is whether the IANA column values that RFC 9905 sets (or leaves unchanged) are consistent with the semantics and intent established in RFC 9904.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: RECOMMENDED “Use for Validation” vs “MUST treat as unsupported” for RSASHA1 algorithms
+    - Description:  
+      RFC 9904 defines the “Use for DNSSEC Validation” column in the “DNS Security Algorithm Numbers” registry as indicating “the recommendation for using the algorithm in DNSSEC validators” (Section 2.1). For algorithm numbers 5 (RSASHA1) and 7 (RSASHA1‑NSEC3‑SHA1), RFC 9904’s initial Table 2 sets “Use for DNSSEC Validation” to RECOMMENDED and “Implement for DNSSEC Validation” to MUST, which expresses that validators are expected both to implement and to actually use these algorithms when validating. RFC 9905 Section 5 explicitly keeps those same values for 5 and 7 (“Use for DNSSEC Validation: RECOMMENDED; Implement for DNSSEC Validation: MUST”), only tightening the “Use for DNSSEC Signing” column from NOT RECOMMENDED to MUST NOT. However, RFC 9905 Section 2 simultaneously states that “Validating resolver implementations … MUST continue to support validation using these algorithms” (an implementation requirement) but that “operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms.” That second requirement says that, from a validation *policy* perspective, these algorithms must not be treated as supported for establishing security: if a zone can only be validated with RSASHA1/RSASHA1‑NSEC3‑SHA1, the result MUST be treated as insecure. This is in direct tension with an IANA column value of “Use for DNSSEC Validation: RECOMMENDED”, whose 9904-defined role is precisely to recommend that validators *use* the algorithm as a normal validation algorithm. A careful implementer following 9904’s registry semantics would configure validators to treat RSASHA1/RSASHA1‑NSEC3‑SHA1 as recommended validation algorithms, while an implementer following RFC 9905’s Section 2 would configure validators to treat them as effectively *not* usable for security decisions. Different validators could therefore arrive at different security statuses (e.g., one asserting the AD bit based on RSASHA1, another treating the same zone as insecure), breaking interoperability of the security semantics. This matches the router’s Candidate Issue 1, and I agree it is a genuine cross‑RFC/registry inconsistency rather than something that can be cleanly interpreted as merely “implement but disabled by policy.”
+    - EntitiesInvolved: ["RFC 9904 Section 2.1 (column descriptions)", "RFC 9904 Table 2 (values for algorithm numbers 5 and 7)", "RFC 9905 Section 2 (normative behavior for validators)", "RFC 9905 Section 5 (IANA updates for DNS Security Algorithm Numbers)", "DNS Security Algorithm Numbers registry entries for 5 (RSASHA1) and 7 (RSASHA1-NSEC3-SHA1)"]
+    - CrossRefsUsed: ["RFC 9904 column descriptions and Table 2", "RFC 9905 Sections 2 and 5 text as quoted in the excerpt"]
+    - Confidence: High
+
+- IfNoIssues:
+  - Comment: I do not see a cross‑RFC/registry problem for the SHA‑1 *digest* (DS “Digest Algorithms” registry) beyond possible wording confusion. RFC 9904 already set value 1 (SHA‑1) to “Use for DNSSEC Delegation: MUST NOT / Implement for DNSSEC Delegation: MUST NOT / Use for DNSSEC Validation: RECOMMENDED / Implement for DNSSEC Validation: MUST,” and RFC 9905 Section 5 simply restates those same values while adding itself as a reference. RFC 9905’s normative deprecation text is explicitly scoped to RSASHA1 and RSASHA1‑NSEC3‑SHA1 as *signing algorithms*; it does not change the previously established guidance that validators should still be able to validate existing SHA‑1 DS digests. Thus I disagree with the router’s Candidate Issue 2 as a cross‑document bug: the behavior for digest value 1 is consistent between RFC 9904, RFC 9905 Section 5, and the deprecation intent (no new SHA‑1 use by signers, continued validation support for legacy zones).
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: High
+    - ShortLabel: “Use for DNSSEC Validation: RECOMMENDED” vs “MUST treat as unsupported/insecure” for RSASHA1 / RSASHA1-NSEC3-SHA1
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9905, Section 2 (DNSKEY/RRSIG paragraph):  
+          “Validating resolver implementations … MUST continue to support validation using these algorithms …”  
+          “Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1-NSEC3-SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms.”
+        - RFC 9905, Section 4:  
+          “software may need to be manually built and deployed by an operator to continue supporting the required levels indicated by the ‘Use for DNSSEC Validation’ and ‘Implement for DNSSEC Validation’ columns, which this document is not changing.”
+        - RFC 9905, Section 5, RSASHA1 (5) row (DNS Security Algorithm Numbers registry):  
+          “Use for DNSSEC Signing:  MUST NOT  
+           Use for DNSSEC Validation:  RECOMMENDED  
+           Implement for DNSSEC Signing:  NOT RECOMMENDED  
+           Implement for DNSSEC Validation:  MUST”
+        - RFC 9905, Section 5, RSASHA1-NSEC3-SHA1 (7) row: identical “Use for DNSSEC Validation: RECOMMENDED” and “Implement for DNSSEC Validation: MUST”.
+      - ContextSnippets:
+        - RFC 9904, Section 2.1, column descriptions:  
+          “Use for DNSSEC Validation:  Indicates the recommendation for using the algorithm in DNSSEC validators.”  
+          “Implement for DNSSEC Validation:  Indicates the recommendation for implementing the algorithm within DNSSEC validators.”
+        - RFC 9904, Section 2.2 (allowed values):  
+          “Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Use for DNSSEC Signing’ and ‘Use for DNSSEC Validation’ columns.  
+           Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Implement for DNSSEC Signing’ and ‘Implement for DNSSEC Validation’ columns.”
+    - Reasoning:
+      - RFC 9904 explicitly defines the “Use for DNSSEC Validation” column as a recommendation for *using* an algorithm in DNSSEC validators, distinct from merely implementing it. The use of BCP 14 keywords in that column (RECOMMENDED, MUST NOT, etc.) is therefore understood as guidance to operators and implementers about whether validators should actually rely on the algorithm when performing validation.
+      - In RFC 9905 Section 5, RSASHA1 and RSASHA1‑NSEC3‑SHA1 retain the 9904 values of “Use for DNSSEC Validation: RECOMMENDED” and “Implement for DNSSEC Validation: MUST”. Section 4 further emphasizes that “this document is not changing” those validation-related columns, explicitly tying operator behavior to the values in those columns.
+      - At the same time, RFC 9905 Section 2 states that:
+        - Implementations “MUST continue to support validation using these algorithms” (this aligns with “Implement for DNSSEC Validation: MUST” and, arguably, with continued *use* during validation).
+        - But crucially, “Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms.”
+      - The word “unsupported” is not defined, but in normal DNSSEC terminology an “unsupported” algorithm is not to be used for security decisions. Requiring operators to “MUST treat … as unsupported, rendering responses insecure” is, functionally, a requirement *not* to use these algorithms as trusted validation algorithms.
+      - That operator requirement directly clashes with the registry’s “Use for DNSSEC Validation: RECOMMENDED”, whose semantics in RFC 9904 are exactly to recommend using the algorithm in validators. RFC 9905 even reaffirms that it is *not* changing the “Use for DNSSEC Validation” column, while simultaneously imposing a MUST-level prohibition on using that algorithm to confer security.
+      - This is more than stylistic: an implementer/operator who follows only the IANA registry (per RFC 9904) sees a *RECOMMENDED* use-for-validation algorithm; an operator following Section 2 of RFC 9905 must *not* rely on it and must treat zones validated only with RSASHA1/RSASHA1‑NSEC3‑SHA1 as insecure. Both behaviors cannot simultaneously be correct under the usual BCP 14 reading of “RECOMMENDED” vs “MUST NOT use for security”.
+      - The inconsistency arises from overloaded use of “use for validation” and “unsupported”: the same algorithms are simultaneously “RECOMMENDED” for use in validation (in the registry) and required to be treated as “unsupported” and “insecure” in operational text. This creates genuine ambiguity for implementers and operators about whether to rely on these algorithms for DNSSEC security semantics.
+    - PatchSuggestion:
+      - A minimal erratum should clarify the relationship between the registry entries and the operational requirement, and avoid the contradictory use of “unsupported”. For example (conceptual change, not exact RFC wording):
+        - In RFC 9905, Section 2, replace:
+          - “Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms.”
+        - With something along the lines of:
+          - “Operators of validating resolvers MUST treat zones that can be validated *only* with RSASHA1 or RSASHA1‑NSEC3‑SHA1 as insecure, even if signature validation using these algorithms succeeds. Validators MUST still implement and perform validation with these algorithms, as reflected in the ‘Use for DNSSEC Validation’ and ‘Implement for DNSSEC Validation’ columns of the ‘DNS Security Algorithm Numbers’ registry, but a successful validation using only these algorithms MUST NOT cause the data to be treated as Secure.”
+      - Optionally, to make the registry consistent with this clarified behavior, an erratum could also state that for algorithms 5 and 7 the “Use for DNSSEC Validation” column is to be interpreted as “RECOMMENDED to implement and perform internal validation for downgrade-to-insecure handling, but NOT RECOMMENDED for establishing Secure status”, or (if the community prefers) adjust the IANA value from “RECOMMENDED” to a lower-strength value and explicitly note that RFC 9905 overrides the generic semantics in RFC 9904 for these entries.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - Severity: Low
+    - ShortLabel: Misnamed DS registry as “DNS Security Algorithm Numbers” in RFC 9905 Introduction
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9905, Section 1:  
+          “Operators are encouraged to consider switching to one of the recommended algorithms listed in the ‘DNS Security Algorithm Numbers’ [DNSKEY-IANA ] and ‘DNS Security Algorithm Numbers’ [DS-IANA ] registries, respectively.”
+      - ContextSnippets:
+        - RFC 9904, Section 1.1:  
+          “the IANA ‘DNS Security Algorithm Numbers’ [DNSKEY-IANA ] and ‘Digest Algorithms’ [DS-IANA ] registries…”
+        - The DS-IANA reference is defined as the registry titled “DNSSEC Delegation Signer (DS) Resource Record (RR) Type Digest Algorithms”, often referred to simply as the “Digest Algorithms” registry.
+    - Reasoning:
+      - The second quoted registry name in RFC 9905 Section 1 associates [DS-IANA] with the name “DNS Security Algorithm Numbers”. However, [DS-IANA] actually denotes the DS digest registry, whose name (per RFC 9904 and IANA) is “Digest Algorithms” (formally, “DNSSEC Delegation Signer (DS) Resource Record (RR) Type Digest Algorithms”).
+      - Elsewhere in RFC 9905 (e.g., Section 5) the DS registry is correctly called “Digest Algorithms”, and RFC 9904 consistently uses “DNS Security Algorithm Numbers” only for the DNSKEY/DNSSEC algorithm registry and “Digest Algorithms” for the DS digest registry.
+      - Thus, RFC 9905 inconsistently labels the DS registry in Section 1, even though the citation tag [DS-IANA] is correct. This is a naming/terminology error rather than a protocol-design problem.
+      - The practical impact is minor: readers can still follow the [DS-IANA] reference and find the correct registry. However, the incorrect textual name could briefly confuse implementers trying to distinguish between the two IANA registries, especially given that both concern “DNSSEC algorithms”.
+    - PatchSuggestion:
+      - In RFC 9905, Section 1, in the sentence:
+        - “… listed in the ‘DNS Security Algorithm Numbers’ [DNSKEY-IANA ] and ‘DNS Security Algorithm Numbers’ [DS-IANA ] registries, respectively.”
+      - Replace the second quoted registry name with the correct one:
+        - “… listed in the ‘DNS Security Algorithm Numbers’ [DNSKEY-IANA ] and ‘Digest Algorithms’ [DS-IANA ] registries, respectively.”
+
+  - Issue-3:
+    - BugType: None
+    - Severity: Low
+    - ShortLabel: SHA-1 digest (DS value 1) vs general “SHA-1-based algorithms” deprecation language
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9905, Section 1:  
+          “DNSSEC … made extensive use of SHA-1, for example, as a cryptographic hash algorithm in Resource Record Signature (RRSIG) and Delegation Signer (DS) records.”  
+          “This document thus deprecates the use of RSASHA1 and RSASHA1-NSEC3-SHA1 for DNS Security Algorithms.”
+        - RFC 9905, Section 4:  
+          “Zone owners currently making use of SHA-1-based algorithms should immediately switch to algorithms with stronger cryptographic algorithms, such as the recommended algorithms in the IANA registries [DNSKEY-IANA ] [DS-IANA ].”
+        - RFC 9905, Section 5, SHA‑1 digest row (value 1 in “Digest Algorithms”):  
+          “Use for DNSSEC Delegation:  MUST NOT  
+           Use for DNSSEC Validation:  RECOMMENDED  
+           Implement for DNSSEC Delegation:  MUST NOT  
+           Implement for DNSSEC Validation:  MUST”
+      - ContextSnippets:
+        - RFC 9904, Table 3 (Digest Algorithms) already sets value 1 (SHA‑1) to the same four values as above and defines the column semantics.
+    - Reasoning:
+      - RFC 9905’s *normative* deprecation target is explicitly “RSASHA1 and RSASHA1‑NSEC3‑SHA1 for DNS Security Algorithms”, i.e., the signing algorithms. It does not normatively deprecate the SHA‑1 DS digest algorithm; instead, it reuses the existing 9904 values for digest value 1 and merely adds RFC 9905 as an additional reference.
+      - The more general phrases “SHA‑1-based algorithms” and references to SHA‑1 in DS records appear in explanatory text, with lowercase “should”, not as new BCP 14 requirements. The actual registry semantics for DS digest value 1 remain: MUST NOT use for new delegations, but RECOMMENDED/MUST to implement and use for validation of existing DS records, which is consistent with a gradual deprecation path.
+      - While an inattentive reader might conflate “SHA‑1-based algorithms” (broad narrative) with the specific DS SHA‑1 digest, the combination of explicit normative scope (RSASHA1 and RSASHA1‑NSEC3‑SHA1 only) and unchanged digest registry values is sufficient to avoid a protocol or implementability bug. The terminology could arguably be crisper, but it does not rise to the level of a specification error that would warrant an erratum.
+    - PatchSuggestion:
+      - None.
+
+- Notes:
+  - UsedRouterIssues: Confirmed and strengthened Router Candidate Issue 1 as a genuine high-severity inconsistency; evaluated Router Candidate Issue 2 and concluded it does not constitute a real terminology/specification bug. Identified an additional, separate naming inconsistency (Issue-2) not called out by the router.
+  - NewIssuesFromExpert: true
+  - Limitations:
+    - Analysis is based on the provided excerpts of RFC 9904, RFC 9905, and summary descriptions of the IANA registries. If there are later updates or clarifications to these registries or additional text in other sections of these RFCs, they might further qualify or contextualize the conflicts noted here; however, within the given material the identified inconsistencies stand.
+
+[Used vector stores: vs_6954b3a84d088191b965d17d5b7b01d3]
+
+
+Vector Stores Used: vs_6954b3a84d088191b965d17d5b7b01d3
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

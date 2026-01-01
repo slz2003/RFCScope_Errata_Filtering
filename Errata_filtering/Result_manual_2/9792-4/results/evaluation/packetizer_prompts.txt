@@ -1,0 +1,261 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 4 defines IANA actions creating separate Prefix Extended Flags registries for OSPFv2 and OSPFv3 and ties them to the variable-length Prefix Extended Flags field described in Section 2. The rest of the excerpt defines the sub-TLV format, its usage in OSPFv2/OSPFv3 LSAs, and the allocation policy (IETF Review) for the bits in the new registries.
+
+- ScopeModel:
+  - Targets:
+    - The variable-length “Prefix Extended Flags” field carried in the OSPFv2 Prefix Extended Flags sub-TLV (Type 11, OSPFv2 Extended Prefix TLV sub-TLVs).
+    - The variable-length “Prefix Extended Flags” field carried in the OSPFv3 Prefix Extended Flags sub-TLV (Type 37, OSPFv3 Extended-LSA Sub-TLVs).
+    - Two distinct IANA bit registries:
+      - “OSPFv2 Prefix Extended Flags” registry (within OSPFv2 Parameters) that defines bits for the OSPFv2 Prefix Extended Flags sub-TLV.
+      - “OSPFv3 Prefix Extended Flags” registry (within OSPFv3 Parameters) that defines bits for the OSPFv3 Prefix Extended Flags sub-TLV.
+  - Conditions:
+    - Each registry’s scope is per protocol instance (v2 vs v3), not shared; each assigns semantics to bit numbers (0–31 initially, then additional 32-bit blocks) in the Prefix Extended Flags field of that protocol’s sub-TLV.
+    - Bits in both registries are allocated via IETF Review as per RFC 8126.
+    - Section 2’s rules for length, alignment (multiple of 4 octets), bit numbering, and treatment of unassigned bits apply equally to both OSPFv2 and OSPFv3 sub-TLVs.
+  - NotedAmbiguities:
+    - In Section 4.2.2, the OSPFv3 registry text refers to the “OSPFv2 Prefix Extended Flags sub-TLV” even though this subsection is clearly about OSPFv3, creating a protocol/registry scope mismatch.
+    - The phrase “The flags defined in this document may use either a single bit or multiple bits…” appears in both registries but no flags are actually defined in this RFC; this is mildly confusing but less clearly a scope bug.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: OSPFv3 Prefix Extended Flags registry text wrongly bound to OSPFv2 sub-TLV
+    - ScopeProblemType: Wrong protocol/domain reference in registry scope (OSPFv3 registry text points to OSPFv2 structure)
+    - Evidence:
+      - Section 4.1.2 (OSPFv2): “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+      - Section 4.2.2 (OSPFv3): “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+      - Section 2: “This document defines a variable-length Prefix Extended Flags sub-TLV for OSPFv2 and OSPFv3.” and later distinguishes “The OSPFv2 Prefix Extended Flags sub-TLV…” from “The OSPFv3 Prefix Extended Flags sub-TLV…”.
+    - DetailedReasoning:
+      - Section 4.2.2 is explicitly titled “OSPFv3 Prefix Extended Flags Registry” and states that IANA has created this registry within the “Open Shortest Path First v3 (OSPFv3) Parameters” registry group, so its natural scope is OSPFv3 only.
+      - By symmetry, Section 4.1.2 correctly ties the “OSPFv2 Prefix Extended Flags” registry to “the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2”, clearly bounding that registry to the OSPFv2 sub-TLV.
+      - However, Section 4.2.2 repeats the same sentence but still says “in the OSPFv2 Prefix Extended Flags sub-TLV”, even though OSPFv3 has its own distinct Prefix Extended Flags sub-TLV (Type 37) defined earlier and specifically described as an OSPFv3 sub-TLV under OSPFv3 TLVs (Inter-Area-Prefix, External-Prefix, Intra-Area-Prefix, SRv6 Locator).
+      - Given that Section 2 defines a single format used by *both* protocols but then names “OSPFv2 Prefix Extended Flags sub-TLV” and “OSPFv3 Prefix Extended Flags sub-TLV” separately, the intended binding is clearly: OSPFv2 registry → OSPFv2 sub-TLV, OSPFv3 registry → OSPFv3 sub-TLV.
+      - Leaving the text as-is formally states that the OSPFv3 registry “defines the bits… in the OSPFv2 Prefix Extended Flags sub-TLV”, which could be read as either a shared cross-protocol registry or as a simple copy-paste mistake; this conflicts with the separate-registry, per-protocol structure that IANA and implementers would expect.
+      - If implemented literally, one could (incorrectly) infer that OSPFv3 bits are intended to be governed by the OSPFv2 sub-TLV’s registry, undermining the protocol-specific scoping that the IANA registry hierarchy (separate OSPFv2 Parameters vs OSPFv3 Parameters) is meant to preserve.
+      - The parallel structure of 4.1.2 and 4.2.2, plus the presence of an explicitly defined OSPFv3 Prefix Extended Flags sub-TLV in Section 2 and 4.2.1, strongly indicates this is an editorial but scope-relevant error: the phrase in 4.2.2 should say “in the OSPFv3 Prefix Extended Flags sub-TLV as specified in Section 2.”
+      - An erratum that changes “OSPFv2” to “OSPFv3” in Section 4.2.2 would restore the intended per-protocol scope of the OSPFv3 Prefix Extended Flags registry and eliminate the ambiguity about which sub-TLV’s bits that registry governs.
+
+- ResidualUncertainties:
+  - None significant beyond the identified typo-level scope error; the rest of the IANA scoping (per-protocol registries, per-sub-TLV binding, and IETF Review policy) appears coherent and consistent with Section 2.
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 4 defines IANA actions for new OSPFv2/OSPFv3 Prefix Extended Flags sub-TLV codepoints and creates two bit registries, describing how bits are allocated and what information each registry entry must contain. It also normatively constrains how future flags may be encoded (single vs multiple bits per state) and when IANA should extend the registries.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: OSPFv3 registry text normatively tied to OSPFv2 sub-TLV
+    - Description: In Section 4.2.2, the document states that the “OSPFv3 Prefix Extended Flags” registry defines bits in the Prefix Extended Flags field of the *OSPFv2* Prefix Extended Flags sub-TLV. This conflicts with the surrounding text and structure: the subsection is clearly about OSPFv3, and Table 2 allocates a sub-TLV codepoint for “OSPFv3 Prefix Extended Flags” in an OSPFv3 registry. Normatively, this creates a contradiction about which field the OSPFv3 registry is actually defining: an OSPFv3 field (as implied by the section heading and registry name) versus an OSPFv2 field (as stated in the sentence). That is more than a typo; it directly mis-scopes the registry’s deontic target and could be read as extending the OSPFv2 field via an OSPFv3 registry.
+    - KeyTextSnippets:
+      - “IANA has created the ‘OSPFv3 Prefix Extended Flags’ registry within the ‘Open Shortest Path First v3 (OSPFv3) Parameters’ registry group.”
+      - “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+    - Impact: Implementers and IANA could be uncertain whether the OSPFv3 registry is intended to govern OSPFv3 sub-TLV bits, OSPFv2 bits, or both. This ambiguity affects interoperability by making it unclear which registry applies to the OSPFv3 Prefix Extended Flags field, and it undercuts the clarity needed for future allocations. An erratum clarifying that the OSPFv3 registry defines bits in the *OSPFv3* Prefix Extended Flags sub-TLV would resolve the normative inconsistency.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - Title: “Flags defined in this document” vs. “No bits are currently defined”
+    - Description: Both registry subsections (4.1.2 and 4.2.2) state “No bits are currently defined. Bits 0-31 are to be initially marked as ‘Unassigned’,” and then immediately say, “The flags defined in this document may use either a single bit or multiple bits to represent a state, as determined by the specific requirements of the document defining them.” Normatively, “flags defined in this document” suggests that this RFC defines specific flag bits and is prescribing how they may use one or multiple bits. That directly conflicts with “No bits are currently defined,” and also clashes with the trailing qualifier “as determined by the specific requirements of the document defining them,” which implicitly refers to *other* (future) documents. As written, the obligation about how flags may be encoded is attached to an empty set (this document defines no flags) and mis-anchors guidance that is clearly intended for flags defined by future RFCs using these registries.
+    - KeyTextSnippets:
+      - “No bits are currently defined. Bits 0-31 are to be initially marked as ‘Unassigned’.”
+      - “The flags defined in this document may use either a single bit or multiple bits to represent a state, as determined by the specific requirements of the document defining them.”
+      - (Appears in both 4.1.2 and 4.2.2.)
+    - Impact: This wording can mislead readers and IANA about where flag semantics are actually defined and which documents are being constrained. Future RFC authors could be unsure whether this RFC is claiming to define specific flags already or whether it is trying to normatively constrain all future flag definitions in these registries. A minimal fix (e.g., “Flags defined in this registry (by future documents) may use either a single bit or multiple bits to represent a state…”) would realign the deontic target with the stated fact that no bits are defined in this RFC and clarify that the guidance is for future allocations, not for flags “defined in this document.”
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 4 of RFC 9792 defines IANA actions for new OSPFv2/OSPFv3 Prefix Extended Flags sub-TLV codepoints and creates two new bit registries (one for OSPFv2 and one for OSPFv3). These registries are meant to define bits in the variable-length Prefix Extended Flags field described in Section 2, with allocations governed by the IETF Review policy in RFC 8126. The text must correctly map each protocol’s registry to the corresponding protocol’s sub-TLV and field.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: OSPFv3 registry text incorrectly points to OSPFv2 sub-TLV
+    - Description: In Section 4.2.2 (“OSPFv3 Prefix Extended Flags Registry”), the text states: “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.” However, Section 2 defines a single Prefix Extended Flags sub-TLV format that is used for *both* protocols, with Type=11 for OSPFv2 and Type=37 for OSPFv3, and Section 4.2 is explicitly about the *OSPFv3* registry and codepoint. The corresponding OSPFv2 registry (Section 4.1.2) correctly says it “defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV,” so reusing “OSPFv2” in 4.2.2 is clearly a copy‑and‑paste error. If taken literally, the OSPFv3 registry would be described as defining bits for an OSPFv2 structure, conflicting with the intended 1:1 mapping between each protocol’s registry and its own sub-TLV and potentially confusing implementers and IANA about which registry governs which bits. The sentence in 4.2.2 should instead refer to the “OSPFv3 Prefix Extended Flags sub-TLV” to be consistent with Section 2 and with the OSPFv2 counterpart in 4.1.2.
+    - EntitiesInvolved: ["RFC 9792 Section 2 (Prefix Extended Flags sub-TLV format)", "RFC 9792 Section 4.1.2 (OSPFv2 Prefix Extended Flags Registry)", "RFC 9792 Section 4.2.2 (OSPFv3 Prefix Extended Flags Registry)", "OSPFv2 Prefix Extended Flags sub-TLV", "OSPFv3 Prefix Extended Flags sub-TLV"]
+    - CrossRefsUsed: ["Section 2 common sub-TLV definition (Type 11 for OSPFv2, 37 for OSPFv3)", "Section 4.1.2 text for OSPFv2 registry", "Section 4.2.2 text for OSPFv3 registry"]
+    - Confidence: High
+
+- IfNoIssues:
+  - Comment: The IANA policy reference (“IETF Review [RFC8126]”) matches RFC 8126 Section 4.8, the registry group names (“Open Shortest Path First v2/v3 (OSPFv2/OSPFv3) Parameters”) and the sub-TLV registry names (“OSPFv2 Extended Prefix TLV Sub-TLVs”, “OSPFv3 Extended-LSA Sub-TLVs”) are consistent with the referenced OSPF RFCs, and the bit-numbering/32‑bit‑block scheme in the registries aligns with the variable-length flags field defined in Section 2. Aside from the explicit OSPFv2/OSPFv3 mix-up above, the cross‑RFC and registry relationships appear coherent.
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: OSPFv3 registry text incorrectly names the OSPFv2 Prefix Extended Flags sub-TLV
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 2 caption / description: “The format of the OSPFv2/OSPFv3 Prefix Extended Flags sub-TLV is shown in Figure 1. … Type (2 octets):  11 for OSPFv2 and 37 for OSPFv3”
+        - Section 4.1.2 (OSPFv2 registry): “IANA has created the ‘OSPFv2 Prefix Extended Flags’ registry… The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+        - Section 4.2.2 (OSPFv3 registry): “IANA has created the ‘OSPFv3 Prefix Extended Flags’ registry… The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+      - ContextSnippets:
+        - Section 4.2.1: Table 2 allocates Value 37 with Description “OSPFv3 Prefix Extended Flags” in the “OSPFv3 Extended-LSA Sub-TLVs” registry.
+        - Section 2 again emphasizes a *single* common sub-TLV format used by both protocols, with separate Type values 11 (OSPFv2) and 37 (OSPFv3).
+    - Reasoning:
+      - Section 4.2.2 is explicitly about the “OSPFv3 Prefix Extended Flags” registry, yet its core descriptive sentence says that this registry “defines the bits in the … field in the OSPFv2 Prefix Extended Flags sub-TLV”.
+      - In the parallel OSPFv2 section (4.1.2), the same sentence correctly refers to “the … field in the OSPFv2 Prefix Extended Flags sub-TLV”. It is clear that 4.2.2 was copied and incompletely edited, leaving “OSPFv2” where “OSPFv3” is intended.
+      - Section 2 defines one common sub-TLV format (“OSPFv2/OSPFv3 Prefix Extended Flags sub-TLV”) with distinct Type values for each protocol. For the OSPFv3 registry, the only consistent reading is that it applies to the Prefix Extended Flags field in the OSPFv3 Prefix Extended Flags sub-TLV, not the OSPFv2 one.
+      - An implementer or IANA reviewer could be confused about which sub-TLV’s bits the OSPFv3 registry is intended to cover, especially when reading the IANA text in isolation. While the surrounding context (title “OSPFv3 Prefix Extended Flags Registry”, Table 2 with Type 37) strongly suggests the intent, the explicit mention of “OSPFv2” is technically wrong and could propagate into IANA registry prose or code documentation.
+      - This is a clear naming inconsistency and is appropriate for an erratum that simply corrects the sub-TLV name.
+    - PatchSuggestion:
+      - In Section 4.2.2, replace:
+        - “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+        - with:
+        - “The registry defines the bits in the Prefix Extended Flags field in the OSPFv3 Prefix Extended Flags sub-TLV as specified in Section 2.”
+
+  - Issue-2:
+    - BugType: Underspecification
+    - Severity: Low
+    - ShortLabel: Misleading phrase “flags defined in this document” when no flags are actually defined
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 4.1.2 (OSPFv2 registry):  
+          - “No bits are currently defined.  Bits 0-31 are to be initially marked as ‘Unassigned’.”  
+          - Immediately followed by: “The flags defined in this document may use either a single bit or multiple bits to represent a state, as determined by the specific requirements of the document defining them.”
+        - Section 4.2.2 (OSPFv3 registry) uses the *same* pair of sentences:  
+          - “No bits are currently defined.  Bits 0-31 are to be initially marked as ‘Unassigned’.”  
+          - “The flags defined in this document may use either a single bit or multiple bits to represent a state, as determined by the specific requirements of the document defining them.”
+      - ContextSnippets:
+        - Both 4.1.2 and 4.2.2 otherwise follow the usual IANA pattern: they create a registry, specify allocation policy (“IETF Review”), and state that each bit definition will include Bit number, Description, and Reference, implying that *future* documents will define actual flags/bit usages.
+    - Reasoning:
+      - Each registry section first states “No bits are currently defined,” which is unambiguous: RFC 9792 does not itself define any specific bits or flags.
+      - Immediately afterward, the text refers to “The flags defined in this document…”, which, read literally, conflicts with “No bits are currently defined.” There are no flags in this RFC to which that phrase could refer.
+      - The latter clause of the same sentence (“…as determined by the specific requirements of the document defining them.”) clearly intends that *other* (future) documents will define flags in these registries. This makes “in this document” the likely cut‑and‑paste or wording error: the intended subject is “this registry” or “this registry, as extended by future documents,” not “this RFC”.
+      - While this is unlikely to cause misimplementation—since no actual bits are defined here and any future defining RFC will need to give its own semantics—it is confusing to IANA and readers about where flags are defined. It is a terminology miscue around “document” vs. “registry” and could merit a minor editorial erratum to align with standard IANA wording.
+    - PatchSuggestion:
+      - In both Section 4.1.2 and Section 4.2.2, replace:
+        - “The flags defined in this document may use either a single bit or multiple bits to represent a state, as determined by the specific requirements of the document defining them.”
+        - with:
+        - “Flags defined in this registry may use either a single bit or multiple bits to represent a state, as determined by the specific requirements of the document defining them.”
+      - This keeps the rest of the sentence intact while removing the self‑contradictory implication that RFC 9792 itself defines such flags.
+
+- Notes:
+  - UsedRouterIssues: Confirmed both router CandidateIssues. Issue 1 (OSPFv3 text naming OSPFv2 sub-TLV) is a clear cut-and-paste naming error. Issue 2 (“flags defined in this document” vs. “no bits are currently defined”) is treated as a low-severity terminology/wording bug.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - Analysis is based solely on the provided excerpt of RFC 9792 and the referenced RFC 8126 text. I did not check the live IANA registries or the full RFC text; there could be additional context or later clarifications there, but the identified issues stand on the face of the given text.
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+
+Vector Stores Used: vs_6954b9de5a68819196421a95a41f1980
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

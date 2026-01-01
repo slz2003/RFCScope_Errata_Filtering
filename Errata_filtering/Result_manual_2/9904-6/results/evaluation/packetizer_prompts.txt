@@ -1,0 +1,397 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    Section 6 of RFC 9904 adds only two pieces of temporal guidance: (1) a reference to RFC 6781 and RFC 7583 “for algorithm rollovers” of DNSKEYs and (2) a strict ordering that DS digest algorithm changes MUST precede KSK key rollovers. The referenced RFCs contain detailed timing/state diagrams for key rollovers, but RFC 7583 explicitly excludes algorithm rollovers, and none of the referenced material actually describes a DS-digest-algorithm rollover. This creates a mismatch between the stated scope of the references and the operations they are supposed to guide, and leaves the DS-algorithm-first requirement under-specified in terms of concrete step ordering and wait intervals.
+  OverallTemporalRisk: Medium
+  CandidateIssues:
+    - Id: T1
+      Type: Inconsistency
+      ShortLabel: "Referencing RFC 7583 for DNSKEY algorithm rollovers despite its explicit exclusion"
+      Description: |
+        RFC 9904 §6 tells operators to consult RFC 6781 and RFC 7583 “for guidelines on how to perform algorithm rollovers” of DNSKEYs. However, RFC 7583 explicitly states that algorithm rollovers are out of scope and that it only covers rolling keys of the same algorithm, not transitions between algorithms. At the same time, RFC 6781 devotes a full section to algorithm rollovers and shows additional phases (e.g., “new RRSIGs” before “new DNSKEY”) that are *specific* to algorithm changes and derive from RFC 4035 §2.2.
+        This means RFC 9904’s temporal guidance is internally inconsistent: it points to a document that explicitly declines to define the very class of timelines it is being cited for, and whose timelines are based on assumptions (single algorithm) that do not hold in the algorithm-rollover case.
+      TemporalReasoning: |
+        1. RFC 9904 §6 states: “DNSKEY algorithm rollover in a live zone is a complex process. See [RFC6781] and [RFC7583] for guidelines on how to perform algorithm rollovers.” This invites implementers to treat both documents as sources of algorithm-rollover sequencing.
+        2. RFC 6781 §4.1.4 explicitly addresses “Algorithm Rollovers” and provides a multi-stage timeline: “initial → new RRSIGs → new DNSKEY → new DS → DNSKEY removal → RRSIGs removal”, with detailed descriptions that hinge on RFC 4035 §2.2’s requirement to have signatures for each algorithm in the apex DNSKEY RRset during the transition.  
+        3. RFC 7583 §1.4, in contrast, clearly states its scope limitation: “it does not cover: … Algorithm rollovers. Only the rolling of keys of the same algorithm is described here: not transitions between algorithms.”  
+        4. All of RFC 7583’s subsequent timing diagrams (e.g., Double-Signature ZSK, Double-KSK, Double-DS, Double-RRset) explicitly assume a single algorithm and never introduce the extra “new RRSIGs” phase required for algorithm changes in RFC 6781’s Figure 8.  
+        5. Thus, from a temporal perspective, RFC 6781 defines the algorithm-rollover event sequences; RFC 7583 explicitly *refuses* to do so. Citing 7583 “for algorithm rollovers” is contradictory: it directs readers to use timing/state-machine guidance that was deliberately not written for algorithm changes.
+        6. An implementer who follows RFC 9904 literally may try to apply RFC 7583’s key-rollover timelines (which assume fixed algorithms) to an algorithm rollover, omitting stages like “new RRSIGs first”. RFC 6781 warns that omitting these extra stages (especially under conservative interpretation of RFC 4035 §2.2) can make zones appear Bogus during the transition.  
+      KeyEvidence:
+        ExcerptPoints:
+          - RFC 9904 §6: “DNSKEY algorithm rollover in a live zone is a complex process. See [RFC6781] and [RFC7583] for guidelines on how to perform algorithm rollovers.”  
+          - RFC 7583 §1.4: “…it does not cover: o Rolling a key that is used as both a ZSK and KSK. o Algorithm rollovers. Only the rolling of keys of the same algorithm is described here: not transitions between algorithms.”  
+          - RFC 6781 §4.1.4 opening and Figure 8: explicit algorithm rollover stages and the need for an initial “new RRSIGs” phase before adding the new DNSKEY/DS.  
+        ContextPoints:
+          - RFC 7583 §5: reiteration that, except in algorithm rollovers, keys of different algorithms can be rolled independently and the key-rollover logic applies per algorithm, underscoring that algorithm rollover is a *separate* case that 7583 does not handle.  
+      ImpactOnImplementations: |
+        If implementers treat RFC 7583 as a valid guide for algorithm rollovers (as RFC 9904 suggests), they may follow the simpler Double-Signature/Double-KSK/Double-DS timelines without the extra phases mandated for algorithm changes in RFC 6781. Under conservative implementations of RFC 4035 §2.2, this can transiently violate the requirement that RRsets be signed with each algorithm signaled in the apex DNSKEY RRset, causing some validators to mark the zone as Bogus during the rollover. Even if operators eventually discover that RFC 7583 disclaims algorithm rollovers, the conflicting reference in RFC 9904 is a source of confusion about which timelines actually apply.
+      AffectedArtifacts:
+        - "RFC 9904 §6, first paragraph (reference to RFC 7583 for algorithm rollovers)"
+        - "RFC 7583 §1.4 (Limitation of Scope: exclusion of algorithm rollovers)"
+      Severity: Medium
+
+    - Id: T2
+      Type: Underspecification
+      ShortLabel: "DS digest algorithm rollover ordering vs. KSK rollover"
+      Description: |
+        RFC 9904 §6 introduces a strict temporal ordering between two operations: changing the DS “algorithm” (i.e., the DS digest algorithm) and rolling the KSK key. It states that upgrading the DS algorithm at the same time as rolling to a new KSK “will lead to DNSSEC validation failures” and that users MUST change the DS algorithm first. However, neither RFC 9904 nor the cited guidance in RFC 6781 and RFC 7583 specify a concrete phase/timing model for DS-digest-algorithm rollovers analogous to the detailed key and algorithm-rollover timelines given for DNSKEYs.
+        This leaves critical aspects of the DS-algorithm-first rule temporally under-specified: what exact sequence of DS records should be published/removed, whether multiple digest algorithms should coexist during the transition, and how long an operator must wait between the DS algorithm change and starting the KSK rollover to avoid the failures the text warns about.
+      TemporalReasoning: |
+        1. RFC 9904 §6 states: “DS algorithm rollover in a live zone is also a complex process. Upgrading an algorithm at the same time as rolling to the new Key Signing Key (KSK) key will lead to DNSSEC validation failures, and users MUST upgrade the DS algorithm first before rolling to a new KSK.” This imposes a temporal ordering: DS-algorithm change → (later) KSK key rollover.  
+        2. Elsewhere in RFC 9904, DS digest algorithms are listed in Table 3 with “Use/Implement for DNSSEC Delegation/Validation”, but no process for *transitioning* between digest algorithms is provided.  
+        3. RFC 6781’s algorithm rollover section (§4.1.4) addresses rolling *signature* algorithms for DNSKEYs, not DS digest algorithms. Its timelines and discussion (e.g., Figure 8) concern adding RRSIGs with a new DNSKEY algorithm, then adding a new DNSKEY and DS, and later removing old keys/signatures; DS digest type is not modeled as a separate dimension.  
+        4. RFC 7583 explicitly omits algorithm rollovers (§1.4) and focuses on keys of a fixed algorithm. Its key states and timing intervals (e.g., IpubP and Iret in §3.3.2 and §3.3.3) treat the DS RRset as a single “associated data” object per key, assuming a fixed digest algorithm. There is no timeline describing how to change the DS *digest* algorithm itself.  
+        5. As a result, an operator trying to follow RFC 9904’s MUST has to infer a DS-digest-roll sequence from documents that either (a) ignore digest changes or (b) explicitly exclude algorithm rollovers.
+           Questions with temporal impact remain unanswered, such as:
+           - Should the parent publish DS records with both old and new digest algorithms for the same KSK for some period (a “Double-DS-digest” phase), and for how long before removing the old digest?
+           - At what point is the DS algorithm change considered “complete enough” that starting a KSK rollover is no longer considered “at the same time” as the algorithm change?
+           - What TTL / propagation-based wait intervals (analogous to IpubP, Iret) must elapse between finalizing the DS digest change and initiating the KSK Double-KSK or Double-DS-style rollover?
+        6. Without explicit staging, two compliant implementations could interpret “upgrade the DS algorithm first” differently: one might wait a full TTL after old-digest DS removal before beginning any KSK rollover, while another might begin KSK changes immediately after adding a new-digest DS but before old-digest DS references have aged out of all caches. Both would claim to satisfy “DS algorithm first”, but their observable timelines differ and may have different failure modes for some resolvers.
+      KeyEvidence:
+        ExcerptPoints:
+          - RFC 9904 §6: “DS algorithm rollover in a live zone is also a complex process. Upgrading an algorithm at the same time as rolling to the new Key Signing Key (KSK) key will lead to DNSSEC validation failures, and users MUST upgrade the DS algorithm first before rolling to a new KSK.”  
+          - RFC 9904 Table 3 (Digest Algorithms): shows the DS digest algorithms and their “Use/Implement” values, but not procedural sequencing.  
+          - RFC 7583 §1.4: explicit exclusion of algorithm rollovers.  
+          - RFC 7583 §3.3.2 and §3.3.3: detailed timing formulas for DS publication and retirement (IpubP, Iret), all assuming a single DS RRset per key and no digest-type change.  
+        ContextPoints:
+          - RFC 6781 §4.1.2 and §4.1.4: detailed multi-phase KSK and algorithm rollovers, illustrating the level of temporal detail normally provided for safe transitions; there is no corresponding DS-digest algorithm rollover narrative in the referenced text.  
+      ImpactOnImplementations: |
+        Implementers and operators are told that performing a DS digest algorithm change “at the same time” as a KSK rollover “will lead to DNSSEC validation failures” and are given a normative MUST to change the DS algorithm first, but they are not given a clear, time-ordered procedure for doing so. Different interpretations of what constitutes “first” and “at the same time” may lead to divergent operational practices: some may build conservative multi-DS, multi-interval procedures; others may make minimal changes that theoretically obey the before/after wording but still create windows of failure in resolvers with particular caching states. This ambiguity risks intermittent validation failures in the field and complicates inter-operator guidance and tooling.
+      AffectedArtifacts:
+        - "RFC 9904 §6, second paragraph (DS algorithm rollover & MUST ordering vs. KSK roll)"
+        - "RFC 9904 Table 3 (Digest Algorithms) as the only other mention of DS algorithms"
+      Severity: Medium
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 6 of RFC 9904 gives high‑level operational guidance for DNSKEY and DS “algorithm rollovers”, normatively constraining the order of DS digest algorithm change vs. KSK roll, and points operators to RFC 6781 and RFC 7583 for “algorithm rollover” procedures. RFC 6781 explicitly covers algorithm rollovers, while RFC 7583 explicitly excludes them from its scope, covering only key rollovers with the same algorithm and timing aspects. The mismatch is a scope inconsistency in how RFC 9904 characterizes the applicability of RFC 7583.
+
+- ScopeModel:
+  - Targets:
+    - DNSKEY algorithm rollovers “in a live zone” (i.e., already DNSSEC‑signed zones in production) per RFC 9904 Section 6.
+    - DS “algorithm” (digest algorithm) rollovers in a live zone, and the ordering relative to KSK key rollovers, per RFC 9904 Section 6.
+    - Key rollover methods and timing for ZSKs and KSKs of a *given* algorithm, as described in RFC 6781 Sections 4.1.2 and 4.1.4 and RFC 7583 Sections 2.x, 3.x.
+    - Algorithm *rollovers* (changing signing algorithms) as described in RFC 6781 Section 4.1.4 and Appendix C.
+  - Conditions:
+    - RFC 9904’s operational text explicitly scopes to “DNSKEY algorithm rollover in a live zone” and “DS algorithm rollover in a live zone”.
+    - RFC 9904 Section 6 normatively states that when both DS digest algorithm change and KSK roll are planned, “users MUST upgrade the DS algorithm first before rolling to a new KSK.”
+    - RFC 7583 Section 1.4 explicitly excludes “Algorithm rollovers. Only the rolling of keys of the same algorithm is described here: not transitions between algorithms.” It does, however, provide timing logic and state models for ZSK/KSK changes within one algorithm.
+    - RFC 6781 Section 4.1.4 and 4.1.4.x explicitly cover algorithm rollovers (adding/removing algorithms, including single‑type and RFC 5011 cases).
+  - NotedAmbiguities:
+    - In RFC 9904 Section 6 the phrase “See [RFC6781] and [RFC7583] for guidelines on how to perform algorithm rollovers” is ambiguous about whether the reference to RFC 7583 is meant only for timing aspects of key rollovers (per algorithm) or for full algorithm‑change procedures, but the plain reading implies the latter.
+    - RFC 7583 Section 5 (“Algorithm Considerations”) discusses multi‑algorithm operation and says that rollover logic should be run per algorithm, but still explicitly keeps *algorithm rollovers* (changing signing algorithms) out of scope, which blurs but does not remove the exclusion.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: RFC 9904 mis-scopes RFC 7583 as providing algorithm rollover guidelines, despite RFC 7583 explicitly excluding algorithm rollovers
+    - ScopeProblemType: Context-domain mismatch / wrong referenced scope
+    - Evidence:
+      - RFC 9904 Section 6: “DNSKEY algorithm rollover in a live zone is a complex process. See [RFC6781] and [RFC7583] for guidelines on how to perform algorithm rollovers.”
+      - RFC 7583 Section 1.4 (“Limitation of Scope”): “In particular, it does not cover: … Algorithm rollovers. Only the rolling of keys of the same algorithm is described here: not transitions between algorithms. … Algorithm rollover is excluded from the document owing to the need for there to be an RRSIG for at least one DNSKEY of each algorithm in the DNSKEY RRset [RFC4035]. This introduces additional constraints on rollovers that are not considered here.”
+      - RFC 6781 Section 4.1.4: “A special class of key rollovers is the one needed for a change of signature algorithms (either adding a new algorithm, removing an old algorithm, or both).” followed by detailed stages and figures for algorithm rollovers (e.g., Figure 8 and Appendix C).
+      - RFC 7583 Section 5: “The preceding sections have implicitly assumed that all keys and signatures are created using a single algorithm. However, Section 2.2 of [RFC4035] requires that there be an RRSIG for each RRset using at least one DNSKEY of each algorithm in the zone apex DNSKEY RRset. … Except in the case of an algorithm rollover — where the algorithms used to create the signatures are being changed — there is no relationship between the keys of different algorithms. This means that they can be rolled independently of one another. In other words, the key-rollover logic described above should be run separately for each algorithm; …”
+    - DetailedReasoning:
+      - RFC 9904 Section 6 clearly positions both RFC 6781 and RFC 7583 as sources of “guidelines on how to perform algorithm rollovers” specifically in the context of “DNSKEY algorithm rollover in a live zone.” That wording suggests that both referenced RFCs are applicable to *algorithm rollovers*, i.e., transitions between different DNSSEC signing algorithms.
+      - However, RFC 7583 explicitly constrains its own scope in Section 1.4, stating that it does *not* cover algorithm rollovers and that “only the rolling of keys of the same algorithm is described here: not transitions between algorithms.” It further justifies the exclusion by pointing to additional constraints from RFC 4035 Section 2.2 that are “not considered here.”
+      - RFC 6781 Section 4.1.4, on the other hand, is explicitly about algorithm rollovers, with detailed procedures for adding and removing algorithms, conservative vs. liberal interpretations of RFC 4035 Section 2.2, and special cases (single‑type signing, RFC 5011, NSEC→NSEC3). It is the correct reference for algorithm‑change procedures.
+      - RFC 7583’s Section 5 (“Algorithm Considerations”) does touch on multi‑algorithm operation, but it carefully phrases its advice as running the *key‑rollover logic* independently per algorithm and explicitly maintains the exception “except in the case of an algorithm rollover”, thus reinforcing that the detailed timelines it defines are *not* themselves algorithm‑rollover procedures.
+      - Taken literally, RFC 9904’s statement therefore assigns RFC 7583 a scope (algorithm rollover guidance) that RFC 7583 explicitly disclaims. This is a classic scope/domain mismatch between a referencing RFC and the referenced RFC.
+      - If an implementer or operator follows RFC 9904 at face value, they may reasonably assume RFC 7583’s ZSK/KSK timelines and methods can be applied directly to algorithm rollovers. But RFC 7583 explicitly warns that algorithm rollovers have extra constraints due to the need for RRSIGs for each algorithm in the apex DNSKEY RRset and does *not* handle the conservative vs. liberal validator interpretations that RFC 6781 Section 4.1.4 is built around.
+      - Misapplying RFC 7583’s same‑algorithm rollover timelines to an algorithm change could therefore lead to transient states that violate RFC 4035 Section 2.2 from the perspective of conservative validators, causing zones to appear Bogus, exactly the class of problems RFC 6781 seeks to avoid by providing special algorithm‑rollover procedures.
+      - From a scope‑reasoning standpoint, the bug is not that RFC 7583 is useless to people doing algorithm rollovers (its timing concepts may still be informative), but that RFC 9904 mischaracterizes *what* kind of guidance RFC 7583 provides. The correct description would scope RFC 7583 to key‑rollover timing for a given algorithm (and possibly multi‑algorithm operation short of algorithm changes), and RGB 6781 to the actual algorithm‑rollover procedures.
+      - This inconsistency can and should be corrected via errata by revising RFC 9904 Section 6’s reference phrase, e.g., to “See [RFC6781] for guidelines on how to perform algorithm rollovers, and [RFC7583] for timing considerations for key rollovers,” thereby aligning the referenced documents’ stated scopes with how they are cited.
+
+- ResidualUncertainties:
+  - RFC 9904 Section 6’s normative requirement that “users MUST upgrade the DS algorithm first before rolling to a new KSK” is high‑level and does not spell out the detailed timing/TTL conditions; while that may deserve further clarification or examples, it appears primarily as a procedural/safety guideline rather than a clear scope error, and the current analysis does not identify a concrete scope contradiction with RFC 6781 or RFC 7583 on that point.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following RFC 9904 section 6 literally does not lead to an unimplementable procedure or inherent validation breakage. The reference to RFC 7583 “for algorithm rollovers” is factually inaccurate (since 7583 explicitly excludes algorithm rollovers), but this is a documentation inconsistency, not a protocol-level or algorithmic failure.
+
+---
+
+2. **Causal Analysis**
+
+### 2.1 What RFC 9904 §6 Actually Requires
+
+Section 6 has two distinct operational statements:
+
+1. **DNSKEY algorithm rollover**  
+   > “DNSKEY algorithm rollover in a live zone is a complex process. See [RFC6781] and [RFC7583] for guidelines on how to perform algorithm rollovers.”
+
+2. **DS algorithm (digest) rollover & KSK roll ordering**  
+   > “DS algorithm rollover in a live zone is also a complex process. Upgrading an algorithm at the same time as rolling to the new Key Signing Key (KSK) key will lead to DNSSEC validation failures, and users **MUST** upgrade the DS algorithm first before rolling to a new KSK.”
+
+So the normative behavior that an operator must follow here is:
+
+- When changing DS digest algorithm and rolling the KSK, **do the DS digest algorithm upgrade first**, then roll the KSK.
+
+The reference to 6781/7583 for *DNSKEY* algorithm rollovers is advisory (“See … for guidelines”), not itself a MUST-level directive.
+
+### 2.2 What RFC 6781 and RFC 7583 Actually Cover
+
+From the given excerpts:
+
+- **RFC 6781** explicitly covers **algorithm rollovers** (signing algorithm of DNSKEY/KSK/ZSK), including detailed step-by-step procedures and timing for:
+  - General algorithm rollover (§4.1.4, Figure 8),
+  - Single-type key rollovers,
+  - RFC 5011 style algorithm rollovers, etc.
+
+- **RFC 7583** explicitly **excludes algorithm rollovers** from scope:
+  - §1.4:  
+    > “It does not cover: … Algorithm rollovers. Only the rolling of keys of the same algorithm is described here: not transitions between algorithms.”
+
+  Instead, 7583 gives detailed timing mechanics for:
+  - ZSK rollovers (§2.1),
+  - KSK rollovers by Double-KSK, Double-DS, Double-RRset (§2.2 and §3.3.x),
+  - Key state transitions (§3.1),
+  - TTL and propagation–based timing formulas.
+
+  §5 “Algorithm Considerations” reiterates that algorithm rollovers are a special case and that the generic key-rollover logic should be run separately per algorithm *except* in the true algorithm rollover case.
+
+So:
+
+- RFC 6781 **does** contain the algorithm-rollover procedures 9904 alludes to.
+- RFC 7583 **does not**; it only covers same-algorithm key rollovers and timing models.
+
+### 2.3 Does the Mis-Citation Make the Procedure Unimplementable?
+
+Consider a conscientious implementer/operator following 9904 literally:
+
+1. For **DNSKEY algorithm rollover**, they are told to:
+   - Use RFC 6781 and RFC 7583 “for guidelines”.
+
+   When they open RFC 7583:
+   - §1.4 plainly says algorithm rollovers are not covered.
+   - §5 says that except in the case of algorithm rollover, keys for different algorithms can be rolled independently, meaning: **don’t treat this document as giving algorithm-rollover procedures**.
+
+   As a result, the only document that actually provides *algorithm-rollover* procedures is RFC 6781 (§4.1.4 and the related figures). Hence, an operator can just follow 6781 for the algorithm transition steps and, if they wish, use 7583’s timing models (TTL, Dprp, Dreg, etc.) to reason about safe intervals—without any conflict.
+
+   There is no step in 9904 that requires an operation that 7583 forbids or makes impossible; 7583 merely says, “I don’t cover that case.” The algorithmic steps themselves come from 6781 and still make sense.
+
+2. For **DS digest algorithm rollover and KSK roll interaction**:
+   - 9904 adds a new normative rule:
+     > “users MUST upgrade the DS algorithm first before rolling to a new KSK.”
+
+   This is independent of any details in 7583. DS digest algorithm change is *not* the same as DNSKEY signing algorithm change, and RFC 6781/7583 do not specify detailed DS-digest rollover sequences. However:
+
+   - A DS digest algorithm change for a *given KSK* is straightforward: the parent can publish both old and new digest algorithms for the same DNSKEY simultaneously (multiple DS records, each with different digest types but same key). Validators will accept any DS that they implement and that matches the DNSKEY.
+   - Rolling the KSK afterwards can then follow any of the standard KSK methods (Double-KSK, Double-DS, etc.) from 6781/7583, while ensuring that, for the active KSK, a DS using the “upgraded” digest algorithm is present.
+
+   There is no point in this “DS algorithm first, then KSK roll” sequence that demands an impossible state:
+   - Parent zones can publish multiple DS records per child.
+   - Validators are specified to handle multiple DS records and multiple digest algorithms.
+   - TTL and propagation behavior are ordinary DS/DNSKEY consistency constraints and can be managed with the same techniques as normal KSK rollovers.
+
+   So the normative MUST ordering (“upgrade DS algorithm first”) is perfectly executable.
+
+### 2.4 Could an Implementer Misapply RFC 7583 and Break Algorithm Rollovers?
+
+The main potential failure mode would be:
+
+- An implementer sees 9904 §6, reads only RFC 7583 (ignoring RFC 6781), and tries to use Double-KSK / Double-DS / Double-RRset *as-is* to change the DNSKEY algorithm, without accounting for the RFC 4035 §2.2 requirement that:
+  > “There MUST be an RRSIG for each RRset using at least one DNSKEY of each algorithm in the zone apex DNSKEY RRset.”
+
+However, if they *actually read* RFC 7583:
+
+- §1.4 explicitly warns: algorithm rollovers are excluded.
+- §5 highlights that algorithm rollover is a special case constrained by RFC 4035 §2.2.
+
+So a conscientious implementer, following RFCs as written, is told *not* to treat 7583 as an algorithm-rollover recipe, and is thus led back to RFC 6781 (which 9904 also references) for the missing steps. There’s no internally inconsistent directive like “do X” in 9904 versus “MUST NOT do X” in 7583.
+
+Thus, under the model “implementers read and follow the documents they are pointed to,” the system remains executable and coherent.
+
+---
+
+3. **Problem Classification**
+
+- The specific candidate issue (“9904 cites 7583 for algorithm rollovers even though 7583 excludes them”) is **not** a *causal inconsistency* in the protocol behavior.
+- At most, it is a **documentation inconsistency / misleading reference**: 7583 is not, strictly speaking, a guide to algorithm rollovers, though its timing concepts remain useful.
+
+Algorithm rollover itself remains fully definable and implementable via RFC 6781; DS digest + KSK ordering as stated in 9904 is also mechanically workable.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the document were to be corrected, the smallest behavior-preserving change would be:
+
+- In RFC 9904 §6, adjust the wording to something like:
+  - “DNSKEY algorithm rollover in a live zone is a complex process. See [RFC6781] for guidelines on how to perform algorithm rollovers, and [RFC7583] for detailed timing considerations for key rollovers.”
+  
+This would align the references with the actual scope of RFC 7583 without changing any operational requirements.
+
+---
+
+5. **Non-Issues**
+
+- The normative statement “users MUST upgrade the DS algorithm first before rolling to a new KSK” does **not** create an impossible or self-contradictory procedure. Operators can always (in the normal, non-emergency case) add DS records with the new digest algorithm for the existing KSK, allow TTLs to pass, and then roll the KSK using standard KSK rollover methods.
+- The fact that RFC 7583 omits algorithm rollovers does **not** leave algorithm rollover behavior undefined, because RFC 6781 already supplies that logic. The union of 9904 + 6781 + 7583 yields a coherent, implementable story.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary:  
+  RFC 9904 defines IANA registry semantics and recommendation levels for DNSSEC algorithms and, in Section 6, gives brief operational guidance: it points operators to RFC 6781 and RFC 7583 for “algorithm rollovers” and normatively requires that, when changing DS digest algorithms and rolling the KSK, the DS algorithm change be done first. RFC 6781 and RFC 7583, in turn, normatively describe key rollover procedures and explicitly scope what they do and do not cover (including an explicit exclusion of algorithm rollovers in RFC 7583).
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Mischaracterization of RFC 7583 as providing “algorithm rollover” guidelines
+    - Description:  
+      RFC 9904 Section 6 states: “DNSKEY algorithm rollover in a live zone is a complex process. See [RFC6781] and [RFC7583] for guidelines on how to perform algorithm rollovers.” This sentence tells operators to use RFC 7583 as guidance for “algorithm rollovers” of DNSKEY algorithms. However, RFC 7583 explicitly and normatively excludes algorithm rollovers from its scope: Section 1.4 says “it does not cover: … Algorithm rollovers. Only the rolling of keys of the same algorithm is described here: not transitions between algorithms.… Algorithm rollover is excluded from the document owing to the need for there to be an RRSIG for at least one DNSKEY of each algorithm in the DNSKEY RRset [RFC4035].” Thus, RFC 9904’s operational guidance directly contradicts the referenced document’s self-declared scope. While RFC 9904 does not use a BCP 14 keyword in this particular sentence, it is part of its operational guidance in a BCP/standards-track setting and is effectively normative advice about where to look for correct rollover procedures. Because RFC 7583 intentionally avoids specifying algorithm-rollover logic (leaving that to documents like RFC 6781 Section 4.1.4), pointing to RFC 7583 “for algorithm rollovers” is misleading and inconsistent with the referenced RFC’s own normative scoping.
+    - KeyTextSnippets:
+      - RFC 9904 Section 6:  
+        “DNSKEY algorithm rollover in a live zone is a complex process. See [RFC6781] and [RFC7583] for guidelines on how to perform algorithm rollovers.”
+      - RFC 7583 Section 1.4 (Limitation of Scope):  
+        “In particular, it does not cover:  
+        …  
+        o  Algorithm rollovers.  Only the rolling of keys of the same algorithm is described here: not transitions between algorithms.  
+        …  
+        Algorithm rollover is excluded from the document owing to the need for there to be an RRSIG for at least one DNSKEY of each algorithm in the DNSKEY RRset [RFC4035].”
+    - Impact:  
+      Implementers and operators following RFC 9904 may reasonably look to RFC 7583 for explicit algorithm rollover procedures and timing guarantees and may attempt to extrapolate or reuse its ZSK/KSK key-rollover timelines for DNSKEY algorithm transitions, despite RFC 7583 deliberately not covering that case. This can lead to ignoring the additional constraints on algorithm rollovers (e.g., those based on RFC 4035 Section 2.2 and the detailed procedures in RFC 6781 Section 4.1.4), increasing the risk of constructing a rollover plan that leaves some validators seeing bogus data during transition. A minimal fix would be to remove RFC 7583 from that sentence or to rephrase it along the lines of “See RFC 6781 for algorithm rollovers, and RFC 7583 for general ZSK/KSK key rollover timing considerations,” so the normative pointers align with the actual scopes of the referenced RFCs.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9904 Section 6 gives short operator advice on DNSKEY and DS “algorithm rollovers” and points readers to RFC 6781 and RFC 7583 “for guidelines on how to perform algorithm rollovers.” RFC 6781 actually describes algorithm rollovers, while RFC 7583 deliberately restricts itself to rolling keys of the same algorithm and explicitly excludes algorithm rollovers from scope. This creates a cross-RFC mismatch about what RFC 7583 is supposed to cover.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Mischaracterization of RFC 7583 as covering algorithm rollovers
+    - Description: RFC 9904 Section 6 states: “DNSKEY algorithm rollover in a live zone is a complex process. See [RFC6781] and [RFC7583] for guidelines on how to perform algorithm rollovers.” This sentence clearly presents both RFC 6781 and RFC 7583 as sources of *algorithm rollover* guidance. RFC 6781 does in fact provide procedures for algorithm rollovers, including detailed treatment in Section 4.1.4 “Algorithm Rollovers” and its subsections. By contrast, RFC 7583 explicitly *excludes* algorithm rollovers from its scope: Section 1.4 says “it does not cover: … Algorithm rollovers. Only the rolling of keys of the same algorithm is described here: not transitions between algorithms.” RFC 7583 focuses on timing and state transitions for ZSK and KSK rollovers where the algorithm does not change, and later Section 5 reiterates that algorithms are independent except in the (out‑of‑scope) algorithm rollover case. An implementer following RFC 9904 literally would reasonably expect concrete algorithm‑rollover procedures in RFC 7583, but will instead find that such procedures are intentionally omitted. This is a cross‑RFC inconsistency in how the scope of RFC 7583 is described; while it may not directly break wire compatibility, it can mislead operators about where to find correct algorithm‑rollover procedures and under what constraints those procedures have been analyzed.
+    - EntitiesInvolved: ["RFC 9904 Section 6", "RFC 6781 Section 4.1.4 (Algorithm Rollovers) and Appendix C", "RFC 7583 Section 1.4 (Limitation of Scope)", "RFC 7583 Section 5 (Algorithm Considerations)"]
+    - CrossRefsUsed: ["RFC 9904 §6 text referencing RFC 6781 and RFC 7583 for 'algorithm rollovers'", "RFC 6781 §§4.1.2, 4.1.4, C (algorithm and KSK rollovers)", "RFC 7583 §1.4 explicit exclusion of algorithm rollovers", "RFC 7583 §5 on algorithm considerations without rollover procedures"]
+    - Confidence: High
+
+- IfNoIssues:
+  - Comment:
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+
+Vector Stores Used: vs_6954b396867881918c52be4a34d151ab
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

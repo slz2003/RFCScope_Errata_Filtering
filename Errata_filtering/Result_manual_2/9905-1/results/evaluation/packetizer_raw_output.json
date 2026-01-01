@@ -1,0 +1,78 @@
+{
+  "reports": [
+    {
+      "label": "Incorrect Attribution of DNSSEC Origin to RFC 3110 in Section 1",
+      "bug_type": "Inconsistency",
+      "explanation": "RFC 9905 incorrectly states that DNSSEC was 'originally defined in RFC3110', which misrepresents the historical origin of DNSSEC and may mislead readers about where to find the primary specification.",
+      "justification": [
+        "Section 1 of RFC 9905 asserts that DNSSEC (as described in RFC9364) was originally defined in RFC3110, even though RFC3110 only specifies the usage of RSA/SHA1 and defers to RFC2535 for the foundational DNSSEC concepts.",
+        "The RFC3110 Introduction clarifies that digital signatures and key distribution were first established in RFC2535, highlighting the error in attributing the original definition to RFC3110."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "DNSSEC [RFC9364] (originally defined in [RFC3110]) made extensive use of SHA-1, for example, as a cryptographic hash algorithm in Resource Record Signature (RRSIG) and Delegation Signer (DS) records."
+          },
+          {
+            "id": "E2",
+            "text": "The DNS has been extended to include digital signatures and cryptographic keys as described in [RFC2535]. Thus the DNS can now be secured and used for secure key distribution."
+          }
+        ],
+        "summary": [
+          "(E1) shows the problematic attribution in Section 1.",
+          "(E2) demonstrates that RFC3110 is not the original source for DNSSEC definitions."
+        ]
+      },
+      "fix_direction": "In Section 1, remove or revise the parenthetical '(originally defined in [RFC3110])' so as not to misattribute the original DNSSEC specification.",
+      "severity": "Low",
+      "severity_basis": "The issue is primarily editorial and historical; while it may mislead readers, it does not directly impact implementation or interoperability.",
+      "confidence": "High",
+      "experts": [
+        "CrossRFC: Issue-1",
+        "Terminology: Issue-1"
+      ],
+      "report_id": "9905-1-1"
+    },
+    {
+      "label": "Misnaming DS Digest Registry as 'DNS Security Algorithm Numbers' in Section 1",
+      "bug_type": "Inconsistency",
+      "explanation": "RFC 9905 incorrectly refers to the DS digest registry as 'DNS Security Algorithm Numbers' in Section 1, even though the DS digest registry is correctly named 'Digest Algorithms' elsewhere, leading to potential confusion over the proper registry for DS digest algorithms.",
+      "justification": [
+        "Section 1 instructs operators to consult two registries with identical names, causing ambiguity since the DS digest registry is, in fact, distinct and should be identified as 'Digest Algorithms'.",
+        "Later in Section 5, the DS digest registry is correctly identified, indicating an inconsistency that may mislead implementers regarding which registry governs DS records."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Operators are encouraged to consider switching to one of the recommended algorithms listed in the ‘DNS Security Algorithm Numbers’ [DNSKEY-IANA ] and ‘DNS Security Algorithm Numbers’ [DS-IANA ] registries, respectively."
+          },
+          {
+            "id": "E2",
+            "text": "IANA has updated the SHA-1 (1) entry in the ‘Digest Algorithms’ registry [DS-IANA ] [RFC9904] as follows… and IANA has updated the RSASHA1 (5) and RSASHA1-NSEC3-SHA1 (7) algorithm entries in the ‘DNS Security Algorithm Numbers’ registry [DNSKEY-IANA ] [RFC9904] as follows…"
+          },
+          {
+            "id": "E3",
+            "text": "DS‑IANA registry summary: it is the “DNSSEC Delegation Signer (DS) RR Type Digest Algorithms” / “Digest Algorithms” registry, distinct from the “DNS Security Algorithm Numbers” registry used for DNSKEY/RRSIG/DS Algorithm fields."
+          }
+        ],
+        "summary": [
+          "(E1) shows that Section 1 uses the same name for both registries.",
+          "(E2) contrasts this by demonstrating the correct naming in Section 5.",
+          "(E3) clarifies the actual title and purpose of the DS digest registry."
+        ]
+      },
+      "fix_direction": "Update Section 1 by replacing the second instance of 'DNS Security Algorithm Numbers' with 'Digest Algorithms' (or the full title 'DNSSEC Delegation Signer (DS) RR Type Digest Algorithms') to accurately reflect the registry.",
+      "severity": "Medium",
+      "severity_basis": "The inconsistency may confuse operators and implementers about where DS digest algorithms are maintained, impacting clear interpretation of the specification.",
+      "confidence": "High",
+      "experts": [
+        "Structural: Issue-1",
+        "CrossRFC: Issue-2",
+        "Terminology: Issue-2"
+      ],
+      "report_id": "9905-1-2"
+    }
+  ]
+}

@@ -1,0 +1,367 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary:  
+  The excerpt defines a new EKU `id-kp-imUri` for IM client certificates and places one explicit normative constraint on “issuers” (CAs) about how they populate the Extended Key Usage extension. All other processing behavior for EKUs remains governed by RFC 5280, which assigns responsibilities primarily to certificate issuers and certificate‑using applications (relying parties).
+
+- OverallAssessment: PlausibleBug
+
+- FindingsOnRoutedIssues:
+  - Issue-1:
+    - RelatedIssueId: "Issue-1"
+    - Assessment: PlausibleBug
+    - BugType: Underspecification
+    - Summary:  
+      The text clearly places a constraint on issuers (“Issuers SHOULD NOT set … id‑kp‑imUri … and … id‑kp‑clientAuth or id‑kp‑serverAuth”), but says nothing about issuer behavior with `anyExtendedKeyUsage` or other generic EKUs, nor about what IM relying parties should do when they encounter such combinations. Under RFC 5280, CAs are explicitly allowed to include `anyExtendedKeyUsage` alongside specific EKUs, and applications are given wide discretion in how they enforce EKU policy. This creates a gap: the actors responsible for issuance and for certificate use are not fully constrained in a way that clearly aligns with the stated goal of “reducing existing security risks”, especially for cross‑protocol use. The result is not an outright contradiction, but an incomplete assignment of responsibilities to the relevant actors.
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9734 Section 3: “This specification defines the KeyPurposeId id-kp-imUri, which may be included in certificates used to prove the identity of an IM client. This EKU extension MAY, at the option of the certificate issuer, be either critical or non-critical.”
+        - RFC 9734 Section 4: “Issuers SHOULD NOT set the id-kp-imUri extended key purpose and an id-kp-clientAuth or id-kp-serverAuth extended key purpose: that would defeat the improved specificity offered by having an id-kp-imUri extended key purpose.”
+        - RFC 5280 Section 4.2.1.12: “Key purposes may be defined by any organization with a need. … If a CA includes extended key usages to satisfy such applications, but does not wish to restrict usages of the key, the CA can include the special KeyPurposeId anyExtendedKeyUsage in addition to the particular key purposes required by the applications. … Certificate using applications MAY require that the extended key usage extension be present and that a particular purpose be indicated in order for the certificate to be acceptable to that application.”
+        - RFC 5280 Section 4.2.1.12 (application behavior): “If the extension is present, then the certificate MUST only be used for one of the purposes indicated. If multiple purposes are indicated the application need not recognize all purposes indicated, as long as the intended purpose is present.”
+        - RFC 9734 Section 4 (security claim): “The id-kp-imUri extended key purpose does not introduce new security risks but instead reduces existing security risks by providing means to identify if the certificate is generated to sign IM identity credentials.”
+      - Reasoning:  
+        Actor assignments are partially clear: RFC 9734 explicitly constrains “issuers” for only one case (co‑presence of `id-kp-imUri` with `id-kp-clientAuth`/`id-kp-serverAuth`), and reiterates that the certificate issuer chooses whether the EKU extension is critical. RFC 5280, however, explicitly allows CAs to include `anyExtendedKeyUsage` alongside particular EKUs and describes how certificate‑using applications may interpret multiple EKUs and may or may not require specific ones. No text in RFC 9734 addresses whether issuers are similarly discouraged from combining `id-kp-imUri` with `anyExtendedKeyUsage`, nor does it tell IM relying parties what to do if they see `id-kp-imUri` plus very broad or generic EKUs (accept, reject, or treat as mis‑issuance). Since the stated security goal is to reduce cross‑protocol risk by “improved specificity”, leaving both issuer policy for `anyExtendedKeyUsage` and relying‑party policy for mixed‑purpose EKUs entirely unspecified creates an underspecification in role responsibilities: the two key actors (CAs and IM relying parties) are not fully guided on how to behave in the combinations most likely to weaken that specificity.
+
+- AdditionalActorIssues:
+  - NewIssue-1:
+    - BugType: Underspecification
+    - Summary:  
+      The document never explicitly states any requirements or recommendations for IM applications or other relying parties regarding the presence (or absence) of `id-kp-imUri` in certificates used to sign IM identity credentials. Given that RFC 5280 places EKU enforcement obligations on “certificate using applications”, the absence of any guidance here can lead to divergent relying‑party behavior that may or may not achieve the intended risk reduction.
+    - Evidence:
+      - RFC 9734 defines `id-kp-imUri` and says it “may be included in certificates used to prove the identity of an IM client” and that this “reduces existing security risks” by providing a way to identify such certificates, but gives no normative text aimed at relying parties (IM clients/servers or MLS verifiers) about requiring or interpreting this EKU.
+      - RFC 5280 Section 4.2.1.12: “Certificate using applications MAY require that the extended key usage extension be present and that a particular purpose be indicated in order for the certificate to be acceptable to that application.”
+      - Reasoning:  
+        In the RFC 5280 model, two classes of actors matter for EKU: issuers (CAs) who populate the extension, and certificate‑using applications that enforce it. RFC 9734 gives one clear constraint for issuers, but is entirely silent on what IM applications or MLS verifiers are expected to do—for example, whether they MUST require `id-kp-imUri` for IM identity credentials, or whether they SHOULD reject certificates that contain only `id-kp-clientAuth`/`id-kp-serverAuth` for IM use. This leaves relying‑party behavior to local policy while simultaneously claiming security risk reduction, which is a role‑level underspecification: the responsibilities of the relying‑party actors, who are critical to enforcing that reduction, are not spelled out at all.
+
+[Used vector stores: vs_6954bbd8e7408191bb7df7308f47590a]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 4 of RFC 9734 states that all RFC 5280 security considerations apply, asserts that the new id‑kp‑imUri EKU reduces security risk, and gives a single piece of normative guidance: issuers SHOULD NOT include id‑kp‑imUri together with id‑kp‑clientAuth or id‑kp‑serverAuth in the same certificate. The referenced RFC 5280 text defines general EKU semantics, including multi‑purpose EKUs and the special anyExtendedKeyUsage OID.
+
+- ScopeModel:
+  - Targets:
+    - The EKU value id‑kp‑imUri, a KeyPurposeId to be included in the Extended Key Usage (EKU) extension of X.509 end‑entity certificates used to prove the identity of an IM client (per Section 3).
+    - Certificate issuers (“Issuers”), i.e., CAs or entities creating such certificates.
+    - The EKU OIDs id‑kp-clientAuth and id‑kp-serverAuth as defined in RFC 5280 4.2.1.12.
+    - The extendedKeyUsage extension semantics from RFC 5280, including multiple EKUs in one certificate and anyExtendedKeyUsage.
+  - Conditions:
+    - The RFC 9734 security guidance applies when a certificate includes id‑kp‑imUri in its EKU and is being issued for use with IM identity credentials.
+    - The single explicit “SHOULD NOT” applies only to the combination of id‑kp‑imUri together with id‑kp-clientAuth or id‑kp-serverAuth in *the same certificate* (“Issuers SHOULD NOT set the id‑kp‑imUri … and an id‑kp-clientAuth or id‑kp-serverAuth …”).
+    - RFC 5280’s EKU semantics apply whenever an EKU extension is present: a certificate “MUST only be used for one of the purposes indicated”, multiple purposes are allowed, and anyExtendedKeyUsage can be used to avoid restricting usages.  
+  - NotedAmbiguities:
+    - The scope of the “SHOULD NOT” is limited to id‑kp-clientAuth and id‑kp-serverAuth; it says nothing about combinations with anyExtendedKeyUsage or other “general” EKUs, even though the Introduction frames the problem as “using a general KeyPurposeId, such as id‑kp‑serverAuth or id‑kp‑clientAuth” (suggesting a broader risk class).  
+    - The text gives normative guidance only to issuers, not to relying parties, despite RFC 5280 explicitly allowing applications to accept certificates with multiple EKUs as long as the intended purpose is present.  
+    - The assertion that id‑kp‑imUri “does not introduce new security risks but instead reduces existing security risks” is made without qualifying it by conditions (e.g., “when issuers and relying parties follow the recommendations”), which may overstate the scope of the security improvement.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: EKU‑combination guidance scoped only to clientAuth/serverAuth, omitting anyExtendedKeyUsage and other broad EKUs
+    - ScopeProblemType: Missing cases / overly narrow conditional guidance for EKU combinations
+    - Evidence:
+      - RFC 9734 Section 4: “Issuers SHOULD NOT set the id-kp-imUri extended key purpose and an id-kp-clientAuth or id-kp-serverAuth extended key purpose: that would defeat the improved specificity offered by having an id-kp-imUri extended key purpose.”    
+      - RFC 9734 Introduction: “Organizations may be unwilling to issue certificates for an IM client using a general KeyPurposeId, such as id-kp-serverAuth or id-kp-clientAuth, because of the risk that such certificates could be abused in a cross-protocol attack.”    
+      - RFC 5280 4.2.1.12: defines anyExtendedKeyUsage and says a CA “can include the special KeyPurposeId anyExtendedKeyUsage in addition to the particular key purposes required by the applications” when it does not wish to restrict usages.  
+    - DetailedReasoning:
+      - The stated security goal of RFC 9734 is to avoid issuing IM client certificates with “general” EKUs that could be abused in cross‑protocol attacks, motivating a more specific EKU (id‑kp‑imUri). The Introduction explicitly treats id‑kp-serverAuth and id‑kp-clientAuth as *examples* of such general KeyPurposeIds (“such as …”), not as an exhaustive list.    
+      - However, the only concrete normative restriction in Section 4 is: “Issuers SHOULD NOT set … id-kp-imUri … and an id-kp-clientAuth or id-kp-serverAuth …”. This guidance is scoped *only* to those two OIDs and does not mention anyExtendedKeyUsage or other broadly applicable EKUs defined in RFC 5280 (e.g., anyExtendedKeyUsage, or even combinations like id-kp-emailProtection).    
+      - RFC 5280 explicitly allows a CA to include anyExtendedKeyUsage “in addition to the particular key purposes required by the applications” when it does not wish to restrict usages. Under a literal reading, a CA could issue a certificate with EKU = {id-kp-imUri, anyExtendedKeyUsage} and remain fully conformant to both RFC 5280 and RFC 9734, because RFC 9734 imposes no restrictions on anyExtendedKeyUsage.    
+      - Such a certificate would be at least as broadly usable as one containing id-kp-imUri plus id-kp-serverAuth: by virtue of anyExtendedKeyUsage, many applications may treat the key as suitable for their own purposes, re‑introducing cross‑protocol attack surfaces. Yet the text only labels the serverAuth/clientAuth combinations as defeating “improved specificity”, leaving the anyExtendedKeyUsage (and similar) case underspecified even though it has the same (or worse) effect.  
+      - This creates a scope gap: the normative “SHOULD NOT” appears targeted at preventing over‑broad use, but by listing only specific EKUs it implicitly treats other equally broad combinations as acceptable or at least not discouraged. An implementer following RFC 9734 to the letter could reasonably conclude that id-kp-imUri can be safely combined with anyExtendedKeyUsage, undermining the claimed risk reduction.  
+      - The problem is not that RFC 9734 must forbid every conceivable combination, but that it singles out serverAuth/clientAuth as “defeating” specificity while ignoring anyExtendedKeyUsage, which RFC 5280 defines precisely as a mechanism *not* to restrict usages. The intended security property (“this EKU makes IM certs more narrowly scoped”) in practice only holds if id‑kp‑imUri is not combined with any EKU that re‑broadens usage, particularly anyExtendedKeyUsage.  
+      - A more complete and unambiguous specification would either (a) generalize the guidance (“Issuers SHOULD restrict certificates marked with id-kp-imUri so that no EKU in the certificate permits general‑purpose or unrestricted use, including anyExtendedKeyUsage”) or (b) explicitly discuss anyExtendedKeyUsage and similar OIDs and justify why they are or are not in scope. Without that, the scope of the “SHOULD NOT” is too narrow relative to the risk model introduced in Section 1.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: No relying‑party rules for multi‑purpose EKUs containing id‑kp‑imUri, leaving scope of “risk reduction” unclear
+    - ScopeProblemType: Missing role/side in normative behavior; relying‑party scope left entirely to local policy
+    - Evidence:
+      - RFC 9734 Section 4: “The id-kp-imUri extended key purpose does not introduce new security risks but instead reduces existing security risks…” and then only gives guidance to “Issuers”.    
+      - RFC 5280 4.2.1.12: “If the extension is present, then the certificate MUST only be used for one of the purposes indicated. If multiple purposes are indicated the application need not recognize all purposes indicated, as long as the intended purpose is present.” Also: “Certificate using applications MAY require that the extended key usage extension be present and that a particular purpose be indicated in order for the certificate to be acceptable to that application.”  
+    - DetailedReasoning:
+      - RFC 9734 claims that the new EKU “reduces existing security risks” but the only normative behavior it specifies is directed at certificate issuers (CAs): they “SHOULD NOT” combine id‑kp‑imUri with serverAuth/clientAuth. No normative behavior is specified for relying parties (IM clients, verifiers, or other applications) when they encounter certificates whose EKU includes id‑kp‑imUri plus other EKUs.    
+      - RFC 5280, in contrast, gives explicit relying‑party semantics when “multiple purposes are indicated”: an application “need not recognize all purposes indicated, as long as the intended purpose is present”. That means an IM client compliant with RFC 5280 may legitimately accept a certificate for IM use as long as id‑kp‑imUri is present, even if serverAuth, clientAuth, or anyExtendedKeyUsage are also present.    
+      - Given this, the overall security behavior depends on *both* issuers (how they populate EKU) and relying parties (how they interpret that EKU). RFC 9734 constrains the former (in a limited way) but says nothing about the latter. For example, should an IM application treat a certificate that combines id‑kp‑imUri with id‑kp-serverAuth as acceptable, as a soft warning, or as outright mis‑issuance to be rejected? The current text leaves this entirely to local policy.  
+      - This omission directly affects the scope of the claim “does not introduce new security risks but instead reduces existing security risks”. If some CAs do not follow the “SHOULD NOT” and some RPs choose to accept such certificates (which is fully permitted behavior under RFC 5280), then the presence of id‑kp‑imUri alone does not in itself reduce cross‑protocol risk. The risk is only reduced in environments where *both* issuers and relying parties adopt a consistent, stricter policy on mixed‑EKU certificates.  
+      - From a scope standpoint, the document effectively defines id‑kp‑imUri as “an EKU that *can* be used to limit certificates to IM”, but it does not specify under what conditions relying parties should treat a certificate as “IM‑only” versus “general purpose plus IM”. This leaves a gap between the intended semantic scope of id‑kp‑imUri (IM‑specific) and its actual operational scope in a heterogeneous PKI defined by RFC 5280.  
+      - While it is reasonable to leave some policy to implementations, the complete absence of relying‑party guidance—especially for the clearly warned‑about mixed‑EKU case—means two compliant implementations may make opposite decisions about the same certificate’s acceptability, undermining interoperability and the stated security benefit. Even a short statement such as “IM relying parties SHOULD treat certificates that include id-kp-imUri together with general-purpose EKUs (e.g., id-kp-serverAuth, id-kp-clientAuth, or anyExtendedKeyUsage) as misissued and reject them” would have clarified the intended scope of use and aligned the security claim with concrete behavior.
+      
+- ResidualUncertainties:
+  - It is unclear whether the authors intentionally limited the scope of guidance to serverAuth/clientAuth (treating only web/TLS cross‑protocol attacks as in scope) and considered anyExtendedKeyUsage and other EKUs out of scope, or whether these were simply overlooked. Clarifying this intent would help determine whether broader EKU combinations should be discouraged or explicitly allowed.
+
+[Used vector stores: vs_6954bbd8e7408191bb7df7308f47590a]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following RFC 9734 and RFC 5280 literally is fully implementable and does not create a protocol‑level inconsistency. The main issue is that the security discussion in RFC 9734 is incomplete: it only discourages combining `id‑kp‑imUri` with `id‑kp-clientAuth` / `id‑kp-serverAuth`, but says nothing about `anyExtendedKeyUsage` or other broad EKUs, nor does it give relying‑party guidance. As a result, a conformant CA or relying party can behave in ways that completely negate the intended risk reduction, even though all specs are being followed.
+
+---
+
+2. **Causal Analysis**
+
+**What the specs say, mechanically**
+
+- RFC 5280 EKU semantics:
+
+  - If EKU is present, “the certificate MUST only be used for one of the purposes indicated.”  
+  - Multiple EKUs are allowed; an application “need not recognize all purposes indicated, as long as the intended purpose is present.”
+  - `anyExtendedKeyUsage` is explicitly allowed “in addition to the particular key purposes required by the applications” when the CA does *not* want to restrict key usages.
+
+- RFC 9734 defines `id‑kp‑imUri` and says:
+
+  - It “may be included in certificates used to prove the identity of an IM client.”
+  - Security considerations claim: the new EKU “does not introduce new security risks but instead reduces existing security risks by providing means to identify if the certificate is generated to sign IM identity credentials.”
+  - Issuers “SHOULD NOT set the `id‑kp‑imUri` extended key purpose and an `id‑kp-clientAuth` or `id‑kp-serverAuth` extended key purpose: that would defeat the improved specificity…”
+
+  No other EKU combinations are mentioned.
+
+**Scenario 1: CA issues `id‑kp-imUri` + `anyExtendedKeyUsage`**
+
+- This is allowed by RFC 5280 (it explicitly describes this pattern) and not forbidden or discouraged by RFC 9734.
+- Such a certificate is fully conformant to both RFCs:
+  - EKU contains at least one KeyPurposeId (`id‑kp-imUri`, optionally plus `anyExtendedKeyUsage`).
+  - RFC 9734 only has a **SHOULD NOT** for combinations with `clientAuth` or `serverAuth`. `anyExtendedKeyUsage` is never mentioned.
+
+- Consequences:
+  - An IM application that checks EKU per RFC 5280 will see `id‑kp-imUri` present and (correctly per 5280) may accept it.
+  - A non‑IM application (e.g., a TLS implementation that accepts `anyExtendedKeyUsage` as meaning “usable for anything”) may also accept the same certificate for its own purposes.
+  - So a single key pair and certificate can be used across protocols (IM and TLS, or others), preserving exactly the cross‑protocol abuse risk that motivated RFC 9734.
+
+  In other words, **the existence of `id‑kp-imUri` does not by itself constrain non‑IM uses at all**; that only happens if CAs change their issuance practice *and* non‑IM relying parties enforce EKU semantics strictly.
+
+**Scenario 2: CA issues `id‑kp-imUri` + other generic EKUs (e.g., `emailProtection`, `codeSigning`)**
+
+- Also allowed and not mentioned in RFC 9734.
+- A relying party that needs an IM credential will see `id‑kp-imUri` and can accept it.
+- The same certificate may be happily accepted by S/MIME, code signing, or other applications that look for their own EKU and ignore the rest.
+- Again, the key remains multi‑purpose in practice, and cross‑protocol attack surface is not reduced.
+
+**Relying‑party behavior for “over-broad” EKUs**
+
+- RFC 5280 gives relying parties broad discretion:
+  - They MAY require a particular EKU;
+  - They MAY reject if `anyExtendedKeyUsage` is present without the specific OID they expect; it does not say what to do when `anyExtendedKeyUsage` *and* the OID are both present.
+- RFC 9734 does not add any additional requirements or recommendations for relying parties confronted with a certificate that has:
+  - `id‑kp-imUri` plus `anyExtendedKeyUsage`, or
+  - `id‑kp-imUri` plus unrelated EKUs (e.g., `emailProtection`), or even
+  - `id‑kp-imUri` plus `clientAuth` / `serverAuth` (contrary to issuer guidance).
+
+So IM applications that strictly follow the texts are *permitted* to accept such certificates as valid IM credentials, even though those same certs are also valid in many other protocols. The “improved specificity” is then purely optional and depends on non‑mandated CA and relying‑party policy.
+
+**Does anything “break”?**
+
+- **Executability / interoperability**: No. All relevant combinations are mechanically processable under RFC 5280; 9734 adds only a new OID and weak issuer guidance. There is no unimplementable state or undefined transition.
+- **Security invariants**:
+  - The intended invariant is something like: “IM credentials should not be re‑usable in generic TLS/web or other protocols, to reduce cross‑protocol abuse.”
+  - Under the literal text, a fully conformant CA *can* issue `id‑kp-imUri` together with `anyExtendedKeyUsage` or other broad EKUs, and conformant relying parties *can* treat those as fine. In such deployments, the invariant is not achieved, yet no spec is violated.
+  - Thus, the claimed risk reduction is contingent: it only holds if issuers and relying parties adopt stricter practices than the documents strictly require.
+
+This is not a contradiction inside the wire protocol or X.509 processing, but it does mean the spec’s security story is only partially enforced by normative text.
+
+---
+
+3. **Problem Classification**
+
+- **Causal Inconsistency**: No. The protocol and certificate processing remain coherent and implementable in all the described cases.
+- **Causal Underspecification (Security)**: Yes, in two related ways:
+
+  1. **Issuer guidance is incomplete relative to the stated goal.**  
+     The spec only says issuers “SHOULD NOT” combine `id‑kp-imUri` with `id‑kp-clientAuth` / `id‑kp-serverAuth`, but does not mention:
+        - `anyExtendedKeyUsage`, which RFC 5280 explicitly defines as a way to keep the key effectively unconstrained, or
+        - other broad EKUs that also defeat “improved specificity.”  
+     A CA can fully comply with 9734 and yet issue multi‑purpose certificates that preserve the cross‑protocol risks the document says it reduces.
+
+  2. **Relying‑party behavior for over‑broad EKUs is left entirely to local policy, despite strong security claims.**  
+     RFC 5280 gives wide latitude; RFC 9734 adds no constraints like “IM clients MUST reject certificates that combine `id‑kp-imUri` with anyExtendedKeyUsage or other non‑IM EKUs.”  
+     Thus, an IM implementation can accept such certificates, again defeating the intended risk reduction, while remaining standards‑conformant.
+
+This is best characterized as *Causal Underspecification of the security policy*: the mechanism (a new EKU) is defined, but the conditions under which it actually delivers the advertised reduction in cross‑protocol risk are not normatively pinned down.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+A minimal, local repair that aligns behavior with the stated goal would look like:
+
+- Extend Security Considerations to say that issuers **SHOULD NOT** (or even **MUST NOT**) combine `id‑kp-imUri` with `anyExtendedKeyUsage` or other EKUs that make the key generally usable (possibly including a general statement instead of enumerating specific OIDs).
+- Optionally, add relying‑party guidance along the lines of: IM applications **SHOULD** treat certificates that contain `id‑kp-imUri` together with other non‑IM EKUs (or with `anyExtendedKeyUsage`) as mis‑issued and reject them, if the deployment relies on EKU separation for security.
+
+---
+
+5. **Non‑Issues**
+
+- The mere existence of `id‑kp-imUri` does not break RFC 5280’s EKU semantics or path validation; all rules about multiple EKUs, criticality, and `anyExtendedKeyUsage` remain valid and implementable.
+- There is no ambiguity in how certificates containing `id‑kp-imUri` are encoded or processed; the OID definitions and ASN.1 are consistent with RFC 5280.
+
+[Used vector stores: vs_6954bbd8e7408191bb7df7308f47590a]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: RFC 9734 defines a new EKU `id-kp-imUri` for IM client certificates, allows issuers to mark it critical or non‑critical, and advises issuers not to combine it with the generic TLS EKUs `id-kp-clientAuth` or `id-kp-serverAuth` in order to gain specificity. It also states that RFC 5280’s security considerations apply and claims that `id-kp-imUri` reduces existing security risks for IM credentials.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Underspecification
+    - Title: No guidance on combining id-kp-imUri with anyExtendedKeyUsage or other broad EKUs
+    - Description: RFC 9734 gives a single piece of normative CA guidance: “Issuers SHOULD NOT set the id-kp-imUri extended key purpose and an id-kp-clientAuth or id-kp-serverAuth extended key purpose: that would defeat the improved specificity offered by having an id-kp-imUri extended key purpose.” At the same time it asserts that “The id-kp-imUri extended key purpose does not introduce new security risks but instead reduces existing security risks by providing means to identify if the certificate is generated to sign IM identity credentials.” RFC 5280 explicitly defines a special EKU `anyExtendedKeyUsage` that CAs can include “if [the CA] does not wish to restrict usages of the key” and permits it to appear “in addition to the particular key purposes required by the applications.” This means that a CA fully conformant to both RFC 5280 and RFC 9734 can still issue certificates with `id-kp-imUri` plus `anyExtendedKeyUsage` (or other broad EKUs, such as `id-kp-emailProtection`), thereby making the key effectively multi‑purpose in many ecosystems. The absence of any normative guidance about `anyExtendedKeyUsage` (or other generic EKUs) in RFC 9734 leaves an obvious avenue for CAs to undercut the “improved specificity” and risk reduction the document claims, without violating any stated requirement. That is a deontic under-specification: the security goal is stated, but the necessary CA-side constraints are only partially captured (limited to serverAuth/clientAuth) and omit a well-known generic EKU whose semantics directly interact with that goal.
+    - KeyTextSnippets:
+      - “The id-kp-imUri extended key purpose does not introduce new security risks but instead reduces existing security risks by providing means to identify if the certificate is generated to sign IM identity credentials.”
+      - “Issuers SHOULD NOT set the id-kp-imUri extended key purpose and an id-kp-clientAuth or id-kp-serverAuth extended key purpose: that would defeat the improved specificity offered by having an id-kp-imUri extended key purpose.”
+      - “If a CA includes extended key usages to satisfy such applications, but does not wish to restrict usages of the key, the CA can include the special KeyPurposeId anyExtendedKeyUsage in addition to the particular key purposes required by the applications.” (RFC 5280)
+    - Impact: CAs and reviewers may reasonably believe they are following all the normative guidance in RFC 9734 yet issue certificates whose keys are still effectively “any use” due to `anyExtendedKeyUsage` (or similarly broad EKU combinations). This weakens the claimed cross‑protocol attack mitigation and leads to inconsistent expectations between issuers and relying parties about the intended scope of `id-kp-imUri`‑bearing certificates.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - Title: Relying-party requirements for IM applications are absent despite security claims
+    - Description: RFC 9734’s security rationale is that `id-kp-imUri` “provid[es] means to identify if the certificate is generated to sign IM identity credentials,” implicitly suggesting that IM applications can rely on this EKU to distinguish IM credentials from generic ones. However, there is no normative requirement or recommendation for IM relying-party behavior: the document does not say that IM/MLS applications MUST or SHOULD require `id-kp-imUri` for use as an IM identity credential, nor does it say whether such applications SHOULD or MUST reject certificates that also carry broader EKUs (e.g., `id-kp-clientAuth`, `id-kp-serverAuth`, or `anyExtendedKeyUsage`). RFC 5280 only provides a generic option that “Certificate using applications MAY require that the extended key usage extension be present and that a particular purpose be indicated in order for the certificate to be acceptable to that application,” but RFC 9734 does not tie this to the IM use case with any normative language. As a result, the degree to which risk is actually reduced is left entirely to local policy decisions of IM implementations, even though the document’s prose reads as if the introduction of `id-kp-imUri` itself materially reduces risk.
+    - KeyTextSnippets:
+      - “The id-kp-imUri extended key purpose does not introduce new security risks but instead reduces existing security risks by providing means to identify if the certificate is generated to sign IM identity credentials.”
+      - “Certificate using applications MAY require that the extended key usage extension be present and that a particular purpose be indicated in order for the certificate to be acceptable to that application.” (RFC 5280)
+    - Impact: Different IM/MLS implementations may adopt incompatible policies (some accepting any certificate that includes `id-kp-imUri` regardless of other EKUs, others rejecting mixed‑purpose certs, others not requiring `id-kp-imUri` at all), yet all are formally compliant with the current text. This variability undermines the interoperability and the uniform security benefit that the new EKU is intended to provide, and it weakens the credibility of the document’s blanket claim that the new EKU “reduces existing security risks.”
+
+[Used vector stores: vs_6954bbd8e7408191bb7df7308f47590a]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9734 defines a new EKU OID id‑kp‑imUri under the PKIX id‑kp arc, registers it in the IANA “SMI Security for PKIX Extended Key Purpose” registry, and states that the security considerations of RFC 5280 apply. Section 4 further claims that id‑kp‑imUri reduces existing security risks and advises issuers not to combine it with id‑kp‑clientAuth or id‑kp‑serverAuth.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Interaction with RFC 5280 anyExtendedKeyUsage and multi‑purpose EKUs
+    - Description: RFC 5280 Section 4.2.1.12 defines anyExtendedKeyUsage (OID { id‑ce‑extKeyUsage 0 }) and explicitly allows a CA that “does not wish to restrict usages of the key” to include anyExtendedKeyUsage in addition to specific EKUs  . RFC 9734’s Section 4 only says issuers “SHOULD NOT” combine id‑kp‑imUri with id‑kp‑clientAuth or id‑kp‑serverAuth and is completely silent about anyExtendedKeyUsage or other broad EKU combinations. Under a literal reading of both documents, a CA can issue a certificate containing id‑kp‑imUri plus anyExtendedKeyUsage and still be fully conformant to RFC 5280 and not obviously non‑conformant to RFC 9734, yet such a certificate would be valid (per RFC 5280) for essentially any EKU, re‑enabling the very cross‑protocol abuse this document claims to mitigate. The document also gives no relying‑party requirements for what an IM/MLS application should do when it encounters id‑kp‑imUri alongside anyExtendedKeyUsage or a mixture of generic EKUs, leaving behavior entirely to local policy even though Section 4 asserts that id‑kp‑imUri “does not introduce new security risks but instead reduces existing security risks”. This mismatch between the strong security claim and the absence of normative constraints or guidance in the presence of anyExtendedKeyUsage/multi‑EKU certificates is a cross‑document underspecification relative to the RFC 5280 EKU model. I partly agree with the router’s hypothesis: there is not a hard contradiction with RFC 5280, but there is a real gap in how the new EKU is meant to be used when combined with RFC 5280’s anyExtendedKeyUsage and multi‑purpose semantics.
+    - EntitiesInvolved: ["RFC 9734 Section 4", "RFC 5280 Section 4.2.1.12 anyExtendedKeyUsage", "id-kp-imUri EKU", "id-kp-clientAuth", "id-kp-serverAuth", "anyExtendedKeyUsage"]
+    - CrossRefsUsed: ["RFC 5280 §4.2.1.12 text on ExtKeyUsageSyntax and anyExtendedKeyUsage", "RFC 9734 §4 Security Considerations (quoted in TargetExcerpt)"]
+    - Confidence: Medium
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: Wrong RFC reference for XMPP URI definition
+    - Description: In RFC 9734’s Introduction, the text says that a subjectAltName “can be an IM URI [RFC3860] or Extensible Messaging and Presence Protocol (XMPP) URI [RFC6121]”. However, the XMPP URI scheme is not defined in RFC 6121; the XMPP URI/IRI syntax is defined in RFC 5122 and later updated/obsoleted by RFC 7712, while RFC 6121 describes XMPP instant messaging and presence functionality, not URI syntax. Thus, the document points implementers to the wrong RFC for the normative definition of “XMPP URI”, which is a cross‑RFC reference error likely to confuse readers trying to find the URI syntax it relies on. This is a concrete cross‑document mismatch between the cited RFC and the actual defining RFC(s) for the XMPP URI scheme.
+    - EntitiesInvolved: ["RFC 9734 Section 1", "XMPP URI", "RFC 6121", "RFC 5122", "RFC 7712"]
+    - CrossRefsUsed: ["RFC 9734 §1 reference to XMPP URI [RFC6121] (in TargetExcerpt)"]
+    - Confidence: High
+
+- IfNoIssues:
+  - Comment: Not applicable.
+
+[Used vector stores: vs_6954bbd8e7408191bb7df7308f47590a]
+
+
+Vector Stores Used: vs_6954bbd8e7408191bb7df7308f47590a
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

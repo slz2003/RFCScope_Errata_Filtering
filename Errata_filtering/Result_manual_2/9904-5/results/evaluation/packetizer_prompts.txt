@@ -1,0 +1,217 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 5 gives security considerations about DNSSEC algorithm choice and, in particular, about which algorithms are “mandatory‑to‑implement” and when to deprecate them. Its key security claim is that algorithms identified in this document as “MUST or RECOMMENDED to implement” are “not known to be broken,” and it warns against retiring algorithms too quickly because that can effectively render zones unsigned.
+
+- ScopeModel:
+  - Targets:
+    - All DNSSEC cryptographic algorithms that appear in the IANA “DNS Security Algorithm Numbers” registry with “Implement for DNSSEC Signing” or “Implement for DNSSEC Validation” set to a BCP 14 keyword (MUST, RECOMMENDED, etc.) per Section 2/Table 2.
+    - All digest algorithms in the “Digest Algorithms” registry with “Implement for DNSSEC Delegation” or “Implement for DNSSEC Validation” set to a BCP 14 keyword per Section 2/Table 3.
+    - Operational algorithm “retirement” / deprecation actions that change an algorithm’s status to MUST NOT so validators may remove support, as described in Section 1.2 and echoed in Section 5.
+  - Conditions:
+    - The phrase “algorithms identified as MUST or RECOMMENDED to implement” in Section 5 is naturally read as: algorithms that, in this document’s IANA tables, have an “Implement for …” column with value MUST or RECOMMENDED, in *any* role (signing, validation, delegation).
+    - The security statement is time‑qualified (“not known to be broken at the current time”) but *not* qualified by registry, role (signing vs validation), or by algorithm family.
+    - Tables 2 and 3 explicitly keep certain SHA‑1–based algorithms as MUST or RECOMMENDED for *validation* only, while marking them NOT RECOMMENDED or MUST NOT for *use* in new signing/delegation:
+      - RSASHA1 and RSASHA1‑NSEC3‑SHA1: “Implement for DNSSEC Validation” = MUST, but “Use for DNSSEC Signing” and “Implement for DNSSEC Signing” = NOT RECOMMENDED.  
+      - SHA‑1 digest: “Implement for DNSSEC Validation” = MUST, but “Use for DNSSEC Delegation” and “Implement for DNSSEC Delegation” = MUST NOT.
+    - Earlier referenced RFCs explicitly note that SHA‑1 has “cryptanalysis issues” and that SHA‑2 is preferred (RFC 6781 Section 3.4.1; RFC 5702 Section 8.1).
+  - NotedAmbiguities:
+    - Section 5 does not say explicitly *which* IANA columns (signing vs validation; DNSKEY vs DS) it is talking about when it says “algorithms identified as MUST or RECOMMENDED to implement”.
+    - The “not known to be broken” claim is stated uniformly for all such algorithms, without carving out exceptions for algorithms that are only kept for backward compatibility and are already discouraged for new signing/delegation.
+    - In Section 6, the normative “users MUST upgrade the DS algorithm first” requirement uses an undefined actor (“users”), even though the operational procedure clearly concerns zone operators managing keys.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Over‑broad scope of “not known to be broken” claim for all MUST/RECOMMENDED‑to‑implement algorithms, including SHA‑1‑based algorithms only retained for validation
+    - ScopeProblemType: Overly broad and ambiguous security property scope across roles and registries
+    - Evidence:
+      - Section 5: “In this document, the algorithms identified as MUST or RECOMMENDED to implement are not known to be broken at the current time…” and “this document concerns itself… specifically with the selection of ‘mandatory‑to‑implement’ algorithms.”
+      - Table 2: RSASHA1 and RSASHA1‑NSEC3‑SHA1 have “Implement for DNSSEC Validation” = MUST and “Implement for DNSSEC Signing” = NOT RECOMMENDED; SHA‑1‑based algorithms thus appear with MUST in an “Implement for … Validation” column.
+      - Table 3: SHA‑1 digest has “Use for DNSSEC Delegation” = MUST NOT, “Implement for DNSSEC Delegation” = MUST NOT, but “Implement for DNSSEC Validation” = MUST.
+      - RFC 6781 Section 3.4.1: “At the time of publication, it is known that the SHA‑1 hash has cryptanalysis issues… The use of public‑key algorithms based on hashes stronger than SHA‑1 (e.g., SHA‑256) is recommended…”
+      - RFC 5702 Section 8.1: “confidence in SHA‑1’s strength is being eroded by recently announced attacks… SHA‑2 is the better choice for use in DNSSEC records.”
+    - DetailedReasoning:
+      1. Section 5 explicitly ties its core security statement to “algorithms identified as MUST or RECOMMENDED to implement.” In the context of this document, “to implement” clearly refers to the four “Implement for …” columns added to the DNS Security Algorithm Numbers and Digest Algorithms registries in Section 2, not to the “Use for …” columns.
+      2. Interpreted literally, *any* algorithm that is marked MUST or RECOMMENDED in *any* of those “Implement for …” columns is covered by the “not known to be broken” statement — regardless of whether that is for signing, validation, or delegation, and regardless of registry.
+      3. From Table 2, RSASHA1 and RSASHA1‑NSEC3‑SHA1 are NOT RECOMMENDED for signing (both “Use for DNSSEC Signing” and “Implement for DNSSEC Signing” are NOT RECOMMENDED), but “Implement for DNSSEC Validation” is MUST. Likewise, Table 3 marks SHA‑1 digest as MUST NOT for DS delegation (both “Use” and “Implement” for Delegation = MUST NOT) while “Implement for DNSSEC Validation” remains MUST.
+      4. Thus, under a straightforward reading, Section 5’s sentence asserts that *RSASHA1, RSASHA1‑NSEC3‑SHA1, and the SHA‑1 DS digest (as used for validation)* are “not known to be broken at the current time” simply because their “Implement for … Validation” columns are set to MUST.
+      5. However, the very RFCs cited in the excerpt acknowledge that SHA‑1 has significant cryptanalytic weaknesses: RFC 6781 states “it is known that the SHA‑1 hash has cryptanalysis issues” and recommends using algorithms with stronger hashes; RFC 5702 notes that confidence in SHA‑1 is being eroded by actual attacks and explicitly encourages migration to SHA‑2.
+      6. In 9904’s own IANA tables, this reduced confidence is already reflected in *use‑side* recommendations: SHA‑1 is MUST NOT or NOT RECOMMENDED for *signing/delegation*, and the SHA‑2 or elliptic‑curve algorithms are RECOMMENDED/MUST for both use and implementation. The only reason SHA‑1‑based algorithms remain MUST to implement is to allow validators to interoperate with legacy zones, not because they are cryptographically sound in the same sense as the newer algorithms.
+      7. Consequently, the scope of Section 5’s security assurance is too broad: it implicitly elevates “all algorithms that are still mandatory‑to‑implement for any purpose, including purely for backward‑compatibility validation” into the category “not known to be broken,” which is at odds with earlier normative guidance and with the document’s own use‑side discouragement of SHA‑1.
+      8. This is both an inconsistency and a scope error: the text fails to distinguish between (a) algorithms that are recommended for *new signing/delegation* because they are believed to be strong, and (b) algorithms that are retained in MUST/RECOMMENDED implementation columns only so that validators can continue to process legacy data.
+      9. If implementers and operators read Section 5 literally, they may reasonably infer that SHA‑1‑based mechanisms are considered fully unbroken and safe, undermining the intended message that SHA‑1 is deprecated for signing/delegation and should only persist for validation while migration completes.
+      10. A scoped clarification could resolve this, for example by saying that “algorithms marked as RECOMMENDED (or MUST) for *use* in signing/delegation are not known to be broken,” or by explicitly exempting SHA‑1‑based algorithms from that blanket statement and explaining that they are only mandatory to implement for validation of existing deployments.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous target actor for the normative “users MUST upgrade the DS algorithm first” requirement
+    - ScopeProblemType: Unclear actor / role scope for a MUST requirement
+    - Evidence:
+      - Section 6: “…Upgrading an algorithm at the same time as rolling to the new Key Signing Key (KSK) key will lead to DNSSEC validation failures, and users MUST upgrade the DS algorithm first before rolling to a new KSK.”
+      - Elsewhere, the document uses more specific actors such as “DNSSEC operators,” “implementers,” “authoritative servers,” and “validating resolvers” when giving guidance (e.g., Sections 1.1, 2.1).
+    - DetailedReasoning:
+      1. The operational requirement in Section 6 is stated as “users MUST upgrade the DS algorithm first before rolling to a new KSK.” This is a strong normative requirement that is clearly intended to constrain the sequence of actions taken during a DS‑algorithm/KSK rollover to avoid validation failures.
+      2. However, the term “users” is not defined in this document and is unusually generic in the context of DNSSEC, where the relevant actors are zone operators, signing system operators, and validating resolvers, not end‑users or generic “users.”
+      3. The surrounding text makes clear that the subject is “DS algorithm rollover in a live zone” and that the rule is about the procedure of “rolling to the new KSK,” which is an operational activity of *zone managers/operators*, not of all “users” in general.
+      4. The scope of the MUST requirement is therefore ambiguous: is it binding on software implementers (who must ensure their tooling enforces the order), on zone operators (who must follow this operational sequence), or on all DNSSEC participants?
+      5. Elsewhere, the document is more precise about who is supposed to act, e.g., “authoritative nameservers and DNSSEC signers” and “validating recursive resolvers” in Section 1.2, suggesting that a similarly precise role should have been used here.
+      6. This lack of clear actor scope can lead to divergent interpretations: an implementer might believe that simply providing a mechanism is sufficient, while an operator might miss that *they* are the intended subject of the MUST and treat it as merely advisory.
+      7. Clarifying this statement to target the correct operational role (e.g., “zone operators performing DS and KSK rollovers MUST upgrade the DS algorithm first …”) would tighten the scope and avoid ambiguity about who is required to comply.
+
+- ResidualUncertainties:
+  - The term “broken” in Section 5 is not formally defined; different readers might interpret it as “catastrophically broken in the DNSSEC threat model” rather than “having any known cryptanalytic weaknesses.” The inconsistency with SHA‑1 guidance is therefore partly dependent on how strictly “broken” is understood.
+  - It is not explicitly stated whether Section 5’s “MUST or RECOMMENDED to implement” claim was *intended* to be limited to algorithms that are also RECOMMENDED for “Use for … Signing/Delegation,” or to all MUST/RECOMMENDED implementation statuses; the tables and wording suggest the broader reading, which is what exposes the scope issue.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: RFC 9904 defines how DNSSEC algorithms are labeled in IANA registries with BCP 14 requirement levels for “implement” and “use”, and gives lifecycle guidance for deprecating algorithms. Section 5 briefly justifies these choices by stating that algorithms labeled MUST or RECOMMENDED to implement are “not known to be broken” and warning against over‑hasty deprecation.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: “Not known to be broken” is a factual/security assertion, not a conflicting normative requirement
+    - Description:  
+      Section 5 says: “In this document, the algorithms identified as MUST or RECOMMENDED to implement are not known to be broken at the current time…” This sentence does not normatively constrain implementer behavior; it is a descriptive justification of why certain algorithms were assigned MUST/RECOMMENDED in the registries, not a rule like “algorithms that are known to be broken MUST NOT be assigned MUST/RECOMMENDED”. The actual normative requirements for behavior are carried by the registry columns and their allowed values (e.g., RSASHA1 and SHA‑1 digest being MUST for validation but NOT RECOMMENDED or MUST NOT for signing/delegation) and by explicit BCP 14 requirements such as “users MUST upgrade the DS algorithm first before rolling to a new KSK.”    
+      Earlier referenced documents (RFC 5702 and RFC 6781) speak of SHA‑1 “cryptanalysis issues” and recommend stronger hashes, but they do not impose a hard prohibition (MUST NOT) on SHA‑1 in DNSSEC; RFC 9904’s registry values are compatible with a posture of “do not use SHA‑1 for new signing/delegation, but validators MUST still support it for interoperability.”   The potential tension—that SHA‑1 is widely regarded as “broken” in a broader cryptographic sense while RFC 9904’s Security Considerations implicitly treat all MUST/RECOMMENDED‑to‑implement algorithms as acceptable—is therefore factual/cryptanalytic, not a contradiction between normative obligations. Changing the statement to qualify the threat model or to exclude SHA‑1 from the blanket “not known to be broken” claim would be a clarification of security rationale, not a change in what implementers or operators are normatively required or forbidden to do.
+    - KeyTextSnippets:
+      - “In this document, the algorithms identified as MUST or RECOMMENDED to implement are not known to be broken at the current time…”  
+      - “Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Use for DNSSEC Signing’ and ‘Use for DNSSEC Validation’ columns. Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Implement for DNSSEC Signing’ and ‘Implement for DNSSEC Validation’ columns.”  
+      - Table 2 entries for RSASHA1/RSASHA1‑NSEC3‑SHA1 (NOT RECOMMENDED for signing, MUST for validation) and Table 3 entry for SHA‑1 digest (MUST NOT for delegation, MUST/RECOMMENDED for validation).  
+      - “Users MUST upgrade the DS algorithm first before rolling to a new KSK.”  
+      - “At the time of publication, it is known that the SHA‑1 hash has cryptanalysis issues… The use of public-key algorithms based on hashes stronger than SHA‑1 (e.g., SHA‑256) is recommended…”  
+    - Impact: Implementers might reasonably question the accuracy of the “not known to be broken” justification for SHA‑1‑based mechanisms, but the concrete normative matrix—what algorithms MUST/SHOULD/MUST NOT be implemented or used in signing vs. validation—is internally consistent and compatible with the referenced guidance. Any correction here would refine the security narrative rather than resolve a deontic inconsistency, so it does not constitute a normative‑layer bug.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9904 moves DNSSEC algorithm requirement levels into the IANA “DNS Security Algorithm Numbers” and “Digest Algorithms” registries and adds “Use for …” and “Implement for …” columns. Section 5 then states that algorithms marked MUST or RECOMMENDED to implement are “not known to be broken” and cautions that deprecating algorithms too quickly can make zones effectively unsigned.
+
+- OverallCrossRFCLikelihood: Low
+
+- Issues: []
+
+- IfNoIssues:
+  - Comment:  
+    The router’s proposed issue focuses on Section 5’s statement that “algorithms identified as MUST or RECOMMENDED to implement are not known to be broken at the current time,” in light of SHA‑1–based algorithms that remain MUST/RECOMMENDED to implement for validation in Tables 2 and 3 and the earlier SHA‑1 discussions in RFC 5702 and RFC 6781.  
+    
+    Cross‑RFC consistency, however, does not show a direct contradiction:
+
+    * RFC 6781 Section 3.4.1 explicitly acknowledges cryptanalytic issues with SHA‑1 and recommends using stronger hashes such as SHA‑256 “if these algorithms are available in implementations,” and expects that effective attacks will appear first for RSA/SHA‑1 rather than RSA/SHA‑256  . This is a *preference* and a warning, not a declaration that SHA‑1 is already “broken” for DNSSEC.
+    * RFC 5702 Section 8.1 similarly says SHA‑2 is “widely believed to be more resilient to attack than SHA‑1” and that “confidence in SHA‑1’s strength is being eroded,” and therefore SHA‑2 “is believed … to be the better choice”  . Again, it does not declare SHA‑1 unusable or mandate its removal.
+    * In RFC 9904’s own tables, SHA‑1–based *signing* algorithms (RSASHA1, RSASHA1‑NSEC3‑SHA1) are **NOT RECOMMENDED** for signing implementations, while they remain **MUST** for validation implementations (and SHA‑1 in the DS digest registry is likewise **MUST** for validation and **MUST NOT** for delegation/signing)  . This matches the long‑standing IETF pattern of phasing out weak algorithms first on the signing side, while retaining validation support for backward compatibility. It does not contradict 5702/6781, which never required dropping SHA‑1 support for validation.
+    * The “not known to be broken” sentence in Section 5 is a high‑level characterization of the *current mandatory/RECOMMENDED set* in RFC 9904; it does not claim that no member of that set has any known cryptanalytic weaknesses, only that they are believed to be “adequately secure” for DNSSEC’s purposes at the time  . RFC 5702 and RFC 6781 characterize SHA‑1 as weakened and less preferable than SHA‑2, but stop short of declaring it fully broken for DNSSEC use.
+
+    From a cryptographic‑state‑of‑the‑art perspective, one might reasonably argue that calling SHA‑1 “not known to be broken” in 2023 is too optimistic. That is a security‑judgment issue, not a cross‑RFC or registry inconsistency. The registries updated by RFC 9904 are internally consistent with its own text, and their SHA‑1 positions are consistent with the earlier, more cautious guidance in RFC 5702 and RFC 6781 (favor SHA‑2, but keep SHA‑1 for interoperability during transition).  
+
+    Therefore, while the security *stance* on SHA‑1 can be debated, there is no clear cross‑document or registry mismatch that would mislead a careful implementer about which code points to implement or how to interpret the IANA registries.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+
+Vector Stores Used: vs_6954b396867881918c52be4a34d151ab
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

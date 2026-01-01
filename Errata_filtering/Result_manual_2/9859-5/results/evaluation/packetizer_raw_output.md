@@ -1,0 +1,138 @@
+# Errata Reports
+
+Total reports: 3
+
+---
+
+## Report 1: 9859-5-1
+
+**Label:** Inconsistent DSYNC Endpoint Discovery: Mandatory Return vs. Optional Ignoring of Unsigned Records
+
+**Bug Type:** Both
+
+**Explanation:**
+
+The DSYNC endpoint discovery algorithm mandates that any positive DSYNC answer be immediately used, while the security section permits implementations to ignore unsigned DSYNC records for privacy/security reasons, creating a normative conflict.
+
+**Justification:**
+
+- Section 4.1 instructs the sender to perform a DSYNC lookup and, if the response is positive, to return it as the endpoint.
+- Section 5 states that zones with DSYNC records are not required to be signed and that the sender may choose to ignore unsigned DSYNC records.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  Section 4.1, step 2 (endpoint discovery): Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.
+
+- **E2:**
+
+  Section 5 (Security Considerations): zones containing DSYNC records are not required to be signed. … The illegitimate target is also enabled to learn notification contents in real time, which may be a privacy concern for the sender. If so, the sender may choose to ignore unsigned DSYNC records.
+
+**Evidence Summary:**
+
+- (E1) shows that the discovery algorithm mandates returning any positive DSYNC answer.
+- (E2) provides that the sender may ignore unsigned DSYNC records, introducing an option contradicting the mandatory behavior.
+
+**Fix Direction:**
+
+Tie the DSYNC discovery algorithm explicitly to local security policy—for example, modify Section 4.1 to require that only DSYNC responses meeting specific DNSSEC/security criteria (e.g., being DNSSEC‑secure) are accepted, or normatively permit ignoring unsigned responses.
+
+**Severity:** Medium
+  *Basis:* The conflicting normative language could lead to diverging implementations affecting interoperability and privacy, as noted by multiple expert analyses.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Scope Expert: Issue-1
+- Causal Expert: Issue-1
+- Deontic Expert: Issue-1
+- Boundary Expert: Finding-1
+
+---
+
+## Report 2: 9859-5-2
+
+**Label:** Ambiguous Handling of DSYNC Responses with Varying DNSSEC Validation States
+
+**Bug Type:** Underspecification
+
+**Explanation:**
+
+The specification does not clearly define how DSYNC responses with different DNSSEC validation outcomes (secure, insecure, bogus, indeterminate) should be interpreted within the endpoint discovery process.
+
+**Justification:**
+
+- The discovery algorithm (Section 4.1) instructs to return a positive DSYNC answer without differentiating based on DNSSEC validation states.
+- Boundary Analysis highlights that DNSSEC defines multiple validation states, yet the spec does not specify how each should be mapped to a 'positive' result.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  Endpoint discovery Step 2: Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.
+
+- **E2:**
+
+  DNSSEC defines four validation states—secure, insecure, bogus, indeterminate—and RFC 9615 explicitly aborts bootstrapping when data is unauthenticated or validation fails, e.g., including failure of DNSSEC validation, or unauthenticated data (AD bit not set).
+
+**Evidence Summary:**
+
+- (E1) indicates that any positive DSYNC answer is to be returned without reference to its DNSSEC status.
+- (E2) underscores that different DNSSEC outcomes exist and should be clearly addressed in the discovery algorithm.
+
+**Fix Direction:**
+
+Explicitly specify how each DNSSEC validation state (secure, insecure, bogus, indeterminate) should be treated in the DSYNC discovery process to ensure consistent and secure behavior.
+
+**Severity:** Medium
+  *Basis:* The omission of clear mapping between DNSSEC validation states and DSYNC acceptability may lead to inconsistent implementations with varying security and interoperability profiles.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Boundary Expert: Finding-2
+
+---
+
+## Report 3: 9859-5-3
+
+**Label:** Ambiguous Scope of Receiver Rate Limiting Requirement for Notification Processing
+
+**Bug Type:** Underspecification
+
+**Explanation:**
+
+The document mandates that receivers must implement rate limiting for notification processing but does not clearly specify whether this applies only to receivers of generalized DNS NOTIFY messages or to all NOTIFY processing as defined in RFC 1996.
+
+**Justification:**
+
+- The Scope Analysis notes that the breadth of the rate-limiting requirement is left implicit.
+- This ambiguity could lead to divergent implementations regarding how broadly the rate limiting should be applied.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  ResidualUncertainties: The exact intended breadth of the rate-limiting requirement (“receivers MUST implement rate limiting for notification processing”) is left implicit; it is plausible but not explicit that this is scoped only to receivers of generalized notifications defined in this document, and not a blanket update to all NOTIFY processing as defined in RFC 1996.
+
+**Evidence Summary:**
+
+- (E1) identifies that the rate limiting requirement’s scope is not explicitly defined.
+
+**Fix Direction:**
+
+Clarify the text to explicitly state whether rate limiting is intended only for receivers of generalized DNS NOTIFY messages or for all NOTIFY processing, in line with the intended security and performance objectives.
+
+**Severity:** Low
+  *Basis:* While the ambiguity is primarily editorial and unlikely to cause critical failures, it may result in inconsistent rate-limiting behavior across implementations.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Scope Expert: ResidualUncertainties
+
+---

@@ -1,0 +1,64 @@
+{
+  "reports": [
+    {
+      "label": "Inconsistent RFC Metadata: Header lists 'Unknown' vs. Summary references RFC 9906",
+      "bug_type": "Metadata Inconsistency",
+      "explanation": "The header metadata indicates 'RFC: Unknown' and 'Section: Unknown' while the excerpt summary clearly references Section 1 of RFC 9906, creating an internal inconsistency.",
+      "justification": [
+        "The header block shows 'RFC: Unknown' and 'Section: Unknown' (E1).",
+        "The summary states 'Section 1 of RFC 9906 gives background…' (E2)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "RFC: Unknown\nSection: Unknown\nModel: gpt-5.1"
+          },
+          {
+            "id": "E2",
+            "text": "Excerpt Summary: Section 1 of RFC 9906 gives background for deprecating the older GOST R 34.10-2001 / 34.11-94 algorithms in DNSSEC, points to RFC 5933 and RFC 9558 for technical details, and states that the newer 2012 GOST algorithms’ requirement levels are unchanged. Section 1.1 provides standard BCP 14 keyword boilerplate."
+          }
+        ],
+        "summary": [
+          "(E1) The header metadata lists 'RFC: Unknown' and 'Section: Unknown'.",
+          "(E2) The excerpt summary references 'Section 1 of RFC 9906'."
+        ]
+      },
+      "fix_direction": "Update the header metadata to correctly reflect the RFC and section referenced in the summary, or adjust the summary to match the header metadata.",
+      "severity": "Low",
+      "severity_basis": "The issue is confined to metadata inconsistency and does not affect the technical or normative content.",
+      "confidence": "High",
+      "experts": [
+        "Router: Metadata Inconsistency"
+      ],
+      "report_id": "9906-1-1"
+    },
+    {
+      "label": "Underspecified Candidate Issue: Missing details in Candidate Issues block",
+      "bug_type": "Underspecified Candidate Issue",
+      "explanation": "A candidate issue is referenced in the candidate issues block without any additional details such as type, label, or relevant dimensions, leaving its intent unclear.",
+      "justification": [
+        "The candidate issues block notes a single issue with 'Type: None', and provides an empty label and no relevant dimensions (E3)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E3",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E3) The candidate issues block shows an issue entry with missing type, label, and relevant dimensions."
+        ]
+      },
+      "fix_direction": "Provide detailed information for the candidate issue, including a clear type, descriptive label, and specification of relevant dimensions or sketch.",
+      "severity": "Low",
+      "severity_basis": "Since the candidate issue is underspecified, it is not clear if it poses a technical risk; however, clarification is needed.",
+      "confidence": "Medium",
+      "experts": [
+        "Router: Issue 1"
+      ],
+      "report_id": "9906-1-2"
+    }
+  ]
+}

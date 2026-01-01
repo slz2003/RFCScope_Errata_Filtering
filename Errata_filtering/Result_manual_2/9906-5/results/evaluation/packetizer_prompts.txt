@@ -1,0 +1,539 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 5 of RFC 9906 instructs IANA to change specific *columns* of two IANA DNSSEC-related registries for GOST algorithms so that all four “Use for …” and “Implement for …” columns are set to MUST NOT, and to mark the descriptions as deprecated. It also includes notes about which columns were already set to MUST NOT before this RFC. The surrounding context from RFC 9904 defines exactly which columns exist in which registry and what each column is intended to cover.
+- ScopeModel:
+  - Targets:
+    - The “DNS Security Algorithm Numbers” registry (DNSKEY-IANA), specifically the entry:
+      - Number 12, Description “GOST R 34.10-2001”, Mnemonic “ECC-GOST”.
+      - Columns that exist in this registry per RFC 9904 §2.1 / §7.1:
+        - Use for DNSSEC Signing
+        - Use for DNSSEC Validation
+        - Implement for DNSSEC Signing
+        - Implement for DNSSEC Validation
+    - The “Digest Algorithms” registry (DS-IANA), specifically the entry:
+      - Value 3, Description “GOST R 34.11-94”.
+      - Columns that exist in this registry per RFC 9904 §2.1 / §7.2:
+        - Use for DNSSEC Delegation
+        - Use for DNSSEC Validation
+        - Implement for DNSSEC Delegation
+        - Implement for DNSSEC Validation
+  - Conditions:
+    - The changes in RFC 9906 §5 apply only to:
+      - Algorithm number 12 (ECC-GOST) in the DNSKEY registry.
+      - Digest value 3 (GOST R 34.11-94) in the DS registry.
+    - For each of these entries, all four of the relevant “Use for …” and “Implement for …” columns in the applicable registry are to be set to MUST NOT.
+    - The “Note:” text in each case is describing the *pre-existing* state of some columns (i.e., which ones were already MUST NOT before applying RFC 9906).
+  - NotedAmbiguities:
+    - In the DNSKEY registry note, RFC 9906 references a column name (“Implement for DNSSEC Delegation”) that does not exist in that registry and belongs instead to the DS registry.
+    - In the DS registry note, RFC 9906 references a column name (“Use for DNSSEC Signing”) that does not exist in the DS registry and belongs instead to the DNSKEY registry.
+    - Because the notes mix column names from different registries, it becomes ambiguous which exact columns were already MUST NOT and which columns RFC 9906 newly changes.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: DNSKEY registry note references non-existent “Implement for DNSSEC Delegation” column
+    - ScopeProblemType: Wrong registry/column scope (using a Digest-Algorithms column name in the DNSKEY registry context)
+    - Evidence:
+      - RFC 9904 defines for the “DNS Security Algorithm Numbers” registry the four added columns as: “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, “Implement for DNSSEC Validation” (Section 2.1 and reiterated in 7.1).
+      - RFC 9906 §5, for the GOST R 34.10-2001 (12) entry, says in the note: “Note: The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+    - DetailedReasoning:
+      - RFC 9904 clearly scopes the four “Use for …” and “Implement for …” columns in the *DNS Security Algorithm Numbers* registry to signing and validation, with the exact names “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, and “Implement for DNSSEC Validation”. There is no “Implement for DNSSEC Delegation” column in that registry.
+      - “Implement for DNSSEC Delegation” is instead a column name that exists only in the *Digest Algorithms* registry, where delegation is about DS records. RFC 9904 §2.1 explicitly limits “Implement for DNSSEC Delegation” to that registry.
+      - In RFC 9906 §5, the DNSKEY registry entry for algorithm 12 is correctly laid out with the four DNSKEY-specific column names, and all are set to MUST NOT. However, the subsequent note says that the “Use for DNSSEC Signing” and “Implement for DNSSEC Delegation” columns were already set to MUST NOT.
+      - Because the text is explicitly talking about the DNSKEY registry entry and then cites a column name that belongs only to the DS registry, the scope of that column reference is incorrect: it refers to a column that does not exist in the current registry’s schema.
+      - An implementer or IANA reviewer following the note literally could be confused about which column was already MUST NOT in the DNSKEY registry (it must have been one of the four valid DNSKEY columns), and might even wonder if the document is implicitly defining some cross-registry linkage or a fifth column, which is not the case.
+      - The reasonable inference is that the intent was to say that “Use for DNSSEC Signing” and *one of the DNSKEY implementation columns* (most plausibly “Implement for DNSSEC Signing” or “Implement for DNSSEC Validation”) were already MUST NOT, but the author accidentally copied the column name “Implement for DNSSEC Delegation” from the digest registry vocabulary.
+      - This is a scope error: a registry-specific column name is being used outside its proper registry context, thereby making the statement about “which columns were already MUST NOT” formally incorrect and potentially misleading about the state of the DNSKEY registry prior to RFC 9906.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: Digest Algorithms registry note references non-existent “Use for DNSSEC Signing” column
+    - ScopeProblemType: Wrong registry/column scope (using a DNSKEY column name in the Digest Algorithms registry context)
+    - Evidence:
+      - RFC 9904 defines for the “Digest Algorithms” registry the four added columns as: “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, “Implement for DNSSEC Validation” (Section 2.1 and reiterated in 7.2).
+      - RFC 9906 §5, for the GOST R 34.11-94 (3) entry, includes the note: “Note: The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+    - DetailedReasoning:
+      - In the *Digest Algorithms* registry as defined by RFC 9904, there are exactly four columns and they are all scoped to delegation and validation, not signing: “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, and “Implement for DNSSEC Validation”. There is no “Use for DNSSEC Signing” column in that registry.
+      - “Use for DNSSEC Signing” is a column name that exists only in the *DNS Security Algorithm Numbers* registry and is explicitly intended for DNSKEY/DNSSEC signing algorithms, not digest algorithms for DS.
+      - In RFC 9906 §5, the main part of the GOST R 34.11-94 entry uses the correct digest-registry column names and sets all four to MUST NOT. This matches the column schema and their intended scope per RFC 9904.
+      - However, the note that follows claims that the “Use for DNSSEC Signing” and “Implement for DNSSEC Delegation” columns were already set to MUST NOT. Here, “Use for DNSSEC Signing” is out of scope for this registry: that column does not exist for digest algorithms.
+      - As a result, the note is internally inconsistent with the registry schema and cannot be literally true for the Digest Algorithms registry. It conflates the DNSKEY- and DS-registry column vocabularies.
+      - This mis-scoping obscures the intended change history: it is no longer clear which *digest* columns were already set to MUST NOT before RFC 9906 and which are being changed by this RFC, because one of the column names named in the note is from a completely different registry.
+      - The likely intent was to say that “Use for DNSSEC Delegation” and “Implement for DNSSEC Delegation” were already MUST NOT for value 3, but the text instead uses “Use for DNSSEC Signing”, importing a column name from the other registry and thereby creating a registry/column scope error.
+      - While the concrete table entries that precede the note are clear about the final values (all MUST NOT), this mistake is still a protocol-specification bug: it yields an incorrect cross-reference to a non-existent column in this registry and can mislead readers about the prior status and semantics of the deprecation.
+
+- ResidualUncertainties:
+  - The excerpt does not include the full, pre-RFC-9906 contents of the two registries, so it is not possible to say with certainty *which* columns were in fact already set to MUST NOT before this RFC; only that the column names used in the notes are mis-scoped relative to the registry definitions in RFC 9904.
+  - It is also not explicit whether the IANA registry’s current web presentation corrected these column-name issues editorially when applying the RFC; the analysis here is confined to the text of RFC 9906 and the registry schema as defined by RFC 9904.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following RFC 9906 section 5 literally does not create any broken or unimplementable behavior for DNSSEC software or for IANA. The only real issue is that the explanatory “Note:” lines at the end of each registry update reference the wrong column names (and, in one case, a column that doesn’t exist in that registry), but this does not affect what values are actually to be set or how implementations behave.
+
+---
+
+2. **Causal Analysis**
+
+### What section 5 actually makes happen
+
+Section 5 tells IANA to update two specific registry entries:
+
+1. **DNS Security Algorithm Numbers (DNSKEY-IANA), value 12 (ECC-GOST)**
+
+   It gives the complete new row:
+
+   - Number: 12  
+   - Description: GOST R 34.10-2001 (**DEPRECATED**)  
+   - Mnemonic: ECC-GOST  
+   - Zone Signing: Y  
+   - Trans. Sec.: *  
+   - Use for DNSSEC Signing: MUST NOT  
+   - Use for DNSSEC Validation: MUST NOT  
+   - Implement for DNSSEC Signing: MUST NOT  
+   - Implement for DNSSEC Validation: MUST NOT  
+   - Reference: [RFC5933], the status-change document, and RFC 9906  
+
+   Then adds:
+
+   > Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.
+
+   Mechanically, the operative part is the explicit setting of *all four* “Use for …” and “Implement for …” columns to MUST NOT. Those column names match exactly what RFC 9904 defines for the **DNS Security Algorithm Numbers** registry:
+
+   - Use for DNSSEC Signing  
+   - Use for DNSSEC Validation  
+   - Implement for DNSSEC Signing  
+   - Implement for DNSSEC Validation    
+
+   So IANA can carry this out unambiguously, and implementers simply see “MUST NOT” in all four recommendation columns for algorithm 12.
+
+2. **Digest Algorithms (DS-IANA), value 3 (GOST R 34.11-94)**
+
+   It similarly gives a full new row:
+
+   - Value: 3  
+   - Description: GOST R 34.11-94 (**DEPRECATED**)  
+   - Use for DNSSEC Delegation: MUST NOT  
+   - Use for DNSSEC Validation: MUST NOT  
+   - Implement for DNSSEC Delegation: MUST NOT  
+   - Implement for DNSSEC Validation: MUST NOT  
+   - Reference: [RFC5933], the status-change document, and RFC 9906  
+
+   And then:
+
+   > Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.
+
+   Again, the operative part is clear: all four recommendation columns in the **Digest Algorithms** registry entry for value 3 are to be set to MUST NOT. Those column names match what RFC 9904 defines for that registry:
+
+   - Use for DNSSEC Delegation  
+   - Use for DNSSEC Validation  
+   - Implement for DNSSEC Delegation  
+   - Implement for DNSSEC Validation    
+
+So, if IANA follows the main bullet-point entries, the registries end up with:
+
+- Algorithm 12 (ECC-GOST): all four “Use/Implement” columns are MUST NOT.  
+- Digest 3 (GOST R 34.11‑94): all four “Use/Implement” columns are MUST NOT.  
+
+This is fully coherent with section 2 of RFC 9906, which normatively says:
+
+- GOST R 34.11‑94 **MUST NOT** be used to create DS records; validators must treat such DS as **insecure**.  
+- GOST R 34.10‑2001 (ECC‑GOST) **MUST NOT** be used to create DNSKEY/RRSIG; validators must treat such RRSIGs as **unsupported** and, if no other acceptable signatures exist, as **insecure**.
+
+Those behaviors are exactly what you expect for algorithms whose registry entries say “MUST NOT” everywhere.
+
+### Where the text is wrong
+
+The problematic bits are the **Note:** lines:
+
+- For the **DNS Security Algorithm Numbers** entry (algorithm 12):
+
+  > Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.
+
+  - “Use for DNSSEC Signing” is a legitimate column in that registry. ✔  
+  - “Implement for DNSSEC Delegation” is **not** a column in that registry; it only exists in the **Digest Algorithms** registry. In the DNS Security Algorithm Numbers registry, the corresponding columns are “Implement for DNSSEC Signing” and “Implement for DNSSEC Validation”  . So this column name is wrong for this registry.
+
+- For the **Digest Algorithms** entry (value 3):
+
+  > Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.
+
+  - “Use for DNSSEC Signing” is **not** a column in the Digest Algorithms registry. There the column is “Use for DNSSEC Delegation” (not “Signing”)  .  
+  - “Implement for DNSSEC Delegation” **is** a valid column name in the Digest Algorithms registry. ✔  
+
+So both Notes mix up or mis-assign column names between the two registries. In one case they literally refer to a non-existent column in that registry.
+
+### Why this does not break behavior
+
+Mechanistically:
+
+- The **actual registry updates** are given explicitly by listing each field and its new value. Those lines use the correct column names for each registry and unambiguously set them to MUST NOT.
+- The malformed Notes are **purely descriptive**, saying that some columns “were already set to MUST NOT.” They do not create new requirements or change which columns to set; they are historical commentary.
+
+Even if an IANA staffer or reader noticed the Notes and tried to reconcile them:
+
+- For DNS Security Algorithm Numbers, they would see that there is no “Implement for DNSSEC Delegation” column in that registry, immediately revealing this as a typo.
+- For Digest Algorithms, they would see there is no “Use for DNSSEC Signing” column, only “Use for DNSSEC Delegation”.
+
+In either case, the only sensible interpretation is that the Notes are editorially wrong, while the explicit “Use/Implement” lines are the real instructions.
+
+On the implementation side:
+
+- Implementers do not act on those Notes; they implement behavior based on:
+  - The normative text in section 2 of RFC 9906, and  
+  - The values in the IANA registries after the update.  
+- Both now consistently say “MUST NOT” across the board for these algorithms, so implementations can correctly stop using them while still treating zones as insecure rather than bogus, exactly as specified.
+
+There is no impossible state, no undefined algorithmic step, and no inconsistent requirement that would cause validation or signing logic to fail.
+
+---
+
+3. **Problem Classification**
+
+- The only identifiable issue is the incorrect column names in the **Note** lines at the end of each IANA update.
+- This is an **editorial defect**, not a protocol or algorithmic defect:
+  - It does not prevent IANA from performing the registry updates, because the operative fields are listed correctly.
+  - It does not mislead implementers about how to behave; they rely on registry contents and normative text, both of which are coherent.
+- So from this system’s perspective it is **not** a Causal Inconsistency or Causal Underspecification in the protocol behavior; it is a non-causal documentation error.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If corrected, the Notes would simply need to reference the correct columns for each registry, e.g.:
+
+- For the DNS Security Algorithm Numbers entry (algorithm 12), something like:
+  - “Note: The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Signing’ columns were already set to MUST NOT.”
+- For the Digest Algorithms entry (value 3), something like:
+  - “Note: The ‘Use for DNSSEC Delegation’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+
+Any such correction would be editorial and would not change registry values.
+
+---
+
+5. **Non-Issues**
+
+- The fact that the “Zone Signing” field remains “Y” for algorithm 12 while all “Use/Implement” columns are MUST NOT is not a bug; “Zone Signing” is a capability indicator inherited from earlier registry structure, whereas the new columns from RFC 9904 carry the normative recommendation status. Having “Y” plus “MUST NOT” just means “technically usable but prohibited/recommended against now.”
+- The deprecation itself (MUST NOT in all four “Use/Implement” columns and the DEPRECATED description) is consistent with section 2’s MUST NOT language and with the deprecation model in RFC 9904; it does not introduce a state where implementations cannot behave correctly.
+
+In short: the behavior and state transitions for DNSSEC implementations and for IANA registry maintenance are fully realizable as written. The only flaw is a minor, non-functional misnaming of registry columns in explanatory notes.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 5 of RFC 9906 specifies the post‑publication state of two IANA DNSSEC registries: for ECC‑GOST (algorithm 12) and GOST R 34.11‑94 (digest type 3), all four “Use for …” and “Implement for …” columns are set to MUST NOT, and notes attempt to describe which of those columns were already MUST NOT before this RFC. RFC 9904 defines the allowed column names and value sets for those registries and the procedures for changing them.
+
+- OverallDeonticRisk: Low
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Incorrect / non‑existent column names in RFC 9906 §5 IANA “Note” text
+    - Description:  
+      RFC 9904 defines for the **DNS Security Algorithm Numbers** registry the four columns “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, and “Implement for DNSSEC Validation”. For the **Digest Algorithms** registry, it defines “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, and “Implement for DNSSEC Validation” . In RFC 9906 §5, the primary tabular updates for both GOST R 34.10‑2001 and GOST R 34.11‑94 correctly use those column names and explicitly set all four columns to “MUST NOT”, which is permitted by RFC 9904’s value restrictions . However, the trailing “Note:” lines then assert that *different* columns “were already set to MUST NOT” and use column names that do not exist (or do not belong to that registry): the GOST R 34.10‑2001 note mentions “Implement for DNSSEC Delegation”, which is not a column in the DNS Security Algorithm Numbers registry, and the GOST R 34.11‑94 note mentions “Use for DNSSEC Signing”, which is not a column in the Digest Algorithms registry. This is an internal inconsistency between the column names and registries defined normatively in RFC 9904 and the descriptive note text in RFC 9906. While these notes are retrospective and do not themselves change the required column values (the normative registry state is unambiguously given by the four explicit “MUST NOT” entries), they incorrectly describe which registry columns previously had MUST NOT and reference column headings that are not actually present in the relevant registries. That can mislead readers or future RFC authors about the historical status of these fields and indicates a deontic/structural error in how the registry semantics are described.
+    - KeyTextSnippets:
+      - RFC 9904, column definitions:  
+        - “The intended usage of the four columns in the "DNS Security Algorithm Numbers" registry is as follows: … Use for DNSSEC Signing … Use for DNSSEC Validation … Implement for DNSSEC Signing … Implement for DNSSEC Validation.”   
+        - “The intended usage of the four columns in the "Digest Algorithms" registry is as follows: … Use for DNSSEC Delegation … Use for DNSSEC Validation … Implement for DNSSEC Delegation … Implement for DNSSEC Validation.” 
+      - RFC 9906, ECC‑GOST / DNSKEY entry:  
+        - “Use for DNSSEC Signing:  MUST NOT  
+           Use for DNSSEC Validation:  MUST NOT  
+           Implement for DNSSEC Signing:  MUST NOT  
+           Implement for DNSSEC Validation:  MUST NOT”  
+        - “Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC
+           Delegation" columns were already set to MUST NOT.” 
+      - RFC 9906, GOST R 34.11‑94 / Digest entry:  
+        - “Use for DNSSEC Delegation:  MUST NOT  
+           Use for DNSSEC Validation:  MUST NOT  
+           Implement for DNSSEC Delegation:  MUST NOT  
+           Implement for DNSSEC Validation:  MUST NOT”  
+        - “Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC
+           Delegation" columns were already set to MUST NOT.” 
+    - Impact:  
+      The incorrect column names in the notes can confuse implementers or future document authors about which registry columns were historically set to MUST NOT and even about which columns exist in which registry. The actual required post‑9906 registry contents are still clear from the explicit four “MUST NOT” lines for each entry, so interoperability and current IANA actions are unlikely to be harmed, but the mismatch is a real normative‑structure bug in how registry requirement levels are documented.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Section 5 of RFC 9906 gives concrete IANA updates for two registry entries, including per-column “Use for …” and “Implement for …” values, relying on the column sets defined in RFC 9904 for the “DNS Security Algorithm Numbers” and “Digest Algorithms” registries.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Misnamed/mismatched IANA registry column names in RFC 9906 Section 5 notes
+    - LocationHint: RFC 9906, Section 5, note lines after each IANA entry (“Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns…”)
+    - Evidence:
+      - Snippet1: RFC 9904 defines for the "DNS Security Algorithm Numbers" registry the columns: “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, and “Implement for DNSSEC Validation”. For the "Digest Algorithms" registry, it defines: “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, and “Implement for DNSSEC Validation”. 
+      - Snippet2: In RFC 9906 Section 5, after the DNS Security Algorithm Numbers entry, the note reads: `Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.` After the Digest Algorithms entry, the note reads: `Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.`
+    - TechnicalExplanation: |
+        RFC 9904 establishes the schema of the two IANA registries: the DNS Security Algorithm Numbers registry has “Use/Implement for DNSSEC Signing/Validation” columns, while the Digest Algorithms registry has “Use/Implement for DNSSEC Delegation/Validation” columns. There is no column named “Implement for DNSSEC Delegation” in the DNS Security Algorithm Numbers registry and no column named “Use for DNSSEC Signing” in the Digest Algorithms registry. In RFC 9906, the first note (for the DNS Security Algorithm Numbers entry) incorrectly refers to an “Implement for DNSSEC Delegation” column that does not exist in that registry, and the second note (for the Digest Algorithms entry) incorrectly refers to a “Use for DNSSEC Signing” column that does not exist in that registry, while also reusing “Implement for DNSSEC Delegation”. This mixes column names from the two different registry schemas and makes the IANA considerations structurally inconsistent with the registry definitions in RFC 9904. Although the tables immediately above the notes correctly list the four valid columns and set them to MUST NOT, the notes themselves describe changes to non-existent columns, which is a structural/specification error against the canonical registry layout.
+    - PatchSuggestion: |
+        Clarify the notes so that each registry entry only references columns that actually exist in that registry per RFC 9904.
+
+        For the DNS Security Algorithm Numbers entry in RFC 9906 Section 5, change the note to refer only to valid DNSKEY registry columns, for example:
+        - Replace:
+          `Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.`
+          with something like:
+          `Note: The "Use for DNSSEC Signing" and "<appropriate Implement for DNSSEC … column>" columns were already set to MUST NOT.`
+        where the second column name is corrected to either "Implement for DNSSEC Signing" or "Implement for DNSSEC Validation", whichever matches the historical IANA state.
+
+        For the Digest Algorithms entry, change the note to use the Digest Algorithms column names, for example:
+        - Replace:
+          `Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.`
+          with:
+          `Note: The "Use for DNSSEC Delegation" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.`
+
+        The exact pair of columns called out in each note should be aligned with the actual pre‑RFC‑9906 registry values, but in all cases the column names must be drawn from the appropriate set defined in RFC 9904 for the specific registry.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 5 of RFC 9906 instructs IANA to update the ECC‑GOST entries in the DNSSEC IANA registries defined/extended by RFC 9904, setting all four “Use for …” and “Implement for …” columns for algorithm 12 (ECC‑GOST) and digest 3 (GOST R 34.11‑94) to MUST NOT, and it attempts to note which of those columns were already MUST NOT. These instructions must align with the column names and initial values defined in RFC 9904’s “DNS Security Algorithm Numbers” and “Digest Algorithms” registries.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Misnamed registry columns in RFC 9906 §5 notes
+    - Description: RFC 9904 defines that the “DNS Security Algorithm Numbers” registry has columns “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, and “Implement for DNSSEC Validation”, while the “Digest Algorithms” registry has “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, and “Implement for DNSSEC Validation” . For algorithm 12 (ECC‑GOST), RFC 9904’s Table 2 sets “Use for DNSSEC Signing” and “Implement for DNSSEC Signing” to MUST NOT, and both validation columns to MAY . RFC 9906 correctly instructs IANA to set all four columns for algorithm 12 to MUST NOT, but its note then says: “The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.” The “Implement for DNSSEC Delegation” column does not exist in the DNS Security Algorithm Numbers registry at all (it exists only in the Digest Algorithms registry), and the column that was actually already MUST NOT is “Implement for DNSSEC Signing” per RFC 9904 . Similarly, for digest value 3 (GOST R 34.11‑94), RFC 9904’s Table 3 sets “Use for DNSSEC Delegation” and “Implement for DNSSEC Delegation” to MUST NOT, with both validation columns at MAY , and RFC 9906 correctly updates all four to MUST NOT, but its note says: “The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.” “Use for DNSSEC Signing” is not a column in the Digest Algorithms registry and clearly should have been “Use for DNSSEC Delegation”. In both cases, the normative per‑column values given in RFC 9906 align with RFC 9904’s structure (the actual registry updates are clear), but the explanatory “Note” text mixes column names from the two different registries and misidentifies which columns were already set to MUST NOT, creating a cross‑registry inconsistency that can mislead readers comparing the RFC text to the registries.
+    - EntitiesInvolved: [
+        "RFC 9906 Section 5 (IANA Considerations)",
+        "RFC 9904 Section 2.1 (column descriptions)",
+        "RFC 9904 Table 2 – DNS Security Algorithm Numbers, row 12 ECC-GOST",
+        "RFC 9904 Table 3 – Digest Algorithms, row 3 GOST R 34.11-94",
+        "IANA DNS Security Algorithm Numbers registry",
+        "IANA Digest Algorithms registry"
+      ]
+    - CrossRefsUsed: [
+        "RFC 9904 Section 2.1 and Table 1 (column sets for the two registries) ",
+        "RFC 9904 Table 2, ECC-GOST (12) entry ",
+        "RFC 9904 Table 3, GOST R 34.11-94 (3) entry ",
+        "RFC 5933 IANA considerations confirming codepoints 12 and 3 "
+      ]
+    - Confidence: High
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: Misnamed IANA registry columns in RFC 9906 Section 5 notes
+    - Evidence:
+      - ExcerptSnippets:
+        - For the DNS Security Algorithm Numbers (algorithm 12) entry in RFC 9906 Section 5:
+
+          > Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC  
+          > Delegation" columns were already set to MUST NOT.
+
+        - For the Digest Algorithms (value 3) entry in RFC 9906 Section 5:
+
+          > Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC  
+          > Delegation" columns were already set to MUST NOT.
+
+        - The same section shows the main fields for the DNS Security Algorithm Numbers entry as:
+
+          > Use for DNSSEC Signing:  MUST NOT  
+          > Use for DNSSEC Validation:  MUST NOT  
+          > Implement for DNSSEC Signing:  MUST NOT  
+          > Implement for DNSSEC Validation:  MUST NOT
+
+        - And for the Digest Algorithms entry:
+
+          > Use for DNSSEC Delegation:  MUST NOT  
+          > Use for DNSSEC Validation:  MUST NOT  
+          > Implement for DNSSEC Delegation:  MUST NOT  
+          > Implement for DNSSEC Validation:  MUST NOT
+      - ContextSnippets:
+        - RFC 9904 Section 2.1 defining the added columns for the DNS Security Algorithm Numbers registry:
+
+          > The intended usage of the four columns in the "DNS Security Algorithm  
+          > Numbers" registry is as follows:  
+          >  
+          > Use for DNSSEC Signing …  
+          > Use for DNSSEC Validation …  
+          > Implement for DNSSEC Signing …  
+          > Implement for DNSSEC Validation …
+
+        - RFC 9904 Section 2.1 defining the added columns for the Digest Algorithms registry:
+
+          > The intended usage of the four columns in the "Digest Algorithms"  
+          > registry is as follows:  
+          >  
+          > Use for DNSSEC Delegation …  
+          > Use for DNSSEC Validation …  
+          > Implement for DNSSEC Delegation …  
+          > Implement for DNSSEC Validation …
+
+    - Reasoning:
+      - RFC 9904 clearly distinguishes two sets of column names:
+        - For the DNS Security Algorithm Numbers (DNSKEY-IANA) registry: “…Signing/Validation” columns, both “Use for …” and “Implement for …”.
+        - For the Digest Algorithms (DS-IANA) registry: “…Delegation/Validation” columns, both “Use for …” and “Implement for …”.
+      - In the **DNS Security Algorithm Numbers** entry in RFC 9906, the table itself uses the correct four DNSKEY columns (“Use for DNSSEC Signing/Validation”, “Implement for DNSSEC Signing/Validation”). However, the *note* underneath says:
+
+        > "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns …
+
+        The column name “Implement for DNSSEC Delegation” does not exist in the DNS Security Algorithm Numbers registry. It is a Digest Algorithms registry column name. For DNS Security Algorithm Numbers, the corresponding “Implement for …” column must be “Implement for DNSSEC Signing”.
+      - In the **Digest Algorithms** entry in RFC 9906, the table itself again uses the correct four DS columns (“Use for DNSSEC Delegation/Validation”, “Implement for DNSSEC Delegation/Validation”). But the *note* says:
+
+        > "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns …
+
+        Here, “Implement for DNSSEC Delegation” is correct for the Digest Algorithms registry, but “Use for DNSSEC Signing” is wrong; the actual DS registry column is “Use for DNSSEC Delegation”.
+      - In both cases, the notes mix a column name from the *other* registry into the explanation. That creates a real naming inconsistency with the registry column definitions in RFC 9904, and with how those columns exist in IANA’s registries.
+      - Practically, the main per-entry tables in RFC 9906 already show the correct column names and values, so IANA and implementers can infer the intended updates. However, these notes:
+        - Refer to non-existent columns in one registry (“Implement for DNSSEC Delegation” in the DNS Security Algorithm Numbers registry).
+        - Refer to the wrong “Use for …” column in the other registry (“Use for DNSSEC Signing” instead of “…Delegation”).
+      - This can confuse readers trying to reconcile the prose with the IANA registries and RFC 9904’s definitions, and could lead to uncertainty over which columns were meant to be noted as “already set to MUST NOT”. This is more than cosmetic; it’s a direct mismatch with the standardized registry column names.
+    - PatchSuggestion:
+      - In RFC 9906 Section 5, for the **DNS Security Algorithm Numbers** (Number 12) entry, change the note line to use the DNSKEY registry’s own columns:
+
+        - Replace:
+
+          > Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.
+
+        - With:
+
+          > Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Signing" columns were already set to MUST NOT.
+
+      - In RFC 9906 Section 5, for the **Digest Algorithms** (Value 3) entry, change the note line to use the Digest Algorithms registry’s columns:
+
+        - Replace:
+
+          > Note: The "Use for DNSSEC Signing" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.
+
+        - With:
+
+          > Note: The "Use for DNSSEC Delegation" and "Implement for DNSSEC Delegation" columns were already set to MUST NOT.
+
+- Notes:
+  - UsedRouterIssues: Confirmed the router’s Candidate Issue about mixed/wrong column names in the Section 5 notes; no additional distinct terminology issues found.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - The analysis is confined to terminology and naming. It does not assess whether the statement “were already set to MUST NOT” is historically accurate for those columns; only that the column names used are inconsistent with RFC 9904 and the IANA registry structure.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+
+Vector Stores Used: vs_6954b39111d48191a6d0c770239d2cbd
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

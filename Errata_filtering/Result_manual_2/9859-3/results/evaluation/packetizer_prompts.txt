@@ -1,0 +1,352 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 3 of RFC 9859 defines how a parent publishes DSYNC RRs under the `_dsync` subtree (via wildcard or child-specific owner names) so that children can discover generalized notification endpoints. The key normative rule is that there MUST NOT be “more than one DSYNC record for each combination of RRtype and Scheme,” which constrains how many endpoints can exist for each notification type/method.
+
+- ScopeModel:
+  - Targets:
+    - Parent operators “participating in the discovery scheme for the purpose of delegation maintenance notifications”.
+    - DSYNC resource records (RR type 66) under the `_dsync` subdomain of the parent zone.
+    - Owner names under `_dsync.<parent>`:
+      - Wildcard-based default endpoints, e.g., `*._dsync.example.`.
+      - Non‑wildcard, zone‑wide default, e.g., `_dsync.example.`.
+      - Child-specific names, e.g., `child._dsync.example.` (and, by implication, analogous names for all other children).
+  - Conditions:
+    - If a parent participates in this discovery scheme for delegation maintenance, it MUST publish DSYNC records “under the _dsync subdomain of the parent zone, as described in the following subsections.”
+    - “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.” (scope of “there” is not spelled out).
+    - Parent MAY:
+      - Delegate the `_dsync` domain as a separate zone.
+      - Synthesize records under `_dsync`.
+      - Use a wildcard DSYNC record if child-specificity is not needed.
+    - Section 3.1 and 3.2 describe two publication patterns:
+      - A wildcard “default notification target” (`*._dsync.example.`).
+      - Child-specific owner names replacing the wildcard label, e.g., `child._dsync.example.` for `child.example`.
+  - NotedAmbiguities:
+    - The uniqueness rule “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme” does not state whether it applies:
+      - Per owner name (per DSYNC RRset), or
+      - Across the entire `_dsync` subdomain / parent zone.
+    - The preceding sentence references “the _dsync subdomain of the parent zone,” so the word “There” could be read as referring to that whole subtree rather than per-node.
+    - Child-specific publication is described as generally available (“It is also possible to publish child-specific records…”) but the interaction with the uniqueness rule is not explicitly spelled out.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous scope of “at most one DSYNC record per RRtype/Scheme” across the `_dsync` subtree vs per owner name
+    - ScopeProblemType: Ambiguous constraint scope (global vs per-node) on DSYNC RR multiplicity
+    - Evidence:
+      - Section 3: “Parent operators … MUST publish endpoint information using the record type defined in Section 2 under the _dsync subdomain of the parent zone, as described in the following subsections.  
+        There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.”
+      - Section 3.1 (Wildcard): publishes CDS and CSYNC NOTIFY DSYNC records at `*._dsync.example.` as default endpoints for “some or all delegations.”
+      - Section 3.2 (Child-specific): “It is also possible to publish child-specific records where the parent zone's labels are stripped from the child's Fully Qualified Domain Name (FQDN), and the result is used in place of the wildcard label,” with an example `child._dsync.example.  IN DSYNC  CDS NOTIFY 5300 rr-endpoint.example.`
+      - Introduction, Section 1.1: “the parent operator may then announce the notification endpoint in a delegation-specific way by publishing it at a child-specific name. (A catch-all endpoint may be indicated by wildcarding.)” and “The solution specified here is thus for the parent operator to publish the address … in a child-specific way (see Section 3).”
+    - DetailedReasoning:
+      1. Section 3 first mandates that parents participating in the scheme publish DSYNC records “under the _dsync subdomain of the parent zone,” then immediately states, “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.” The pronoun “There” naturally refers back to the just-mentioned `_dsync` subdomain.
+      2. Taken literally, this can be read as a *subtree-global* constraint: within the entire `_dsync.<parent>` namespace, a given (RRtype, Scheme) pair (e.g., CDS/NOTIFY) may appear in at most one DSYNC RR, regardless of owner name.
+      3. Under that global reading, a parent could at most publish one CDS/NOTIFY DSYNC RR and one CSYNC/NOTIFY DSYNC RR in total; using the wildcard method for all children would be allowed, but **multiple child-specific DSYNC records with the same RRtype/Scheme would be forbidden**.
+      4. However, both the design goals and Section 3.2 explicitly describe a *delegation-specific* publication model, where each child can have its own DSYNC endpoint by publishing `child._dsync.example.` (or analogous names for other children). The introduction emphasizes that the lookup process is parameterized by the name of the child, and a catch-all endpoint is “indicated by wildcarding,” clearly implying coexistence of a default (wildcard) and per-child overrides.
+      5. That intended child-specific model inherently requires **many** DSYNC RRs with the same (RRtype, Scheme) under different owner names within the `_dsync` subtree (e.g., `child1._dsync.example.`, `child2._dsync.example.`, … all with CDS/NOTIFY). A subtree-global uniqueness rule would make that impossible beyond a single child.
+      6. The only way to reconcile the child-specific method, the design goals, and the uniqueness requirement is to interpret the latter as a **per-owner-name** constraint: *at a given owner name under `_dsync`, an RRset of type DSYNC MUST NOT contain more than one RDATA whose (RRtype, Scheme) pair is identical*.
+      7. That per-owner interpretation matches DNS practice for similar constraints (e.g., “no more than one CNAME” effectively applies per owner name) and fits the likely purpose: to avoid ambiguity in selecting a single endpoint for a given generalized notification type and contact scheme at a particular discovery name.
+      8. However, the current wording is not explicit about this scope. Because the uniqueness sentence is syntactically attached to “the _dsync subdomain of the parent zone,” an implementer could reasonably (if rigidly) implement a zone‑wide check that rejects or flags configurations where multiple DSYNC RRs with the same (RRtype, Scheme) exist under different owner names in `_dsync.<parent>`.
+      9. Such an implementation would be in direct tension with Section 3.2 and the design goals, effectively preventing the deployment of child-specific endpoints, or forcing operators to violate either the uniqueness MUST or the child-specific model.
+      10. To remove this ambiguity, the specification should clarify the scope of the constraint, e.g., by restating it as: “At any given owner name under the `_dsync` subdomain, there MUST NOT be more than one DSYNC RDATA whose (RRtype, Scheme) values are identical,” or “Within a single DSYNC RRset, each (RRtype, Scheme) combination MUST appear at most once.”
+      11. Because the intended semantics are strongly implied elsewhere but the formal scope is not clearly stated, this is best classified as an underspecification of scope that is significant enough to merit an erratum or update.
+
+- ResidualUncertainties:
+  - The text does not state explicitly whether parents are *allowed* (or encouraged) to mix wildcard and child-specific DSYNC records simultaneously (leveraging standard DNS wildcard semantics), but this is naturally covered by normal DNS behavior and does not appear to cause a concrete scope inconsistency. The only clear scope-sensitive ambiguity is the uniqueness rule discussed above.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following the text literally, including the “MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme” sentence, does not make the mechanism unimplementable or cause protocol failure. The ambiguity about whether that uniqueness applies per owner name or across the entire `_dsync` subtree is real, but misreading it as global only reduces configuration flexibility; it does not break discovery or notifications.
+
+---
+
+2. **Causal Analysis**
+
+**Intended data/flow model**
+
+- DSYNC is an RR type whose RDATA contains:
+  - `RRtype` (e.g., CDS or CSYNC),
+  - `Scheme` (e.g., NOTIFY=1),
+  - `Port`,
+  - `Target` host name.
+- Parents publish DSYNC records “under the `_dsync` subdomain of the parent zone” (e.g., `*._dsync.example.`, `child._dsync.example.`).  
+- Senders discover endpoints by querying DSYNC at computed names and, on a positive answer, “return it” (Section 4.1 step 2).
+
+For the parent:
+
+- Section 3:  
+  > “Parent operators … MUST publish endpoint information … under the _dsync subdomain …  
+  > There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.”
+
+For the sender:
+
+- Section 4.1, step 2:  
+  > “Perform a lookup of type DSYNC for the lookup name… If this results in a positive DSYNC answer, return it.”
+
+This strongly implies that at a given owner name, implementers expect at most one DSYNC record per `(RRtype, Scheme)` pair, so the consumer never has to choose among multiple equivalent DSYNCs for the same function at that name.
+
+**Two possible readings of the uniqueness rule**
+
+1. **Per-owner-name uniqueness** (most natural in DNS terms):
+
+   - At any given owner name (e.g., `child._dsync.example.`), you must not have more than one DSYNC whose RDATA has the same `(RRtype, Scheme)`.
+   - This matches typical DNS practice when constraining multiplicity of “flavors” inside a single RR type (e.g., “one record of this sub-kind per owner”).
+   - Under this reading:
+     - You can have `child1._dsync.example. IN DSYNC CDS NOTIFY ...` and `child2._dsync.example. IN DSYNC CDS NOTIFY ...` with no conflict.
+     - You can also have wildcard records and child-specific records, as long as at each owner name you only have one DSYNC for a given `(RRtype, Scheme)`.
+
+   Causally, everything composes cleanly:
+   - The discovery algorithm just “returns” the DSYNC RRset found at the queried name.
+   - Published examples (wildcards, child-specific owner names) are valid and usable.
+
+2. **Global uniqueness under `_dsync`**:
+
+   - Interpreted very literally, one could read: “within the whole `_dsync` subtree of the parent zone, there may be at most one DSYNC with `(RRtype=CDS, Scheme=1)`, one with `(RRtype=CSYNC, Scheme=1)`, etc.”
+   - Consequences if a parent actually enforces this:
+     - You could still publish a wildcard DSYNC record as in 3.1; that satisfies global uniqueness.
+     - You could still publish a single child-specific DSYNC record as in 3.2, as long as you don’t publish any other CDS/NOTIFY DSYNC under `_dsync`.
+     - What you **cannot** do is have different DSYNC endpoints for multiple children (e.g., one registrar per child), because that would require multiple CDS/NOTIFY DSYNC records under different owner names.
+
+   What actually happens under this restrictive interpretation?
+
+   - The parent’s zone **still has valid DSYNC records**, just fewer.
+   - The discovery algorithm in 4.1 still works: senders query a name, get either a DSYNC answer or a negative response, and act accordingly.
+   - Generalized NOTIFY still functions: all children that use DSYNC send to the single shared endpoint instead of per-child endpoints.
+   - No wire-level or state-machine contradiction occurs; the protocol doesn’t require that each child *must* be able to point to a distinct endpoint.
+
+   The main effect is loss of flexibility: some deployment models envisaged in the introduction (“delegation-specific way”, different registrars, etc.) cannot be represented. That’s a *design restriction*, not a mechanical failure.
+
+**Internal consistency**
+
+- Section 1.1 and 3.2 clearly *intend* that many different child-specific DSYNC owner names can coexist:
+  - “The parent operator may then announce the notification endpoint in a delegation-specific way by publishing it at a child-specific name.”  
+  - “It is also possible to publish child-specific records…” (example `child._dsync.example.`).
+- A DNS expert reading both will almost inevitably conclude the uniqueness is scoped per owner name, because a global uniqueness rule is in tension with “delegation-specific” plural use, but a per-owner rule is not.
+- Even if someone initially misreads it as global, they will notice this tension and likely resolve it in favor of the per-owner interpretation; otherwise they simply deploy in a more constrained way.
+
+Net effect: the ambiguity doesn’t make any of the specified algorithms unexecutable. At worst, an overly strict interpretation leads some operators to *underuse* the child-specific mechanism, not to protocol breakage.
+
+---
+
+3. **Problem Classification**
+
+- The line “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.” is mildly **ambiguous in scope** (global vs per-owner-name).
+- However, either interpretation yields a coherent and mechanically implementable system.
+- Therefore, this is **not** a *Causal Inconsistency* and does **not** rise to a strong *Causal Underspecification* that blocks correct implementation; it is a minor clarity issue.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the WG wants to remove any doubt, a minimal, local clarification like the following would align the text with the evident intent and the examples:
+
+> “At any given owner name under the `_dsync` subtree, there MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.”
+
+No changes to the algorithms in Sections 3–4 are required.
+
+---
+
+5. **Non-Issues**
+
+- The discovery procedure (Section 4.1) and notification behavior (Section 4.2–4.3) do not depend on whether the uniqueness is global or per-owner; they just consume whatever DSYNC records exist at the queried name.
+- Receiving an RRset that violates the uniqueness rule is clearly out of spec; implementers are free to treat that as configuration error. The spec doesn’t need to define behavior for such misconfigurations to remain implementable.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 3 normatively specifies how parent operators publish DSYNC records under the `_dsync` subtree, including a uniqueness constraint on DSYNC records and the wildcard vs. child‑specific publication patterns used for endpoint discovery.
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Underspecification
+    - Title: Ambiguous scope of the “MUST NOT be more than one DSYNC record per RRtype/Scheme” requirement
+    - Description:  
+      Section 3 states: “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.” but does not say *at what granularity* this uniqueness constraint is to be enforced (per owner name, per zone, or per `_dsync` subtree). If read as a **global** constraint across the parent’s entire `_dsync` namespace, it forbids configurations where a parent publishes a wildcard “catch‑all” DSYNC endpoint *and* child-specific DSYNC endpoints for the same `(RRtype, Scheme)` pair (e.g., CDS/NOTIFY). That global reading clashes with earlier and later text that clearly contemplates a default plus child-specific pattern. The design goals say that “the parent operator may then announce the notification endpoint in a delegation-specific way by publishing it at a child-specific name. (A catch-all endpoint may be indicated by wildcarding.)”  and Section 3.1 defines a wildcard “default notification target” while Section 3.2 independently shows child-specific records like `child._dsync.example. IN DSYNC CDS NOTIFY 5300 rr-endpoint.example.` . The discovery algorithm in Section 4.1 explicitly falls back from more specific `_dsync` names to `_dsync.example` to “enable zone structures without wildcards” , further reinforcing the intended pattern of per-child records with possible defaults. All of this fits naturally if the uniqueness rule is interpreted **per owner name** (i.e., “at any given owner name, there MUST NOT be more than one DSYNC RR with a given `(RRtype, Scheme)` in its RDATA”), but the current wording does not say that and can reasonably be misread as global.
+    - KeyTextSnippets:
+      - “Parent operators participating in the discovery scheme for the purpose of delegation maintenance notifications MUST publish endpoint information using the record type defined in Section 2 under the _dsync subdomain of the parent zone, as described in the following subsections.” 
+      - “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.” 
+      - “The parent operator may then announce the notification endpoint in a delegation-specific way by publishing it at a child-specific name. (A catch-all endpoint may be indicated by wildcarding.)” 
+      - “*._dsync.example.  IN DSYNC  CDS   NOTIFY port target” and “child._dsync.example.  IN DSYNC  CDS NOTIFY 5300 rr-endpoint.example.” 
+      - Endpoint discovery fallback: “(This is to enable zone structures without wildcards.)” 
+    - Impact:  
+      Implementers who interpret the uniqueness MUST as global may conclude they are prohibited from deploying both a wildcard “default” DSYNC record and child-specific DSYNC records for the same `(RRtype, Scheme)` pair, despite the document’s examples and discovery logic assuming that pattern. This can lead to unnecessarily constrained or divergent deployments and confusion about what configurations are compliant. A minimal erratum clarifying the scope (e.g., explicitly stating “at any given owner name”) would remove this ambiguity and align the normative requirement with the intended publication model.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - Severity: Medium
+    - ShortLabel: Ambiguous scope of “one DSYNC record per RRtype/Scheme” constraint
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 3 (Publication of Notification Targets):  
+          “Parent operators … MUST publish endpoint information using the record type defined in Section 2 under the _dsync subdomain of the parent zone, as described in the following subsections.  
+          **There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.**”
+        - Section 3.1 (Wildcard Method):  
+          “If … a default notification target may be specified as follows:  
+          `*._dsync.example.  IN DSYNC  CDS   NOTIFY port target`  
+          `*._dsync.example.  IN DSYNC  CSYNC NOTIFY port target`”
+        - Section 3.2 (Child-specific Method):  
+          “It is also possible to publish **child-specific records** where the parent zone's labels are stripped from the child's Fully Qualified Domain Name (FQDN), and the result is used in place of the wildcard label. …  
+          `child._dsync.example.  IN DSYNC  CDS NOTIFY 5300 rr-endpoint.example.`”
+        - Section 4.1 (Endpoint Discovery), step 1:  
+          “Construct the lookup name by inserting the _dsync label after the first label of the delegation owner name.”  
+          (This implies that different children such as `child1.example` and `child2.example` will have distinct owner names `child1._dsync.example.` and `child2._dsync.example.` that can each hold DSYNC records.)
+      - ContextSnippets:
+        - Section 2.1 (Wire Format, RRtype field semantics):  
+          “RRtype:  The type of generalized NOTIFY that this DSYNC RR defines the desired target address for … For now, only CDS and CSYNC are supported values…”
+        - Section 2.3 (Semantics):  
+          “For now, the only scheme defined is 1 (mnemonic: NOTIFY). … Schemes are independent of the RRtype. They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).”
+        - Section 6.2 (DSYNC Scheme Registration, Table 1):  
+          Shows multiple rows for the same Scheme (1/NOTIFY) with different RRtypes (CDS vs CSYNC), reinforcing the idea that (RRtype, Scheme) is a *pair* that can occur many times in the system, not globally once.
+    - Reasoning:
+      - The normative sentence “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.” is unclear about what universe it quantifies over:
+        - Interpretation A (likely intent):  
+          *At any given owner name*, you must not have two DSYNC RRs with the same (RRtype, Scheme) pair. This is analogous to a uniqueness constraint on RDATA values within a single RRset. Under this reading:
+          - `child1._dsync.example.` and `child2._dsync.example.` can each have a `DSYNC CDS NOTIFY …` record; they are different owner names, so the constraint is not violated.
+        - Interpretation B (literal but broader reading):  
+          Across the entire `_dsync` subtree (or even across the whole zone), there must be only a single DSYNC record for each (RRtype, Scheme) pair. Under this reading:
+          - Having both `child1._dsync.example. IN DSYNC CDS NOTIFY …` and `child2._dsync.example. IN DSYNC CDS NOTIFY …` would violate the MUST, because they share the same (RRtype=CDS, Scheme=NOTIFY) combination.
+      - The rest of Section 3 clearly describes and normatively endorses **child‑specific DSYNC owner names** (Section 3.2) precisely so that different children can point to different endpoints:
+        - “It is also possible to publish child-specific records … used in place of the wildcard label.”  
+          The example with `child._dsync.example.` only makes sense if many such child-specific owners are allowed, typically all using `(RRtype=CDS, Scheme=NOTIFY)` and/or `(RRtype=CSYNC, Scheme=NOTIFY)`.
+      - The discovery algorithm in Section 4.1 is defined in terms of *per‑delegation* lookup names derived from the specific child’s name. This only makes sense if multiple DSYNC RRsets with identical (RRtype, Scheme) pairs can exist under different owner names and be independently discovered for different children.
+      - However, nothing in the wording of the MUST explicitly says “per owner name” or “at a given owner name”. A careful but conservative implementer might:
+        - Read the phrase “for each combination of RRtype and Scheme” as applying globally within the `_dsync` subtree or even the parent zone.
+        - Conclude that multiple child-specific `DSYNC CDS NOTIFY` records are not permitted.
+        - Consequently, decide that only one global default endpoint (via wildcard or `_dsync.example.`) is allowed, effectively negating the child-specific method described in Section 3.2.
+      - This is not merely stylistic; it is a normative constraint whose scope is unclear and whose **broad reading contradicts** the documented child-specific publication model. The ambiguity is enough that different interoperating implementations could make inconsistent configuration/validation choices (e.g., some tools rejecting configurations with many child-specific DSYNC RRs having the same (RRtype, Scheme) tuple, while others allow them).
+      - Because the intended behavior can be inferred from the examples and discovery algorithm, a diligent reader can likely guess that Interpretation A (per owner name) is intended. But the text does not say that explicitly, and the single ambiguous sentence carries a normative “MUST NOT”, which makes this an underspecification serious enough to merit clarification via erratum.
+    - PatchSuggestion:
+      - Clarify the scope of the uniqueness constraint to be per owner name. For example, in Section 3, replace:
+        - “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.”
+        - with something like:
+        - “At any given owner name under the _dsync subtree, there MUST NOT be more than one DSYNC record for any given combination of RRtype and Scheme.”
+      - Optionally, a further clarifying sentence could be added:
+        - “Different owner names (e.g., different child-specific names) may each have their own DSYNC records using the same RRtype and Scheme values.”
+
+- Notes:
+  - UsedRouterIssues: Confirmed the router’s Candidate Issue about the ambiguous scope of “only one DSYNC record per RRtype/Scheme”; no additional router-suggested issues were found or needed.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - The analysis is based solely on the provided text of RFC 9859 and referenced excerpts from other RFCs. I did not consult external WG discussions or draft history; the assumed intent (uniqueness per owner name) is inferred from the internal examples and algorithms, not from external sources.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+
+Vector Stores Used: vs_6954b56ccec08191857d5b98195079cb
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

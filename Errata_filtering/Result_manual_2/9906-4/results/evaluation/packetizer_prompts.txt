@@ -1,0 +1,525 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: >
+    The excerpt deprecates the ECC-GOST (GOST R 34.10‑2001 / 34.11‑94) algorithms in DNSSEC,
+    assigns normative behavior to validating resolvers and to entities that create DNSKEY/RRSIG/DS records,
+    and gives non-normative operational guidance to zone operators and DNS registries about avoiding these
+    algorithms so that validators (resolvers) can successfully validate zones.
+- OverallAssessment: NoBug
+- FindingsOnRoutedIssues: []
+- AdditionalActorIssues: []
+- IfNoActorIssues:
+  - Comment: >
+      No actor/direction/role problems detected in this excerpt. The roles (zone operators, DNS registries,
+      validating resolvers, IANA/registries) and their responsibilities are coherent:
+
+      * Creation-side vs validation-side is consistently separated: “MUST NOT be used when creating DS records”
+        and “MUST NOT be used when creating DNSKEY and RRSIG records” clearly target the signing/authoritative
+        side, while “Validating resolvers MUST treat … DS records as insecure” and “MUST treat … RRSIG records
+        … as unsupported” clearly target validators.
+
+      * Section 4’s operational guidance assigns the right high-level responsibilities: zone operators are told
+        (non-normatively, lower-case “should”) to move away from ECC‑GOST-based algorithms, and DNS registries
+        are told to prohibit their *clients* from uploading/publishing ECC‑GOST-based DS records. This matches
+        real-world flows where registrants/registrars submit DS data to registries, which then publish it in
+        the parent zone.
+
+      * The pronouns in “to ensure that they are using algorithms that are supported by DNSSEC validators and
+        thus can be DNSSEC validated” are slightly informal but do not introduce a role confusion: whether “they”
+        is read as “clients” or “the published DS records”, the operational outcome (registries constraining
+        client submissions to algorithms validators support) is the same.
+
+      * The IANA “Use/Implement … MUST NOT” updates are clearly scoped to implementations and validators, and
+        are consistent with the earlier normative text; there is no mismatch where, for example, validators are
+        asked to do something that only authoritative servers or registries could do, or vice versa.
+
+      Overall, the excerpt maintains a clear and internally consistent actor model and message/operation
+      direction, with only minor stylistic ambiguities that do not rise to the level of an actor/direction bug.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 4 of RFC 9906 gives high‑level operational advice after deprecating ECC‑GOST: it claims the document “removes support for ECC‑GOST”, tells zone operators to move away from “ECC‑GOST‑based algorithms”, and tells DNS registries to prohibit uploading/publishing “ECC‑GOST‑based DS records”. Earlier sections, however, normatively deprecate two distinct GOST algorithms (the ECC‑GOST signing algorithm and the GOST R 34.11‑94 digest), and Section 5 updates both IANA registries.
+
+- ScopeModel:
+  - Targets:
+    - DNSKEY and RRSIG records using GOST R 34.10‑2001 (algorithm number 12, mnemonic “ECC‑GOST”).
+    - DS records using GOST R 34.11‑94 (digest type 3).
+    - Zone operators that currently use ECC‑GOST and/or GOST R 34.11‑94.
+    - DNS registries that accept or publish DS records from clients.
+    - The IANA “DNS Security Algorithm Numbers” and “Digest Algorithms” registries and their “Use for …” / “Implement for …” columns.
+  - Conditions:
+    - After this document, GOST R 34.10‑2001 MUST NOT be used to create DNSKEY or RRSIGs, and validators MUST treat such RRSIGs as unsupported; affected RRsets are treated as insecure if no other acceptable RRSIG exists (Section 2).
+    - GOST R 34.11‑94 MUST NOT be used to create DS records, and validators MUST treat DS records using it as insecure; delegations are treated as insecure if no DS with an accepted algorithm exists (Section 2).
+    - IANA entries for algorithm 12 and digest 3 are updated so that all “Use for …” and “Implement for …” columns are set to MUST NOT (Section 5, relying on the column semantics from RFC 9904).
+    - GOST 2012 algorithms (ECC‑GOST12, digest 2012) remain supported; their “associated requirement levels are not changed by this document” (Introduction).
+    - Operationally, “DNS registries should prohibit their clients from uploading and publishing ECC‑GOST‑based DS records” (Section 4).
+  - NotedAmbiguities:
+    - “This document removes support for ECC‑GOST” does not mention the GOST R 34.11‑94 digest at all, even though Section 2 and the IANA updates clearly deprecate it too.
+    - The phrase “ECC‑GOST‑based algorithms” is undefined: it could mean only the ECC‑GOST signing algorithm, both ECC‑GOST and the 94‑digest, or even the newer ECC‑GOST12 suite.
+    - “ECC‑GOST‑based DS records” is likewise undefined: it could refer to DS records whose algorithm field is 12, DS records whose digest type is 3, or DS records associated with any “ECC‑GOST‑family” signing algorithm (including 23/ECC‑GOST12).
+    - In Section 5’s notes, the columns named in the sentence “The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT” do not match the actual columns defined for the respective registries in RFC 9904.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous scope of “ECC‑GOST‑based algorithms / DS records” in operational guidance
+    - ScopeProblemType: Ambiguous mapping between informal “ECC‑GOST‑based” terminology and the specific deprecated registry entries (algorithm 12 vs digest 3, and vs GOST 2012 algorithms).
+    - Evidence:
+      - Section 2 deprecates both: “The GOST R 34.11‑94 algorithm … MUST NOT be used when creating Delegation Signer (DS) records. … The GOST R 34.10‑2001 algorithm (mnemonic ‘ECC‑GOST’) MUST NOT be used when creating DNS Public Key (DNSKEY) and Resource Record Signature (RRSIG) records.”
+      - Section 1 distinguishes old vs new GOST: “These two algorithms were deprecated … and were superseded by GOST 34.10‑2012 and GOST 34.11‑2012, respectively. … [Their] associated requirement levels are not changed by this document.”
+      - Section 4: “This document removes support for ECC‑GOST. Zone operators currently making use of ECC‑GOST‑based algorithms should switch to algorithms that remain supported. DNS registries should prohibit their clients from uploading and publishing ECC‑GOST‑based DS records…”.
+      - RFC 9904 defines registry columns separately for “DNS Security Algorithm Numbers” and “Digest Algorithms”, and the IANA section of RFC 9906 sets all ECC‑GOST (12) and GOST R 34.11‑94 (3) “Use for …” / “Implement for …” values to MUST NOT.
+    - DetailedReasoning:
+      - The technical core of RFC 9906 is clear: it deprecates both (a) the ECC‑GOST signing algorithm (DNSKEY/RRSIG algorithm 12) and (b) the GOST R 34.11‑94 digest (DS digest type 3). This is spelled out normatively in Section 2 and reflected in the registry updates.
+      - However, Section 4’s operational advice collapses this into the short phrase “removes support for ECC‑GOST” and then introduces the undefined notions “ECC‑GOST‑based algorithms” and “ECC‑GOST‑based DS records”. Only the signing algorithm has the mnemonic “ECC‑GOST”; the digest algorithm is named “GOST R 34.11‑94” and does not carry “ECC‑GOST” in its IANA name.
+      - Taken literally, “This document removes support for ECC‑GOST” might reasonably be read as referring *only* to the ECC‑GOST signing algorithm (number 12), with no mention of the digest. This is narrower in scope than Section 2, which explicitly forbids using GOST R 34.11‑94 for DS creation, and could mislead readers who look to Section 4 as an operational summary.
+      - The phrase “ECC‑GOST‑based algorithms” is also underdefined in scope: it could mean just algorithm 12 itself, the pair {12, digest 3} as used together in RFC 5933, or even more broadly “algorithms derived from or in the ECC‑GOST family”. In the last interpretation, it might be read as including ECC‑GOST12 (algorithm 23) from RFC 9558, which would contradict the Introduction’s explicit statement that the requirement levels for the newer GOST 2012 algorithms are unchanged.
+      - Similarly, “ECC‑GOST‑based DS records” is ambiguous. In DNSSEC, a DS RR has an *algorithm* field (e.g., 12 for ECC‑GOST, 23 for ECC‑GOST12) and a *digest type* field (e.g., 3 for GOST R 34.11‑94, 5 for GOST R 34.11‑2012). The text does not say whether “ECC‑GOST‑based” is determined by the DS’s algorithm field, its digest type, a particular combination (12 + 3), or any association with an ECC‑GOST‑family key.
+      - Section 2’s rule “The GOST R 34.11‑94 algorithm … MUST NOT be used when creating DS records” actually applies to *all* DS records using digest type 3, regardless of which key algorithm the DS’s algorithm field references. In contrast, a naive reading of “ECC‑GOST‑based DS records” could easily be taken to mean only DS records referencing algorithm 12 (ECC‑GOST keys), not all digest‑3 DS RRs.
+      - Operationally, a registry operator who relies primarily on Section 4 might implement a filter keyed only on algorithm number 12 (or on DS records containing both 12 and 3), leaving other DS records with digest type 3 untouched, which would be inconsistent with the broader normative deprecation in Section 2 and the IANA “MUST NOT” entries.
+      - Conversely, another implementer could interpret “ECC‑GOST‑based” as covering *any* algorithm in the ECC‑GOST family, including ECC‑GOST12, and thus prohibit DS records for the newer GOST 2012 algorithms, which is explicitly *not* the intent per the Introduction and the unchanged registry requirement levels in RFC 9558.
+      - While the normative language in Sections 2 and 5 is precise enough that a careful reader can recover the intended set of affected algorithms, Section 4 is exactly where non‑cryptographer operational staff (zone operators, registry operators) are likely to look for “what should I turn off?”. The undefined “ECC‑GOST‑based” terminology leaves too much room for both under‑ and over‑scoping the deprecation in these environments.
+      - This is therefore a scope‑clarity bug in the operational guidance: the document should have stated explicitly, in Section 4, that the deprecated items are the signing algorithm GOST R 34.10‑2001 (algorithm 12, mnemonic “ECC‑GOST”) and the DS digest algorithm GOST R 34.11‑94 (digest type 3), and clarified that the newer GOST 2012 algorithms (algorithm 23 and digest 5) remain unaffected. Without that explicit mapping, “ECC‑GOST‑based algorithms / DS records” is underspecified and potentially misleading.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: Misnamed registry columns in IANA notes (algorithm vs digest registries)
+    - ScopeProblemType: Context‑domain mismatch between the named registry columns and the actual registries’ column sets.
+    - Evidence:
+      - RFC 9904, Section 2.1, defines for the “DNS Security Algorithm Numbers” registry the columns: “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, “Implement for DNSSEC Validation”.
+      - RFC 9904, Section 2.1, defines for the “Digest Algorithms” registry the columns: “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, “Implement for DNSSEC Validation”.
+      - RFC 9906, Section 5, after specifying the updated entry for GOST R 34.10‑2001 (12) in the “DNS Security Algorithm Numbers” registry, adds: “Note: The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+      - The same note text appears again after the updated entry for GOST R 34.11‑94 (3) in the “Digest Algorithms” registry: “Note: The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+    - DetailedReasoning:
+      - RFC 9904 clearly separates the two registries and the semantics of their columns. For algorithm numbers, the “Use for …” / “Implement for …” columns are scoped to *Signing* vs *Validation*. For digest algorithms, they are scoped to *Delegation* vs *Validation*.
+      - In RFC 9906’s first registry block (for algorithm number 12), the note says that “Use for DNSSEC Signing” and “Implement for DNSSEC Delegation” were already MUST NOT. But “Implement for DNSSEC Delegation” is *not* a column in the “DNS Security Algorithm Numbers” registry; that column name belongs to the digest algorithms registry. The corresponding column that exists here is “Implement for DNSSEC Signing”.
+      - In the second registry block (for digest algorithm 3), the same note is repeated verbatim: “Use for DNSSEC Signing” and “Implement for DNSSEC Delegation” were already set to MUST NOT. Here, “Implement for DNSSEC Delegation” *is* a valid column, but “Use for DNSSEC Signing” is not; the digest registry has “Use for DNSSEC Delegation” instead.
+      - Thus, in each case, one of the two column names in the note is mismatched with the actual registry being discussed: the note for the algorithm registry mentions a digest‑registry column, and the note for the digest registry mentions an algorithm‑registry column.
+      - This creates a small but real scope inconsistency: the note purports to describe the previous status *in that registry*, but it refers in part to columns that are not even defined for that registry. A reader checking against RFC 9904’s registry definitions will find that the alleged column names don’t line up with the current context.
+      - While the main, explicit per‑entry lines in RFC 9906 correctly set all four legitimate columns in each registry to MUST NOT, the notes about which columns “were already set to MUST NOT” are therefore unreliable, because they mix column names from two different registries.
+      - From a scope‑reasoning perspective, this blurs which aspects of algorithm *use* (signing vs delegation) had already been prohibited and which are newly being tightened by RFC 9906. Someone trying to reconstruct the evolution of requirements from the text of RFC 9906 alone may mis‑map which functions were previously disallowed.
+      - The likely fix is editorial (correct the notes to refer, for algorithm 12, to “Use for DNSSEC Signing” and “Implement for DNSSEC Signing”, and for digest 3, to “Use for DNSSEC Delegation” and “Implement for DNSSEC Delegation”), but as written, the scope of the note text is inconsistent with the registry contexts and could confuse implementers or IANA reviewers.
+
+- ResidualUncertainties:
+  - The intended exact meaning of “ECC‑GOST‑based DS records” is not explicitly defined anywhere; it is likely intended to mean “DS records using digest algorithm GOST R 34.11‑94 (type 3) and/or referencing ECC‑GOST (algorithm 12) DNSKEYs as specified in RFC 5933”, but this has to be inferred rather than read directly.
+  - It is assumed that implementers and registry operators will give precedence to the precise normative language of Sections 2 and 5 over the looser wording in Section 4; nevertheless, in practice, many operational teams may consult only Section 4, which increases the impact of its scope ambiguity.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following RFC 9906 literally does not create any fundamental operational or interoperability breakage. Section 4’s wording about “removes support for ECC‑GOST” and “ECC‑GOST‑based DS records” is somewhat loose, but Section 2 and the IANA updates in Section 5 already give clear, executable rules for both the DNSKEY/RRSIG algorithm and the DS digest. Any misinterpretation of Section 4’s informal text at worst leads to zones being treated as insecure, which is *the explicit, intended fallback*.
+
+---
+
+2. **Causal Analysis**
+
+Walk through what actually happens if implementers follow the document as written:
+
+### 2.1. Validator behavior (hard requirements)
+
+Section 2 gives unambiguous, BCP 14‑style rules:
+
+- For DS:
+  - “The GOST R 34.11‑94 algorithm [RFC5933] MUST NOT be used when creating Delegation Signer (DS) records. Validating resolvers MUST treat GOST R 34.11‑94 DS records as insecure. If no other DS records of accepted cryptographic algorithms are available, the DNS records below the delegation point MUST be treated as insecure.”  
+- For DNSKEY/RRSIG:
+  - “The GOST R 34.10‑2001 algorithm [RFC5933] (mnemonic ‘ECC‑GOST’) MUST NOT be used when creating DNS Public Key (DNSKEY) and Resource Record Signature (RRSIG) records. Validating resolvers MUST treat RRSIG records created from DNSKEY records using these algorithms as unsupported algorithms. If no other RRSIG records of accepted cryptographic algorithms are available, the validating resolver MUST consider the associated resource records as insecure.”
+
+Mechanically, this yields:
+
+- Any DS with digest type 3 (GOST R 34.11‑94) is ignored for establishing a chain of trust; its covered subtree is “insecure” unless other DS of accepted algorithms exist.
+- Any RRSIG with algorithm 12 (ECC‑GOST) is treated as using an unsupported algorithm; covered RRsets are considered insecure unless there’s another valid RRSIG with an accepted algorithm.
+- These rules *alone* ensure that, for compliant validators, ECC‑GOST and its GOST‑94 digest simply stop contributing to DNSSEC validation. They don’t break the protocol; they just downgrade affected data to “unsigned”.
+
+Section 5 then updates both relevant IANA registries so that:
+
+- Algorithm 12 (ECC‑GOST) has:
+  - “Use for DNSSEC Signing: MUST NOT”
+  - “Use for DNSSEC Validation: MUST NOT”
+  - “Implement for DNSSEC Signing: MUST NOT”
+  - “Implement for DNSSEC Validation: MUST NOT”
+- Digest 3 (GOST R 34.11‑94) has:
+  - “Use for DNSSEC Delegation: MUST NOT”
+  - “Use for DNSSEC Validation: MUST NOT”
+  - “Implement for DNSSEC Delegation: MUST NOT”
+  - “Implement for DNSSEC Validation: MUST NOT”
+
+So, even if Section 4 did not exist, implementers already have a complete, coherent algorithm:
+
+- Validators: ignore DS(digest=3) and RRSIG(alg=12).
+- Authors of new implementations: do not implement these algorithms.
+- Signers: do not create new DNSKEY/RRSIG with algorithm 12, and do not create DS using digest type 3.
+
+This is all executable and internally consistent.
+
+### 2.2. What Section 4 adds
+
+Section 4 says:
+
+- “This document removes support for ECC‑GOST.”
+- “Zone operators currently making use of ECC‑GOST-based algorithms should switch to algorithms that remain supported.”
+- “DNS registries should prohibit their clients from uploading and publishing ECC‑GOST-based DS records…”
+
+This is *operational guidance* (no BCP 14 keywords) layered on top of the already‑normative Section 2/5 behavior. Two possible misreadings must be checked for causal effects:
+
+#### a) Narrow reading: only ECC‑GOST (alg 12) is “removed”
+
+Someone might read “removes support for ECC‑GOST” and “ECC‑GOST‑based DS records” as applying only to algorithm 12 and not to digest type 3, because the digest is normally named “GOST R 34.11‑94”, not “ECC‑GOST”.
+
+Causally, what happens if:
+
+- Registries only block DS whose *algorithm* field = 12 (or DS that obviously pair with an ECC‑GOST KSK), but still allow DS with digest type 3 in other combinations?
+
+Answer:
+
+- Validators that implement RFC 9906 are already *required* to treat any DS using digest algorithm 3 as “insecure” and to treat any RRSIG with algorithm 12 as unsupported.
+- So such DS and signatures become operationally irrelevant for compliant validators; they simply behave as if the zone were unsigned (unless other, acceptable algorithms are also present).
+
+This is explicitly what Section 2 prescribes as the fallback. So the worst‑case outcome under this misinterpretation is: zone operators *think* they are using a still‑meaningful GOST DS, but in fact, compliant validators are ignoring it. That is not an inconsistency in the protocol; it is exactly the intended deprecation behavior.
+
+#### b) Over‑broad reading: treat “ECC‑GOST-based DS” as also covering GOST 2012 (ECC‑GOST12)
+
+Conversely, someone could over‑generalize “ECC‑GOST-based algorithms” and “ECC‑GOST-based DS records” to also include:
+
+- Algorithm 23 (“ECC‑GOST12”, GOST 34.10‑2012) and
+- DS digest type 5 (GOST 34.11‑2012), which RFC 9558 explicitly introduces and leaves as OPTIONAL.
+
+However, RFC 9906 explicitly says in its introduction:
+
+> “The use of these two newer algorithms in DNSSEC is documented in [RFC9558], and their associated requirement levels are not changed by this document.”
+
+So a careful reader sees that 2012‑suite GOST support is intentionally untouched.
+
+But *even if* a registry misreads Section 4 and bans DS using algorithm 23 / digest 5:
+
+- That is a local policy choice that disallows an otherwise permitted algorithm suite in that registry.
+- It does not make any DNSSEC state or transition undefined; it merely restricts what algorithms end users can deploy in that registry.
+- Interoperability at the protocol level is unaffected; other registries can still permit GOST 2012, and validators that implement RFC 9558 continue to handle it correctly.
+
+So, again, there is no protocol‑level breakage; only potentially over‑conservative policy.
+
+### 2.3. Interaction with rollover guidance (RFC 9904 / RFC 6781 / RFC 7583)
+
+RFC 9904’s security considerations warn that “retiring an algorithm too soon would result in a zone signed with the retired algorithm being downgraded to the equivalent of an unsigned zone” and that deprecation should ideally be slow. RFC 9906 *is* precisely such a deprecation document — and is allowed to overrule the general “go slow” advice with specific MUST NOTs for ECC‑GOST.
+
+Concretely, after RFC 9906:
+
+- You cannot rely on ECC‑GOST (alg 12) or digest 3 for *any* secure validation path in a compliant validator.
+- Algorithm rollover procedures that assume the old algorithm continues to be valid for some time **do not apply** to ECC‑GOST anymore; that is the whole point.
+- Telling registries to “prohibit” upload of ECC‑GOST‑based DS records is consistent with that: any continued publication of those DS records is operationally pointless for compliant validators.
+
+No state machine deadlock or undefined behavior arises here; it is simply a hard removal of an algorithm from the trust graph, with clear downgrade semantics (“treat as insecure” if nothing better is available).
+
+---
+
+3. **Problem Classification**
+
+The Router’s candidate issue (“Ambiguous operational scope”) is, at most, a **clarity / editorial concern**. From a causal, mechanistic perspective:
+
+- There is **no Causal Inconsistency**: the validator and registry behaviors required or suggested are implementable, and their combined effect (treat ECC‑GOST and GOST‑94 DS as insecure, disallow new use) is coherent and matches the stated goal of deprecation.
+- There is **no Causal Underspecification** that leaves an important behavior undefined. Section 2 and the updated IANA tables fully describe how all roles (signers, validators, implementers) must treat the deprecated algorithms.
+
+Any mis-scoping of Section 4’s informal phrase “ECC‑GOST‑based DS records” only affects how aggressively registries *discourage* already‑dead algorithms; it does not make the protocol behavior incoherent.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the authors wanted to remove the potential for confusion, a local change to Section 4 would suffice, for example:
+
+- Replace “ECC‑GOST-based algorithms” with “the GOST R 34.10‑2001 signing algorithm (DNSSEC algorithm 12) and the GOST R 34.11‑94 digest algorithm (DS digest type 3)”.
+- Replace “ECC‑GOST‑based DS records” with “DS records using digest algorithm 3 (GOST R 34.11‑94) and/or referring to DNSKEY algorithm 12 (GOST R 34.10‑2001)”.
+
+This would align the operational language more tightly with Sections 2 and 5, but it is not required to make the document executable.
+
+---
+
+5. **Non-Issues**
+
+- **Conflict with GOST 2012 (RFC 9558)**: The introduction explicitly preserves the requirement levels for GOST 2012 algorithms, and the rest of the document never touches algorithm 23 or digest 5. Any registry that chooses to block them is simply stricter than the spec permits, not in conflict with it.
+- **Conflict with rollover guidance**: RFC 9906 intentionally causes ECC‑GOST‑only zones to be treated as insecure by compliant validators; this is aligned with the “retire a broken algorithm” pattern, not an accidental break of rollover procedures.
+- **Scope confusion between elliptic-curve signature and digest**: While Section 4’s shorthand “removes support for ECC‑GOST” does not name the digest algorithm, Section 2 and the IANA updates clearly and separately deprecate both. Implementers can and should follow those explicit MUST NOTs; doing so is fully coherent and sufficient.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: RFC 9906 normatively deprecates the old GOST 2001 signing algorithm (ECC‑GOST, algorithm 12) and the GOST R 34.11‑94 digest (DS digest type 3) for DNSSEC use and implementation, and updates the IANA registries accordingly. Section 4 then provides non‑normative operational advice to zone operators and DNS registries about moving away from these algorithms.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: Section 4’s “ECC‑GOST‑based” wording is advisory and does not undermine the clear normative deprecation in Sections 2 and 5
+    - Description:  
+      Normative deprecation of both the GOST R 34.11‑94 digest and the GOST R 34.10‑2001 (ECC‑GOST) signing algorithm is stated unambiguously in Section 2: “The GOST R 34.11‑94 algorithm [RFC5933] MUST NOT be used when creating Delegation Signer (DS) records” and “The GOST R 34.10‑2001 algorithm [RFC5933] (mnemonic ‘ECC‑GOST’) MUST NOT be used when creating DNS Public Key (DNSKEY) and Resource Record Signature (RRSIG) records.” Validating resolvers MUST treat DS/RRSIG using these algorithms as insecure/unsupported and treat the covered data as insecure when no other accepted algorithms are present. Section 5 then updates the IANA “DNS Security Algorithm Numbers” and “Digest Algorithms” registry entries for algorithm 12 and digest type 3 so that *all* four recommendation columns (“Use for …” and “Implement for …”) are set to MUST NOT. RFC 9904’s column semantics make clear that these are explicit recommendations against use and implementation, not vague hints.  
+      By contrast, Section 4 uses only lower‑case “should” and no BCP 14 key words in capitals: “Zone operators currently making use of ECC‑GOST-based algorithms should switch…” and “DNS registries should prohibit their clients from uploading and publishing ECC‑GOST-based DS records…”. Under the document’s own BCP 14 boilerplate, these are non‑normative suggestions rather than protocol requirements. The somewhat loose phrases “removes support for ECC‑GOST” and “ECC‑GOST-based DS records” do not introduce any new normative conditions, and they do not contradict the explicit MUST NOTs on both the signing algorithm and the digest algorithm earlier in the document and in the IANA tables. Operationally, even if a registry operator interpreted “ECC‑GOST-based DS records” as only DS records referring to an ECC‑GOST DNSKEY, Section 2 still independently and normatively forbids use of the GOST R 34.11‑94 digest for *any* DS creation, and validators MUST ignore such DS for security purposes.  
+      Similarly, there is no conflict with the rollover guidance in RFC 9904: those guidelines assume algorithms are still allowed when rolling; RFC 9906 simply changes the status of these algorithms so that no new DS/DNSKEY/RRSIG using them may be created, and existing uses are treated as insecure. The fact that Section 4’s text does not re‑enumerate the digest algorithm by number or BCP‑14 keywords is at most a clarity/editorial issue, not a normative gap or contradiction in the requirements structure.
+    - KeyTextSnippets:
+      - “The GOST R 34.11-94 algorithm [RFC5933] MUST NOT be used when creating Delegation Signer (DS) records. Validating resolvers MUST treat GOST R 34.11-94 DS records as insecure.” (RFC 9906, Section 2)
+      - “The GOST R 34.10-2001 algorithm [RFC5933] (mnemonic ‘ECC-GOST’) MUST NOT be used when creating DNS Public Key (DNSKEY) and Resource Record Signature (RRSIG) records.” (RFC 9906, Section 2)
+      - “Use for DNSSEC Signing: MUST NOT … Use for DNSSEC Validation: MUST NOT … Implement for DNSSEC Signing: MUST NOT … Implement for DNSSEC Validation: MUST NOT” for algorithm 12 and digest value 3. (RFC 9906, Section 5, IANA updates)
+      - “This document removes support for ECC-GOST. Zone operators currently making use of ECC-GOST-based algorithms should switch to algorithms that remain supported. DNS registries should prohibit their clients from uploading and publishing ECC-GOST-based DS records…” (RFC 9906, Section 4)
+      - “The key words ‘MUST’, ‘MUST NOT’, … ‘MAY’, and ‘OPTIONAL’ in this document are to be interpreted as described in BCP 14… when, and only when, they appear in all capitals, as shown here.” (RFC 9906, Section 1.1)
+      - “Use for DNSSEC Delegation: Indicates the recommendation for using the algorithm within authoritative servers.” (RFC 9904, Section 2.1)
+    - Impact:  
+      Because the strong normative constraints (MUST NOT use or implement algorithm 12 and digest 3, and validators MUST treat existing uses as insecure) are clearly and consistently specified in Sections 2 and 5, implementers and operators who follow the BCP 14 rules will obtain interoperable and secure behavior. Section 4’s advisory wording could be more precise, but it does not change or weaken the actual normative requirements, so there is no deontic inconsistency or underspecification in the protocol’s requirements structure.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - Severity: Medium
+    - ShortLabel: Ambiguous use of “ECC-GOST” and “ECC-GOST-based DS records” vs distinct GOST algorithms
+    - Evidence:
+      - ExcerptSnippets:
+        - Introduction of RFC 9906: “Thus, the use of GOST R 34.10-2001 (mnemonic ‘ECC-GOST’) and GOST R 34.11-94 is no longer recommended for use in DNSSEC [RFC9364].”
+        - Section 2 of RFC 9906:
+          - “The GOST R 34.11-94 algorithm [RFC5933] MUST NOT be used when creating Delegation Signer (DS) records.”
+          - “The GOST R 34.10-2001 algorithm [RFC5933] (mnemonic ‘ECC-GOST’) MUST NOT be used when creating DNS Public Key (DNSKEY) and Resource Record Signature (RRSIG) records.”
+        - Section 4 of RFC 9906:
+          - “This document removes support for ECC-GOST.”
+          - “Zone operators currently making use of ECC-GOST-based algorithms should switch to algorithms that remain supported.”
+          - “DNS registries should prohibit their clients from uploading and publishing ECC-GOST-based DS records…”
+      - ContextSnippets:
+        - RFC 5933 (signature algorithm):
+          - “GOST R 34.10-2001 public keys are stored with the algorithm number 12.”
+          - Example: “Algorithm: 12 (ECC-GOST)”
+        - RFC 5933 (digest algorithm / DS):
+          - “The GOST R 34.11-94 digest algorithm is denoted in DS RRs by the digest type 3.”
+        - RFC 9906 Section 5 IANA text:
+          - For algorithm 12: “Description: GOST R 34.10-2001 (DEPRECATED) / Mnemonic: ECC-GOST … Use for DNSSEC Signing: MUST NOT …”
+          - For digest type 3: “Description: GOST R 34.11-94 (DEPRECATED) … Use for DNSSEC Delegation: MUST NOT …”
+    - Reasoning:
+      - RFC 9906 very clearly distinguishes two separate algorithms from RFC 5933:
+        - GOST R 34.10‑2001 (signature algorithm), whose registry mnemonic is “ECC‑GOST”.
+        - GOST R 34.11‑94 (digest algorithm for DS), which does *not* have “ECC‑GOST” as a mnemonic.
+      - Section 2 maintains that distinction and provides strict, separate normative requirements:
+        - GOST R 34.11‑94 “MUST NOT be used when creating DS records”.
+        - GOST R 34.10‑2001 (“ECC‑GOST”) “MUST NOT be used when creating DNSKEY and RRSIG records.”
+      - In Section 4, however, the operational guidance collapses this distinction and uses “ECC‑GOST” as a generic label:
+        - “This document removes support for ECC‑GOST.”
+        - “ECC‑GOST‑based algorithms” (plural) and “ECC‑GOST‑based DS records”.
+      - Nowhere in RFC 9906 is “ECC‑GOST‑based DS records” defined as a term of art, and there is no registry entity called “ECC‑GOST DS”. In DNS terminology, a DS RR can be characterized by:
+        - Its *algorithm* field (matching the DNSKEY algorithm, e.g., 12 for ECC‑GOST keys).
+        - Its *digest type* (e.g., 3 for GOST R 34.11‑94).
+      - Because “ECC‑GOST” is explicitly defined as the mnemonic only for GOST R 34.10‑2001, an implementer or registry operator could reasonably interpret Section 4 in at least two different ways:
+        1. Narrow reading: “ECC‑GOST‑based DS records” means DS records that *reference* ECC‑GOST DNSKEYs (algorithm field = 12), regardless of digest type.
+        2. Suite reading: “ECC‑GOST‑based DS records” means DS records using the GOST R 34.11‑94 digest (type 3) as part of the ECC‑GOST cryptographic suite.
+      - Normative Section 2 clearly deprecates *all* use of the GOST R 34.11‑94 digest in DS records (“MUST NOT be used when creating DS records”), regardless of which DNSKEY algorithm the DS points at. Section 5 then updates the Digest Algorithms registry accordingly.
+      - The looser language in Section 4 (“removes support for ECC‑GOST”, “ECC‑GOST‑based DS records”) does not explicitly mention “GOST R 34.11‑94” or “digest type 3”, and it uses “ECC‑GOST” outside its earlier, well‑defined meaning. That is a terminology drift which:
+        - Obscures that the *digest* algorithm is also independently deprecated.
+        - Could lead registry operators who only skim the operational section to think the prohibition applies only to algorithm 12 keys and their associated DS, and not to *any* DS using digest type 3.
+      - In practice, RFC 5933 couples digest type 3 with ECC‑GOST keys, so most real‑world deployments of digest type 3 will have algorithm 12 anyway; thus, interoperability breakage from this ambiguity is unlikely. However, from a spec and registry point of view, Section 2 deliberately has a broader scope (any use of digest type 3), while Section 4’s wording does not clearly reflect that scope and reuses “ECC‑GOST” in a way that conflicts with how it is defined earlier in the document.
+      - This is therefore a real but relatively contained underspecification / terminology issue: the operational text does not clearly align its names and scope with the normative deprecations in Sections 2 and 5.
+    - PatchSuggestion:
+      - Clarify Section 4 to explicitly name *both* deprecated algorithms and to avoid overloading “ECC‑GOST”. For example:
+        - Replace:
+          - “This document removes support for ECC‑GOST.”
+          - “Zone operators currently making use of ECC‑GOST‑based algorithms should switch to algorithms that remain supported.”
+          - “DNS registries should prohibit their clients from uploading and publishing ECC‑GOST‑based DS records…”
+        - With something along the lines of:
+          - “This document removes support for both GOST R 34.10‑2001 (mnemonic ‘ECC‑GOST’) and the GOST R 34.11‑94 digest algorithm.”
+          - “Zone operators currently making use of these GOST‑based algorithms should switch to algorithms that remain supported.”
+          - “DNS registries should prohibit their clients from uploading and publishing DS records that use the GOST R 34.11‑94 digest (digest type 3) or that reference DNSKEY records with algorithm 12 (ECC‑GOST), ensuring that only algorithms supported by DNSSEC validators are used.”
+      - Any erratum should be framed as a clarification of Section 4’s wording only; Sections 2 and 5 remain the normative source.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - Severity: Low
+    - ShortLabel: Misnamed registry column (“Implement for DNSSEC Delegation”) in algorithm‑registry note
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9906 Section 5, for the algorithm 12 entry:
+          - “IANA has updated the GOST R 34.10‑2001 (12) entry in the ‘DNS Security Algorithm Numbers’ registry [DNSKEY‑IANA] [RFC9904] as follows: …”
+          - Columns listed: “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, “Implement for DNSSEC Validation”.
+          - Note: “The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+        - RFC 9906 Section 5, for the digest algorithm 3 entry:
+          - Columns listed: “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, “Implement for DNSSEC Validation”.
+          - Note again: “The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+      - ContextSnippets (RFC 9904 Section 2.1):
+        - For the “DNS Security Algorithm Numbers” registry:
+          - Columns: “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, “Implement for DNSSEC Validation”.
+        - For the “Digest Algorithms” registry:
+          - Columns: “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, “Implement for DNSSEC Validation”.
+    - Reasoning:
+      - RFC 9904 defines distinct sets of column names for the two registries:
+        - Algorithm numbers registry: “Use for DNSSEC Signing” / “Use for DNSSEC Validation” / “Implement for DNSSEC Signing” / “Implement for DNSSEC Validation”.
+        - Digest algorithms registry: “Use for DNSSEC Delegation” / “Use for DNSSEC Validation” / “Implement for DNSSEC Delegation” / “Implement for DNSSEC Validation”.
+      - In the algorithm 12 IANA update in RFC 9906, the body of the entry uses the correct column names for that registry, including “Implement for DNSSEC Signing” and “Implement for DNSSEC Validation”. However, the trailing note says:
+        - “The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+      - “Implement for DNSSEC Delegation” is *not* a column in the “DNS Security Algorithm Numbers” registry; it is a column in the Digest Algorithms registry. This is a cross‑registry naming error.
+      - In the digest algorithm 3 IANA update, the body uses the correct digest‑registry column names, but the note incorrectly refers to:
+        - “‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+      - Here, “Use for DNSSEC Signing” is not a column in the digest algorithms registry; instead, it should be “Use for DNSSEC Delegation”. So the note contains a mismatched column name for this registry as well.
+      - These notes are informational (“were already set to MUST NOT”) and do not change the explicit, correctly named column values just above them. IANA and implementers can infer the actual registry state from the explicit fields. Thus, interoperability impact is minimal, but the terminology is technically incorrect and could confuse careful readers or automated extraction tools that try to correlate the note text with real column names.
+    - PatchSuggestion:
+      - Adjust the notes in Section 5 so that each refers to the correct columns for its registry:
+        - For the “DNS Security Algorithm Numbers” (algorithm 12) entry:
+          - Change: “The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+          - To: “The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Signing’ columns were already set to MUST NOT.”
+        - For the “Digest Algorithms” (value 3) entry:
+          - Change: “The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+          - To: “The ‘Use for DNSSEC Delegation’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”
+      - These are purely textual fixes aligning the note text with the established column names in RFC 9904.
+
+- Notes:
+  - UsedRouterIssues: Confirmed the router’s Candidate Issue about the ambiguous operational scope and naming of “removes support for ECC‑GOST” / “ECC‑GOST‑based DS records”, classifying it as a real (though not severe) underspecification. Additionally identified a separate, smaller IANA column‑name inconsistency.
+  - NewIssuesFromExpert: true
+  - Limitations:
+    - The analysis relies on the provided excerpts of RFCs 9906, 9904, 5933, 9364, and 9558. If other sections elsewhere in those documents define “ECC‑GOST” more broadly as a suite covering both GOST R 34.10‑2001 and GOST R 34.11‑94, that might slightly weaken the argument that Section 4’s usage is inconsistent, but no such broader definition appears in the given text.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  The excerpt deprecates the original GOST R 34.10‑2001 signing algorithm (algorithm 12, mnemonic “ECC‑GOST”) and the GOST R 34.11‑94 digest (DS digest type 3) for DNSSEC. Section 2 gives clear, normative “MUST NOT” rules for creating and validating DNSKEY/RRSIG and DS records using these codes, and Section 5 updates the IANA registries to “MUST NOT” for both use and implementation. Section 4 is a short operational guidance paragraph saying the document “removes support for ECC‑GOST”, advising zone operators to switch to supported algorithms, and advising registries to prohibit uploading/publishing “ECC‑GOST‑based DS records”.
+
+- OverallBoundaryBugLikelihood: None
+
+- Findings:
+  - Finding-1:
+    - BugType: None
+    - ShortLabel: No real ambiguity in handling ECC‑GOST vs GOST R 34.11‑94 at boundaries
+    - BoundaryAxis: Ambiguous wording in operational text vs precise algorithm/digest deprecation; existing zones and DS rollover
+    - ExcerptEvidence:  
+      • Normative deprecation of DS digest 3: “The GOST R 34.11‑94 algorithm [RFC5933] MUST NOT be used when creating Delegation Signer (DS) records. Validating resolvers MUST treat GOST R 34.11‑94 DS records as insecure.”  
+      • Normative deprecation of ECC‑GOST algorithm 12: “The GOST R 34.10‑2001 algorithm [RFC5933] (mnemonic ‘ECC‑GOST’) MUST NOT be used when creating DNS Public Key (DNSKEY) and Resource Record Signature (RRSIG) records. Validating resolvers MUST treat RRSIG records created from DNSKEY records using these algorithms as unsupported algorithms.”  
+      • IANA updates set all “Use for …” and “Implement for …” columns for both algorithm 12 and digest 3 to “MUST NOT”.  
+      • Section 4: “This document removes support for ECC‑GOST. Zone operators currently making use of ECC‑GOST‑based algorithms should switch to algorithms that remain supported. DNS registries should prohibit their clients from uploading and publishing ECC‑GOST‑based DS records…”
+    - Reasoning:  
+      The *normative* behavior for both the signing algorithm (12) and the digest algorithm (3) is completely spelled out in Section 2 and concretized in the IANA tables in Section 5: creation and use for validation are forbidden, and validators must treat such material as insecure. That covers all boundary cases where these codes appear: new DS/DNSKEY/RRSIG creation, validation when they are present alone, and validation when they coexist with other algorithms.  
+      The apparent ambiguity in Section 4 is (a) terminological (it only explicitly mentions “ECC‑GOST” and “ECC‑GOST‑based DS records” without naming digest type 3) and (b) non‑normative: the text uses lowercase “should”, which per Section 1.1 does not invoke BCP 14 requirements. Even if a registry operator misread “ECC‑GOST‑based DS records” as applying only to DS records that reference an ECC‑GOST DNSKEY, Section 2 already *independently* bans use of digest algorithm 3 for *all* DS creation, and validators must ignore such DS as providing security. Thus, different interpretations of the Section 4 phrase cannot lead to divergent, standards‑compliant behaviors in implementations.  
+      For existing zones containing ECC‑GOST DNSKEY/RRSIG and/or DS digest 3, Section 2 and the IANA tables already define the boundary behavior: validators MUST treat them as insecure, and operators MUST NOT create any more of them. Rolling to a new algorithm is governed in general by RFC 6781/7583 and 9904’s Section 6; Section 4’s advisory that registries “should prohibit” ECC‑GOST‑based DS uploads does not create a conflicting normative rule about rollover order, since it neither (normatively) forbids adding DS records for *other* algorithms nor changes the fact that ECC‑GOST material is now security‑irrelevant.  
+    - ImpactAssessment:  
+      Because the operational paragraph is non‑normative and the normative sections precisely cover both algorithm 12 and digest 3, there is no real underspecification or inconsistency affecting interoperable behavior at the edges (existing zones, mixed‑algorithm DS sets, or DS rollover). Any confusion from shorthand wording in Section 4 is at most editorial and cannot change what a standards‑compliant implementation or registry is required to do.
+
+- Notes:
+  - Not a bug: The phrase “This document removes support for ECC‑GOST” could, in isolation, be read as including ECC‑GOST12 (algorithm 23), but Sections 1 and 9558 explicitly state that the 2012 GOST suite’s requirement levels are unchanged. Given that and the algorithm numbers in the IANA tables, this does not create a normative ambiguity.
+
+[Used vector stores: vs_6954b39111d48191a6d0c770239d2cbd]
+
+
+Vector Stores Used: vs_6954b39111d48191a6d0c770239d2cbd
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

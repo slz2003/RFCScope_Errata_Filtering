@@ -1,0 +1,582 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 2 of RFC 9792 defines a new variable‑length “Prefix Extended Flags” sub‑TLV for OSPFv2 and OSPFv3, including its encoding, allowed locations, bit numbering and IANA registries, plus rules on error handling and multiple instances. The key scope questions are (1) how far a malformed sub‑TLV contaminates the enclosing LSA, and (2) which protocol(s) and registries a given definition applies to.
+
+- ScopeModel:
+  - Targets:
+    - The “Prefix Extended Flags” sub‑TLV for:
+      - OSPFv2: a sub‑TLV of the OSPFv2 Extended Prefix TLV in the OSPFv2 Extended Prefix Opaque LSA [RFC7684].
+      - OSPFv3: a sub‑TLV of Inter‑Area‑Prefix, External‑Prefix, and Intra‑Area‑Prefix TLVs [RFC8362], and of the SRv6 Locator TLV [RFC9513].
+    - The “Prefix Extended Flags” *field* inside that sub‑TLV (variable‑length, grouped in 4‑octet blocks with global bit numbering from 0 upward).
+    - The enclosing LSAs that carry those TLVs/sub‑TLVs (Extended Prefix Opaque LSAs, various OSPFv3 Extended LSAs, and SRv6 Locator LSAs).
+    - Two distinct IANA bit registries: “OSPFv2 Prefix Extended Flags” and “OSPFv3 Prefix Extended Flags”.
+  - Conditions:
+    - Length field of the sub‑TLV:
+      - Indicates the length (in octets) of the Prefix Extended Flags field.
+      - MUST be a multiple of 4; if not, “the LSA is malformed and MUST be ignored”.
+    - Bit semantics:
+      - Bits are numbered sequentially across 4‑octet blocks; unassigned bits MUST be transmitted as 0 and ignored on receipt.
+      - Originators MUST limit the sub‑TLV length so that it only covers bits that are actually set to 1; any defined bits beyond the transmitted length MUST be treated as 0.
+    - Multiplicity:
+      - If multiple Prefix Extended Flags sub‑TLVs are present *within the same TLV*, only the first is used; all subsequent ones MUST be ignored; errors SHOULD be logged subject to rate limiting.
+    - Backward compatibility:
+      - Nodes that do not recognize this sub‑TLV ignore it per generic TLV processing rules in RFC 3630 and RFC 8362.
+    - TLV framework interaction:
+      - RFC 8362 Section 3 states that, for backward compatibility, an Extended LSA is not considered malformed “from a TLV perspective” unless a required TLV is missing or a specified TLV is shorter than the minimum length; optional/unknown TLVs are normally ignored, not LSA‑fatal.
+  - NotedAmbiguities:
+    - “If the length is not a multiple of 4 octets, the Link State Advertisement (LSA) is malformed and MUST be ignored” applies a sub‑TLV‑specific constraint at LSA scope, which appears broader than the generic TLV error model of RFC 8362, and it is unclear if this is intentionally overriding those rules or an over‑broad formulation.
+    - The text does not explicitly say “the LSA *containing this sub‑TLV* is malformed”, which is almost certainly the intent but is not spelled out.
+    - In Section 4.2.2, the “OSPFv3 Prefix Extended Flags Registry” is said to define bits “in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub‑TLV”, which is a protocol/domain mismatch inside the OSPFv3 registry text.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Over‑broad error scope – malformed Prefix Extended Flags sub‑TLV causes the entire LSA to be discarded, contrary to the generic TLV error model
+    - ScopeProblemType: Error‑handling scope too broad (LSA‑wide) for an optional sub‑TLV; apparent conflict with RFC 8362 TLV malformation rules
+    - Evidence:
+      - RFC 9792 Section 2, Length definition: “The length MUST be a multiple of 4 octets. If the length is not a multiple of 4 octets, the Link State Advertisement (LSA) is malformed and MUST be ignored.”
+      - Same section: the sub‑TLV is introduced as an extension; no text states that it is required in any TLV or LSA.
+      - RFC 8362 Section 3: “For backward compatibility, an LSA is not considered malformed from a TLV perspective unless either a required TLV is missing or a specified TLV is less than the minimum required length.”
+      - RFC 8362 Section 3 further emphasises that unknown/optional TLVs and sub‑TLVs are to be tolerated and skipped to preserve backward compatibility.
+    - DetailedReasoning:
+      - The Prefix Extended Flags sub‑TLV is clearly an optional extension: the specification describes where it “is advertised as a sub‑TLV” but never requires its presence in any of the listed TLVs. Thus, from the base TLV framework’s point of view, it is an optional, non‑required sub‑TLV.
+      - RFC 8362’s TLV model for Extended LSAs explicitly constrains when an LSA is to be declared malformed “from a TLV perspective”: only when a required TLV is missing or a TLV is shorter than its minimum length. The general design intent is to ignore unknown or malformed optional TLVs/sub‑TLVs so as to preserve as much information in the LSA as possible.
+      - RFC 3630 and the OSPFv2 TLV usage described in RFC 7684 are also based on TE‑style TLVs where arbitrary Length values are allowed; padding provides 4‑octet alignment, and mis‑alignment of a particular TLV’s semantic content does not by itself require dropping the whole LSA.
+      - RFC 9792 goes beyond that generic model by saying that if the Prefix Extended Flags *field length* (a value‑level property of one optional sub‑TLV) is not a multiple of 4, “the LSA is malformed and MUST be ignored”. That gives LSA‑wide scope to a constraint which is (a) specific to a single optional sub‑TLV, and (b) not structurally necessary for correct TLV parsing (the TLV length still permits the parser to skip over the sub‑TLV).
+      - Because the enclosing TLVs (e.g., the OSPFv3 Inter‑Area‑Prefix TLV or SRv6 Locator TLV) may also carry many other sub‑TLVs, and the LSAs themselves may carry multiple TLVs, discarding the entire LSA when just this optional flags sub‑TLV is mal‑sized can cause loss of otherwise valid and interpretable information (e.g., metrics, route tags, forwarding addresses).
+      - This behaviour is particularly at odds with RFC 8362’s stated backward‑compatibility goal that LSAs should not be considered malformed due to TLV issues except in very narrow, explicitly defined cases (missing required TLV or too‑short TLV). Here, the new document effectively introduces a new LSA‑fatal condition for an optional sub‑TLV without explicitly stating that it is updating that error model.
+      - An alternative, and arguably more consistent, formulation would be: “If the length is not a multiple of 4 octets, this Prefix Extended Flags sub‑TLV is malformed and MUST be ignored; the rest of the TLVs and the LSA MUST still be processed normally.” That would keep the error scope at the sub‑TLV level, matching the generic TLV framework’s philosophy.
+      - Because the current text is silent on why an optional sub‑TLV’s internal length constraint should be LSA‑fatal, implementers may reasonably diverge: some will drop the entire LSA per RFC 9792, others (following RFC 8362’s general guidance) may choose to ignore only the malformed sub‑TLV. That divergence can lead to inconsistent LSDB contents and prefix attributes across routers.
+      - For these reasons, this looks like both an inconsistency (with the existing TLV error model) and an underspecification (it does not clearly justify or scope why this particular condition escalates from a sub‑TLV error to an LSA‑level malformation).
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: OSPFv3 Prefix Extended Flags registry text incorrectly scoped to the OSPFv2 sub‑TLV
+    - ScopeProblemType: Wrong domain / protocol reference in registry description (OSPFv3 registry claiming to define bits for an OSPFv2 sub‑TLV)
+    - Evidence:
+      - Section 4.2.2, heading: “OSPFv3 Prefix Extended Flags Registry”.
+      - Immediately following text: “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+      - Contrast with Section 4.1.2: “OSPFv2 Prefix Extended Flags Registry … defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub‑TLV…”.
+    - DetailedReasoning:
+      - The document clearly defines two parallel registries: one under “OSPFv2 Parameters” for the OSPFv2 Prefix Extended Flags sub‑TLV, and one under “OSPFv3 Parameters” for the OSPFv3 Prefix Extended Flags sub‑TLV. Each registry is supposed to cover the bits used in the corresponding protocol’s sub‑TLV.
+      - In Section 4.1.2, the OSPFv2 registry is correctly scoped: it “defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV”. This clearly ties that registry to OSPFv2 usage.
+      - In Section 4.2.2, however, the OSPFv3 registry text appears to have been copy‑pasted and not fully edited: it again refers to “the OSPFv2 Prefix Extended Flags sub‑TLV” even though the section heading and surrounding text are about OSPFv3 and the “OSPFv3 Prefix Extended Flags Registry”.
+      - This creates a domain/scope mismatch: the OSPFv3 registry is described as defining bits for an OSPFv2 construct, which is not logically consistent with the registry’s name, its placement under OSPFv3 parameters, and the rest of the document that introduces an “OSPFv3 Prefix Extended Flags sub‑TLV”.
+      - While experienced implementers and IANA staff will almost certainly recognize this as a trivial editorial error and use the OSPFv3 registry for the OSPFv3 sub‑TLV, the literal wording blurs the scope of which sub‑TLV each registry applies to.
+      - The likely intent is symmetric to Section 4.1.2, i.e., “The registry defines the bits in the Prefix Extended Flags field in the OSPFv3 Prefix Extended Flags sub‑TLV as specified in Section 2.” An erratum clarifying that would remove the ambiguity in registry scope.
+
+- ResidualUncertainties:
+  - The full text of RFC 3630 and RFC 8362 Section 6.3 was not included, so the exact wording of the generic TLV malformation rules is partially inferred from the provided excerpt. If those sections explicitly allow protocol extensions to define additional LSA‑fatal TLV conditions, then Issue‑1 would be less of a hard conflict and more of a design choice that is still arguably over‑broad in scope.
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following RFC 9792 section 2 literally is mechanically implementable and does not break normal operation. The “Length MUST be a multiple of 4, else the LSA is malformed and MUST be ignored” rule is stricter than the generic TLV error‑handling guidance in RFC 8362/3630, but this only changes how *malformed* LSAs are handled. It does not create an unimplementable state machine or a guaranteed interoperability failure between correct implementations.
+
+---
+
+2. **Causal Analysis**
+
+### 2.1 What the base TLV frameworks say
+
+- RFC 7684 and RFC 8362 both define the common TLV format:
+
+  - `Length` = length of the TLV value in octets (may be any value ≥ 0).
+  - The TLV as a whole is padded to 4‑octet alignment; the padding is *not* counted in `Length`.      
+
+- RFC 8362 Section 3 adds a specific backward‑compatibility rule:
+
+  > “For backward compatibility, an LSA is not considered malformed from a TLV perspective unless either a required TLV is missing or a specified TLV is less than the minimum required length.”    
+
+  That is a *generic* rule: unknown/optional TLVs with odd or unexpected lengths are typically skipped, and the rest of the LSA remains usable.
+
+### 2.2 What RFC 9792 adds
+
+RFC 9792 defines a new sub‑TLV (“Prefix Extended Flags”) with:
+
+- `Type` = 11 (OSPFv2) or 37 (OSPFv3).
+- `Length` semantics:
+
+  > “This indicates the length of the Prefix Extended Flags field in octets. The length MUST be a multiple of 4 octets. If the length is not a multiple of 4 octets, the Link State Advertisement (LSA) is malformed and MUST be ignored.”    
+
+- The value is defined as a series of 4‑octet flag blocks; bits are numbered consecutively across those 32‑bit chunks.    
+
+So, for a 9792‑aware receiver:
+
+1. It parses TLVs/sub‑TLVs as usual.
+2. When it encounters this new sub‑TLV:
+   - If `Length % 4 == 0`, it treats the value as 4‑byte flag blocks.
+   - If `Length % 4 != 0`, it **must treat the entire containing LSA as malformed and ignore it**, even though the sub‑TLV is optional.
+
+For a receiver that does *not* implement 9792:
+
+- Type 11/37 is just an unknown sub‑TLV.
+- RFC 7684 / 8362 behavior applies: it reads `Length`, skips that many octets (plus padding), and continues; the LSA is *not* considered malformed purely because this sub‑TLV’s length is “weird”.
+
+### 2.3 Can this be implemented coherently with 8362?
+
+Yes. An implementation that supports RFC 9792 can:
+
+- Apply RFC 8362’s generic test (“required TLV missing or too short”) **plus** RFC 9792’s **additional** condition (“this particular sub‑TLV’s Length must be multiple of 4 or the LSA is malformed”).
+- The generic text in RFC 8362 is phrased as “not considered malformed *unless* …”, which reads like a closed list; RFC 9792 effectively narrows that further for LSAs containing this particular sub‑TLV. That’s a *normative tightening*, but it’s not mechanically contradictory for implementers: you just add one more “if” when parsing this sub‑TLV.
+
+There is no point in the flow where the receiver is asked to use information it cannot parse, or to perform an impossible check. The rule “Length must be multiple of 4” is fully testable from the sub‑TLV header alone.
+
+### 2.4 Behavioral consequences
+
+**Normal case (correct originators):**
+
+- Originators that follow RFC 9792 will always set `Length` to a multiple of 4 for this sub‑TLV.
+- All routers (with or without 9792 support) parse LSAs identically with respect to *valid* messages:
+  - 9792‑aware routers decode the flags.
+  - Legacy routers ignore the sub‑TLV but still process the rest of the LSA.
+
+No fundamental invariant is broken; the variable‑length flag extension simply works.
+
+**Error case (mis‑encoded sub‑TLV):**
+
+- If an originator (buggy or non‑conformant) sends this sub‑TLV with, say, `Length = 6`:
+  - 9792‑aware routers:
+    - Must treat the *entire LSA* as malformed and ignore it (so they drop the prefix information carried in that Extended LSA entirely).
+  - Legacy routers:
+    - See an unknown sub‑TLV with `Length = 6`, skip 6 octets + padding, and otherwise accept and flood the LSA.
+
+This can produce *divergent views of the LSDB* in the presence of a misbehaving originator: some routers accept and use the LSA, while others drop it. That is a real behavioral difference, but:
+
+- It only occurs when the originator is **already violating** RFC 9792.
+- There is no way for all correct implementations to disagree on a *valid* LSA.
+- OSPF is not required to provide strong guarantees in the face of protocol violations; different robustness strategies (drop entire LSA vs. ignore bad sub‑TLV) are *tolerable*, even if not ideal.
+
+From a failure‑analysis perspective, this is a robustness choice, not a logical impossibility.
+
+---
+
+3. **Problem Classification**
+
+- **Causal Inconsistency**: **No.**
+  - The rule is straightforward to implement; there is no step that cannot be executed, nor any internal contradiction in the processing sequence for valid LSAs.
+- **Causal Underspecification**: **Borderline, but mostly “no” from a correctness standpoint.**
+  - There *is* normative tension with RFC 8362’s “LSA is not considered malformed unless …” wording, because 9792 adds a new malformed condition for an *optional* sub‑TLV without stating that it updates 8362. But this does not make correct behavior impossible; it just tightens error handling for this sub‑TLV.
+
+The main impact is that 9792‑aware implementations will be *stricter* than the generic TLV guidance in how they treat malformed Prefix Extended Flags sub‑TLVs. That’s a design choice in error handling, not a core functional bug.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the working group wanted to align this with the general TLV philosophy and avoid harsh behavior on malformed optional sub‑TLVs, the minimal local change would be:
+
+- Change “the LSA is malformed and MUST be ignored” to “this sub‑TLV is malformed and MUST be ignored; the rest of the LSA is processed as usual.”
+
+This would keep error handling localized to the sub‑TLV while preserving interoperability with existing TLV rules.
+
+---
+
+5. **Non‑Issues**
+
+- The IANA registry text in Section 4.2.2 saying “the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV” while discussing the **OSPFv3** registry is an editorial slip, but it doesn’t affect any on‑the‑wire behavior: the format and type code are already unambiguously defined in Section 2 and Table 2.  
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## Quantitative Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary:  
+  Section 2 of RFC 9792 defines a variable‑length “Prefix Extended Flags” sub‑TLV for OSPFv2 and OSPFv3, including a 2‑octet Type, a 2‑octet Length that is the size of the value in octets, and a value that is a flags field in 4‑octet (32‑bit) blocks with explicit bit numbering. The section constrains the Length to be a multiple of 4, defines how bits are numbered across multiple 32‑bit blocks, specifies behavior for unassigned bits, for bits beyond the transmitted length, and for multiple instances of the sub‑TLV in a parent TLV. The referenced RFCs 7684, 8362, 3630, and 9513 supply the generic TLV format and alignment rules into which this sub‑TLV must fit.
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: No quantitative issues found
+    - Description:  
+      The numeric and structural aspects of the Prefix Extended Flags sub‑TLV are self‑consistent and align with the TLV frameworks in RFCs 7684, 8362, 3630, and 9513. The Length field is clearly defined as the length of the value (flags field) in octets and is constrained to be a multiple of 4; this is a valid additional constraint on top of the generic TLV rules (which only require the TLV as a whole to be 4‑octet aligned and allow arbitrary value lengths). The bit‑grouping into 4‑octet/32‑bit blocks, the bit numbering starting at 0 for the most significant bit of the first block, and the example of bit 32 in the fifth octet of an 8‑octet field are numerically correct and consistent with the IANA text that allocates bits in 32‑bit blocks.
+    - Evidence:  
+      - TLV header and length semantics: “Type (2 octets)… Length (2 octets): Variable… This indicates the length of the Prefix Extended Flags field in octets. The length MUST be a multiple of 4 octets. If the length is not a multiple of 4 octets, the Link State Advertisement (LSA) is malformed and MUST be ignored.”  
+      - Flags layout and numbering: “Prefix Extended Flags (Variable)… grouped in 4‑octet blocks. The bits are numbered starting from bit 0 as the most significant bit of the first 32‑bit block… For example, the most significant bit in the fifth octet of an 8‑octet Prefix Extended Flags field is referred to as bit 32.”  
+      - Generic TLV format and padding from 7684/8362/9513: Type/Length headers are 2 octets each; Length is defined as the length of the value portion in octets, and TLVs (and nested sub‑TLVs) are padded to 4‑octet alignment with padding not counted in the Length.
+      - IANA registry text: bits are allocated in blocks of 32, with bit numbering from 0 as the MSB of the first 32‑bit block and subsequent 32‑bit blocks added as needed.
+    - QuantitativeReasoning:  
+      - The 2‑octet Length field can represent 0–65535; requiring it to be a multiple of 4 simply restricts the value to the subset {0, 4, 8, …, 65532}. This is consistent with the 4‑octet alignment rule for TLVs: when the value length is a multiple of 4, the TLV as a whole (4‑byte header + N‑byte value) is already a multiple of 4, so no extra padding bytes are needed, but padding semantics remain compatible with the generic framework.  
+      - The bit numbering works as follows: each 4‑octet block is 32 bits; block 1 covers bits 0–31, block 2 covers bits 32–63, etc. The “fifth octet” is the first byte of block 2, whose most significant bit is indeed bit 32; this matches the example and the IANA convention of allocating additional 32‑bit blocks (bits 0‑31, 32‑63, and so on).  
+      - The line “Unassigned bits MUST be set to zero on transmission and MUST be ignored on receipt” plus “Defined prefix flags that are not transmitted due to being beyond the transmitted length MUST be treated as being set to 0” fully specifies the semantics of bits that are either within transmitted octets but unassigned, or beyond the transmitted length entirely: in both cases they are logically 0. This ensures that shorter Length values (still multiples of 4) simply imply that higher‑numbered bits are zero, and receivers have a well‑defined interpretation.  
+      - Regarding the router’s candidate concern: “An implementation MUST limit the length of the sub‑TLV so as to signal the bits that are set to 1” is somewhat informal wording but does not create a quantitative ambiguity. Combined with the prior sentences, its operative meaning is: the Length value (a) MUST be a multiple of 4 and (b) MUST be at least large enough to include all bits that the sender intends to set to 1. Longer lengths (with extra zero bits) are still consistent with the rest of the specification, since those additional bits are required to be zero and are defined to mean “0”. Thus, an implementer can deterministically compute a valid Length as the (possibly minimal) multiple of 4 octets that covers the highest‑numbered bit they wish to set to 1.
+    - Consequences:  
+      Because the type codes, length semantics, 4‑octet alignment, bit numbering, and IANA bit‑block structure are all numerically coherent and compatible with the base TLV frameworks, independent implementations should generate and parse the same on‑the‑wire encodings for the Prefix Extended Flags sub‑TLV. The slightly informal “MUST limit the length … so as to signal the bits that are set to 1” does not lead to divergent behavior: all legal encodings that obey the explicit “multiple of 4 octets” rule and include all bits that are 1 will be interpreted consistently, with any higher‑numbered non‑transmitted bits taken as 0. No interoperability or implementability problems arise from the quantitative aspects of this section.
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 2 of RFC 9792 defines a new variable‑length “Prefix Extended Flags” sub‑TLV for OSPFv2 and OSPFv3, including encoding, bit numbering, sender/receiver behavior, and multiple‑occurrence handling, plus the associated IANA registries. It layers new MUST/SHOULD requirements on top of the existing OSPF TLV frameworks in RFC 7684, RFC 8362, RFC 3630, and RFC 9513.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Overly strong “LSA malformed” rule for non‑4‑byte Length conflicts with OSPFv3 TLV error‑handling model
+    - Description:  
+      RFC 9792 requires that the Prefix Extended Flags sub‑TLV’s Length “MUST be a multiple of 4 octets” and further states that if it is not, “the Link State Advertisement (LSA) is malformed and MUST be ignored.” This makes any misaligned value length in this *optional* sub‑TLV a condition that invalidates the entire LSA. In contrast, RFC 8362’s general TLV model for OSPFv3 explicitly constrains when an LSA is considered malformed “from a TLV perspective”: “For backward compatibility, an LSA is not considered malformed from a TLV perspective unless either a required TLV is missing or a specified TLV is less than the minimum required length.” This text is intended to ensure that format errors in optional TLVs/sub‑TLVs do not cause the whole LSA to be discarded.  
+      By introducing a new malformed‑LSA condition (Length not a multiple of 4 for this sub‑TLV) that applies at the LSA level, RFC 9792 contradicts that OSPFv3 rule: one specification says such an LSA is *not* malformed unless a required TLV is missing/too short, while the other says it *is* malformed and MUST be ignored on this additional condition. The natural behavior, consistent with RFC 8362 and with other OSPFv3 sub‑TLVs, would be to treat only the *sub‑TLV* as malformed and ignore it while still processing the rest of the LSA.  
+      This is a genuine deontic inconsistency, not just stronger error checking: it changes the level at which malformation is assessed and contradicts a general “for backward compatibility” rule in the base OSPFv3 extensibility spec.
+    - KeyTextSnippets:
+      - RFC 9792 Section 2:  
+        “Length (2 octets): … This indicates the length of the Prefix Extended Flags field in octets. **The length MUST be a multiple of 4 octets. If the length is not a multiple of 4 octets, the Link State Advertisement (LSA) is malformed and MUST be ignored.**”
+      - RFC 8362 Section 3:  
+        “The TLV is padded to 4‑octet alignment; padding is not included in the Length field …”  
+        “**For backward compatibility, an LSA is not considered malformed from a TLV perspective unless either a required TLV is missing or a specified TLV is less than the minimum required length.**”
+    - Impact:  
+      Implementations that follow RFC 9792 literally will discard entire LSAs containing any mis‑length Prefix Extended Flags sub‑TLV, even if all other TLVs and sub‑TLVs in the LSA are valid, while implementations that follow the RFC 8362 model will likely just ignore the malformed sub‑TLV. This can lead to divergent behavior (some routers using an LSA, others dropping it outright) and weakens the backward‑compatibility guarantees intended by RFC 8362 for OSPFv3 TLV‑encoded LSAs.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - Title: OSPFv3 IANA registry text incorrectly refers to the OSPFv2 sub‑TLV
+    - Description:  
+      In the IANA considerations for OSPFv3, RFC 9792 describes the new “OSPFv3 Prefix Extended Flags” registry as defining “the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub‑TLV.” This is almost certainly a copy‑and‑paste error from the OSPFv2 registry text, which correctly refers to the OSPFv2 Prefix Extended Flags sub‑TLV. For OSPFv3, the registry should normatively apply to the bits in the *OSPFv3* Prefix Extended Flags sub‑TLV (type 37), not to an OSPFv2 structure.  
+      While the rest of the document (including Table 2 and the surrounding OSPFv3 text) clearly distinguishes the OSPFv3 sub‑TLV and its codepoint, this misreference is in the normative IANA description of what the registry covers. As written, it inaccurately ties the OSPFv3 registry to an OSPFv2 field, creating a self‑contradiction between Section 2 (which defines distinct OSPFv2/OSPFv3 sub‑TLVs) and Section 4.2.2 (which mis‑names the target of the OSPFv3 registry).
+    - KeyTextSnippets:
+      - RFC 9792 Section 4.1.2 (OSPFv2):  
+        “IANA has created the ‘OSPFv2 Prefix Extended Flags’ registry … **The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub‑TLV as specified in Section 2.**”
+      - RFC 9792 Section 4.2.2 (OSPFv3):  
+        “IANA has created the ‘OSPFv3 Prefix Extended Flags’ registry … **The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub‑TLV as specified in Section 2.**”
+      - RFC 9792 Section 2, type assignment:  
+        “Type (2 octets): **11 for OSPFv2 and 37 for OSPFv3**”
+    - Impact:  
+      This inconsistency could confuse implementers or IANA readers about which on‑the‑wire field the OSPFv3 registry is intended to cover, and may lead to accidental cross‑referencing of the wrong registry when interpreting OSPFv3 Prefix Extended Flags. The fix is straightforward (change “OSPFv2” to “OSPFv3” in Section 4.2.2), but as written it is a real, if minor, normative misreference.
+
+  - Issue-3:
+    - BugType: None
+    - Title: “MUST limit the length … so as to signal the bits that are set to 1” is stylistically imprecise but not a normative gap
+    - Description:  
+      The text says, “An implementation MUST limit the length of the sub‑TLV so as to signal the bits that are set to 1. Defined prefix flags that are not transmitted due to being beyond the transmitted length MUST be treated as being set to 0.” The intent is to allow the field to be truncated to omit trailing all‑zero 4‑octet blocks and to define the default for non‑transmitted flags (they default to 0). Although “limit the length … so as to signal the bits that are set to 1” is not mathematically sharp (it doesn’t explicitly say “use the minimal length that still includes the highest‑numbered 1‑bit”), it does not create a real deontic ambiguity:  
+      • Sender obligations are effectively: include all bits that are 1; you *may* omit trailing zero blocks.  
+      • Receiver obligations are clear: any flag bit position beyond the transmitted length “MUST be treated as being set to 0,” and unassigned bits “MUST be set to zero on transmission and MUST be ignored on receipt.”  
+      As a result, whether a sender chooses to send extra trailing zero blocks or to truncate them does not change the semantics for the receiver; at worst it wastes TLV space. There is no undefined behavior or conflicting requirement for senders or receivers; the wording could be sharper but does not rise to a normative bug.
+    - KeyTextSnippets:
+      - RFC 9792 Section 2:  
+        “Unassigned bits MUST be set to zero on transmission and MUST be ignored on receipt.”  
+        “**An implementation MUST limit the length of the sub‑TLV so as to signal the bits that are set to 1. Defined prefix flags that are not transmitted due to being beyond the transmitted length MUST be treated as being set to 0.**”
+    - Impact:  
+      None from a deontic standpoint; different implementations will still interpret and act on the flags consistently. This is a clarity/usability issue rather than a normative inconsistency or underspecification.
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Examined the definition of the variable‑length Prefix Extended Flags sub‑TLV (format, Length semantics, bit numbering, and multiple‑instance handling) and the associated OSPFv2/OSPFv3 IANA registry text, cross‑checked against the generic TLV formats in RFC 7684, RFC 8362, and RFC 9513.
+- OverallBugLikelihood: Medium
+
+Issues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: "LSA-malformed rule for non‑4‑byte Length is consistent with TLV framework"
+    - LocationHint: RFC 9792 Section 2 vs. RFC 8362 Section 3 / 6.3 (and RFC 7684 generic TLV rules)
+    - Evidence:
+      - Snippet1: “Length (2 octets): … This indicates the length of the Prefix Extended Flags field in octets. The length MUST be a multiple of 4 octets. If the length is not a multiple of 4 octets, the Link State Advertisement (LSA) is malformed and MUST be ignored.”
+      - Snippet2: RFC 8362: “The Length field defines the length of the value portion in octets… The TLV is padded to 4-octet alignment… For backward compatibility, an LSA is not considered malformed from a TLV perspective unless either a required TLV is missing or a specified TLV is less than the minimum required length. Refer to Section 6.3 for more information on TLV backward compatibility.” Also, individual sub‑TLVs in RFC 8362 (e.g., IPv6‑Forwarding‑Address) state that if the length does not meet a minimum, it “will be considered malformed as described in Section 6.3.”
+    - TechnicalExplanation: |
+        The generic TLV frameworks in RFC 7684, RFC 8362, and RFC 9513 define the TLV format (Type, Length, Value, 4‑octet padding) and allow each specific TLV/sub‑TLV to define additional constraints on its Length and what constitutes a malformed condition. RFC 8362 explicitly couples “TLV shorter than minimum required length” to an LSA‑malformed condition via Section 6.3, and several sub‑TLVs in RFC 8362 do in fact cause the entire LSA to be treated as malformed when their length is invalid. RFC 9792’s rule that the Prefix Extended Flags sub‑TLV Length “MUST be a multiple of 4 octets” and that a violation makes “the LSA… malformed” is in the same pattern: it is a TLV‑specific validity condition, not a change to the underlying TLV encoding. Nodes that do not implement RFC 9792 will treat the new sub‑TLV as unknown and simply ignore it per the base TLV rules, so there is no syntactic inconsistency in the on‑wire encoding; the difference is purely in error‑handling semantics for nodes that recognize the sub‑TLV. From a structural/syntactic perspective, the constraint is implementable and consistent with the TE‑style TLV framework.
+    - PatchSuggestion: |
+        None.
+
+  - Issue-2:
+    - BugType: None
+    - ShortLabel: "Sender length‑limiting rule for sub‑TLV is implementable and structurally clear"
+    - LocationHint: RFC 9792 Section 2, paragraph after “Unassigned bits MUST be set to zero…”
+    - Evidence:
+      - Snippet1: “An implementation MUST limit the length of the sub-TLV so as to signal the bits that are set to 1. Defined prefix flags that are not transmitted due to being beyond the transmitted length MUST be treated as being set to 0.”
+      - Snippet2: Earlier in Section 2: “This field contains a variable number of flags, grouped in 4-octet blocks. The bits are numbered starting from bit 0 as the most significant bit of the first 32-bit block. If the length of the Prefix Extended Flags field exceeds 4 octets, numbering for the additional bits picks up where the previous 4-octet block left off. For example, the most significant bit in the fifth octet of an 8-octet Prefix Extended Flags field is referred to as bit 32.”
+    - TechnicalExplanation: |
+        Structurally, the sub‑TLV encodes flags in 32‑bit (4‑octet) blocks with a clear bit‑numbering scheme. Given that rule, “limit the length… so as to signal the bits that are set to 1” has a straightforward interpretation for implementers: the sender should choose the smallest number of 4‑octet blocks that still includes the numerically highest bit that is 1 (i.e., Length = 4 * (floor(max_set_bit/32) + 1), or 0 if no bits are set). The follow‑on rule that “defined prefix flags that are not transmitted… MUST be treated as being set to 0” unambiguously specifies receiver behavior for any bits beyond the transmitted length. Even if a sender were overly conservative and included extra all‑zero blocks, the encoding would remain well‑formed, and receivers would decode the same set of 1‑bits; the only impact would be inefficiency, not ambiguity about the wire format. Thus, this text does not leave any structural or encoding‑level uncertainty about how to map bits to octets or how to interpret absent bits, and no syntactic or implementability bug needs to be flagged here.
+    - PatchSuggestion: |
+        None.
+
+  - Issue-3:
+    - BugType: Inconsistency
+    - ShortLabel: "OSPFv3 IANA registry text incorrectly references OSPFv2 sub‑TLV"
+    - LocationHint: RFC 9792 Section 4.2.2 (“OSPFv3 Prefix Extended Flags Registry”)
+    - Evidence:
+      - Snippet1: Section 4.2.2: “IANA has created the ‘OSPFv3 Prefix Extended Flags’ registry within the ‘Open Shortest Path First v3 (OSPFv3) Parameters’ registry group. The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+      - Snippet2: Section 4.1.2 (the OSPFv2 counterpart): “IANA has created the ‘OSPFv2 Prefix Extended Flags’ registry… The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.” And Section 4.2.1: “IANA has allocated the following codepoint in the ‘OSPFv3 Extended-LSA Sub-TLVs’ registry: … 37  OSPFv3 Prefix Extended Flags …”
+    - TechnicalExplanation: |
+        Section 4.2.x is explicitly about OSPFv3, and 4.2.1 registers the “OSPFv3 Prefix Extended Flags” sub‑TLV with value 37 in the “OSPFv3 Extended-LSA Sub-TLVs” registry. However, Section 4.2.2 then states that the “OSPFv3 Prefix Extended Flags” registry “defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV,” which is a clear mismatch of protocol context and data structure. The corresponding OSPFv2 section (4.1.2) correctly refers to the OSPFv2 Prefix Extended Flags sub‑TLV, so it is evident that 4.2.2 is a copy‑paste error and should instead point to the OSPFv3 Prefix Extended Flags sub‑TLV. While IANA and implementers can infer the intended meaning from surrounding text and the different codepoints (11 for OSPFv2, 37 for OSPFv3), the current wording is structurally inconsistent: an OSPFv3 registry is described as defining bits in an OSPFv2 sub‑TLV. This is a concrete syntactic inconsistency between the IANA section and the rest of the specification’s type/registry structure.
+    - PatchSuggestion: |
+        Replace the sentence in Section 4.2.2:
+          “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+        with:
+          “The registry defines the bits in the Prefix Extended Flags field in the OSPFv3 Prefix Extended Flags sub-TLV as specified in Section 2.”
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 2 of RFC 9792 defines a new variable‑length “Prefix Extended Flags” sub‑TLV for both OSPFv2 and OSPFv3, including its type codes, length rules, bit numbering, and the TLVs/LSAs in which it can appear, and Section 4 creates corresponding IANA bit registries. The behavior relies on the generic TLV framework and malformed‑LSA handling from RFC 3630 and RFC 8362, and on the existing OSPFv2 and OSPFv3 TLV registries and SRv6 Locator TLV framework in RFC 9513.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Malformed‑LSA rule for sub‑TLV conflicts with OSPFv3 Extended‑LSA TLV error‑handling
+    - Description: RFC 9792 Section 2 states: “The length MUST be a multiple of 4 octets. If the length is not a multiple of 4 octets, the Link State Advertisement (LSA) is malformed and MUST be ignored.” This applies to a single optional sub‑TLV carried in OSPFv2 Extended Prefix Opaque LSAs (RFC 7684) and in OSPFv3 Extended LSAs and the SRv6 Locator LSA (RFC 8362, RFC 9513). RFC 8362 Section 3, however, normatively defines TLV/LSA error handling for OSPFv3 Extended LSAs: “For backward compatibility, an LSA is not considered malformed from a TLV perspective unless either a required TLV is missing or a specified TLV is less than the minimum required length,” with further rules in Section 6.3. Under that model, problems with optional TLVs (including malformed or unknown ones) are handled by ignoring those TLVs while still accepting the rest of the LSA, to preserve backward compatibility. RFC 9792 introduces a stricter condition that a formatting error in this optional sub‑TLV renders the entire LSA malformed and unusable, which is a behavioral change relative to RFC 8362’s generic rules for Extended LSAs and the TLV framework it references from RFC 3630. Implementers who follow RFC 8362/RFC 3630 patterns are likely to treat only the sub‑TLV as malformed and ignore it, whereas strict RFC 9792 readers will drop the whole LSA; this can lead to divergent behavior when a misformatted sub‑TLV is present and is not clearly justified in terms of compatibility. The text is also underspecified in that it does not clarify whether this more stringent malformed‑LSA rule is intended to override RFC 8362’s TLV‑level error‑handling guidance “from a TLV perspective”, leaving ambiguity about which behavior is correct for OSPFv3 Extended LSAs and SRv6 Locator LSAs that carry this sub‑TLV.
+    - EntitiesInvolved: [
+        "RFC 9792 Section 2 (Prefix Extended Flags length and malformed‑LSA rule)",
+        "RFC 8362 Section 3 and Section 6.3 (OSPFv3 Extended‑LSA TLV format and backward‑compatibility handling)",
+        "RFC 3630 TLV framework (referenced by RFC 7684, RFC 8362, RFC 9513)",
+        "RFC 7684 OSPFv2 Extended Prefix Opaque LSA TLV format",
+        "RFC 9513 Section 7 (SRv6 Locator LSA using TLVs and sub‑TLVs)"
+      ]
+    - CrossRefsUsed: [
+        "RFC 8362 Section 3 TLV format and ‘LSA is not considered malformed…’ rule",
+        "RFC 7684 Section 2 TLV format and padding rules",
+        "RFC 9513 Section 7 TLV and sub‑TLV framework for SRv6 Locator LSA"
+      ]
+    - Confidence: Medium
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: OSPFv3 IANA registry text incorrectly refers to OSPFv2 sub‑TLV
+    - Description: In RFC 9792 Section 4.2.2 (“OSPFv3 Prefix Extended Flags Registry”), the text says: “IANA has created the ‘OSPFv3 Prefix Extended Flags’ registry … The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.” This is internally inconsistent: Section 4.2.x is explicitly about OSPFv3, and Section 4.1.x has already created a separate “OSPFv2 Prefix Extended Flags” registry for the OSPFv2 sub‑TLV. The OSPFv3 registry clearly ought to define bits for the OSPFv3 Prefix Extended Flags sub‑TLV (type 37 in the “OSPFv3 Extended-LSA Sub-TLVs” registry), not for the OSPFv2 sub‑TLV. As written, an implementer or IANA reader could be misled into thinking the OSPFv3 registry somehow governs OSPFv2 encodings, or that there is only a single shared bit registry, contradicting the separate OSPFv2 registry description in Section 4.1.2. This is a straightforward copy‑and‑paste error in the registry description and should say “OSPFv3 Prefix Extended Flags sub‑TLV”.
+    - EntitiesInvolved: [
+        "RFC 9792 Section 4.1.2 (OSPFv2 Prefix Extended Flags Registry)",
+        "RFC 9792 Section 4.2.2 (OSPFv3 Prefix Extended Flags Registry)",
+        "OSPFv2 Prefix Extended Flags sub‑TLV",
+        "OSPFv3 Prefix Extended Flags sub‑TLV",
+        "OSPFv2 and OSPFv3 Parameters registry groups"
+      ]
+    - CrossRefsUsed: [
+        "RFC 9792 Section 4.1.2 and 4.2.2 IANA registry descriptions"
+      ]
+    - Confidence: High
+
+- IfNoIssues:
+  - Comment: Not applicable, as at least one clear cross‑RFC/registry inconsistency (Issue‑2) and one likely semantic conflict with the base OSPFv3 Extended‑LSA TLV handling (Issue‑1) were identified.
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: OSPFv3 IANA registry text incorrectly names the OSPFv2 sub-TLV
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 2 (definition of the common sub-TLV):  
+          - “This document defines a variable-length Prefix Extended Flags sub-TLV for OSPFv2 and OSPFv3.”  
+          - “The format of the OSPFv2/OSPFv3 Prefix Extended Flags sub-TLV is shown in Figure 1.”  
+          - “Type (2 octets):  11 for OSPFv2 and 37 for OSPFv3”
+        - OSPFv2 IANA registry text (Section 4.1.2):  
+          - “IANA has created the ‘OSPFv2 Prefix Extended Flags’ registry…”  
+          - “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+        - OSPFv3 IANA registry text (Section 4.2.1 and 4.2.2):  
+          - “IANA has allocated the following codepoint in the ‘OSPFv3 Extended-LSA Sub-TLVs’ registry: … 37 | OSPFv3 Prefix Extended Flags …”  
+          - “IANA has created the ‘OSPFv3 Prefix Extended Flags’ registry within the ‘Open Shortest Path First v3 (OSPFv3) Parameters’ registry group.  
+             The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+      - ContextSnippets:
+        - From RFC 8362 (top-level and sub-TLV framework for OSPFv3):  
+          - “This document defines the following top-level TLV types: … 3 - Inter-Area-Prefix TLV … 5 - External-Prefix TLV … 6 - Intra-Area-Prefix TLV …”  
+          - “Additionally, this document defines the following sub-TLV types: …”  
+          - These TLVs are clearly OSPFv3 constructs into which the new OSPFv3 Prefix Extended Flags sub-TLV is inserted.
+        - From RFC 7684 (OSPFv2 side):  
+          - “This document creates a registry for OSPFv2 Extended Prefix sub-TLVs in Section 6.”  
+          - Section 2.1 shows the OSPFv2 Extended Prefix TLV with its one-octet Flags field, separate from any OSPFv3 structure.
+    - Reasoning:
+      - Section 2 defines a *single* “Prefix Extended Flags sub-TLV” structure that is used in both OSPFv2 (type 11) and OSPFv3 (type 37). The value portion of this sub-TLV is the “Prefix Extended Flags” field, whose bits are to be allocated via separate IANA registries for OSPFv2 and OSPFv3.
+      - In the OSPFv2 IANA text (Section 4.1.2), the description is internally consistent: it refers to the “OSPFv2 Prefix Extended Flags” registry and correctly says, “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+      - In the OSPFv3 IANA text (Section 4.2.2), the first sentence correctly introduces the “OSPFv3 Prefix Extended Flags” registry in the OSPFv3 Parameters group. However, the next sentence states: “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+      - Referring to the *OSPFv2* Prefix Extended Flags sub-TLV while describing an *OSPFv3* registry is inconsistent with:
+        - The heading “4.2.2. OSPFv3 Prefix Extended Flags Registry”
+        - The immediately preceding sub-section 4.2.1, which allocates value 37 as “OSPFv3 Prefix Extended Flags” in the “OSPFv3 Extended-LSA Sub-TLVs” registry.
+        - The design intent that OSPFv2 and OSPFv3 have *separate* bit registries for their respective sub-TLV type codes.
+      - This is a classic copy-paste error from the OSPFv2 registry text into the OSPFv3 section. It can mislead readers into thinking the OSPFv3 registry somehow governs bits in the OSPFv2 sub-TLV, or that there is only one sub-TLV object whose bits are centrally defined in one place, which is not what the rest of the document and the IANA structure indicate.
+      - While an experienced implementer can infer the correct intent from the context (that 4.2.2 must refer to the OSPFv3 Prefix Extended Flags sub-TLV, i.e., type 37), the sentence as written is technically wrong and could confuse implementers and IANA consumers looking for the authoritative description of which bits are being registered for which protocol version.
+    - PatchSuggestion:
+      - In Section 4.2.2 (“OSPFv3 Prefix Extended Flags Registry”), replace:
+        - “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.”
+        - with:
+        - “The registry defines the bits in the Prefix Extended Flags field in the OSPFv3 Prefix Extended Flags sub-TLV as specified in Section 2.”
+
+- Notes:
+  - UsedRouterIssues: Confirmed the router’s Candidate Issue about the OSPFv3 registry text incorrectly referring to the OSPFv2 Prefix Extended Flags sub-TLV; no additional router-suggested issues were found.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - Analysis is based on the provided excerpts of RFC 9792 and the referenced RFCs. The inconsistency is clear from this material alone; no additional context appears necessary to confirm it. No other terminology/naming bugs were identified in Section 2 or the related IANA text given the available context.
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  Section 2 of RFC 9792 defines a new variable‑length “Prefix Extended Flags” sub‑TLV for OSPFv2/OSPFv3. The sub‑TLV has a 2‑octet Type, a 2‑octet Length (stated to be the length of the flags field in octets, and required to be a multiple of 4), and a variable Prefix Extended Flags field (flags grouped in 4‑octet blocks, bits numbered from 0 upward). The text further specifies how unassigned bits are handled, how to interpret bits beyond the transmitted length, and how to handle multiple instances of the sub‑TLV within the same enclosing TLV. The surrounding references (RFC 7684, 8362, 3630, 9513) define the generic TLV/sub‑TLV framework and “malformed LSA” behavior.
+
+- OverallBoundaryBugLikelihood: Medium
+
+- Findings:
+
+  - Finding-1:
+    - BugType: Inconsistency
+    - ShortLabel: Non‑4‑byte Length treated as whole‑LSA malformed vs. base TLV handling
+    - BoundaryAxis: Sub‑TLV Length not a multiple of 4 octets
+    - ExcerptEvidence:  
+      RFC 9792 Section 2 says of the Prefix Extended Flags sub‑TLV Length:  
+      > “The length MUST be a multiple of 4 octets. If the length is not a multiple of 4 octets, the Link State Advertisement (LSA) is malformed and MUST be ignored.”  
+      By contrast, RFC 8362’s TLV framework says:  
+      > “The Length field defines the length of the value portion in octets … The TLV is padded to 4‑octet alignment; padding is not included in the Length field (so a 3‑octet value would have a length of 3, but the total size of the TLV would be 8 octets).”  
+      and:  
+      > “For backward compatibility, an LSA is not considered malformed from a TLV perspective unless either a required TLV is missing or a specified TLV is less than the minimum required length.” (Section 3 of RFC 8362).  
+      RFC 3630 and RFC 7684 use the same TE/TLV model, where unknown or optional TLVs with odd lengths are simply skipped, not considered LSA‑fatal.
+    - Reasoning:  
+      Under the generic OSPF TLV rules (RFC 3630 / 7684 / 8362), the Length field can be any non‑negative integer; non‑4‑byte‑aligned TLVs are handled via explicit padding that is not counted in Length. A TLV with Length = 1, 2, or 3 is valid at the TLV level, and the parser can still unambiguously step over it (Length bytes of value plus any padding to reach 4‑octet alignment). RFC 8362 further says an LSA is *not* considered malformed “from a TLV perspective” except when a required TLV is missing or too short; i.e., malformed optional/unknown TLVs are normally localized to that TLV, and the rest of the LSA remains usable.  
+      RFC 9792 adds an additional condition specific to this sub‑TLV: if *this* sub‑TLV’s Length is not a multiple of 4, the *entire* LSA “is malformed and MUST be ignored.” That goes beyond the generic rule which only treats an LSA as malformed when required TLVs are missing or too short. For a given misencoded LSA (e.g., Prefix Extended Flags sub‑TLV with Length = 3), an implementation following RFC 9792 strictly will discard the entire LSA; an implementation that only follows the generic TLV guidance (or that interprets 9792’s constraint as TLV‑local) could instead skip or ignore the malformed sub‑TLV and still use the other TLVs in the same LSA.  
+      Because RFC 8362 states an LSA is not malformed “unless” the two listed conditions hold, and 9792 introduces a third condition that causes the LSA to be treated as malformed, these two specifications cannot both be literally true for LSAs containing this sub‑TLV. Implementers must choose whether to treat a Length‑mod‑4 error as LSA‑fatal (9792) or TLV‑local (the generic TLV robustness model), which is a normative inconsistency on this boundary case.
+    - ImpactAssessment:  
+      The divergence only arises for *non‑compliant* encodings (Length not a multiple of 4), but error‑handling behavior is still important for interoperability: some routers will completely ignore such LSAs (losing all contained prefix information), while others may still use other TLVs in the same LSA and only ignore the bad sub‑TLV. This can lead to inconsistent LSDB state and routing decisions across implementations when malformed LSAs are present. The text in RFC 9792 is clear on its own; the bug is the conflict with the base TLV malformed‑LSA policy inherited from RFC 8362/3630.
+
+  - Finding-2:
+    - BugType: None
+    - ShortLabel: Interpretation of “MUST limit the length … so as to signal the bits that are set to 1”
+    - BoundaryAxis: Minimal vs. non‑minimal sub‑TLV Length, Length=0 case, and bits beyond transmitted length
+    - ExcerptEvidence:  
+      RFC 9792 Section 2 says:  
+      > “An implementation MUST limit the length of the sub‑TLV so as to signal the bits that are set to 1. Defined prefix flags that are not transmitted due to being beyond the transmitted length MUST be treated as being set to 0.”  
+      It also requires Length to be a multiple of 4 octets and defines bits as numbered sequentially across 4‑octet blocks.
+    - Reasoning:  
+      The domain here includes: (a) valid Lengths (0, 4, 8, …), (b) which bits are set to 1 within those bytes, and (c) “defined prefix flags that are not transmitted” because they lie beyond the chosen Length. The phrase “MUST limit the length … so as to signal the bits that are set to 1” is somewhat informal mathematically, but its intended meaning is evident: the sub‑TLV value should not be longer than necessary; it should include enough 4‑octet blocks to cover the highest‑numbered bit that is 1, and no trailing all‑zero blocks. The second sentence makes the receiver behavior explicit: any defined flags beyond the transmitted length are treated as 0.  
+      For senders, whether an implementation strictly uses the *minimal* such length or sometimes includes extra trailing zero blocks (violating the “limit” guidance) does not change any receiver’s interpretation, because all unassigned bits must be 0 on transmission and ignored on receipt, and any defined flags beyond the transmitted Length are defined to be 0. For the Length=0 case, with no bits set to 1, any receiver will naturally infer that all known flags are 0, which is exactly what the second sentence mandates. There is no ambiguity in how a receiver interprets any valid Length/bit pattern, and differences among senders only affect encoding efficiency, not semantics.
+    - ImpactAssessment:  
+      Although the “MUST limit” wording is looser than an algorithmic description of “choose the smallest multiple of 4 octets that still contains all 1‑bits,” it does not lead to divergent *interpretations* of the same message: receiver semantics are fully and clearly specified for all valid Lengths and any pattern of 1‑bits. Any variation is limited to on‑wire overhead and compliance with a sender‑side optimization, so this does not rise to a boundary/exceptional‑case specification bug.
+
+- Notes:
+  - Not a boundary bug but worth flagging as an editorial inconsistency: in Section 4.2.2, the “OSPFv3 Prefix Extended Flags Registry” paragraph says, “The registry defines the bits in the Prefix Extended Flags field in the OSPFv2 Prefix Extended Flags sub-TLV as specified in Section 2.” Given that Section 4.2 is explicitly about OSPFv3, and there is already a distinct OSPFv2 registry in Section 4.1.2, this appears to be a copy‑paste error (it should refer to the OSPFv3 Prefix Extended Flags sub‑TLV). While this is not a boundary‑condition problem per se, it could confuse readers about which wire format the OSPFv3 registry is intended to cover.
+
+[Used vector stores: vs_6954b9de5a68819196421a95a41f1980]
+
+
+Vector Stores Used: vs_6954b9de5a68819196421a95a41f1980
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

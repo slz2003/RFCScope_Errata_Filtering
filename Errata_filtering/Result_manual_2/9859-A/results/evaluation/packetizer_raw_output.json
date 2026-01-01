@@ -1,0 +1,31 @@
+{
+  "reports": [
+    {
+      "label": "Underspecified Candidate Issue in Candidate Issues Section",
+      "bug_type": "Candidate / Underspecification",
+      "explanation": "The analysis output includes one candidate issue that is underspecified, with no explicit type, label, or relevant dimensions provided.",
+      "justification": [
+        "The Candidate Issues section lists one candidate issue with empty details: no type, label, or relevant dimensions are provided (E1)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The Candidate Issues section shows a single candidate issue that provides no additional information (empty type and label)."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "The overall analysis dimensions all rate low and the bug likelihood is noted as None, indicating that even if underspecified, the candidate issue is of low severity.",
+      "confidence": "Medium",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "9859-A-1"
+    }
+  ]
+}

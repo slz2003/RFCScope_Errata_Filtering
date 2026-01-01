@@ -1,0 +1,233 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 3 of RFC 9748 sets common registration policies and conventions for certain NTP registries, including carving out private/experimental ranges and changing the remaining assignable portions to “Specification Required” with designated expert review per RFC 8126. Section 4 then applies these rules concretely to the NTP Reference Identifier Codes, NTP Kiss-o'-Death Codes, and NTP Extension Field Types registries.
+
+- ScopeModel:
+  - Targets:
+    - The “NTP Reference Identifier Codes” registry from RFC 5905.
+    - The “NTP Kiss-o'-Death Codes” registry from RFC 5905.
+    - The “NTP Extension Field Types” registry from RFC 5906 / RFC 5905 Section 7.5 / Section 16.
+    - Within these:
+      - For Reference IDs and Kiss-o’-Death Codes: entries whose IDs are 4‑byte ASCII values.
+      - A specific subrange of each ASCII space: codes beginning with ASCII “X” (0x58).
+      - For Extension Field Types: the numeric range 0xF000–0xFFFF as a partition.
+    - Designated Experts (a pool of three) responsible for review of assignments under “Specification Required” for these NTP registries.
+  - Conditions:
+    - Section 3 applies to “the NTP registries” being updated (contextually, the three NTP registries modified in Section 4, not the NTS registries, which are explicitly unchanged in Section 2.3).
+    - For Reference ID and Kiss-o’-Death registries:
+      - ASCII IDs are “now limited to uppercase letters or digits.”
+      - IDs starting with ASCII “X” / 0x58 “are reserved for Private or Experimental Use,” and in Section 4.1/4.2: “Codes beginning with the character ‘X’ are reserved for experimentation and development. IANA cannot assign them.”
+    - For Extension Field Types:
+      - “A partition of the ‘NTP Extension Field Types’ registry is reserved for Private or Experimental Use” (Section 3).
+      - Concretely: “Field Types in the range 0xF000 through 0xFFFF, inclusive, are reserved for experimentation and development. IANA cannot assign them” (Section 4.3).
+    - General policy statement: “The policy for each registry is now Specification Required, as defined in [RFC8126], Section 4.6” (Section 3).
+    - Designated expert process: three DEs, with at least two approvals required for a change; DEs to follow RFC 8126 Section 5 guidance and be familiar with the history in this document (Section 3.1).
+  - NotedAmbiguities:
+    - The phrase “The policy for each registry is now Specification Required” is global in form, while the same section simultaneously establishes private/experimental partitions where IANA “cannot assign” code points, and RFC 8126 describes those ranges as not subject to IANA review or registration.
+    - Section 3’s “entries with ASCII fields are now limited to uppercase letters or digits” and Section 4.1/4.2’s column definition “Each byte … must be ASCII uppercase letters or digits” appear unconditional, yet the same subsections state, “The existing entries are left unchanged,” creating an implicit temporal scope that is not spelled out.
+    - “The NTP registries” in Section 3 could, if read without care, be mistaken to include the NTS registries discussed in Section 2.3, even though that subsection says “there are no changes specified in this document” for NTS.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Unclear interaction between “Specification Required” policy and private/experimental subranges within the NTP registries
+    - ScopeProblemType: Mixed per-registry and per-range policies without an explicit statement that Specification Required applies only to IANA-assignable ranges
+    - Evidence:
+      - Section 3 (NTP Registry Updates):  
+        - “A partition of the ‘NTP Extension Field Types’ registry is reserved for Private or Experimental Use.”  
+        - “In the ‘NTP Reference Identifier Codes’ and ‘NTP Kiss-o'-Death Codes’ registries, entries with ASCII fields are now limited to uppercase letters or digits. Fields starting with 0x58, the uppercase letter ‘X’, are reserved for Private or Experimental Use.”  
+        - “The policy for each registry is now Specification Required, as defined in [RFC8126], Section 4.6.”
+      - Section 4.1 / 4.2 notes: “Codes beginning with the character ‘X’ are reserved for experimentation and development. IANA cannot assign them.”
+      - Section 4.3 note: “Field Types in the range 0xF000 through 0xFFFF, inclusive, are reserved for experimentation and development. IANA cannot assign them.”
+      - RFC 8126 Section 4.1 / 4.2: for Private Use and Experimental Use, “IANA does not record assignments from registries or ranges with this policy (and therefore there is no need for IANA to review them) and assignments are not generally useful for broad interoperability.”
+      - RFC 8126 Section 4.6: Specification Required “is the same as Expert Review, with the additional requirement of a formal public specification… the designated expert will review the public specification…”.
+      - RFC 8126 Section 4.11: It is common “to partition a namespace into two or more parts, with one range reserved for Private or Experimental Use while other ranges are reserved for globally unique assignments assigned following some review process.”
+    - DetailedReasoning:
+      1. Section 3 states that “The policy for each registry is now Specification Required,” immediately after establishing that specific subranges in those same registries are “reserved for Private or Experimental Use.”
+      2. RFC 8126 treats “Specification Required” and “Private Use” / “Experimental Use” as distinct registration policies with different IANA behaviors: Specification Required implies designated expert review and public documentation; Private/Experimental Use implies no IANA review and no recording of assignments.
+      3. Section 4.1, 4.2, and 4.3 then add notes that codes beginning with “X” and the 0xF000–0xFFFF range “are reserved for experimentation and development. IANA cannot assign them,” which is consistent with Private/Experimental Use semantics.
+      4. However, the RFC never says explicitly that the Specification Required policy applies only to the IANA-assignable portions of the registries and not to the private/experimental ranges.
+      5. A literal reading of “The policy for each registry is now Specification Required” could be taken to mean that *every value in these registries* is governed by Specification Required, which would be in tension with both the “IANA cannot assign them” notes for those ranges and the RFC 8126 rule that IANA does not review or record assignments in Private/Experimental ranges.
+      6. In practice, IANA and experienced readers will likely infer the intended per-range policy split from RFC 8126 Section 4.11 and from the “IANA cannot assign them” wording, but the document relies on this inference rather than making the scope explicit.
+      7. This ambiguity could lead to questions such as: should a designated expert ever consider a request to assign a codepoint in the private range under Specification Required, or must such requests be rejected as out-of-scope? Is IANA expected to track anything for those ranges beyond the single “reserved” row?
+      8. Because the policy statement in Section 3 is registry-wide and unconditional, while the private/experimental semantics are per-range and only described later, the scope of Specification Required is under-specified: it is not clearly constrained to “non-private/experimental” values.
+      9. A short clarifying sentence, e.g., “For the portions of these registries that are IANA-assignable, the registration policy is Specification Required; values in ranges reserved for Private or Experimental Use are not assigned or recorded by IANA,” would make the intended scope explicit and align the registry descriptions cleanly with the model in RFC 8126.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous temporal scope of the “uppercase letters or digits” restriction on ASCII IDs
+    - ScopeProblemType: Unclear whether character-set constraints apply retroactively to existing registry entries or only to future assignments
+    - Evidence:
+      - Section 3 (second bullet): “In the ‘NTP Reference Identifier Codes’ and ‘NTP Kiss-o'-Death Codes’ registries, entries with ASCII fields are now limited to uppercase letters or digits.”
+      - Section 4.1 (Reference Identifier Codes):  
+        - Column definition: “ID (required): a four-byte value padded on the right with all-bits-zero. Each byte other than padding must be ASCII uppercase letters or digits.”  
+        - “The existing entries are left unchanged.”
+      - Section 4.2 (Kiss-o'-Death Codes):  
+        - Same ID definition: “Each byte other than padding must be ASCII uppercase letters or digits.”  
+        - “The existing entries are left unchanged.”
+      - RFC 5905 Section 7.3 / 7.4 originally defined reference IDs and kiss codes as four-character ASCII strings and listed values that might not meet the new “uppercase letters or digits” constraint.
+    - DetailedReasoning:
+      1. Section 3 declares that entries in the two ASCII-based registries “are now limited to uppercase letters or digits,” phrased as a blanket rule without any qualifier about whether it applies only to new registrations.
+      2. Section 4.1 and 4.2 then define the ID column schema normatively: “Each byte other than padding must be ASCII uppercase letters or digits,” which appears, in isolation, to constrain *all* registry entries that occupy the ID column.
+      3. Each of these subsections also states, “The existing entries are left unchanged,” indicating that legacy entries that do not conform to the new character restriction are not to be modified.
+      4. The document never explicitly reconciles these points by stating that the character-set restriction is prospective only, i.e., it applies to future assignments while existing non-conforming codes remain valid historical exceptions.
+      5. For IANA, or for automated validation tools that treat the column definition as a strict schema constraint, this can look like a contradiction in scope: the formal column definition says *all* IDs “must” be uppercase letters or digits, but the implementation note says existing entries (which may violate this) are to be kept.
+      6. Implementers or reviewers may also wonder whether existing non-conforming codes should be considered “out of spec” going forward, or whether they are implicitly grandfathered.
+      7. The scope issue here is temporal: the RFC does not explicitly state that the “must be uppercase letters or digits” rule applies only to new registrations, nor does it note that existing entries form an exception to the schema.
+      8. Clarifying language such as “All future registrations in these registries MUST use IDs whose ASCII bytes are uppercase letters or digits; existing assignments that do not meet this criterion remain valid and are not to be changed” would make the intended temporal scope clear and avoid the appearance that the current registry contents violate the formal column definition.
+
+- ResidualUncertainties:
+  - The term “the NTP registries” in Section 3 appears, from context, to mean the specific NTP registries that this document is updating (Reference IDs, Kiss-o’-Death Codes, Extension Field Types), not all registries under the ntp‑parameters umbrella and not the NTS registries; Section 2.3 explicitly says there are no changes for NTS. This scoping seems inferable but is not stated outright, so a cautious reader might still briefly wonder whether any other NTP-side registries were intended to move to Specification Required as well.
+
+[Used vector stores: vs_6954bae1147c81918aa2fe330008bd93]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary:  
+  Section 3 of RFC 9748 sets common IANA registration rules for NTP registries: all NTP registries move to the “Specification Required” policy (with designated experts per RFC 8126), and specific sub‑ranges in those registries are reserved for private/experimental use and not assignable by IANA. Section 3.1 gives high‑level guidance to designated experts. Section 4 then applies those rules concretely to the Reference ID, Kiss‑o'-Death, and Extension Field Types registries, adding “IANA cannot assign” notes for the private/experimental ranges and tightening the syntax of ASCII IDs.
+
+- OverallDeonticRisk: None  
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: Combination of “Specification Required” with private/experimental ranges is normatively coherent
+    - Description:  
+      The candidate concern is that Section 3 states, “The policy for each registry is now Specification Required, as defined in [RFC8126], Section 4.6,” while the same section and Section 4 reserve specific code ranges for “Private or Experimental Use” / “experimentation and development” and say “IANA cannot assign them.” At first glance this might appear to conflict with RFC 8126’s characterization of “Private Use” and “Experimental Use” (where IANA does not record assignments) versus “Specification Required” (which mandates designated expert review and a public specification). However, RFC 8126 explicitly contemplates partitioning a namespace so that some ranges are reserved for Private/Experimental Use and other ranges use a stricter policy, e.g., “globally unique assignments assigned following some review process”  .  
+      In RFC 9748, the normative story fits that model: (1) it sets the *registration policy* for *IANA‑assignable* values in each NTP registry to “Specification Required”, and (2) it separately marks certain ranges as reserved for experimentation or private/experimental use and unassignable by IANA (“IANA cannot assign them”). These ranges are therefore effectively excluded from the Spec Required workflow and align with RFC 8126’s description that IANA does not record or review assignments in private/experimental ranges  . This is no different in structure from a registry whose overall registration policy is, say, “Expert Review” but that has specific codepoints or ranges marked “Reserved” or “Private Use” and never allocated. Since the document explicitly says “IANA cannot assign them,” there is clear operational guidance to IANA and to designated experts that Spec Required does *not* govern those ranges. Any additional sentence such as “Specification Required applies only to the IANA‑assignable portions of the registries” would be a clarity improvement, not a correction of a normative error.
+    - KeyTextSnippets:
+      - “The following general guidelines apply to the NTP registries: … A partition of the ‘NTP Extension Field Types’ registry is reserved for Private or Experimental Use. … The policy for each registry is now Specification Required, as defined in [RFC8126], Section 4.6.”  
+      - “Codes beginning with the character ‘X’ are reserved for experimentation and development. IANA cannot assign them.” (Reference ID and Kiss‑o'-Death registries)  
+      - “Field Types in the range 0xF000 through 0xFFFF, inclusive, are reserved for experimentation and development. IANA cannot assign them.” (Extension Field Types registry)    
+      - RFC 8126: “Many protocols now partition namespaces into two or more parts, with one range reserved for Private or Experimental Use while other ranges are reserved for globally unique assignments assigned following some review process.”  
+    - Impact:  
+      The current text is sufficient for IANA and implementers to understand that (a) any *assigned* NTP registry values use the Specification Required policy with designated expert review, and (b) certain ranges are permanently for private/experimental use and not IANA‑assignable. There is no real risk of mis‑implementation or security/interoperability failure stemming from the normative structure here; at most, an additional clarifying sentence would be a non‑essential editorial enhancement.
+
+[Used vector stores: vs_6954bae1147c81918aa2fe330008bd93]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 3 of RFC 9748 sets uniform registration policies for the NTP registries created by RFC 5905 and related specs, moving them to “Specification Required” per RFC 8126, while carving out explicit ranges in those registries for private/experimental use that “IANA cannot assign.” Section 3.1 then defines how designated experts, appointed under RFC 8126’s framework, are supposed to operate for these registries.
+- OverallCrossRFCLikelihood: Low
+- Issues: []
+- IfNoIssues:
+  - Comment:  
+
+    Cross‑RFC and registry alignment between RFC 9748, RFC 5905, and RFC 8126 appears consistent.
+
+    *Registration policy vs. private/experimental ranges.*  
+    RFC 9748 states, “The policy for each registry is now Specification Required, as defined in [RFC8126], Section 4.6,” and then separately reserves specific sub‑ranges for private/experimental use: fields beginning with “X” in the NTP Reference Identifier Codes and NTP Kiss‑o'-Death Codes registries, and Field Types 0xF000–0xFFFF in the NTP Extension Field Types registry, all with the explicit note that “IANA cannot assign them.” This matches the pattern RFC 8126 describes in Section 4, which explicitly allows partitioning a namespace so that one part is reserved for “Private or Experimental Use” while other ranges use a stricter policy like Specification Required or IETF Review. The combination “overall registry policy is Specification Required, but these particular codepoints are reserved and not assignable by IANA” is a standard way to implement a mixed policy; RFC 8126 also emphasizes that documents need not literally use the policy names as long as the instructions to IANA are clear and unambiguous. Here, “IANA cannot assign them” plus the “Private or Experimental Use” wording is clear enough that an implementer should not reasonably try to register those values under Specification Required, nor expect IANA to track them.
+
+    *Consistency with RFC 5905 registries and names.*  
+    RFC 5905’s IANA Considerations created three registries: NTP Reference Identifier Codes, NTP Kiss‑o'-Death Codes, and the NTP Extension Field Types registry, with FCFS for the first two and IETF Review for the last. RFC 9748’s Section 3 and Section 4 explicitly update those same registries and change their policies to Specification Required, which is exactly the kind of update RFC 8126 Section 2.4 contemplates for “revising existing registries.” The registry names used (“NTP Reference Identifier Codes”, “NTP Kiss-o'-Death Codes”, and “NTP Extension Field Types”) and the constraints on “X”‑prefixed codes are consistent with RFC 5905’s Section 7.3, Section 7.4, and Section 16, while making the intended reservation and assignment rules more explicit.
+
+    *Designated expert handling.*  
+    RFC 9748 Section 3.1 requests the IESG to appoint three designated experts and specifies that “approvals from two being required to implement a change,” which is consistent with RFC 8126 Section 5’s model where the defining document may specify how a pool of designated experts operates (e.g., requiring consensus or a particular decision rule). It correctly references RFC 8126 Section 5 for the general role and behavior of designated experts and ties that to the Specification Required policy in Section 4.6.
+
+    Overall, the interaction between “Specification Required” and the private/experimental partitions does not create a real cross‑RFC or registry conflict: RFC 9748’s text fits within the patterns that RFC 8126 explicitly allows, and the “IANA cannot assign them” language makes the intended exclusion of those ranges from IANA‑mediated registration clear. The router’s suggested concern about ambiguity is, at most, a minor clarity issue and does not rise to a concrete interoperability or registry‑handling bug.
+
+[Used vector stores: vs_6954bae1147c81918aa2fe330008bd93]
+
+
+Vector Stores Used: vs_6954bae1147c81918aa2fe330008bd93
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

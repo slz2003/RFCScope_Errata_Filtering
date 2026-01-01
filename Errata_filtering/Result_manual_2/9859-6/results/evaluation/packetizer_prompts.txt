@@ -1,0 +1,328 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 6 of RFC 9859 defines IANA actions: registration of the DSYNC RR type, creation of a new DSYNC “scheme” registry with Expert Review policy, and registration of the `_dsync` underscored name. The main scope concern is how the DSYNC “Scheme” code points are scoped: globally across all RRtypes vs per-(RRtype, Scheme) pair.
+
+- ScopeModel:
+  - Targets:
+    - DSYNC RR type as a new DNS RR in the “Resource Record (RR) TYPEs” registry (Section 6.1).
+    - The DSYNC “Scheme” field (an 8‑bit integer in DSYNC RDATA) and its IANA registry “DSYNC: Location of Synchronization Endpoints” (Section 6.2).
+    - Registry entries consisting of fields: RRtype, Scheme, Mnemonic, Purpose, Reference (Section 6.2).
+    - The `_dsync` underscored node name in the “Underscored and Globally Scoped DNS Node Names” registry (Section 6.3).
+  - Conditions:
+    - DSYNC “Scheme” values:
+      - 0 = “null scheme”, ignored by consumers; 128–255 reserved for Private Use; others currently unassigned, with “future assignments maintained in the registry created in Section 6.2” (Section 2.1).
+      - “Schemes are independent of the RRtype. They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).” (Section 2.3).
+    - DSYNC publication:
+      - “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.” (Section 3).
+    - Registry scope:
+      - The new registry is named “DSYNC: Location of Synchronization Endpoints”, with Registration Procedure “Expert Review” (Section 6.2).
+      - Initial contents table has columns: RRtype | Scheme (Mnemonic) | Purpose | Reference, with a mix of rows with an RRtype (CDS/CSYNC + scheme 1) and rows with an empty RRtype (scheme 0, 2–127, 128–255) (Table 1, Section 6.2).
+      - Future registration requests “MUST include” RRtype, Scheme, Mnemonic, Purpose, Reference (Section 6.2).
+    - Underscore name:
+      - `_dsync` registered as a global underscored node name for RR Type DSYNC (Section 6.3), consistent with its use as the rightmost underscore label in names like `child._dsync.example.` (Section 3).
+  - NotedAmbiguities:
+    - Whether DSYNC “Scheme” code points are a single global namespace (one meaning per numeric value across all RRtypes) or are effectively scoped per (RRtype, Scheme) pair.
+    - How to interpret entries in the DSYNC Scheme registry that have an empty RRtype field: do they mean “this applies to all RRtypes” or something else?
+    - Whether reusing an existing scheme value (e.g., 1 = NOTIFY) for a new RRtype requires a new registry entry or is implied by the global nature of schemes.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Ambiguous scope of DSYNC “Scheme” namespace vs per-RRtype registry structure
+    - ScopeProblemType: Namespace scope ambiguity (global vs per-(RRtype, Scheme)) for a code point registry
+    - Evidence:
+      - Scheme definition and claimed independence from RRtype:
+
+        - “Scheme:  The mode used for contacting the desired notification address.  This is an 8-bit unsigned integer.  Records with value 0 (null scheme) are ignored by consumers.  Value 1 is described in this document, and values 128-255 are Reserved for Private Use.  Other values are currently unassigned.  Future assignments are maintained in the registry created in Section 6.2.” (Section 2.1)
+
+        - “Schemes are independent of the RRtype.  They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).” (Section 2.3)
+
+      - IANA registry structure that ties schemes to RRtype:
+
+        - “IANA has created the following new registry in the ‘Domain Name System (DNS) Parameters’ registry group:
+
+          Name:  DSYNC: Location of Synchronization Endpoints  
+          Registration Procedure:  Expert Review  
+          Reference:  RFC 9859
+
+          The initial contents for the registry are as follows:
+
+          +========+===================+==========================+===========+  
+          | RRtype | Scheme (Mnemonic) | Purpose                  | Reference |  
+          +========+===================+==========================+===========+  
+          |        | 0                 | Null scheme (no-op)      | RFC 9859  |  
+          +--------+-------------------+--------------------------+-----------+  
+          | CDS    | 1 (NOTIFY)        | Delegation management    | RFC 9859  |  
+          +--------+-------------------+--------------------------+-----------+  
+          | CSYNC  | 1 (NOTIFY)        | Delegation management    | RFC 9859  |  
+          +--------+-------------------+--------------------------+-----------+  
+          |        | 2-127             | Unassigned               |           |  
+          +--------+-------------------+--------------------------+-----------+  
+          |        | 128-255           | Reserved for Private     | RFC 9859  |  
+          |        |                   | Use                      |           |  
+          +--------+-------------------+--------------------------+-----------+” (Table 1, Section 6.2)
+
+        - “Requests to register additional entries MUST include the following fields:
+
+          RRtype:  An RRtype that is defined for use  
+          Scheme:  The mode used for contacting the desired notification address  
+          Mnemonic:  The scheme's shorthand string used in presentation format  
+          Purpose:  Use case description  
+          Reference:  Location of specification or registration source” (Section 6.2)
+
+      - Per-DSYNC-record uniqueness over (RRtype, Scheme): “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.” (Section 3)
+    - DetailedReasoning:
+      1. Section 2.3 explicitly states that “Schemes are independent of the RRtype. They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).” This strongly suggests that the Scheme field is a *global* 8‑bit namespace: each numeric Scheme value defines a transport/interaction method that is conceptually orthogonal to the payload type (RRtype) and should have the same semantics wherever used.
+      2. Section 2.1 reinforces this by describing Scheme as a standalone 8‑bit unsigned integer, assigning 0 as “null scheme” and 128–255 as “Reserved for Private Use” without any RRtype qualification, and stating that “Future assignments are maintained in the registry created in Section 6.2.” This again reads as a single global registry for the Scheme field, not a per‑RRtype space.
+      3. In contrast, Section 6.2 defines the new IANA registry with an explicit RRtype column and then requires that “Requests to register additional entries MUST include” an RRtype along with Scheme, Mnemonic, Purpose, and Reference. The initial table includes separate rows for (CDS, 1) and (CSYNC, 1), plus rows with *empty* RRtype for scheme 0, 2–127 (unassigned), and 128–255 (Private Use). This structure reads as if entries are keyed by the pair (RRtype, Scheme), and that each (RRtype, Scheme) combination is a separately registrable entity.
+      4. If the registry is indeed keyed by (RRtype, Scheme), then the same numeric Scheme value can, in principle, be registered with different meanings for different RRtypes. That would contradict the claim that “Schemes are independent of the RRtype” because then the semantics of Scheme N would depend on which RRtype it is paired with. It also raises the possibility of conflicting or incompatible definitions of the same Scheme number across different RRtypes.
+      5. On the other hand, the presence of rows with an empty RRtype for 0, 2–127, and 128–255 implies that at least *those* ranges are intended to be global across all RRtypes (e.g., scheme 0 is “null scheme (no-op)” for any RRtype, and 128–255 are Private Use everywhere). But the table gives no explicit rule for interpreting an empty RRtype, nor does it explain whether scheme 1 (NOTIFY) is also a globally defined method that happens *currently* to be specified only for CDS and CSYNC, or whether scheme 1 is inherently tied to those two RRtypes.
+      6. This mixture—text stating that schemes are independent of RRtype, a registry schema that incorporates RRtype as a primary field, and rows that sometimes include RRtype and sometimes leave it empty—creates a genuine scope ambiguity for IANA and for future registrants. It is unclear whether the “Scheme” namespace is:
+         - (a) a *single global* 8‑bit code space, where each numeric value has exactly one semantics and may be applicable to multiple RRtypes, with RRtype in the registry merely documenting applicability; or
+         - (b) a *per-(RRtype, Scheme)* namespace, where the same Scheme code can carry different meanings under different RRtypes.
+      7. The registration template in Section 6.2 worsens the problem by mandating RRtype in every new registration. Under interpretation (a), if someone wants to use the already‑defined scheme 1 (NOTIFY) for a new generalized‑NOTIFY RRtype, it is ambiguous whether they must request a new IANA entry (RRtype=NEW, Scheme=1) or whether the already-registered Scheme=1 automatically applies to all RRtypes by virtue of being “independent of the RRtype.” Under interpretation (b), they *would* request a new (RRtype, Scheme=1) entry and could, intentionally or accidentally, alter the semantics of “scheme 1” for that RRtype, which conflicts with the conceptual independence described earlier.
+      8. For implementers and designated experts, this ambiguity affects real decisions: experts cannot tell whether they must enforce global consistency of semantics for a given Scheme value across all RRtypes, and implementers cannot reliably know whether encountering Scheme=X for a new RRtype should be interpreted using global Scheme semantics or some RRtype-specific meaning.
+      9. The line “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.” (Section 3) correctly constrains *zone data* (you cannot have two DSYNC RRs with the exact same RRtype+Scheme pair at the same owner name), but it does not resolve the *registry* scope: it tells us nothing about whether the same Scheme code is globally unique or per‑RRtype. That line therefore interacts with, but does not clarify, the IANA registry semantics.
+      10. From a scope perspective, the intended domain of the “Scheme” registry is underspecified and partially inconsistent with the explanatory text. A clarifying erratum should state explicitly whether the Scheme code points are:
+          - globally unique and independent of RRtype (with the RRtype column documenting applicability and forbidding contradictory semantics across RRtypes), or
+          - truly defined per (RRtype, Scheme) pair (in which case the earlier statement that schemes are independent of RRtype should be revised or qualified, and guidance given to experts about cross‑RRtype reuse and conflicts).
+      11. Without that clarification, different IANA experts and future RFC authors may apply incompatible interpretations, leading to divergent registry contents and confusion about the semantics and reuse of Scheme values. This is a scope bug in how the namespace of Scheme values is defined and communicated.
+
+- ResidualUncertainties:
+  - It is not clear from the text alone which behavior the authors intended: a single global Scheme namespace with global semantics (most consistent with Section 2.3), or a per-(RRtype, Scheme) registry (more consistent with the registration template). An erratum or update should explicitly state the intended namespace scope and adjust either Section 2.3 or Section 6.2 (or both) to match.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 6 defines the IANA actions for DSYNC: registering the DSYNC RR type, creating an Expert-Review registry for DSYNC “schemes”, and registering the `_dsync` underscored name. Other sections define the semantics of the DSYNC “Scheme” field and how it should be used. The main normative content concerns how future codepoints are to be registered and interpreted.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Both
+    - Title: Ambiguity between “scheme is independent of RRtype” and a registry keyed on (RRtype, Scheme)
+    - Description:  
+      Earlier in the document, the DSYNC “Scheme” is defined as a global concept that does not depend on the RRtype: “Schemes are independent of the RRtype.  They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).” This, together with the statement that “Future assignments are maintained in the registry created in Section 6.2”, strongly suggests a *single* scheme namespace in which a numeric scheme value has one semantics regardless of the RRtype. In contrast, Section 6.2 defines a registry whose primary fields explicitly include **both** RRtype and Scheme and requires that “Requests to register additional entries MUST include the following fields: RRtype … Scheme … Mnemonic … Purpose … Reference.” The initial table then contains separate rows for (CDS, 1) and (CSYNC, 1), while also having rows with no RRtype given for ranges “0”, “2‑127”, and “128‑255”. This leaves it unclear whether the registry is intended to be keyed solely by Scheme (global semantics) or by the pair (RRtype, Scheme) (allowing the same numeric Scheme to mean different things for different RRtypes). The expert-guidance bullet “A scheme number may have exactly one mnemonic” and the earlier “Schemes are independent of the RRtype” both lean toward a global scheme space, but the requirement to supply an RRtype for each registration and the structure of the registry table lean toward per‑(RRtype,Scheme) entries. That is an internal inconsistency about the namespace model and also an underspecification for IANA and future registrants about what they are actually registering.
+    - KeyTextSnippets:
+      - “Scheme:  The mode used for contacting the desired notification address. … Value 1 is described in this document, and values 128-255 are Reserved for Private Use. Other values are currently unassigned.  Future assignments are maintained in the registry created in Section 6.2.”
+      - “Schemes are independent of the RRtype.  They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).”
+      - “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme.”
+      - “IANA has created the following new registry in the ‘Domain Name System (DNS) Parameters’ registry group:  
+        Name:  DSYNC: Location of Synchronization Endpoints  
+        Registration Procedure:  Expert Review”
+      - Initial contents table (excerpt):  
+        “| RRtype | Scheme (Mnemonic) | Purpose | Reference |  
+         |        | 0                 | Null scheme (no-op) | RFC 9859 |  
+         | CDS    | 1 (NOTIFY)        | Delegation management | RFC 9859 |  
+         | CSYNC  | 1 (NOTIFY)        | Delegation management | RFC 9859 |  
+         |        | 2-127             | Unassigned            |         |  
+         |        | 128-255           | Reserved for Private Use | RFC 9859 |”
+      - “Requests to register additional entries MUST include the following fields:  
+        RRtype:  An RRtype that is defined for use  
+        Scheme:  The mode used for contacting the desired notification address”
+      - “A scheme number may have exactly one mnemonic.”
+    - Impact:  
+      Implementers and registrants may be unsure whether defining a new Scheme requires tying it to a specific RRtype or whether a given Scheme value’s semantics must be uniform across all RRtypes. IANA and designated experts may also disagree on whether it is acceptable to assign the same numeric Scheme with different meanings for different RRtypes. This can lead to registry inconsistencies and divergent implementations that interpret the same Scheme value differently, harming interoperability and making future extension behavior unpredictable.
+
+  - Issue-2:
+    - BugType: None
+    - Title: Missing “change controller” field for Expert-Review registry is advisory, not a normative defect
+    - Description:  
+      Section 6.2 defines a new registry with “Registration Procedure: Expert Review” and lists the required fields for registrations (RRtype, Scheme, Mnemonic, Purpose, Reference) but does not define a per‑entry “change controller” field. RFC 8126 Section 4.5 says that when creating a new Expert-Review registry, “the registry should contain a field for change controller.” This “should” is guidance to registry designers rather than a strict “MUST”, and many existing IANA registries operate without explicit change‑controller fields, relying instead on IESG/IETF processes. The absence of a change‑controller field therefore represents, at most, a missed best practice for long‑term registry governance, not a contradiction with any MUST-level requirement or a source of protocol-level interoperability risk.
+    - KeyTextSnippets:
+      - “Name:  DSYNC: Location of Synchronization Endpoints  
+        Registration Procedure:  Expert Review”
+      - “Requests to register additional entries MUST include the following fields: … RRtype … Scheme … Mnemonic … Purpose … Reference”
+      - RFC 8126 §4.5: “When creating a new registry with Expert Review as the registration policy, in addition to the contact person field or reference, the registry should contain a field for change controller.”
+    - Impact:  
+      IANA and designated experts can still administer the registry using normal Expert Review processes; the lack of a change‑controller field does not alter protocol behavior and is unlikely to cause confusion significant enough to be considered a deontic bug.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Section 6 defines IANA actions for DSYNC: registering the DSYNC RR type, creating a DSYNC Scheme registry with initial contents and Expert Review policy, and registering the `_dsync` underscored node name, tying these to the DSYNC RDATA definition in Section 2.
+- OverallBugLikelihood: Medium
+
+Issues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Ambiguous DSYNC scheme namespace vs. RRtype-specific registry entries
+    - LocationHint: Section 2.1, Section 2.3, and Section 6.2 (Table 1 and registration template)
+    - Evidence:
+      - Snippet1: In the DSYNC RDATA definition: “Scheme: The mode used for contacting the desired notification address. This is an 8-bit unsigned integer. Records with value 0 (null scheme) are ignored by consumers. Value 1 is described in this document, and values 128-255 are Reserved for Private Use. Other values are currently unassigned. Future assignments are maintained in the registry created in Section 6.2.” And in Section 2.3: “Schemes are independent of the RRtype. They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).”
+      - Snippet2: In Section 6.2, the new registry is defined with an “RRtype” column and a registration template: “Requests to register additional entries MUST include the following fields: RRtype: An RRtype that is defined for use; Scheme: The mode used for contacting the desired notification address; Mnemonic: …; Purpose; Reference.” The initial contents table has separate rows “CDS | 1 (NOTIFY) | Delegation management | RFC 9859” and “CSYNC | 1 (NOTIFY) | Delegation management | RFC 9859”, plus rows with a blank RRtype for “0 Null scheme (no-op)”, “2–127 Unassigned”, and “128–255 Reserved for Private Use”.
+    - TechnicalExplanation: |
+        Section 2 presents the Scheme field as a single, global 8‑bit namespace: all values other than 0, 1, and 128–255 are “currently unassigned”, and “Schemes are independent of the RRtype”, suggesting that each numeric scheme value has one meaning and one way of contacting the target, regardless of the RRtype used in the same DSYNC RDATA. This is reinforced by the later guidance in Section 6.2 that “A scheme number may have exactly one mnemonic.”
+        
+        However, Section 6.2 defines a registry whose entries are explicitly keyed on both RRtype and Scheme, and the initial contents include two distinct entries for scheme 1 (one for CDS and one for CSYNC), while also having “blank RRtype” rows for the null scheme and the numeric ranges. Registration requests “MUST include” an RRtype, but the document does not state whether the Scheme number’s semantics are global (with RRtype merely indicating applicability) or whether (RRtype, Scheme) pairs form separate semantic spaces. This is structurally ambiguous for IANA and future spec authors: one plausible reading is that a scheme value could be registered with different semantics for different RRtypes (contradicting “Schemes are independent of the RRtype”), while another reading is that each scheme value is global, and multiple per‑RRtype rows must share identical semantics and mnemonic.
+        
+        Because the registry structure (including an RRtype column and RRtype‑specific initial entries) is not reconciled with the earlier “independent of RRtype” statement and global‑range language, the document leaves the namespace model underspecified and internally tense. This can affect how IANA and designated experts treat future registrations (e.g., whether they may allow different semantics for the same numeric Scheme under different RRtypes) and how implementers interpret the meaning of a Scheme value given an RRtype in a DSYNC record.
+    - PatchSuggestion: |
+        Clarify the namespace model and how the RRtype column is intended to be used. For example, add text to Section 2.1 or 2.3 and to Section 6.2 along the following lines:
+
+        - In Section 2.3, after “Schemes are independent of the RRtype.”, add:
+
+          “Scheme values form a single, global 8-bit namespace for DSYNC. Each numeric scheme value identifies exactly one method of contacting the target and has exactly one mnemonic, regardless of the RRtype used in the same DSYNC RDATA. The RRtype does not affect the semantics of the scheme; it only identifies the notification payload type.”
+
+        - In Section 6.2, before the table, add:
+
+          “The DSYNC Scheme registry records which RRtypes a given scheme is defined to be used with. The primary key for the semantics is the scheme value; the RRtype field indicates applicability. The same scheme value MAY appear in multiple registry rows for different RRtypes, but in that case the mnemonic and contacting method semantics MUST be identical across those rows.”
+
+          Optionally, clarify the meaning of blank RRtype entries:
+
+          “Entries with a blank RRtype (such as the null scheme and the unassigned or Private Use ranges) apply to all RRtypes.”
+
+        - Alternatively, if the intent is *not* to have a global scheme namespace, change the earlier text instead, e.g.:
+
+          - Replace “Schemes are independent of the RRtype.” in Section 2.3 with: “The Scheme field is interpreted in the context of the RRtype; the (RRtype, Scheme) pair identifies the method used for contacting the target.”
+          - Adjust the language in Section 2.1 from “values 128‑255 are Reserved for Private Use. Other values are currently unassigned.” to explicitly describe per‑RRtype allocation.
+        
+        Making one of these models explicit and aligning the descriptive text, registry structure, and initial contents will remove the ambiguity.  
+
+  - Issue-2:
+    - BugType: None
+    - ShortLabel: No structural issue with omission of “change controller” field
+    - LocationHint: Section 6.2, Expert Review policy description
+    - Evidence:
+      - Snippet1: Section 6.2 defines the registry, specifies “Registration Procedure: Expert Review”, and lists required fields (RRtype, Scheme, Mnemonic, Purpose, Reference) for future registrations.
+      - Snippet2: RFC 8126 Section 4.5: “When creating a new registry with Expert Review as the registration policy, in addition to the contact person field or reference, the registry should contain a field for change controller.”
+    - TechnicalExplanation: |
+        RFC 8126 uses “should” when recommending a per-entry change controller field for Expert Review registries, and it explicitly allows either a contact person field or a reference. Section 6.2 provides a Reference field, which can serve as the normative pointer for change control, and many existing IANA registries with Expert Review do not have a separate “change controller” column. The absence of a change-controller field here does not create a structural ambiguity in the registry’s syntax or semantics, nor does it prevent IANA or designated experts from operating the registry consistently. This is therefore not treated as a structural or syntactic bug.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 6 of RFC 9859 defines three IANA actions: (1) registration of the DSYNC RR type in the DNS RR TYPEs registry, (2) creation of a new “DSYNC: Location of Synchronization Endpoints” registry with Expert Review policy and initial contents, and (3) registration of the `_dsync` name in the “Underscored and Globally Scoped DNS Node Names” registry, referencing RFC 8126 and RFC 8552 for registry structure and underscore-name usage.
+- OverallCrossRFCLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous keying of DSYNC scheme registry vs. “schemes are independent of RRtype”
+    - Description: Section 2.3 states that “Schemes are independent of the RRtype. They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).” At the same time, Section 6.2 defines the new registry “DSYNC: Location of Synchronization Endpoints” with an explicit RRtype column and separate entries for (CDS, 1 (NOTIFY)) and (CSYNC, 1 (NOTIFY)), plus rows for scheme ranges (0, 2–127, 128–255) with a blank RRtype. The registration template then requires RRtype, Scheme, Mnemonic, Purpose, and Reference, and later says “A scheme number may have exactly one mnemonic”, which suggests that scheme numbers form a *global* namespace across RRtypes. RFC 8126 §2.2 requires that new registries clearly specify the “size, format, and syntax of registry entries,” i.e., what the indexing key actually is and how the semantics relate to the underlying protocol. Here, it is unclear to IANA and future documents whether (a) the registry is keyed solely by the 8-bit Scheme with global semantics, and the RRtype column merely lists where that scheme currently applies, or (b) the registry is really keyed by the pair (RRtype, Scheme), allowing the same Scheme value to carry different semantics for different RRtypes. If a later RFC assumes DSYNC scheme numbers are globally defined (per the “independent of RRtype” text) but another treats them as per-(RRtype, Scheme) (per the registry template), they could assign conflicting semantics to the same numeric Scheme, leading to non-interoperable use of DSYNC RDATA and confusion for designated experts maintaining the registry in line with RFC 8126.
+    - EntitiesInvolved: ["RFC 9859 Section 2.3 (scheme semantics)", "RFC 9859 Section 6.2 (DSYNC: Location of Synchronization Endpoints registry)", "IANA DNS Parameters – DSYNC: Location of Synchronization Endpoints", "RFC 8126 Section 2.2"]
+    - CrossRefsUsed: ["RFC 9859 Section 2.3 statement that schemes are independent of RRtype", "RFC 9859 Section 6.2 registry definition and template", "RFC 8126 Section 2.2 on specifying size/format/syntax of registry entries"]
+    - Confidence: Medium
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: No explicit “change controller” field for Expert Review registry
+    - Description: Section 6.2 creates a new registry with Expert Review as the registration policy and provides a registration template (RRtype, Scheme, Mnemonic, Purpose, Reference) plus guidance to designated experts. RFC 8126 §4.5, when discussing Expert Review registries, recommends that “in addition to the contact person field or reference, the registry should contain a field for change controller,” to make future modifications to entries administratively clear. The DSYNC registry template omits any explicit “change controller” field, and there is no explicit statement that the Reference field is to be treated as the change controller. This does not directly break protocol interoperability, but it leaves a process-level ambiguity for IANA and future experts about who is authorized to approve changes to individual DSYNC scheme registrations, which is contrary to the clarity encouraged by RFC 8126 for Expert Review registries. That said, RFC 8126 uses non-BCP14 “should” here, and many existing Expert Review registries also omit a separate change-controller field, so this is a weaker, process-oriented issue rather than a hard contradiction.
+    - EntitiesInvolved: ["RFC 9859 Section 6.2", "DSYNC: Location of Synchronization Endpoints registry", "RFC 8126 Section 4.5 (Expert Review and change controller guidance)"]
+    - CrossRefsUsed: ["RFC 9859 Section 6.2 template for registry entries", "RFC 8126 Section 4.5 recommendation about change controller fields"]
+    - Confidence: Low-Medium
+- IfNoIssues:
+  - Comment: IANA registrations for the DSYNC RRtype (Section 6.1) and the `_dsync` underscored node name (Section 6.3) appear consistent with the referenced IANA registries and RFC 8552’s “Underscored and Globally Scoped DNS Node Names” model: the correct registry names are used, the DSYNC RRtype is placed in the RR TYPEs registry under DNS Parameters, and the `_dsync` name is registered specifically for the DSYNC RRtype. The main cross-RFC concerns arise not from incorrect registry names or codepoints, but from how clearly the new DSYNC scheme registry’s semantics are specified relative to RFC 8126’s guidance.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+
+Vector Stores Used: vs_6954b56ccec08191857d5b98195079cb
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

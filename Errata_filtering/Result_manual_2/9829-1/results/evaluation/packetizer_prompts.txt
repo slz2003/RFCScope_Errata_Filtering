@@ -1,0 +1,128 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 1 of RFC 9829 explains why, in the RPKI profile, CRL Numbers are not needed by relying parties: manifests and CRLDPs already identify a unique current CRL per CA, so this document updates RFC 6487 to require RPKI RPs to ignore CRL Number extensions. It also sets up terminology and notes that errata for 6487 are being integrated.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - The introduction makes a high-level statement about “monotonically increasing” manifest numbers but does not specify a detailed algorithm or state machine here.
+  - ActorDirectionality: LOW - Roles (CAs vs RPs) are mentioned but only at a descriptive level; there is no complex sender/receiver logic in this section.
+  - Scope: LOW - The text consistently scopes its claims to “in the RPKI” and to RPKI CAs/RPs; no obvious scope confusion appears in this section.
+  - Causal: LOW - The causal argument (“because manifests and CRLDPs work this way, RPs need not use CRL Numbers”) is high level and consistent with the referenced documents; no concrete algorithmic step is specified here that could obviously break.
+  - Quantitative: LOW - Section 1 contains no numeric bounds or size constraints; all such details appear later in the RFC.
+  - Deontic: LOW - The only normative-sounding phrase in this section (“This document mandates…”) is consistent with the later, explicit BCP14 language; no conflicting MUST/SHOULD levels are visible within section 1 itself.
+  - Structural: LOW - No ABNF, YANG, ASN.1, or field diagrams are present in this section; it is purely prose.
+  - CrossRFC: LOW - References to RFC 5280, 6481, 6487, and 9286 are conceptually correct at this level (e.g., CRL Number semantics, manifest contents, CRLDP behavior); any subtle cross-RFC details are handled in later sections.
+  - Terminology: LOW - Terms like “manifest”, “fileList”, “CRL Distribution Points extension”, and “manifestNumber” are used consistently with their originating RFCs, and the requirements language boilerplate is standard.
+  - Boundary: LOW - Edge conditions (stale manifests, repository race conditions, key rollover) are not specified in section 1; those are handled in the referenced RFCs and later sections.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: 
+    Relevant Dimensions: 
+    Sketch: ...
+
+Response ID: resp_050c987e5d88bb05006954b8bb531881939d0cfd8879e8f94e
+
+
+Vector Stores Used: vs_6954b8208e048191882274909a84f96b
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

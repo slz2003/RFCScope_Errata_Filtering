@@ -1,0 +1,103 @@
+{
+  "reports": [
+    {
+      "label": "Unclear interaction between 'Specification Required' and Reserved Private/Experimental Ranges in NTP Registries",
+      "bug_type": "Underspecification",
+      "explanation": "The document states a global 'Specification Required' policy while reserving certain subranges for private/experimental use where IANA cannot assign codes, causing ambiguity about which values are governed by expert review.",
+      "justification": [
+        "Section 3 presents a registry‑wide policy alongside reserved ranges, leading to potential misinterpretation on whether the policy applies to all values.",
+        "There is no explicit clarification that 'Specification Required' applies only to the IANA‑assignable portions of the registries."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Section 3 (NTP Registry Updates):  \n        - “A partition of the ‘NTP Extension Field Types’ registry is reserved for Private or Experimental Use.”  \n        - “In the ‘NTP Reference Identifier Codes’ and ‘NTP Kiss-o'-Death Codes’ registries, entries with ASCII fields are now limited to uppercase letters or digits. Fields starting with 0x58, the uppercase letter ‘X’, are reserved for Private or Experimental Use.”  \n        - “The policy for each registry is now Specification Required, as defined in [RFC8126], Section 4.6.”"
+          },
+          {
+            "id": "E2",
+            "text": "Section 4.1 / 4.2 notes: “Codes beginning with the character ‘X’ are reserved for experimentation and development. IANA cannot assign them.”"
+          },
+          {
+            "id": "E3",
+            "text": "Section 4.3 note: “Field Types in the range 0xF000 through 0xFFFF, inclusive, are reserved for experimentation and development. IANA cannot assign them.”"
+          }
+        ],
+        "summary": [
+          "(E1) Section 3 shows that the overall policy is Specification Required even as specific ranges are reserved for private/experimental use.",
+          "(E2) Sections 4.1/4.2 clarify that codes beginning with ‘X’ are reserved and not assignable.",
+          "(E3) Section 4.3 reserves Field Types 0xF000–0xFFFF for experimentation."
+        ]
+      },
+      "fix_direction": "Clarify that the 'Specification Required' policy applies only to IANA-assignable ranges while the reserved private/experimental subranges remain outside its scope.",
+      "severity": "Medium",
+      "severity_basis": "The ambiguous interplay of policies could lead to misinterpretations in the assignment and review process.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: Issue-1"
+      ],
+      "report_id": "9748-3-1"
+    },
+    {
+      "label": "Ambiguous Temporal Scope for ASCII ID Restrictions in NTP Registries",
+      "bug_type": "Underspecification",
+      "explanation": "The requirement for IDs to contain only ASCII uppercase letters or digits is unclear regarding its applicability to existing entries versus new assignments.",
+      "justification": [
+        "Section 3 imposes the restriction as a blanket rule, while Sections 4.1 and 4.2 specify that existing entries are left unchanged.",
+        "The document does not explicitly state that the restriction is intended solely for future registrations."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Section 3 (second bullet): “In the ‘NTP Reference Identifier Codes’ and ‘NTP Kiss-o'-Death Codes’ registries, entries with ASCII fields are now limited to uppercase letters or digits.”"
+          },
+          {
+            "id": "E2",
+            "text": "Section 4.1 (Reference Identifier Codes): \n        - Column definition: “ID (required): a four-byte value padded on the right with all-bits-zero. Each byte other than padding must be ASCII uppercase letters or digits.” \n        - “The existing entries are left unchanged.”\nSection 4.2 (Kiss-o'-Death Codes): similarly indicates that existing entries are left unchanged."
+          }
+        ],
+        "summary": [
+          "(E1) Section 3 enforces the ASCII restriction broadly without temporal qualification.",
+          "(E2) Sections 4.1 and 4.2 indicate that existing entries remain unchanged, implying a prospective application of the rule."
+        ]
+      },
+      "fix_direction": "Add explicit language to state that the ASCII restriction applies only to new registrations, with legacy entries remaining unaffected.",
+      "severity": "Medium",
+      "severity_basis": "The lack of clarity may result in inconsistent interpretation and potential validation issues between legacy and future assignments.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: Issue-2"
+      ],
+      "report_id": "9748-3-2"
+    },
+    {
+      "label": "Ambiguous Reference of 'the NTP registries' in Section 3",
+      "bug_type": "Ambiguity",
+      "explanation": "The term 'the NTP registries' is used without explicit definition, which may lead some readers to mistakenly include additional registries such as the NTS registries.",
+      "justification": [
+        "The residual uncertainties note that 'the NTP registries' appears to refer only to the specific registries being updated, but this is not explicitly stated.",
+        "Section 2.3 clarifies that no changes apply to NTS registries, yet the global phrasing may still cause confusion."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "ResidualUncertainties:\n  - The term “the NTP registries” in Section 3 appears, from context, to mean the specific NTP registries that this document is updating (Reference IDs, Kiss-o’-Death Codes, Extension Field Types), not all registries under the ntp‑parameters umbrella and not the NTS registries; Section 2.3 explicitly says there are no changes for NTS."
+          }
+        ],
+        "summary": [
+          "(E1) The residual uncertainties highlight that the phrase 'the NTP registries' might be misinterpreted to include registries other than those intended, such as the NTS registries."
+        ]
+      },
+      "fix_direction": "Provide an explicit list of the NTP registries subject to the update to remove any ambiguity.",
+      "severity": "Low",
+      "severity_basis": "The ambiguity is mainly editorial and is unlikely to result in significant operational issues.",
+      "confidence": "Medium",
+      "experts": [
+        "Scope Expert: ResidualUncertainties"
+      ],
+      "report_id": "9748-3-3"
+    }
+  ]
+}

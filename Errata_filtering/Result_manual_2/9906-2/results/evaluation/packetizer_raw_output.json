@@ -1,0 +1,37 @@
+{
+  "reports": [
+    {
+      "label": "Underdetailed Candidate Issue in RFC 9906 GOST Deprecation Section",
+      "bug_type": "Candidate Issue / Incomplete Specification",
+      "explanation": "The analysis identifies a candidate issue in the deprecation section for GOST algorithms, but its entry lacks details (empty label, dimensions, and sketch), indicating a potential underspecification.",
+      "justification": [
+        "The analyzer notes 'Candidate Issues: 1' and then provides Issue 1 with 'Type: None', an empty 'Label', empty 'Relevant Dimensions', and a 'Sketch: ...' placeholder.",
+        "This incomplete candidate issue entry may signal that an issue was recognized but not fully specified, which could lead to ambiguity about the intended deprecation behavior."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1"
+          },
+          {
+            "id": "E2",
+            "text": "Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The analysis indicates there is one candidate issue.",
+          "(E2) The listed Issue 1 has no label, dimensions, or further details, suggesting an incomplete entry."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "All analysis dimensions are rated LOW and the candidate entry lacks substantive details, implying minimal potential impact.",
+      "confidence": "Low",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "9906-2-1"
+    }
+  ]
+}

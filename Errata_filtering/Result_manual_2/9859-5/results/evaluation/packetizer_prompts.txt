@@ -1,0 +1,336 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 5 of RFC 9859 argues that generalized NOTIFY does not change the security model (only timing), requires receivers to rate limit notification processing, and discusses that DSYNC-bearing zones need not be DNSSEC-signed while allowing senders to ignore unsigned DSYNC data for privacy/security reasons.
+- ScopeModel:
+  - Targets:
+    - Receivers of generalized DNS NOTIFY messages (typically registries/registrars or other parent-side processors) that act on delegation-maintenance NOTIFY(CDS)/NOTIFY(CSYNC).
+    - DSYNC records used as endpoint-discovery hints for where generalized notifications should be sent.
+    - Zones that contain DSYNC records (parent-side zones under `_dsync`).
+    - Notification senders (child DNS operators or their agents) that decide whether and where to send NOTIFY messages based on DSYNC discovery.
+  - Conditions:
+    - The “only timing changes” security model applies when actions are triggered by NOTIFY rather than timers or other triggers.
+    - Rate limiting MUST be implemented for “notification processing”, especially relevant when subsequent queries use encrypted transports and could be used for amplification.
+    - DNSSEC validation of DSYNC lookups is performed “if DNSSEC is enabled” during endpoint discovery (Section 4.1 step 2); a “positive DSYNC answer” is to be returned as the endpoint.
+    - Zones that publish DSYNC are explicitly not required to be signed with DNSSEC; spoofed DSYNC data can misdirect notifications and leak contents.
+    - For privacy/security reasons, the sender “may choose to ignore unsigned DSYNC records”, effectively treating unsigned DSYNC answers as unusable.
+  - NotedAmbiguities:
+    - It is unclear whether “positive DSYNC answer, return it” (Section 4.1 step 2) admits local policy that treats some syntactically positive answers (e.g., from unsigned zones) as unacceptable and thus to be ignored.
+    - The sentence “senders may choose to ignore unsigned DSYNC records” is non-BCP14 and not tied back explicitly into the normative endpoint-discovery algorithm, so the precise scope of that choice (and how it affects the MUST-do steps) is not formally specified.
+    - The mandate that receivers “MUST implement rate limiting for notification processing” is stated in generic terms; its applicability to non-generalized NOTIFY or to future DSYNC schemes is left implicit.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Endpoint discovery mandates using any positive DSYNC answer while Security Considerations allow ignoring unsigned DSYNC records
+    - ScopeProblemType: Conflicting and underspecified scope of which DSYNC answers are eligible to be used as notification endpoints
+    - Evidence:
+      - Section 4.1, step 2 (endpoint discovery): “Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.”
+      - Same section, preface: “the notification sender MUST perform the following steps”.
+      - Section 3: “It is RECOMMENDED that zones containing DSYNC records be secured with DNSSEC.”
+      - Section 5 (Security Considerations): “zones containing DSYNC records are not required to be signed. … The illegitimate target is also enabled to learn notification contents in real time, which may be a privacy concern for the sender. If so, the sender may choose to ignore unsigned DSYNC records.”
+    - DetailedReasoning:
+      - Section 4.1 defines a mandatory algorithm for locating notification endpoints: the sender “MUST perform the following steps,” with step 2 explicitly saying that if the DSYNC lookup “results in a positive DSYNC answer, return it.” This language scopes the algorithm so that any syntactically positive DSYNC RRset that is not rejected by DNSSEC validation must be accepted as the endpoint and terminates the search.
+      - The only gating condition tied to security in step 2 is “validate the response if DNSSEC is enabled”; no additional policy hooks are described. Under normal DNSSEC semantics, an unsigned zone produces an “insecure but OK” result, not a validation failure, so a DSYNC record from such a zone is still a “positive DSYNC answer” in the sense used by Section 4.1 and therefore must be returned.
+      - Section 5, however, explicitly contemplates deployments where unsigned DSYNC is considered unacceptable for privacy or security reasons: it notes that zones with DSYNC records “are not required to be signed”, that spoofed or misdirected DSYNC can expose notification contents in real time, and concludes that “the sender may choose to ignore unsigned DSYNC records.”
+      - If a sender implements this advice literally—treating unsigned DSYNC answers as unusable—its endpoint-discovery behaviour diverges from Section 4.1’s mandated scope: step 2 is no longer “if positive, return it”, but “if positive and signed (or otherwise acceptable under local policy), return it; otherwise, treat it as if no DSYNC were present and continue.” This is a different algorithm than the one the specification says the sender “MUST perform”.
+      - Because the Section 5 text uses a lowercase “may”, it is not an explicit BCP 14 override of the earlier “MUST”, so the document simultaneously (a) prescribes that any positive DSYNC answer be used and (b) encourages implementations, for privacy reasons, to behave as if certain positive answers (those from unsigned zones) simply were not there. That is a scope inconsistency: Section 4.1’s “positive DSYNC answer” is scoped over all syntactically valid answers after DNSSEC validation, whereas Section 5 implicitly narrows the acceptable subset to those that satisfy additional local policy.
+      - The result is underspecification as well: the document does not state whether an implementation that discards unsigned DSYNC (treating such zones as if they had no DSYNC at all) is still conformant, nor does it say how such policy interacts with the iterative name-construction in steps 2–3 (e.g., whether ignoring a child-specific unsigned DSYNC should trigger fallback to a more generic `_dsync` name).
+      - This ambiguity matters for interoperability and implementer clarity: some implementations will follow Section 4.1 literally and always honour unsigned DSYNC, while others, following Section 5’s security guidance, will ignore them. Both behaviours are plausible “readings” of the spec, but they implement different effective scopes for what constitutes a valid notification endpoint.
+      - A consistent specification would make the scoping explicit, for example by clarifying in Section 4.1 that “positive DSYNC answer” means “positive and acceptable under local DNSSEC and security policy (which may include requiring signatures; see Section 5)”, or by adding explicit normative language in Section 5 authorizing implementations to treat certain DSYNC answers as unusable and to continue the discovery algorithm as if no DSYNC record existed at that name.
+
+- ResidualUncertainties:
+  - The exact intended breadth of the rate-limiting requirement (“receivers MUST implement rate limiting for notification processing”) is left implicit; it is plausible but not explicit that this is scoped only to receivers of generalized notifications defined in this document, and not a blanket update to all NOTIFY processing as defined in RFC 1996.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following the text literally is implementable and does not break the core DNS behavior, but there is a real normative tension: the endpoint-discovery algorithm in Section 4.1 effectively *requires* using any positive DSYNC answer, while Section 5 explicitly allows implementations to ignore unsigned DSYNC records. As written, a fully conformant implementation cannot exercise that privacy/security mitigation without violating the discovery algorithm, so the causal chain from “policy wants to ignore unsigned DSYNC” to “how discovery behaves” is underspecified/contradictory.
+
+---
+
+2. **Causal Analysis**
+
+**a. What Section 4.1 requires an implementation to do**
+
+For a child that wants to send notifications, Section 4.1 says the notification sender:
+
+- **MUST perform the following steps** for endpoint discovery.
+- Step 2:  
+  > “Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. **If this results in a positive DSYNC answer, return it.**”
+
+Mechanically:
+
+- Sender issues a DSYNC query for some `_dsync`-derived name.
+- A resolver returns an answer that either:
+  - Contains a DSYNC RRset (positive answer), or
+  - Is negative (NXDOMAIN / NODATA), or
+  - Fails DNSSEC validation if the zone is signed and the data is bogus.
+
+The sender “validates the response if DNSSEC is enabled” (i.e., runs DNSSEC validation if possible). For an **unsigned** parent zone with DSYNC:
+
+- DNS response is positive with DSYNC RRs.
+- DNSSEC validation yields “insecure, but not bogus.”
+- Under a literal reading, this is still a “positive DSYNC answer,” so Step 2 says: **return it** as the endpoint and stop the algorithm.
+
+So, if you follow Section 4.1 literally, any syntactically valid, non‑bogus positive DSYNC answer—whether signed or not—must be used as the target.
+
+**b. What Section 5 claims is allowed**
+
+Section 5 then says (emphasis added):
+
+- “Zones containing DSYNC records are **not required to be signed**.”
+- Spoofed DSYNC can misdirect notifications and leak notification contents.
+-  
+  > “If so, the sender **may choose to ignore unsigned DSYNC records.**”
+
+That describes a legitimate mitigation strategy: a sender can decide “I will only trust DSYNC endpoints if the answer is DNSSEC‑secure; if unsigned, I’ll pretend there is no DSYNC and fall back (or skip notifications).”
+
+Mechanically, such a sender would:
+
+- Perform the DSYNC lookup.
+- See that the answer is unsigned (security status “insecure”).
+- Decide per local policy to “ignore unsigned DSYNC” and treat this as if there were *no* DSYNC record (e.g., continue the discovery algorithm or return ‘no endpoint’).
+
+**c. The normative clash**
+
+The problem is that Section 4.1 and Section 5 are not coherently tied together:
+
+- Section 4.1 uses BCP 14 language at the top: the sender **MUST** perform the listed steps.
+- Step 2 has a clear imperative: “If this results in a positive DSYNC answer, **return it.**” There is no allowance for “unless the answer is unsigned and your policy says to reject it.”
+- Section 5 says the sender **MAY** ignore unsigned DSYNC records.
+
+For a zone that publishes **unsigned** DSYNC:
+
+- To follow Section 4.1 literally, the implementation **must** accept and use the positive DSYNC answer.
+- To follow Section 5’s mitigation, the implementation **may** ignore that same answer.
+
+You cannot both “return it” and “ignore it” in the same circumstance. An implementation that actually ignores unsigned DSYNC records will violate the mandate in 4.1 Step 2; an implementation that always returns unsigned DSYNC is compliant with 4.1 but is *not* implementing the mitigation Section 5 explicitly says is allowed.
+
+From a causal/security perspective, this matters because:
+
+- The security text intends to offer a knob: “If privacy or spoofing risk is a concern, you can elect not to use unsigned DSYNC.”
+- But the normative algorithm does not permit that knob to affect discovery behavior in a conformant implementation. The security mitigation is, in effect, non‑conformant if interpreted strictly.
+
+**d. Impact on actual operation**
+
+Even with this inconsistency:
+
+- Core DNS and DS/CSYNC maintenance still work, because scanning remains the canonical mechanism; NOTIFYs only affect timing. An implementation that always uses DSYNC or one that never uses DSYNC still leaves the parent able to learn CDS/CDNSKEY/CSYNC records via scanning.
+- Interoperability is affected only in a “soft” way: some children will send notifications to endpoints discovered through unsigned DSYNC; others may (if they follow Section 5 over 4.1) not send notifications at all for those delegations. Parents can’t rely on notifications always arriving, but the protocol explicitly treats notifications as optional hints, so no hard correctness invariant is violated.
+
+The real effect is that the spec is normatively ambiguous about what “MUST perform the following steps” allows in the presence of local DNSSEC acceptance policy.
+
+---
+
+3. **Problem Classification**
+
+- **Primary**: *Causal Underspecification / Normative Ambiguity*  
+  The interaction between Section 4.1’s mandatory discovery algorithm and Section 5’s “MAY ignore unsigned DSYNC” is not specified clearly enough to yield a single, unambiguous conformant behavior. The spec does not say how local security policy can influence the “return it” decision in Step 2.
+- **Secondary**: *Normative self‑tension*  
+  For unsigned DSYNC, one part of the spec effectively requires using the record, while another part explicitly permits ignoring it. That tension doesn’t make the protocol unimplementable, but it does make strictly conformant implementation of the advertised security mitigation impossible without reinterpretation.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+A small, local fix would be to explicitly tie Step 2 in Section 4.1 to local security policy, for example:
+
+- Change “If this results in a positive DSYNC answer, return it.” to something like:  
+  “If this results in a **positive DSYNC answer that is acceptable under the sender’s local DNSSEC/security policy (e.g., requiring a DNSSEC‑secure answer if unsigned records are to be ignored)**, return it; otherwise continue as if no DSYNC record were available.”
+
+And/or:
+
+- In Section 5, replace “may choose to ignore unsigned DSYNC records” with a normative reference back to discovery, e.g., “implementations MAY treat unsigned DSYNC responses as unacceptable in the discovery algorithm of Section 4.1 and act as if no DSYNC record were present.”
+
+That preserves the algorithm, makes the mitigation fully conformant, and resolves the causal ambiguity.
+
+---
+
+5. **Non-Issues**
+
+- The mandatory rate limiting requirement (“receivers MUST implement rate limiting for notification processing”) is implementable as stated; no specific algorithm is mandated, so there’s no unfulfillable constraint. Different choices simply trade off DoS resistance vs. responsiveness, but do not break protocol correctness.
+- The statement that DSYNC zones are not required to be signed, and that spoofed DSYNC can misdirect notifications, is consistent with the core security model that notifications only affect timing, not correctness; this does not create an unresolvable causal inconsistency.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 5 of RFC 9859 states that generalized NOTIFY only affects timing, not semantics, so securing notifications is optional. It then introduces a mandatory requirement for receivers to implement rate limiting, and discusses that DSYNC-publishing zones are not required to be DNSSEC‑signed while suggesting that senders might ignore unsigned DSYNC records for privacy/security reasons. Earlier sections normatively define the DSYNC discovery algorithm and recommend DNSSEC on DSYNC zones.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+  - Issue-1:
+    - BugType: Both
+    - Title: DSYNC discovery algorithm vs. suggested ignoring of unsigned DSYNC records
+    - Description:  
+      The discovery algorithm in Section 4.1 is normatively specified: “the notification sender MUST perform the following steps” and, in Step 2, “Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.” This is an unconditional algorithm: once a “positive DSYNC answer” is obtained, the sender is required to “return it” as the discovered endpoint; no exception is specified for unsigned zones or local policy. Earlier, Section 3 says “It is RECOMMENDED that zones containing DSYNC records be secured with DNSSEC,” which is consistent with but weaker than a requirement. Section 5 then states “zones containing DSYNC records are not required to be signed” and goes on: “The illegitimate target is also enabled to learn notification contents in real time, which may be a privacy concern for the sender. If so, the sender may choose to ignore unsigned DSYNC records.” Here the same “sender” (the notification sender) is told it “may choose to ignore unsigned DSYNC records,” i.e., to behave as if the DSYNC endpoint did not exist when the DSYNC response is unsigned. That behavior is not reflected in, nor allowed by, the algorithm of Section 4.1: an implementation that literally follows Step 2 must accept and use any syntactically positive DSYNC answer (subject only to DNSSEC validation when enabled), and has no provision to discard an unsigned-but-otherwise-positive answer based on local policy. Conversely, an implementation that implements the privacy‑motivated behavior (“ignore unsigned DSYNC records”) would be deviating from the MUST‑level discovery algorithm as written. The spec also does not say how DNSSEC validation failure interacts with “positive DSYNC answer” in Step 2 (e.g., whether a validation failure must be treated as if no target exists), which becomes more confusing in light of the Section 5 text encouraging additional policy checks on signature status. Together, this creates a tension between the normative discovery algorithm and the security‑text suggestion, and leaves it ambiguous whether ignoring unsigned DSYNC records is conformant behavior and how it should be integrated with the algorithm.
+    - KeyTextSnippets:
+      - “To locate the target for outgoing delegation maintenance notifications, the notification sender MUST perform the following steps:” (Section 4.1)
+      - “2. Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.” (Section 4.1)
+      - “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme. It is RECOMMENDED that zones containing DSYNC records be secured with DNSSEC.” (Section 3)
+      - “In order to facilitate schemes that are authenticated outside of DNSSEC (such as via SIG(0)), zones containing DSYNC records are not required to be signed.” (Section 5)
+      - “The illegitimate target is also enabled to learn notification contents in real time, which may be a privacy concern for the sender. If so, the sender may choose to ignore unsigned DSYNC records.” (Section 5)
+    - Impact:  
+      Different implementers can reasonably reach opposite conclusions about what is allowed: some will treat any positive DSYNC answer as mandatory to use (per Section 4.1), while others will implement a policy to ignore unsigned DSYNC responses (per Section 5), treating them as “no target.” This affects both interoperability (children may expect notifications to be sent but some senders will suppress them) and security/privacy behavior (some senders will leak notification contents to unsigned/possibly spoofed targets, others will not). The absence of explicit normative language reconciling these options—and specifying what “positive DSYNC answer” means under DNSSEC validation or policy failure—introduces both an inconsistency between different parts of the document and an underspecification of how security policy interacts with the mandatory discovery algorithm. A minimal fix would be to make Section 5’s permission explicit (e.g., “A sender MAY treat unsigned or DNSSEC‑invalid DSYNC answers as if no DSYNC record were present”) and to adjust Step 2 to say that only “positive and policy‑acceptable” DSYNC answers are to be returned; otherwise the discovery algorithm should continue as if no target were available.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 5 of RFC 9859 describes the security model for generalized DNS NOTIFY: a NOTIFY must never, by itself, cause a state change, only accelerate actions that would otherwise happen. It notes possible amplification via encrypted transports and therefore mandates rate limiting at the receiver. Finally, it addresses the fact that DSYNC-publishing zones are not required to be DNSSEC-signed, and explicitly allows senders to ignore unsigned DSYNC records for privacy/security reasons, while earlier sections define a mandatory DSYNC endpoint discovery algorithm.
+
+- OverallBoundaryBugLikelihood: High
+
+- Findings:
+
+  - Finding-1:
+    - BugType: Both
+    - ShortLabel: Inconsistent handling of unsigned DSYNC records between discovery algorithm and security section
+    - BoundaryAxis: Unsigned DSYNC zones vs signed zones; “DNSSEC enabled” vs not; treatment of positive but unsigned DSYNC answers
+    - ExcerptEvidence:
+      - Endpoint discovery, Step 2: “Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.”
+      - Security section: “zones containing DSYNC records are not required to be signed. … The illegitimate target is also enabled to learn notification contents in real time, which may be a privacy concern for the sender. If so, the sender may choose to ignore unsigned DSYNC records.”
+    - Reasoning:
+      - The discovery algorithm in Section 4.1 is normative (“notification sender MUST perform the following steps”) and Step 2 says that if the lookup (with validation if DNSSEC is enabled) “results in a positive DSYNC answer, return it.” This is a hard requirement to accept any syntactically valid DSYNC RRset returned by the resolver, regardless of whether the zone is signed, as long as DNSSEC validation (if done) does not fail.
+      - The Security Considerations later say the sender “may choose to ignore unsigned DSYNC records,” explicitly granting a policy option to discard DSYNC RRsets from unsigned zones, which are exactly the records that Step 2 would otherwise force the algorithm to “return”.
+      - Because “MUST … return it” and “MAY choose to ignore unsigned DSYNC records” both use BCP 14 language, they are both normative. For an unsigned DSYNC zone, these requirements are impossible to satisfy simultaneously: a conformant implementation cannot both “return” the positive DSYNC answer as the endpoint and “ignore” that unsigned DSYNC data.
+      - You could try to interpret “ignore unsigned DSYNC records” as “discover but then never send to those endpoints,” leaving the discovery algorithm intact. However, the plain reading in context (“prevent notifications from reaching their legitimate target” and “a different party may receive unsolicited notifications … If so, the sender may choose to ignore unsigned DSYNC records”) strongly suggests treating those records as if they were not acceptable endpoints at all, i.e., as “no target found.”
+      - Thus, at the boundary where DSYNC data is unsigned but otherwise syntactically valid, different implementers can reasonably read the spec as (a) being required to use the DSYNC endpoint (per Section 4.1) or (b) being allowed/encouraged to drop it (per Section 5). That is a direct internal inconsistency in normative behavior at this boundary.
+    - ImpactAssessment:
+      - Interoperability: Two compliant implementations may behave very differently for the same unsigned DSYNC publication—some will send notifications, some will not—which can lead to surprising or broken behavior from the parent’s perspective.
+      - Security/privacy: Operators who rely on ignoring unsigned DSYNC for privacy may get implementations that, following Section 4.1 strictly, do not support that policy. Conversely, implementations that implement the “ignore unsigned” policy may technically be non-conformant with the discovery algorithm as written.
+      - Because this is a conflict in normative text around an entirely realistic boundary case (unsigned DSYNC zones), it qualifies as both an inconsistency and an underspecification (it is unclear how to reconcile the two requirements).
+
+  - Finding-2:
+    - BugType: Underspecification
+    - ShortLabel: Undefined DSYNC discovery behavior for different DNSSEC validation states
+    - BoundaryAxis: DNSSEC validation outcomes at the DSYNC lookup: secure vs insecure vs bogus vs indeterminate
+    - ExcerptEvidence:
+      - Endpoint discovery Step 2: “Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.”
+      - DNSSEC defines four validation states—secure, insecure, bogus, indeterminate —and RFC 9615 explicitly aborts bootstrapping when data is unauthenticated or validation fails, e.g., “including failure of DNSSEC validation, or unauthenticated data (AD bit not set)” .
+    - Reasoning:
+      - The discovery algorithm only states “validate the response if DNSSEC is enabled” and then “If this results in a positive DSYNC answer, return it,” but never specifies how the different DNSSEC validation states (secure, insecure, bogus, indeterminate) are to be mapped into “results in a positive DSYNC answer.”
+      - In DNSSEC practice, “insecure” (e.g., unsigned or opt-out) and “secure” are both produced by a validating resolver without raising a hard error; “bogus” is a failure; “indeterminate” is also a distinct state . The text does not say whether “insecure” DSYNC responses should be accepted, rejected, or subject to local policy.
+      - For a signed zone with a validation failure (bogus), it is natural to assume that the DSYNC data must be rejected, but the spec never actually says that; “validate the response” could be read either as “attempt validation but use answer anyway” or “require successful validation.” That ambiguity is especially visible because RFC 9615 is very explicit about aborting on DNSSEC failures and unauthenticated data in its own procedure , whereas RFC 9859 is silent.
+      - For unsigned DSYNC zones with DNSSEC enabled, validation succeeds in the sense of yielding “insecure”, and a positive DSYNC RRset will be returned. Under a strict reading, Step 2 then forces the use of that endpoint; under a more security-conscious reading (and in tension with the “may ignore unsigned DSYNC” permission), an implementation might treat “insecure” as unacceptable. Both behaviors are plausible interpretations of “validate the response if DNSSEC is enabled” combined with “If this results in a positive DSYNC answer, return it.”
+      - The lack of explicit mapping from DNSSEC state to discovery outcome at this boundary (secure vs insecure vs bogus vs indeterminate) means implementations can diverge in exactly which DSYNC endpoints are considered acceptable under DNSSEC, particularly when signatures are present but fail, or when data is unsigned yet the resolver is validation-capable.
+    - ImpactAssessment:
+      - Security: Implementations that accept “insecure” or “indeterminate” DSYNC data may be more exposed to spoofed endpoint redirection (and hence privacy leakage) than implementations that only accept “secure” data, but the spec does not tell implementers which is correct.
+      - Interoperability/operational expectations: Parent operators and child operators cannot reliably predict whether a given DSYNC deployment (signed-with-errors, unsigned-but-intended, etc.) will be honored, leading to unpredictable behavior in mixed implementations.
+      - Because these DNSSEC status distinctions are a standard and important part of DNSSEC behavior, leaving this mapping undefined is a meaningful underspecification at precisely the DNSSEC/non‑DNSSEC boundary.
+
+- Notes:
+  - Not a bug: The requirement that receivers “MUST implement rate limiting for notification processing,” with a RECOMMENDATION to configure it independently per source IP and per zone name, intentionally leaves the actual rate thresholds and algorithm to local policy. Although this is underspecified in detail, it does not create interop problems, because the only cross-implementation requirement is “some form of bounding the work,” not a specific rate or decision rule.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+
+Vector Stores Used: vs_6954b56ccec08191857d5b98195079cb
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

@@ -1,0 +1,626 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    Section 3 of RFC 9829 rewires how RPKI RPs locate the “issuer’s current CRL”: it is now defined via the issuer’s *current manifest* plus the certificate’s CRLDP, and RPs are told to ignore CRL Number for selection. This depends heavily on the temporal notion of “current manifest/CRL” from RFC 9286 and on repository update behavior from RFC 6481. The resulting timelines are mostly coherent, but there are a couple of edge windows (around nextUpdate and during repository inconsistencies) where the meaning of “current manifest/CRL” is not fully pinned down, which can lead to divergent RP behaviors.
+  OverallTemporalRisk: Low
+  CandidateIssues:
+    - Id: T1
+      Type: Underspecification
+      ShortLabel: Ambiguous meaning of "issuer's current manifest" over time
+      Description: |
+        RFC 9829’s update to the path-validation rule (step 5) says that revocation status must be checked against “the issuer’s current CRL, as identified by the issuer’s current manifest and the CRLDP of the certificate,” and Section 2 adds that “a resource certificate cannot be validated without consulting the current manifest of the certificate’s issuer.” However, RFC 9286 defines “current manifest” in two subtly different ways: formally (nominally current until nextUpdate or until a higher manifestNumber appears) and operationally (RPs continue to use cached data from the last successful fetch if a newer manifest/CRL cannot be successfully obtained).   
+        The combined documents do not explicitly state which of these notions governs the “issuer’s current manifest” in RFC 9829’s path-validation rule, especially in the time window after nextUpdate has passed but before a new manifest/CRL pair has been successfully fetched. This leaves room for implementations to disagree about whether revocation checking can still proceed using an expired-but-cached manifest/CRL.
+      TemporalReasoning: |
+        1. RFC 9286 defines the manifest as “nominally current until the time specified in nextUpdate or until a manifest is issued with a greater manifestNumber, whichever comes first.” So, from the CA’s perspective, at time t:
+           - If t ≤ nextUpdate and no higher manifestNumber exists, the manifest is current.
+           - If a manifest with a higher manifestNumber appears, that new one is the current manifest.
+           - If t > nextUpdate and no new manifest is yet issued, the *profile* says the old manifest is no longer nominally current.
+        2. Separately, RFC 9286’s RP-processing rules say:
+           - Each RP MUST use the current manifest of a CA to control which files (certs, ROAs, CRLs) are admitted for validation.
+           - If a fetch of the manifest and all its listed files fails (e.g., some files cannot be obtained), the fetch is considered failed and the RP MUST retry later, and “until such time as a successful fetch is executed, an RP SHOULD use cached data from a previous, successful fetch.”
+           - Appendix B explicitly notes that this clarifies that an RP unable to obtain the full set of files listed on a manifest is in a failure state and should use cached data from a previous attempt.
+        3. RFC 9829 then updates RFC 6487 step 5 to say that a certificate is considered revoked if its serial is on “the issuer’s current CRL, as identified by the issuer’s current manifest and the CRLDP of the certificate” and asserts that “a resource certificate cannot be validated without consulting the current manifest of the certificate’s issuer.”
+        4. Consider the timeline for a well-behaving CA:
+           - At time t0, manifest M1 (manifestNumber = N, thisUpdate = T1, nextUpdate = T2) and CRL C1 are valid, and RPs have successfully fetched them.
+           - At time t1 > T2, the CA has issued a new manifest M2 and CRL C2, but an RP’s attempt to fetch them fails (e.g., repository transient, partial update).
+           - Under RFC 9286, the RP is supposed to stay in a “failure state” for the fetch, but *continue using cached data* M1 and C1 for validation until a successful fetch of a new manifest & CRL happens.
+        5. At time t1, is M1 still “the issuer’s current manifest” for the purposes of RFC 9829’s step 5?
+           - If “current” means strictly “not beyond nextUpdate and with no higher manifestNumber,” then after T2 the RP would have *no* current manifest, so by 9829’s wording it seemingly cannot validate any certificates issued by that CA until M2/C2 are fetched.
+           - If “current” means “the most recent manifest the RP has successfully fetched and validated (even if its nextUpdate has passed),” then M1/C1 remain the effective “current manifest/CRL” until M2/C2 are successfully fetched, matching 9286’s cached-data rule.
+        6. RFC 9829 does not explicitly reconcile these two layers of “current,” nor does it normatively anchor its “issuer’s current manifest” term to the RP-algorithm in RFC 9286 Section 6. The only explicit definition of “current manifest” available is the nominal one in 9286 Section 4.2.1 plus the operational guidance about cached data.
+      KeyEvidence:
+        ExcerptPoints:
+          - RFC 9829 Introduction/Section 2: “In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate’s issuer.”
+          - RFC 9829 Section 3.2 (updated step 5): “A revoked certificate is identified by the certificate's serial number being listed on the issuer's current CRL, as identified by the issuer's current manifest and the CRLDP of the certificate.”
+        ContextPoints:
+          - RFC 9286 Section 4.2.1 defining that a manifest is “nominally current until the time specified in nextUpdate or until a manifest is issued with a greater manifest number, whichever comes first.”
+          - RFC 9286 Section 6: RPs MUST use the “current manifest” to control admitted files; if a fetch fails, the RP MUST retry later and SHOULD use cached data from a previous successful fetch.
+          - RFC 9286 Appendix B, bullet list: clarifies that an RP unable to obtain all files listed on a manifest is in a failure state and should use cached data.
+      ImpactOnImplementations: |
+        Different implementers could legitimately read these texts to mean:
+        - Implementation A: after nextUpdate passes, the old manifest is no longer “current,” so if a new manifest/CRL pair cannot be fetched, the implementation must fail validation for all affected certificates (because it cannot consult a current manifest), effectively failing-closed roughly at nextUpdate.
+        - Implementation B: the “current manifest” for 9829’s purposes is the last successfully fetched manifest, even if its nextUpdate has passed, so it keeps using the old manifest/CRL until a new one can be fetched, consistent with 9286’s caching guidance.
+        These two behaviors diverge exactly in the time windows where a manifest has “nominally” expired or where new manifests/CRLs exist at the CA but have not yet been successfully retrieved. This can lead to inconsistent route validation outcomes across RPs, even though the difference is primarily in availability (fail-closed vs. keep-using-stale) rather than direct security compromise.
+      AffectedArtifacts:
+        - RFC 9829 Section 2 (statement that a certificate cannot be validated without consulting the current manifest)
+        - RFC 9829 Section 3.2 (new text for RFC 6487 Section 7.2 step 5)
+        - RFC 9286 Section 4.2.1 (definition of “nominally current” manifest)
+        - RFC 9286 Section 6 (RP processing and cached-data behavior)
+      Severity: Low
+
+    - Id: T2
+      Type: Inconsistency
+      ShortLabel: “Always one current CRL” vs repository transient states
+      Description: |
+        RFC 9829 claims that, thanks to the manifest and CRLDP design, “RPKI RPs will always be able to unambiguously identify exactly one current CRL for each RPKI CA,” and uses this to justify ignoring the CRL Number extension. At the same time, RFC 6481 and RFC 9286 explicitly acknowledge that repository updates are not atomic: during the update of a CRL and its corresponding manifest, RPs may observe transient inconsistency where the manifest and repository contents are not aligned (e.g., a manifest lists a CRL whose file is missing or whose contents/hashes do not match).   
+        In such windows, an RP may not be able to find any CRL object that both matches the certificate’s CRLDP and the hash in the issuer’s “current manifest,” even though 9829’s prose suggests this is guaranteed.
+      TemporalReasoning: |
+        1. The intended steady-state behavior is:
+           - Each CA’s publication point contains the most recent CRL and the current manifest.
+           - The manifest’s fileList contains an entry for “the most recent CRL issued by this CA.”
+           - CRLDPs in certificates point to “the same CRL object listed on the issuing CAs current manifest.” (as referenced by 9829’s Introduction.)
+           - RPs use the current manifest and CRLDP to identify a single CRL whose hash matches the manifest entry; that is the “issuer’s current CRL.”
+        2. However, RFC 6481 Section 2.1 and RFC 9286 Section 5.2 make clear that repository updates are not instantaneous:
+           - Authorities “MAY perform a number of object operations on a publication repository within the scope of a repository change before issuing a single manifest that covers all the operations.”
+           - Repository operators are told to *mitigate*, but cannot fully eliminate, RPs seeing “intermediate states during changes to the repository and the associated manifest,” and it is noted that “RPs SHOULD NOT assume that a consistent repository and manifest state are assured.” 
+        3. Timeline example:
+           - At time t0, manifest M1 lists CRL file F.crl with hash H1; repository contains F.crl with content H1.
+           - The CA issues an updated CRL (F.crl with content H2) and a new manifest M2 listing F.crl with hash H2, and the repository operator applies the updates in two filesystem steps.
+           - At time t1, only CRL F.crl has been updated (content H2), but manifest M1 is still published. An RP that fetches M1 and F.crl will see a hash mismatch; there is no CRL that both:
+             (a) matches the CRLDP URI in the certificate, and  
+             (b) has a hash consistent with the manifest entry.
+           - At time t2, only M2 has been updated, but an RP might still see the old F.crl in a race; the same kind of mismatch can arise in the other order.
+        4. RFC 9286 Section 6 says that if “all of the files enumerated in a manifest” cannot be obtained (which includes mismatch cases as clarified in Appendix B), the fetch is considered to have failed and the RP MUST retry later, using cached data from a previous successful fetch. 
+        5. Thus, during the transient window while updates are in progress, from the RP’s *current snapshot* of the repository, there may be no CRL object that simultaneously satisfies both the CRLDP pointer and the current manifest’s hash. In that state, the RP cannot, based solely on live repository contents, “unambiguously identify exactly one current CRL” for that CA; instead, it must fall back to its cached manifest/CRL pair or declare a fetch failure.
+        6. RFC 9829’s statement that these properties “guarantee that RPKI RPs will always be able to unambiguously identify exactly one current CRL” is therefore not strictly accurate over time when transient repository states are taken into account, even though the *design intent* (one logical current CRL per CA instance) is sound.
+      KeyEvidence:
+        ExcerptPoints:
+          - RFC 9829 Introduction: “Together, these properties guarantee that RPKI RPs will always be able to unambiguously identify exactly one current CRL for each RPKI CA.”
+        ContextPoints:
+          - RFC 6481 Section 2.1 and 3: each CA repository publication point contains “the most recent CRL” and “the current manifest,” but RPs “SHOULD NOT assume that a consistent repository and manifest state are assured,” and repository operators can only mitigate, not eliminate, exposure to intermediate inconsistent states.
+          - RFC 9286 Section 2: a manifest contains, inter alia, “the most recent CRL issued by this CA.”
+          - RFC 9286 Section 5.2: authorities MAY batch multiple changes and then issue one manifest; repository operators MUST implement an update procedure that mitigates (but cannot fully avoid) inconsistent, transient intermediate states.
+          - RFC 9286 Section 6 and Appendix B: if an RP cannot obtain all files listed on the manifest, including the current CRL, the fetch fails and it must retry later, using cached data from a previous successful fetch. 
+      ImpactOnImplementations: |
+        The inconsistency is primarily in the prose-level guarantee rather than in the operational algorithm. Implementations that follow RFC 9286’s RP-processing rules will correctly treat transient inconsistencies as fetch failures and fall back to cached manifest/CRL data, so they will still have a usable “current CRL” from their cache even when the *live* repository view is inconsistent.
+        However, RFC 9829’s blanket statement that RPs will “always be able to unambiguously identify exactly one current CRL” could mislead implementers into underestimating the need to handle these transient failure states explicitly. A clarifying note could help align expectations: uniqueness holds for the *logical* current CRL identified by manifest+CRLDP, but repository races and incomplete updates mean that RPs must still be prepared for periods when no matching CRL can be obtained from the repository snapshot and must rely on cached state.
+      AffectedArtifacts:
+        - RFC 9829 Section 1 Introduction (paragraph asserting “always be able to unambiguously identify exactly one current CRL”)
+        - RFC 6481 Section 2.1 and Section 3 (non-atomic repository updates and inconsistent states)
+        - RFC 9286 Sections 2, 5.2, and 6, plus Appendix B (manifest/CRL relationship and RP failure handling)  
+      Severity: Low
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: >
+    The excerpt distinguishes clearly between Certification Authorities (CAs) as CRL/manifest issuers and publishers, and Relying Parties (RPs) as consumers/validators. Section 3 of RFC 9829 updates RFC 6487 to constrain what CAs must include in CRLs and how RPs must (and must not) use the CRL Number, and it refines how RPs identify the “issuer’s current CRL” using the issuer’s manifest together with CRLDP.
+
+- OverallAssessment: NoBug
+
+- FindingsOnRoutedIssues:
+  - Note: No specific CandidateIssues were provided in the routing summary, so no routed issues are evaluated individually.
+
+- AdditionalActorIssues:
+  - None
+
+- IfNoActorIssues:
+  - Comment: >
+      No actor/direction/role problems detected in this excerpt. The division of responsibilities between CAs (issuing CRLs, manifests, and choosing CRL Number/manifestNumber values) and RPs (fetching objects, validating manifests and CRLs, and ignoring CRL Number semantics) is consistent and coherent. Message and dataflow direction (CAs publish; RPs retrieve and validate; manifests and CRLDP jointly identify the issuer’s current CRL) is aligned with the RPKI model and does not exhibit contradictions or ambiguity about who does what.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 3 of RFC 9829 updates RFC 6487’s RPKI CRL profile and path-validation rules so that RPKI RPs no longer use CRL Number for CRL selection and instead derive the “issuer’s current CRL” via the issuer’s manifest plus the certificate’s CRLDP, while still requiring CRL Number to be present and syntactically sane.
+
+- ScopeModel:
+  - Targets:
+    - RPKI CAs issuing CRLs profiled in RFC 6487 Section 5 (as updated by RFC 9829 Section 3.1).
+    - RPKI relying parties (RPs) performing resource certificate path validation as in RFC 6487 Section 7.2 (as updated by RFC 9829 Section 3.2).
+    - The specific CRL and manifest associated with the issuer CA of each certificate in a certification path.
+  - Conditions:
+    - The profile and validation rules apply only in the RPKI context: “the normative specification for certificate and Certificate Revocation List (CRL) syntax used in the RPKI”  , and RFC 9829 explicitly “updates [RFC6487]”  .
+    - For CRL contents: each RPKI CA MUST issue version 2 CRLs, with scope “all certificates issued by this CA”, and (after the update) include “exactly two extensions … an Authority Key Identifier (AKI) and a CRL Number. No other CRL extensions are allowed”  .
+    - For RP processing of CRL extensions: RPs MUST process AKI, and MUST ignore CRL Number except to check that it is non-critical and within the stated integer range  .
+    - For selecting the “current” CRL in 6487 before 9829: where a CA has “two or more CRLs”, “the CRL with the highest value of the ‘CRL Number’ field supersedes all other CRLs issued by this CA”  .
+    - For manifests: per RFC 9286, a CA’s manifest contains “the most recent CRL issued by this CA”  ; a manifest is “nominally current until the time specified in nextUpdate or until a manifest is issued with a greater manifest number, whichever comes first”  .
+    - For CA repositories: a CA’s publication point contains “the most recent CRL issued by this CA, the current manifest, and all other current signed objects”  ; in key rollover multiple CA instances can share a publication point and “the repository publication point will contain multiple manifests. In this case, each manifest describes only the collection of published products of its associated CA instance”  .
+    - For path validation, updated step 5 in 6487: a revoked certificate is identified via “the issuer’s current CRL, as identified by the issuer’s current manifest and the CRLDP of the certificate”  .
+  - NotedAmbiguities:
+    - The term “issuer’s current manifest” is introduced in RFC 9829’s update to 6487 Section 7.2 but is not explicitly defined there, nor is it tied normatively to the RP behavior rules in RFC 9286 (e.g., what to do if there are multiple candidate manifests, stale manifests, or missing manifests).
+    - The new definition of “issuer’s current CRL” (“as identified by the issuer’s current manifest and the CRLDP of the certificate”) is less explicit than the earlier summary text in RFC 9829 Section 2, which required that the CRL be both the CRLDP target and an entry in the manifest’s fileList with a matching hash  ; this difference may cause confusion about whether a hash match is always required for selection.
+    - The normative text “RPs MUST ignore the CRL Number extension”   is unqualified locally; implementers must rely on document context to understand that this is scoped to RPKI RPs and RPKI CRLs, not generic PKIX validation.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous scope and selection semantics of “issuer’s current manifest” and “issuer’s current CRL” in updated path-validation rule
+    - ScopeProblemType: Incomplete definition of which manifest (and thus which CRL) is “current” for a given issuer in the presence of multiple manifests/CRLs or repository inconsistencies
+    - Evidence:
+      - RFC 9829 Section 2 asserts that in RPKI “there is exactly one CRL … appropriate and relevant for determining the revocation status” and that it is the CRL that is both “the target of the certificate’s CRL Distribution Points extension” and “listed in the issuing CA’s current manifest fileList and has a matching hash”  .
+      - The same section states: “In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate’s issuer”  .
+      - RFC 9829 Section 3.2 then replaces 6487 Section 7.2 step 5 with: “A revoked certificate is identified by the certificate’s serial number being listed on the issuer’s current CRL, as identified by the issuer’s current manifest and the CRLDP of the certificate”  , without further definition of “issuer’s current manifest.”
+      - RFC 9286 Section 2 and 4.2.1 specify that a manifest contains “the most recent CRL issued by this CA”, and is “nominally current until … nextUpdate or until a manifest is issued with a greater manifest number”  , and describe CA-side and RP-side expectations, but they do not define a single canonical RP algorithm for picking “the” current manifest in all adverse conditions.
+      - RFC 9286 Section 2 and RFC 6481 Section 2.2 explicitly allow multiple manifests and CRLs in a repository when multiple CA instances share a publication point during key rollover; “the repository publication point will contain multiple manifests. In this case, each manifest describes only the collection of published products of its associated CA instance”   .
+    - DetailedReasoning:
+      - The updated step 5 in RFC 6487, as modified by RFC 9829, redefines how an RP determines whether a certificate is revoked: the certificate’s serial must appear on “the issuer’s current CRL, as identified by the issuer’s current manifest and the CRLDP of the certificate”  . This makes the notion of “issuer’s current manifest” operationally critical, because it is now part of the definition of which CRL is in scope for revocation checking.
+      - However, the term “issuer’s current manifest” is not formally defined in RFC 6487 or in RFC 9829. RFC 9286 defines general properties of manifests (monotonic manifestNumber, nextUpdate) and describes when a manifest is “nominally current”  , but it does so from the CA’s and protocol designer’s perspective; it does not define, in one place, a single RP algorithm for selecting “the” current manifest in the face of multiple candidate manifests, stale objects, or manifest replays.
+      - The situation is further complicated in exactly the deployment scenario where ambiguity matters most: key rollover. RFC 9286 and RFC 6481 allow multiple CA instances sharing a publication point, resulting in multiple manifests and multiple CRLs being present concurrently; each manifest is “associated with” one CA instance, but the updated step 5 in 6487 does not spell out that the “issuer’s current manifest” is the one referenced in the issuer CA certificate’s SIA (id-ad-rpkiManifest), nor how to handle situations where that SIA points to an unavailable or syntactically bad manifest   .
+      - RFC 9829 Section 2 is more precise: it says the appropriate CRL is the unique object that is simultaneously the CRLDP target and listed in the issuer’s current manifest fileList “and has a matching hash”  . In contrast, the new step 5 in Section 3.2 omits the hash-match condition and simply says “as identified by the issuer’s current manifest and the CRLDP,” which leaves room for divergent interpretations: for example, must the RP require a manifest hash match to consider a CRL “current,” or is being present in a manifest that the RP deems “current” sufficient?
+      - Because “issuer’s current manifest” is not explicitly tied back to the RP behavior rules of RFC 9286 Section 6 (which handle missing, stale, or multiple manifests), an implementer who follows RFC 6487+9829 alone could reasonably choose different notions of “current”: e.g., “the latest-fetched manifest,” or “the manifest whose nextUpdate is still in the future,” or “the one with the highest manifestNumber,” without reconciling all the conditions described in 9286.
+      - In benign, well-behaved repositories, these interpretations will often coincide, so the ambiguity may be latent. But in error or attack scenarios (stale manifests, replayed manifests with old manifestNumbers but fresh timestamps, multiple manifests per CA instance due to publication glitches), different RPs may disagree on which manifest is “current,” and thus on which CRL is the “issuer’s current CRL.” This directly affects revocation status and can yield inconsistent validation results across implementations for the same repository state.
+      - The earlier RFC 6487 text avoided this specific ambiguity by: (1) defining “issuer’s current CRL” via CRLDP plus highest CRL Number among CRLs from that CA  , and (2) not relying on any notion of “current manifest” in the path-validation step itself. After RFC 9829’s change, the manifest becomes part of the normative scope of what is “the issuer’s current CRL,” but without a crisp, RP-side definition of “issuer’s current manifest.”
+      - The practical consequence is that two fully conforming implementers might both claim to respect RFC 6487+9829 yet use different manifest-selection heuristics, leading to diverging conclusions about certificate revocation in corner cases. This is a genuine scope/selection underspecification, not merely an error-handling gap, because the phrase “issuer’s current manifest” is the only hook that determines which manifest—and thus which CRL—is in scope for the revocation test.
+      - A clarifying erratum could tighten the scope by: (a) explicitly referencing RFC 9286’s RP behavior when defining “issuer’s current manifest,” and (b) restating in the updated step 5 that “issuer’s current CRL” is the unique CRL that is (i) referenced by the certificate’s CRLDP, and (ii) present in the issuer CA instance’s current manifest fileList with the matching hash, where “current manifest” is determined according to RFC 9286’s RP rules. This would align the normative path-validation rule with the more precise description in RFC 9829 Section 2 and eliminate ambiguity about which manifest/CRL pair is in scope.
+
+- ResidualUncertainties:
+  - The document context (RPKI-specific profile, explicit statement that it “updates [RFC6487]”) makes it highly likely that “RPs MUST ignore the CRL Number extension” is intended to apply only to RPKI RPs processing RPKI CRLs  . While not obviously a bug, the lack of an explicit qualifier in that bullet could be mildly confusing for implementers of multi-PKI toolchains who read RFC 9829 in isolation.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+- The new handling of CRL Number in RFC 9829 is *implementable*, but it leaves a concrete gap: it mandates checks on the CRL Number extension without specifying what an RP MUST do if those checks fail. That is a genuine **causal underspecification** that can lead to divergent revocation behavior across RPs.
+- The updated notion of “issuer’s current CRL … as identified by the issuer’s current manifest and the CRLDP” is consistent with the existing manifest model in RFC 9286 and does not introduce a new unimplementable state. Any remaining ambiguity around “current manifest” is inherited from RFC 9286, not newly caused by RFC 9829.
+
+---
+
+2. **Causal Analysis**
+
+### Issue 1 – Behavior when the CRL Number extension fails the checks
+
+**What the updated text requires**
+
+Section 3.1 (second change) of RFC 9829 replaces the old CRL-extension text in RFC 6487 Section 5 with:
+
+> An RPKI CA MUST include exactly two extensions in every CRL that it issues: an Authority Key Identifier (AKI) and a CRL Number. No other CRL extensions are allowed.  
+>  
+> -  RPs MUST process the AKI extension.  
+>  
+> -  RPs **MUST ignore the CRL Number extension except for checking**  
+>    that it is marked as non-critical and contains a non-  
+>    negative integer less than or equal to 2^159-1.
+
+So, literally followed, an RP’s algorithm for CRLNumber is:
+
+1. Parse the CRL.
+2. Confirm there is exactly an AKI and a CRL Number extension (no others).
+3. For the CRL Number extension:
+   - Confirm it is present.
+   - Confirm it is non-critical.
+   - Confirm its value is a non‑negative integer ≤ 2^159−1 (this matches the DER/20‑octet constraint from RFC 5280 Section 5.2.3).
+4. After that, ignore CRLNumber for all *selection* or *ordering* decisions.
+
+However, **the text never says what to do if step 3 fails**.
+
+Concretely, the following cases are not covered:
+
+- CRL Number extension is **absent**.
+- CRL Number extension is **critical**.
+- CRL Number value is **out of range** (> 2^159−1) or not decodable as an integer.
+- Some other structural anomaly in the CRL Number extension (multiple instances, etc.).
+
+The text tells the RP what to *check* but not what to *do* when the check fails.
+
+**Why this matters causally**
+
+To validate a certificate, RFC 6487 Section 7.2 requires (step 5):
+
+> A revoked certificate is identified by the certificate's serial number being listed on the issuer's current CRL, … The CRL is itself valid and the public key used to verify the signature on the CRL is the same public key used to verify the certificate itself.
+
+RFC 9829 updates only the *identification* of “issuer’s current CRL”, but leaves in place the requirement that the CRL “is itself valid”. Combining that with Section 5 of RFC 6487 (the CRL profile) and the new text from RFC 9829, a conscientious RP implementer is left to decide:
+
+- Does failure of the CRLNumber checks mean the CRL is “not itself valid” and must be rejected entirely?
+- Or does “MUST ignore the CRL Number extension” imply that *even if the extension is malformed*, the RP is allowed to proceed using that CRL as long as signature/time/etc. are OK and the extension can be ignored?
+
+Both are plausible readings:
+
+- **Strict reading (fail-closed)**:  
+  - Any violation of the RPKI CRL profile (missing CRL Number, wrong criticality, out-of-range value) means the CRL is non‑conformant and thus not “valid” under Section 5 of RFC 6487, so step 5 of Section 7.2 fails.
+  - Effect: The RP concludes it has no acceptable issuer CRL; it therefore cannot establish that “the issuer has not revoked the certificate” and should treat that certificate as invalid/unknown.
+
+- **Lenient reading (tolerant to malformed CRLNumber)**:  
+  - “RPs MUST ignore the CRL Number extension” is taken to mean that the content and even presence of the extension are not essential to CRL validity; violations only trigger logging/debugging, but the CRL is still used.
+  - Effect: The RP proceeds to use the CRL for revocation checking even if the CRLNumber extension is malformed or missing.
+
+These two choices are both consistent with the literal text of RFC 9829 + RFC 6487, because:
+
+- RFC 6487 talks about what CAs MUST include in CRLs but does *not* explicitly define an RP-side rule like “if any of these profile conditions are violated, treat the CRL as invalid”.
+- RFC 9829 introduces a very specific RP-side MUST (“MUST ignore… except for checking…”) without stating the consequence of a failed check.
+
+**Resulting divergent behavior**
+
+If a CA (or its software) emits a CRL with a non-conforming CRLNumber (e.g., critical bit flipped, out-of-range, or accidentally omitted):
+
+- **RP A (strict)**  
+  - Treats the CRL as invalid.  
+  - Step 5 in Section 7.2 fails because there is no “issuer’s current CRL” that is valid.  
+  - All certificates under that CA become unverifiable from a revocation perspective; RP A will (correctly, from a security standpoint) treat them as invalid or at least not safely usable.
+
+- **RP B (lenient)**  
+  - Treats the CRL as valid but ignores the CRLNumber extension entirely (even when malformed).  
+  - Continues to use that CRL for revocation.  
+  - Certificates not listed on the CRL are treated as *not revoked* and thus may be accepted.
+
+Under a CA/software bug or misconfiguration, two fully “conscientious” implementers following the current text can reach different conclusions about revocation status of the same certificates. In RPKI, that means different routers can reach different validity states for ROAs and other signed objects, yielding inconsistent route-validation outcomes.
+
+This is a **causal underspecification**: the spec leaves a real choice point where different reasonable interpretations lead to materially different behavior in the presence of malformed CRLNumber extensions.
+
+Note that similar underspecification already existed in RFC 6487 for other CRL profile violations (e.g., an extra CRL extension). RFC 9829 *adds* one more explicit RP-side check (value range and criticality) but still does not say how violations affect CRL validity. So it does not introduce a *qualitatively new* class of ambiguity, but it does make the gap more visible and more likely to be exercised.
+
+---
+
+### Issue 2 – “Issuer’s current manifest” and CRL identification
+
+**What the updated text does**
+
+RFC 9829 Section 3.2 changes RFC 6487 Section 7.2, step 5, to:
+
+> A revoked certificate is identified by the certificate's serial number being listed on the issuer's current CRL, as identified by the issuer's current manifest and the CRLDP of the certificate. The CRL is itself valid …
+
+Section 2 of RFC 9829 also states:
+
+> there is exactly one CRL that is appropriate and relevant… It is the unique CRL object that is simultaneously:  
+>  * the target of the certificate's CRL Distribution Points extension, and  
+>  * listed in the issuing CA's current manifest fileList and has a matching hash …  
+>  
+> In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate's issuer.
+
+Combined with the referenced specs:
+
+- RFC 6481 Section 2.2: the CA’s publication point “contains … the most recent CRL issued by this CA, the current manifest…”.  
+- RFC 9286 Section 2: the manifest “contains a list of … the most recent CRL issued by this CA”.  
+- RFC 9286 Section 4.2.1: a manifest is “nominally current” until `nextUpdate` or until a higher `manifestNumber` appears; RPs must enforce monotonicity of `manifestNumber` and `thisUpdate`, and fall back to cached objects when those monotonicity checks fail.
+
+**How an RP implements this literally**
+
+For any non-trust-anchor certificate whose issuer is a CA:
+
+1. Discover the issuer CA certificate as part of path building.
+2. Use the CA certificate’s SIA (id-ad-rpkiManifest) to fetch its manifest (or manifests, in the key-rollover case; RFC 6481 Section 2.2 explains multiple manifests in a shared publication point).
+3. Apply RFC 9286 rules to determine which manifest is **current** for that CA instance (using manifestNumber and thisUpdate/nextUpdate, plus the more detailed rules in RFC 9286 Section 6, which are not reproduced here but are well-defined in the RFC).
+4. From that manifest’s fileList, select the CRL file and hash that correspond to this CA instance.
+5. Check that the CRLDP in the target certificate points to that same CRL object (same URI/filename). The CRL object whose URI matches the CRLDP and whose hash matches the manifest entry is the “issuer’s current CRL”.
+6. Verify the CRL (signature, time, profile rules) and then check whether the certificate’s serial number appears on it.
+
+For a well-behaving CA that follows RFC 6481 and RFC 9286:
+
+- There is exactly one manifest per CA instance that is current at any given time.
+- Each such manifest lists exactly one CRL for that CA instance (the most recent CRL).
+- Each certificate’s CRLDP points to that CRL.
+- Thus there is exactly one CRL that satisfies “on the current manifest AND target of the CRLDP”; RPs will converge uniquely on the same CRL.
+
+This is operationally coherent and fully executable.
+
+**Edge cases and ambiguity**
+
+Edge cases arise when the repository or CA is not conformant or there are transient publish/update races:
+
+- **Missing manifest** for a CA:  
+  - RFC 9286 Section 6 (not included here, but referenced from 4.2.1) defines RP behavior when no manifest is available (use cached objects, treat the CA as at-risk, etc.).  
+  - Under RFC 9829’s statement “a resource certificate cannot be validated without consulting the current manifest”, a strict reading says: if there is no current manifest, path validation for that CA’s products must fail.  
+  - That behavior is *implementable*: an RP can simply fail validation for all objects under that CA until a manifest appears. Other RPs might apply the more nuanced heuristics from RFC 9286 Section 6. This tension is not new with RFC 9829; RFC 9286 already left some latitude for local policy when manifests are missing/stale.
+
+- **Stale manifest (past nextUpdate)** but no replacement yet:  
+  - RFC 9286 uses “nominally current” and then provides additional rules for how long an RP may continue using an old manifest, and when to fall back to cached objects.  
+  - RFC 9829 uses the term “issuer’s current manifest” without restating those rules. A reasonable implementer will interpret “current” as defined by RFC 9286’s RP procedures; another very strict implementer might decide that once `nextUpdate` has passed, no manifest is “current”, and therefore validation must fail.  
+  - Again, this ambiguity was already present in how “current manifest” vs. “nominally current” was used in RFC 9286; RFC 9829 is just reusing that term for CRL identification.
+
+- **Mismatch between CRLDP and manifest fileList** (e.g., CRLDP points to `foo.crl`, manifest lists `bar.crl`):  
+  - The text says the relevant CRL is the one that satisfies *both* conditions; if none do, then there is no “issuer’s current CRL” by definition.  
+  - An RP that follows this literally will treat the certificate as unverifiable from a revocation standpoint and should fail validation for that certificate/CA.  
+  - Another RP might be tempted to “fall back” to whichever CRL is listed on the manifest, ignoring CRLDP, or vice versa. That would be non-compliant with RFC 9829’s explicit two‑condition definition, so such a fallback is *not* a valid interpretation of the new text.
+
+Crucially, though:
+
+- **There is no point at which the rules become unexecutable.**  
+  An RP can always implement:
+
+  - If there is exactly one CRL satisfying both the manifest and CRLDP conditions, use it.  
+  - If there is none, treat the certificate (or the entire CA’s products) as not safely valid.  
+
+- This behavior is consistent with the security model of RPKI (fail-closed when repository or manifest is inconsistent) and does not require guessing or sending impossible messages. It may be stricter than what some existing implementations do today, but it is mechanically well defined.
+
+Thus, the new coupling of “issuer’s current CRL” to “issuer’s current manifest + CRLDP” **does not create a fundamental causal inconsistency**. It relies on RFC 9286’s notion of a “current” manifest, which is already defined (albeit with some policy leeway), and it gives a clear *success condition* (exactly one matching CRL) and an implied *failure condition* (no such CRL → cannot validate).
+
+---
+
+3. **Problem Classification**
+
+- **Issue 1 (CRL Number extension failure behavior)**:  
+  **Causal Underspecification.**  
+  The spec imposes a MUST-level check on CRLNumber but never specifies the consequence of failure, leaving RPs free to choose between rejecting the CRL entirely or accepting it while ignoring the broken extension. That choice affects revocation outcomes and inter‑RP consistency.
+
+- **Issue 2 (“issuer’s current manifest” and CRL identification)**:  
+  No new causal inconsistency introduced by RFC 9829.  
+  The algorithm is executable in all conformant cases and has a clear failure mode (no CRL satisfies the two conditions → treat the certificate as unvalidated). Any residual ambiguity about how to treat missing/stale manifests is inherited from RFC 9286 and RFC 6487 and is not newly created by this update.
+
+---
+
+4. **Minimal Fix Shape (for Issue 1)**
+
+A small, local clarification would close the gap:
+
+- After the sentence “RPs MUST ignore the CRL Number extension except for checking that it is marked as non-critical and contains a non-negative integer less than or equal to 2^159-1,” add something like:
+
+  - “If any of these checks fail, the RP **MUST treat the CRL as invalid for the purposes of RPKI validation and MUST NOT use any revocation information from it**.”
+
+  or, if the intent is to be lenient:
+
+  - “If any of these checks fail, the RP **MAY proceed as if the CRL Number extension were absent**, but MUST NOT use the value of the CRL Number for any operational decision.”
+
+Either choice would produce a single, well-defined RP behavior and eliminate the current divergence point.
+
+---
+
+5. **Non-Issues / Clarifications**
+
+- The upper bound “2^159-1” is not a new constraint; it is the numeric form of the 20‑octet DER-encoded limit from RFC 5280 Section 5.2.3, once you account for the sign bit. It does not introduce a mismatch with the base PKIX profile.
+- The recommendation that CRLNumber match manifestNumber is purely advisory (RECOMMENDED) and does not drive any RP behavior, since RPs are mandated to ignore CRLNumber for selection; no causal issue arises from mismatches there.
+- The “RPs MUST process the AKI extension” language is somewhat vague but does not create an algorithmic impossibility, because the primary binding between CRL and issuer is already enforced by checking that the public key that verifies the CRL is the same as that for the certificate (RFC 6487 Section 7.2, step 5). The AKI processing requirement is largely redundant from a behavior standpoint.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Quantitative Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary:  
+  Section 3 of RFC 9829 changes how CRL Number is handled in the RPKI profile of RFC 6487. It removes CRL Number from CRL selection, mandates that RPs ignore CRL Number except for a bounded sanity check, recommends aligning CRL Number with manifestNumber, and ties the notion of “issuer’s current CRL” to the issuer’s current manifest plus the CRLDP. Numerically, the key change is the explicit bound that CRL Number must be a non‑negative integer ≤ 2^159−1.
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: No quantitative issues found
+    - Description: The main potential trap here is whether the explicit bound “≤ 2^159−1” for the CRL Number is consistent with RFC 5280’s requirement that CRLNumber values be encodable in at most 20 octets, and with RFC 9286’s corresponding guidance for manifestNumber. A careful check of ASN.1 DER integer encoding shows that 2^159−1 is exactly the maximum non‑negative integer that can be represented in a minimally encoded, non‑negative INTEGER using 20 octets, so the bound is quantitatively correct and consistent with the referenced RFCs.
+    - Evidence:  
+      • RFC 9829 requires: “RPs MUST ignore the CRL Number extension except for checking that it is marked as non‑critical and contains a non‑negative integer less than or equal to 2^159−1.”  
+      • RFC 5280, Section 5.2.3: “CRL verifiers MUST be able to handle CRLNumber values up to 20 octets. Conforming CRL issuers MUST NOT use CRLNumber values longer than 20 octets. … CRLNumber ::= INTEGER (0..MAX)”.  
+      • RFC 9286, Section 4.2.1 gives identical 20‑octet guidance for manifestNumber (“Manifest verifiers MUST be able to process number values up to 20 octets. Conforming manifest issuers MUST NOT use number values longer than 20 octets.”) and explicitly models manifestNumber on CRLNumber.
+    - QuantitativeReasoning:  
+      In DER, non‑negative INTEGERs are encoded in two’s complement with a *minimal* number of octets. For a non‑negative value v with bit length m = ⌊log₂(v)⌋+1:  
+      • If m mod 8 ≠ 0, v is encoded in L = ceil(m/8) octets, with the high bit 0.  
+      • If m mod 8 = 0, a leading 0x00 is required to keep the value non‑negative, so the minimal length is L = m/8 + 1.  
+      To satisfy L ≤ 20:  
+      • For the “non‑boundary” case (m mod 8 ≠ 0), the largest m allowed is 8·20 − 1 = 159, giving max v = 2^159 − 1.  
+      • For the “boundary” case (m mod 8 = 0), L = m/8 + 1 ≤ 20 ⇒ m ≤ 152 ⇒ v ≤ 2^152 − 1, which is smaller.  
+      Thus, among all non‑negative integers encodable in ≤ 20 DER octets, the maximum possible value is exactly 2^159 − 1. Any value ≥ 2^159 requires at least 160 bits, which under DER rules would need 21 octets (because of the sign bit), violating the “≤ 20 octets” constraint in RFC 5280 and RFC 9286. Therefore, constraining CRL Number to be ≤ 2^159 − 1 is numerically equivalent to constraining it to be encodable in at most 20 octets as required by those RFCs, and is also consistent with recommending equality to manifestNumber, which is subject to the same 20‑octet rule.
+    - Consequences:  
+      Because the 2^159−1 bound is exactly aligned with the 20‑octet DER limit, independent implementations that follow RFC 9829, RFC 5280, and RFC 9286 will agree on which CRLNumber values are acceptable. There is no hidden off‑by‑one or representation mismatch that would cause different encodings or different accept/reject behavior across conforming implementations.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 3 of RFC 9829 tightens and redirects the CRL profile and validation rules from RFC 6487: CAs still MUST include CRL Number, but RPs MUST ignore it except for bounded sanity checks, and “issuer’s current CRL” is now defined via the issuer’s current manifest combined with CRLDP. It also RECOMMENDS that CAs align CRL Number with the manifestNumber and rephrases the CRL extension requirements.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - Title: RP behavior on malformed or out‑of‑profile CRL Number is not specified
+    - Description:  
+      The new text in RFC 9829 requires that “RPs MUST ignore the CRL Number extension except for checking that it is marked as non-critical and contains a non-negative integer less than or equal to 2^159-1.” This creates a *mandatory* RP check but does not say what an RP MUST or SHOULD do if any part of that check fails. Possible failure modes include: the CRL Number extension being missing (contrary to CA requirements), marked critical, not an integer, negative, or containing a value greater than 2^159-1. The surrounding profile text in RFC 6487 says that the profile “defines those fields that are used in a resource certificate that MUST be present for the certificate to be valid. Any extensions not explicitly mentioned MUST be absent. The same applies to the CRLs used in the RPKI” and that step 5 of validation requires that “the CRL is itself valid”, but there is no explicit linkage from a failed CRL Number sanity check to the conclusion that the CRL “is not valid.” As a result, one RP implementation could treat a CRL with a bad CRL Number as entirely invalid (thus failing revocation checking for all certificates under that CA), while another RP could simply ignore the malformed extension and continue using the CRL because CRL Number is otherwise to be ignored. The specification does not normatively resolve this divergence.
+    - KeyTextSnippets:
+      - RFC 9829 §3.1 (second change, NEW):  
+        “An RPKI CA MUST include exactly two extensions in every CRL that it issues: an Authority Key Identifier (AKI) and a CRL Number. No other CRL extensions are allowed.  
+        …  
+        -  RPs MUST ignore the CRL Number extension except for checking  
+           that it is marked as non-critical and contains a non-  
+           negative integer less than or equal to 2^159-1.”
+      - RFC 6487 §1:  
+        “This profile defines those fields that are used in a resource certificate that MUST be present for the certificate to be valid. Any extensions not explicitly mentioned MUST be absent. The same applies to the CRLs used in the RPKI, that are also profiled in this document.”
+      - RFC 6487 §5:  
+        “An RPKI CA MUST include the two extensions, Authority Key Identifier and CRL Number, in every CRL that it issues. … No other CRL extensions are allowed.”
+      - RFC 6487 §7.2 (OLD/NEW step 5, behavior unchanged here):  
+        “A revoked certificate is identified by the certificate's serial number being listed on the issuer's current CRL … The CRL is itself valid …”
+    - Impact:  
+      Because the RP’s reaction to a failed CRL Number check is unspecified, different conformant implementations can make different choices (treat the CRL as unusable vs. ignore the malformed extension and continue), potentially leading to inconsistent revocation outcomes for the same RPKI data under CA misconfiguration or attack. This ambiguity affects both interoperability (different RPs disagree on certificate validity) and security (some RPs may accept CRLs that others reject, or vice versa). A minimal fix would be to state explicitly that a failure of this check either (a) renders the CRL invalid for the purposes of step 5 of RFC 6487 §7.2, or (b) MUST/MAY be treated as if the CRL Number extension were absent, thereby preserving a single, well-defined RP behavior.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 3 of RFC 9829 updates RFC 6487’s RPKI CRL profile and path-validation rules, deprecating the use of CRL Number for CRL selection and instead tying the “issuer’s current CRL” to the issuer’s current manifest and the CRLDP. It also constrains how RPs treat the CRL Number extension and recommends aligning it with the manifestNumber defined in RFC 9286, while still requiring CRLs to conform to the X.509 / RFC 5280 CRL profile. These changes must remain consistent with RFC 5280’s CRLNumber definition and RFC 9286’s manifestNumber definition.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Off-by-one numeric limit for CRL Number vs RFC 5280 / manifestNumber
+    - Description: RFC 5280 defines the CRLNumber as an INTEGER (0..MAX) and requires that CRL verifiers “MUST be able to handle CRLNumber values up to 20 octets,” while CRL issuers “MUST NOT use CRLNumber values longer than 20 octets” (i.e., up to 160 bits are allowed). RFC 9286 applies this same guidance to manifestNumber: manifest verifiers MUST be able to process number values up to 20 octets, and manifest issuers MUST NOT use longer values, explicitly modeling manifestNumber on CRLNumber. In RFC 9829’s updated Section 5 text for RFC 6487, RPs are told to “ignore the CRL Number extension except for checking that it is marked as non-critical and contains a non-negative integer less than or equal to 2^159-1.” This range (≤ 2^159 − 1) allows at most 159 bits, which is stricter than the 20‑octet (up to 160‑bit) limit that RFC 5280 and RFC 9286 explicitly allow. Thus, a CRLNumber that is 20 octets long and within the RFC 5280-allowed range but > 2^159 − 1 would be valid under RFC 5280 (and consistent with the manifestNumber guidance in RFC 9286) yet would fail RFC 9829’s “basic sanity check.” Because RFC 9829 simultaneously (a) recommends that CRL Number match manifestNumber and (b) imposes a stricter upper bound than the manifestNumber/CRLNumber guidance it cites, careful implementers following RFC 5280 and RFC 9286 could generate CRLNumbers and manifestNumbers that some RFC 9829‑conformant RPs would treat as non-conformant, leading to potential rejection of otherwise valid CRLs and manifest alignment failures. Note: the router’s first hypothesis (about missing behavior when the checks fail) describes a local underspecification; however, the cross‑RFC mismatch arises specifically from the numeric bound (2^159−1) being inconsistent with the 20‑octet allowance in RFC 5280 and RFC 9286, not from the lack of explicit error-handling text.
+    - EntitiesInvolved: ["RFC 9829 Section 3.1 (second change to RFC 6487 Section 5)", "CRL Number extension", "RFC 5280 Section 5.2.3 CRLNumber", "RFC 9286 Section 4.2.1 manifestNumber", "RFC 6487 Section 5 (CRL profile)"]
+    - CrossRefsUsed: ["RFC 5280 §5.2.3 requirement that CRL verifiers handle CRLNumber values up to 20 octets, and issuers not use values longer than 20 octets", "RFC 9286 §4.2.1 statement that manifestNumber is analogous to CRLNumber and must follow the same 20‑octet bounds", "RFC 9829 §3.1 updated text requiring RPs to check CRLNumber is ≤ 2^159−1"]
+    - Confidence: High
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  Section 3 of RFC 9829 updates the RFC 6487 RPKI CRL profile and path-validation rules. It (1) changes how CAs use CRL Number, (2) tells RPs to ignore CRL Number except for minimal sanity checks, and (3) redefines “issuer’s current CRL” in path validation to be the CRL that is both the certificate’s CRLDP target and the CRL listed on the issuer’s current manifest with a matching hash. The behavior at boundaries involves malformed or missing CRLNumber, mismatched manifest/CRL/CRLDP combinations, and absence or ambiguity of a “current” manifest or CRL.
+- OverallBoundaryBugLikelihood: Medium
+
+- Findings:
+
+  - Finding-1:
+    - BugType: Underspecification
+    - ShortLabel: RP behavior when CRL Number sanity checks fail
+    - BoundaryAxis: Malformed / missing / out-of-range / wrongly-marked CRLNumber extension
+    - ExcerptEvidence:  
+      RFC 9829 replaces the old RFC 6487 text with:  
+      “An RPKI CA MUST include exactly two extensions in every CRL that it issues: an Authority Key Identifier (AKI) and a CRL Number. No other CRL extensions are allowed.  
+      -  RPs MUST process the AKI extension.  
+      -  RPs MUST ignore the CRL Number extension except for checking that it is marked as non-critical and contains a non-negative integer less than or equal to 2^159-1.”    
+      RFC 6487 earlier added: “The same applies to the CRLs used in the RPKI, that are also profiled in this document. A Certification Authority (CA) conforming to the RPKI CP MUST issue certificates and CRLs consistent with this profile.”    
+    - Reasoning:  
+      The domain here is CRLs with exactly two extensions (AKI and CRLNumber), with CRLNumber encoded as an INTEGER that, because of the “up to 20 octets” constraint in RFC 5280 / RFC 9286, effectively yields a numeric range 0..2^159−1. RFC 9829 explicitly introduces a *RP-side* MUST-level check on CRLNumber: it must be non-critical and have a value in that range. However, the text does not say what an RP MUST or SHOULD do if any of the following happen, all of which are clearly possible in the wild (mis-issuance, encoding bugs, repository corruption, or attacker modification):  
+      - The CRLNumber extension is **absent** (violates “CA MUST include exactly two extensions” but still syntactically a v2 CRL).  
+      - CRLNumber is present but **marked critical** (violates both RFC 5280’s “non-critical” requirement and RFC 9829’s check).  
+      - The extension is present but **malformed**: bad DER, negative integer, or encoded integer > 2^159−1 (e.g., 21-octet encoding).  
+      - There are **additional extensions** beyond AKI and CRLNumber (violating “exactly two extensions”).  
+      The only RP-side directive is “MUST ignore the CRL Number extension except for checking that…”, which describes only the *check itself*, not the consequence of failure. Reasonable implementers can differ:  
+      - Some may treat any failure of this check (or absence of CRLNumber) as making the CRL non-conformant and thus invalid/unusable for revocation checking.  
+      - Others may treat the check as “best effort” and continue to use the CRL so long as the rest of the CRL parses and the signature verifies, effectively *not* enforcing the profile-level constraint at runtime.  
+      - Others might pick intermediate behaviors (e.g., log but continue).  
+      Nothing in RFC 6487’s general “MUST issue CRLs consistent with this profile” clause resolves this, because it constrains CAs, not explicitly the RP’s reaction to non-conformant CRLs. 6487’s path validation step 5 only says “the CRL is itself valid”   without specifying when CRL profile violations make it “not valid.” RFC 9829, while tightening CRLNumber handling, still does not close this gap.  
+    - ImpactAssessment:  
+      Because CRLs are central to revocation, divergent RP behavior in the face of CRLNumber/profile violations can lead to materially different revocation decisions: one RP may reject the CRL and therefore fail validation of all dependent certificates, while another may accept the same CRL and consider the certificates correctly checked for revocation. This affects both interoperability and security (e.g., an attacker able to corrupt CRLNumber or its criticality bit could effectively disable revocation for some RPs but not others).
+
+  - Finding-2:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous behavior when no unique “issuer’s current CRL” can be determined via manifest + CRLDP
+    - BoundaryAxis: Absence or ambiguity of “issuer’s current manifest” or of a CRL that is simultaneously manifest-listed and the CRLDP target
+    - ExcerptEvidence:  
+      RFC 9829 Section 2 defines the “one appropriate” CRL as:  
+      “It is the unique CRL object that is simultaneously:  
+      *  the target of the certificate's CRL Distribution Points extension, and  
+      *  listed in the issuing CA's current manifest fileList and has a matching hash (see Section 4.2.1 of [RFC9286]).”    
+      It further states: “In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate's issuer.”    
+      RFC 9286 says “[a] manifest is nominally current until the time specified in nextUpdate or until a manifest is issued with a greater manifest number, whichever comes first” and describes how RPs react to “purported 'new' manifest” with non-monotonic manifestNumber or thisUpdate (use cached versions, see Section 6.6).    
+      The new path-validation step 5 in RFC 6487 (as updated) reads:  
+      “A revoked certificate is identified by the certificate's serial number being listed on the issuer's current CRL, as identified by the issuer's current manifest and the CRLDP of the certificate. The CRL is itself valid and the public key used to verify the signature on the CRL is the same public key used to verify the certificate itself.”    
+    - Reasoning:  
+      The *normal* case is clear: there is a single manifest for the issuer that is “current” under RFC 9286’s rules, and its fileList contains exactly one CRL whose name matches the CRLDP URI; the hash matches, so we have a unique “issuer’s current CRL.” Edge cases explicitly anticipated elsewhere in the RPKI specs include:  
+      - **No manifest that is “current”** by 9286’s definition (e.g., no manifest present, all candidate manifests invalid, or nextUpdate long past with no replacement). 9286 explicitly contemplates problematic manifests and refers to Section 6.6 for RP behavior, but that is not restated here.    
+      - **Manifest–repository inconsistency**: 6481 notes that repository updates can expose RPs to intermediate states where manifest and repository contents “may not be precisely aligned” and that “RPs SHOULD NOT assume that a consistent repository and manifest state are assured.”   In such states, the manifest may list a CRL that is not yet (or no longer) present, or the repository may contain a CRL not listed (or listed with a different hash).  
+      - **CRLDP / manifest mismatch**: CRLDP may point to a URI for which no entry exists in the current manifest fileList, or an entry exists but with a non-matching hash.  
+      In any of these cases, *no* CRL satisfies the RFC 9829 definition (CRLDP target ∩ manifest-listed-with-matching-hash), so an “issuer’s current CRL” as newly defined does not exist. The updated path-validation step 5 depends on such a CRL existing, but does not say what the RP MUST or SHOULD do when it cannot identify one:  
+      - Must validation of the target certificate fail outright if there is no such CRL?  
+      - Is the certificate’s revocation status then “indeterminate” and subject to local policy?  
+      - Should the RP fall back to previously cached CRLs or to CRLDP alone (contradicting the “cannot be validated without consulting the current manifest” statement)?  
+      RFC 9829’s statement that “a resource certificate cannot be validated without consulting the current manifest” is explanatory and uses no BCP 14 key word, so it does not, by itself, define normative failure behavior. Nor does the generic phrase in 6487 step 5 (“the CRL is itself valid”) address what happens when **no CRL** meeting the new identification rule can be found. Given that 6481/9286 both acknowledge that these misaligned or missing-manifest situations can occur, the boundary case is clearly within the valid state space; different, plausible RP choices would lead to different decisions on whether to accept or reject affected certificates.  
+    - ImpactAssessment:  
+      In attack or error scenarios where manifests and CRLs are inconsistent or a “current” manifest cannot be determined, some RPs may treat all certificates from that CA as non-validated (hard failure), while others may continue using older or manifest-mismatched CRLs, effectively accepting or rejecting certificates differently. This undermines the intended security property (“manifest + CRLDP jointly define the current CRL”) and can create inconsistent routing decisions in the RPKI ecosystem.
+
+- Notes:
+  - Not a bug: The numeric bound “≤ 2^159−1” for CRLNumber is consistent with the existing “up to 20 octets” constraint in RFC 5280 and RFC 9286 when DER INTEGER encoding is taken into account; it is essentially restating an implied numeric limit rather than introducing a new, conflicting range.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+
+Vector Stores Used: vs_6954b8208e048191882274909a84f96b
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

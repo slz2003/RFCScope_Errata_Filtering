@@ -1,0 +1,306 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: The excerpt defines when and where IPv6 zone identifiers (e.g., `%eth0`) are meaningful, what kinds of UIs are in scope, and gives a single normative UI requirement for entering such addresses, while also describing how common socket APIs (notably `getaddrinfo()`) are expected to handle them.
+
+- ScopeModel:
+  - Targets:
+    - IPv6 addresses with zone identifiers attached, currently meaningful “only when attached to link-local unicast and scoped multicast addresses”.
+    - User interfaces (UIs) that allow or require users to enter IPv6 addresses “other than a global unicast address”.
+    - Operating systems and network stacks that support the RFC 4007 model of a human‑readable zone identifier; devices without such support are explicitly out of scope.
+    - Socket APIs, especially `getaddrinfo()` as specified in RFC 3493, and (by contrast) `inet_pton()` which is said not to accept zone identifiers.
+    - Web browsers’ handling of URIs, which are explicitly carved out from the document’s normative requirements.
+  - Conditions:
+    - Zone identifiers are currently meaningful only for link-local unicast and multicast with less than global scope, with a possibility of future uses.
+    - The main UI requirement applies if and only if the UI allows or requires entering an IPv6 address that is not a global unicast address.
+    - The document’s recommendations and normative statements “do not apply to URIs fetched by web browsers,” even if those UIs otherwise match the earlier condition.
+    - Devices whose stack does not implement the RFC 4007 human‑readable zone-identifier model are out of scope.
+  - NotedAmbiguities:
+    - The statement that such addresses are “directly supported by socket API calls including `getaddrinfo()` [RFC3493]” is made in a context of `%zone_id` literals, but RFC 3493 defines only “standard IPv6 text forms described in `inet_pton()`” and predates RFC 4007’s `%zone_id` syntax, so the exact scope of guaranteed support is unclear.
+    - The top-of-Section 5 requirement is scoped simply to “a user interface (UI) that allows or requires the user to enter an IPv6 address other than a global unicast address,” and only later explicitly excludes “URIs fetched by web browsers,” which could be read as a non-obvious carve‑out from the earlier general rule.
+    - The document anticipates that “other uses [of zone identifiers] might be defined in the future” but the normative requirement in Section 5 only mentions link‑local and scoped multicast; it does not state whether future scoped uses would be implicitly covered.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Over-scoped claim that RFC 3493 `getaddrinfo()` directly supports `%zone_id` textual addresses
+    - ScopeProblemType: Context-domain mismatch between the address text forms guaranteed by the socket API specification and the forms implied by this document
+    - Evidence:
+      - RFC 9844 Section 1: “Examples of a link-local unicast address qualified by a zone identifier are `fe80::1234%eth0` … Such addresses are directly supported by socket API calls including `getaddrinfo()` [RFC3493].”
+      - RFC 3493 Section 6.1: For `getaddrinfo()`, “If the specified address family is AF_INET6 or AF_UNSPEC, standard IPv6 text forms described in `inet_pton()` are valid.” The description does not mention zone identifiers or a `%` suffix.
+      - RFC 4007 (Section 11.2) is where the `<address>%<zone_id>` textual form is introduced; RFC 4007 post-dates RFC 3493.
+    - DetailedReasoning:
+      - In Section 1, RFC 9844 presents examples of IPv6 literals with zone identifiers, such as `fe80::1234%eth0`, and then asserts that “such addresses are directly supported by socket API calls including `getaddrinfo()` [RFC3493].” The natural reading is that support for `%zone_id` literals is part of the standardized behavior of `getaddrinfo()` as defined in RFC 3493.
+      - However, RFC 3493’s definition of `getaddrinfo()` explicitly restricts valid IPv6 address strings to “standard IPv6 text forms described in `inet_pton()`.” The referenced forms, via RFC 4291/`inet_pton()`, do not include the `%zone_id` suffix; they are plain IPv6 literals without zone identifiers.
+      - Moreover, the textual `<address>%<zone_id>` syntax is defined later in RFC 4007 Section 11.2, and RFC 4007 is not integrated into RFC 3493’s definition of `getaddrinfo()` (and could not be, since it was published later). Thus, the standardized scope of `getaddrinfo()` as per RFC 3493 does not mandate understanding or accepting `%zone_id`-extended literals.
+      - Some operating systems and libraries have, in practice, extended their `getaddrinfo()` implementations to accept `%zone_id` suffixes, but this is an implementation-specific extension, not required by RFC 3493. The claim in RFC 9844 effectively generalizes this implementation behavior into a standards-level guarantee.
+      - If an implementer reads RFC 9844 literally, they might assume that passing `fe80::1%eth0` to `getaddrinfo()` is portably valid on any RFC 3493-conformant system, and build a UI that simply hands such strings to `getaddrinfo()` without fallback. On platforms that adhere strictly to RFC 3493’s “standard text forms” and do not implement the `%zone_id` extension, this will fail (e.g., return `EAI_NONAME`), breaking interoperability.
+      - This is a scope error: RFC 9844 attributes to the standardized socket API (as specified by RFC 3493) a capability whose normative scope is actually narrower and does not include `%zone_id` text forms. The document should instead clarify that such addresses are supported by many current implementations of `getaddrinfo()`, but that RFC 3493 itself does not require this, and behavior is implementation dependent.
+      - Correcting or clarifying this would prevent implementers from over-relying on non-portable behavior and align the stated applicability of `getaddrinfo()` with the actual scope of RFC 3493’s specification.
+
+- ResidualUncertainties:
+  - The interplay between the broad UI requirement in Section 5 (for any non-global-unicast address entry) and the later explicit carve-out for “URIs fetched by web browsers” relies on readers noticing that the latter narrows the scope of the former; while likely intentional, it is not restated in fully BCP 14 terms and could be misread by some implementers.
+  - The document anticipates future address types that might use zone identifiers but fixes its normative UI requirement specifically to link-local and scoped multicast; it is unclear whether such future uses are intended to be automatically covered or would require an explicit update.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following RFC 9844 literally does not make any protocol or API behavior *unimplementable*, but it does mischaracterize what RFC 3493 actually guarantees about `getaddrinfo()`. The misleading cross‑reference can cause implementers to assume that passing `fe80::1%eth0` to `getaddrinfo()` is portable and standards‑mandated, when in fact support for the `%zone_id` suffix is implementation-specific.
+
+---
+
+2. **Causal Analysis**
+
+**What RFC 3493 actually guarantees**
+
+From the RFC 3493 text: for `getaddrinfo()` with AF_INET6 or AF_UNSPEC, valid address strings are:
+
+> “…standard IPv6 text forms described in inet_pton() are valid.”    
+
+RFC 3493 predates RFC 4007, and in the excerpt you provided there is no mention of the `%<zone_id>` extension; “standard IPv6 text forms” here are the canonical numeric forms only (as in RFC 4291 / inet_pton), not addresses with a `%zone` suffix. So:
+
+- A conformant `getaddrinfo()` **must** accept plain numeric IPv6, e.g., `fe80::1`.
+- It is **not required** to accept `fe80::1%eth0` or any other text with a `%zone_id` suffix.
+- Implementations are allowed to extend the parser, but that is not mandated by RFC 3493.
+
+**What RFC 9844 claims**
+
+RFC 9844 says in Section 1:
+
+> “Examples of a link-local unicast address qualified by a zone identifier are `fe80::1234%eth0` on a Linux host or `fe80::4321%7` on a Microsoft Windows host.
+>
+> Such addresses are directly supported by socket API calls including `getaddrinfo()` [RFC3493].”
+
+Later, in Section 5, it further states:
+
+> “Note that an address string such as `fe80::1%eth0` cannot be converted to binary by the POSIX socket API function `inet_pton()`. It must be converted either by using `getaddrinfo()` or by splitting it into two strings and using `inet_pton()` and `if_nametoindex()` successively…”
+
+Mechanically, the consequences of following this advice are:
+
+1. An application author reads RFC 9844 and concludes:
+   - Zone-qualified addresses like `fe80::1%eth0` are “directly supported” by `getaddrinfo()`, and
+   - This behavior is normatively backed by RFC 3493 (since it’s cited right there).
+
+2. They write code such as:
+
+   ```c
+   struct addrinfo hints = { .ai_family = AF_INET6, .ai_flags = AI_NUMERICHOST };
+   struct addrinfo *res;
+   int rc = getaddrinfo("fe80::1%eth0", NULL, &hints, &res);
+   ```
+
+3. On a platform whose `getaddrinfo()` does **not** implement any extension for `%zone_id`, but is still fully conformant to RFC 3493, the `nodename` string is *not* a “standard IPv6 text form described in inet_pton()”, so:
+   - With `AI_NUMERICHOST`, the implementation may legally return `EAI_NONAME`.
+   - Even without `AI_NUMERICHOST`, the implementation is not required to recognize this as numeric; resolution may fail or treat it as a hostname, leading again to `EAI_NONAME`.
+
+4. The application, assuming RFC‑mandated support, will treat this failure as surprising or as an OS bug, when in fact:
+   - The OS is conformant to RFC 3493.
+   - The RFC 9844 statement that such addresses are “directly supported … [RFC3493]” is not backed by 3493.
+
+**Does anything become unimplementable?**
+
+No:
+
+- RFC 9844 explicitly provides a portable fallback:
+
+  > “…or by splitting it into two strings and using `inet_pton()` and `if_nametoindex()` successively…”
+
+  So an implementer can always:
+  - Parse the string themselves into `address_part` and `zone_id` (or use a UI that separates them), then
+  - Call `inet_pton()` on the address and `if_nametoindex()` on the zone identifier, and
+  - Fill `sin6_scope_id` (or equivalent) manually before using the socket.
+
+- The RFC does **not** normatively require OS network stacks or `getaddrinfo()` implementations to accept the `%zone_id` textual form. It describes that many current stacks support a human‑readable zone identifier model and says:
+
+  > “Devices whose network stack does not support the model of a human-readable zone identifier described in [RFC4007] are out of scope…”
+
+  This is about the *zone concept*, not the specific parser entry point. An OS could fully support RFC 4007 semantics while requiring the application to parse `%` itself.
+
+So, taken strictly, you can implement the UI and application behavior required by RFC 9844 even on a platform whose `getaddrinfo()` does **not** parse `%zone_id`.
+
+**Where the causal mismatch is**
+
+The mismatch is between:
+
+- What RFC 3493 actually standardizes (support for plain numeric IPv6 text only), and
+- RFC 9844’s statement that `%zone` addresses are “directly supported … [RFC3493]”.
+
+Causally, this can lead to:
+
+- **Portability bugs**: Authors writing code that assumes any standards‑conformant `getaddrinfo()` will accept `fe80::1%eth0`, and not implementing the manual split/`if_nametoindex()` path, so their tool works on some OSes (those with extensions) and fails on others (still RFC 3493‑conformant).
+- **Misdiagnosis of failures**: When `getaddrinfo("fe80::1%eth0")` fails, the developer believes the OS is “non‑compliant with RFCs”, whereas the real issue is that RFC 9844 over-attributes capability to RFC 3493.
+
+But there is no path in RFC 9844 where a conformant implementer is *forced* to use an impossible API call. The spec itself explicitly offers a fully specified alternative algorithm.
+
+---
+
+3. **Problem Classification**
+
+This is best viewed as a **non-fatal causal inconsistency / misleading cross-reference**, not as a core protocol or API failure:
+
+- **Not** a strict causal inconsistency in the sense of an unexecutable algorithm:
+  - All required behavior (UI acceptance and mapping to an interface index) can be implemented without relying on any unspecified behavior of `getaddrinfo()`.
+- **Not** a true underspecification of behavior:
+  - The fallback using `inet_pton()` and `if_nametoindex()` is clearly described.
+
+The real issue is that RFC 9844 imputes standardized behavior to `getaddrinfo()` via an RFC 3493 reference that does not actually guarantee support for `%zone_id`. This can mislead careful implementers about the portability and standards status of calling `getaddrinfo("fe80::1%eth0")`.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+A minimal repair that would align cause and effect without changing any protocol behavior would be to:
+
+- Rephrase the claim about `getaddrinfo()` along the lines of:
+
+  - “On many current platforms, such addresses are directly supported by socket API calls, including `getaddrinfo()`. This support, however, is implementation specific and not mandated by [RFC3493].”
+
+- And/or adjust the later text to make clear that:
+
+  - “If `getaddrinfo()` does not support this syntax, applications must split the address and zone identifier and use `inet_pton()` and `if_nametoindex()` (or equivalent) explicitly.”
+
+This keeps the algorithm unchanged while removing the implication that RFC 3493 guarantees `%zone_id` parsing.
+
+---
+
+5. **Non-Issues**
+
+- The UI requirements themselves (Section 5) are internally coherent and executable.
+- The handling of zone identifiers as node‑local and “must not be sent on the wire” is consistent with RFC 4007’s security considerations; there is no conflict between the UI guidance and the “must not send textual non-global addresses as data” guidance.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9844 states that IPv6 addresses with zone identifiers (e.g., `fe80::1234%eth0`) are “directly supported” by socket APIs such as `getaddrinfo()` and cites RFC 3493 as the defining spec for that API. RFC 3493, however, only standardizes support for “standard IPv6 text forms” (as in `inet_pton()`), and predates RFC 4007’s `%zone_id` textual extension. The rest of RFC 9844 builds UI requirements assuming such `%zone` forms are accepted by `getaddrinfo()`.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Overstating RFC 3493 support for `%zone_id` in getaddrinfo()
+    - Description: RFC 9844 claims, in its introduction, that IPv6 addresses with zone identifiers such as `fe80::1234%eth0` “are directly supported by socket API calls including `getaddrinfo()` [RFC3493]”. This is written in a way that suggests this behavior is standardized and portable per RFC 3493. However, RFC 3493’s description of `getaddrinfo()` says only that, for AF_INET6 or AF_UNSPEC, “standard IPv6 text forms described in `inet_pton()` are valid” as numeric address strings  . RFC 3493 predates RFC 4007 and does not define or require the `%zone_id` suffix from RFC 4007 §11.2, which introduces `<address>%<zone_id>` as an implementation-local textual convention  . Thus, strictly following RFC 3493, an implementation is only required to accept the canonical IPv6 literal forms from RFC 4291 §2.2 (and related special forms), not the extended `%zone` notation . Some implementations do, in practice, extend `getaddrinfo()` to parse `fe80::1%eth0`, but this is not mandated by RFC 3493; in particular, when AI_NUMERICHOST is used, `fe80::1%eth0` is not clearly a “numeric host address string” under the RFC 3493 definition. By citing RFC 3493 directly in the sentence asserting “direct support”, RFC 9844 can mislead careful implementers into believing that `%zone` literals are guaranteed to work portably with any conforming `getaddrinfo()` implementation, whereas in reality such support is implementation dependent. This mismatch could result in non-portable UI code that assumes `getaddrinfo("fe80::1%eth0", ...)` must succeed on all standards-conforming platforms.
+    - EntitiesInvolved: [
+        "RFC 9844 Section 1 (claim about getaddrinfo() support for zone identifiers)",
+        "RFC 9844 Section 5 (recommendation to use getaddrinfo() for 'fe80::1%eth0')",
+        "RFC 3493 Section 6.1 getaddrinfo() behavior",
+        "RFC 4007 Section 11.2 <address>%<zone_id> textual format",
+        "RFC 4291 Section 2.2 IPv6 text representation"
+      ]
+    - CrossRefsUsed: [
+        "RFC 3493 §6.1 description of valid nodename formats and 'standard IPv6 text forms'",
+        "RFC 4007 §11.2 definition of the <zone_id> textual suffix",
+        "RFC 4291 §2.2 canonical IPv6 text forms"
+      ]
+    - Confidence: High
+
+- IfNoIssues:
+  - Comment:
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+
+Vector Stores Used: vs_6954b7ba9a608191955f277a83faabec
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

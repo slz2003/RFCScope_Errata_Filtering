@@ -1,0 +1,561 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 2 of RFC 9904 defines four new recommendation columns in each of the DNSSEC algorithm/digest registries, constrains which BCP 14 values may appear in those columns, and sets per-registry registration policies (Specification Required vs Standards Action) for adding/changing entries. It then states that initial “Implement for” values are copied from RFC 8624 and that “Use for” values are derived from them.
+
+- ScopeModel:
+  - Targets:
+    - The “DNS Security Algorithm Numbers” registry:
+      - Columns: “Use for DNSSEC Signing”, “Use for DNSSEC Validation”, “Implement for DNSSEC Signing”, “Implement for DNSSEC Validation”.
+      - Registration policy for adding/changing entries, scoped per entry and per column.
+      - Allowed BCP 14 values scoped per column type (“Use for” vs “Implement for”).
+    - The “Digest Algorithms” registry:
+      - Columns: “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, “Implement for DNSSEC Validation”.
+      - Registration policy for adding/changing entries, similarly scoped per entry and per column.
+    - Initial column values for both registries (Tables 2 and 3), with Implement-columns transcribed from RFC 8624 and Use-columns derived from them (with MUST → RECOMMENDED in Use-columns).
+  - Conditions:
+    - For the DNS Security Algorithm Numbers registry:
+      - New entry with a recommended value of “MAY” in any of the four columns ⇒ subject to Specification Required; moreover, “New entries added through the Specification Required process will have the value of ‘MAY’ for all columns.”
+      - Any new entry or any change that “has any value other than ‘MAY’” in any of the four columns ⇒ requires Standards Action.
+      - Only “MAY”, “RECOMMENDED”, “MUST NOT”, “NOT RECOMMENDED” allowed in the “Use for …” columns; only “MAY”, “RECOMMENDED”, “MUST”, “MUST NOT”, “NOT RECOMMENDED” allowed in the “Implement for …” columns; “MUST” is not allowed in the two “Use for” columns.
+    - For the Digest Algorithms registry:
+      - Adding a new entry “with a recommended value of ‘MAY’ in the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, or ‘Implement for DNSSEC Validation’ columns SHALL follow the Specification Required policy…”.
+      - Adding a new entry or changing an existing value that “has any value other than ‘MAY’” in those four columns ⇒ requires Standards Action.
+      - No explicit “new entries added through the Specification Required process will have value ‘MAY’ for all columns” sentence, unlike the algorithm-number registry.
+      - No explicit allowed-values rule is stated for “Use for DNSSEC Delegation” or “Implement for DNSSEC Delegation” columns.
+    - Initial population:
+      - Implement-columns are exactly those of RFC 8624; Use-columns equal Implement-columns except that any Implement “MUST” becomes “RECOMMENDED” in the corresponding Use column.
+      - Future RFCs may change these values and can cause “Implement for” and “Use for” to diverge.
+  - NotedAmbiguities:
+    - For the Digest Algorithms registry, the combination of “SHALL follow Specification Required” when a new entry has a “MAY” in some column, and “requires Standards Action” when an entry “has any value other than ‘MAY’”, creates overlapping/contradictory conditions for new entries whose columns mix MAY and non‑MAY values.
+    - The allowed-values sentence names only “Use for DNSSEC Signing” and “Use for DNSSEC Validation” (and similarly for “Implement for …”) and then refers to “the two ‘Use for’ columns”, although across both registries there are four Use‑columns and four Implement‑columns; it is unclear whether the Digest “Delegation” columns are normatively constrained to the same sets of BCP 14 values.
+    - The Digest “Use for DNSSEC Validation” and “Implement for DNSSEC Validation” columns share names with columns in the algorithm-number registry, but it is not explicitly stated whether the allowed-values rule is intended to apply globally to any column of that name, or only within the DNSKEY registry.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Conflicting registration policy for Digest Algorithms when MAY and non‑MAY values are mixed across columns
+    - ScopeProblemType: Overlapping / contradictory condition scope for registration policy (Specification Required vs Standards Action) in one registry
+    - Evidence:
+      - Digest note in Section 2.2:
+        - “Adding a new entry to the ‘Digest Algorithms’ registry with a recommended value of ‘MAY’ in the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, or ‘Implement for DNSSEC Validation’ columns SHALL follow the Specification Required policy as defined in [RFC8126].”
+        - “Adding a new entry to, or changing an existing value in, the ‘Digest Algorithms’ registry that has any value other than ‘MAY’ in the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, or ‘Implement for DNSSEC Validation’ columns requires Standards Action.”
+      - Contrast with the DNS Security Algorithm Numbers note, which adds:
+        - “New entries added through the Specification Required process will have the value of ‘MAY’ for all columns.”
+    - DetailedReasoning:
+      - The Digest Algorithms registry defines its registration policy by two separate conditional sentences. The first says that adding a new entry “with a recommended value of ‘MAY’ in” any of the four recommendation columns must follow the Specification Required policy. The natural reading is that the presence of ‘MAY’ in at least one of the specified columns triggers Specification Required.
+      - The second sentence says that adding a new entry (or changing an existing one) “that has any value other than ‘MAY’” in any of those columns requires Standards Action. This is triggered whenever at least one column is not ‘MAY’.
+      - For a new digest algorithm whose initial recommendations are all ‘MAY’ (e.g., all four columns = MAY), only the first condition applies; the second does not, so Specification Required is clearly the intended policy, matching the pattern used in the algorithm-number registry.
+      - However, for a new digest algorithm where some columns are ‘MAY’ and some are, say, ‘RECOMMENDED’ (a pattern already present in the initial table—for example, SHA‑384 has MAY for delegation and RECOMMENDED for validation), both conditions are simultaneously true: there is “a recommended value of ‘MAY’ in” at least one column, and the entry also “has any value other than ‘MAY’” in at least one column.
+      - Thus, for mixed entries, the text simultaneously requires that the addition “SHALL follow” Specification Required and “requires Standards Action”. These are distinct IANA policies in RFC 8126; an assignment cannot cleanly be both. The RFC does not state any precedence rule between them, so an IANA expert has no unambiguous guidance on which policy actually governs such mixed-value registrations.
+      - The intent is likely to mirror the DNS Security Algorithm Numbers policy, where a clarifying sentence explicitly constrains Specification Required to entries with all columns ‘MAY’, and all other new entries or changes (involving any non‑MAY) require Standards Action. The absence of that clarifying sentence in the Digest text widens the apparent scope of Specification Required to any entry that includes a ‘MAY’ anywhere, causing overlap with the Standards Action condition.
+      - If implemented literally, one designated expert could interpret the first sentence as allowing a new digest algorithm with MAY in some columns and RECOMMENDED in others to be registered via Specification Required, while another might insist that because non‑MAY values are present, Standards Action is mandatory. This divergence would undermine the uniformity of the registry policy and could lead to inconsistent treatment of future digest algorithms.
+      - Therefore, the scope of the registration policies for the Digest Algorithms registry is both inconsistent with the analogous DNSKEY registry text and under-specified for entries whose columns mix MAY and non‑MAY values; the RFC should clarify that Specification Required applies only to entries whose recommendation values are MAY in all four columns, with all others falling under Standards Action.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: Unclear whether allowed-values constraints apply to Digest “Delegation” columns
+    - ScopeProblemType: Ambiguous target domain of rules constraining which BCP 14 values may appear in “Use for”/“Implement for” columns
+    - Evidence:
+      - Section 2.2 after the registry notes:
+        - “Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Use for DNSSEC Signing’ and ‘Use for DNSSEC Validation’ columns. Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Implement for DNSSEC Signing’ and ‘Implement for DNSSEC Validation’ columns. Note that a value of ‘MUST’ is not an allowed value for the two ‘Use for’ columns.”
+      - Table 1 earlier introduces, for the Digest Algorithms registry, “Use for DNSSEC Delegation”, “Use for DNSSEC Validation”, “Implement for DNSSEC Delegation”, and “Implement for DNSSEC Validation” columns.
+      - The text refers to “the two ‘Use for’ columns” even though, across both registries combined, there are actually four “Use for …” columns.
+    - DetailedReasoning:
+      - The RFC clearly intends to limit the recommendation keywords that can appear in the new columns, but the normative text names only the “Use for DNSSEC Signing” and “Use for DNSSEC Validation” columns and the “Implement for DNSSEC Signing” and “Implement for DNSSEC Validation” columns. Those specific column names undeniably exist in the DNS Security Algorithm Numbers registry.
+      - In the Digest Algorithms registry the column names differ for one of the “Use for” and one of the “Implement for” columns: “Use for DNSSEC Delegation” and “Implement for DNSSEC Delegation”. Only one of the Digest “Use for” columns, “Use for DNSSEC Validation”, matches a name in the allowed-values sentence; likewise, “Implement for DNSSEC Validation” matches an explicitly constrained name, but “Implement for DNSSEC Delegation” does not.
+      - The follow-up phrase, “Note that a value of ‘MUST’ is not an allowed value for the two ‘Use for’ columns,” appears to assume there are exactly two such columns, which makes sense within the DNSKEY registry alone but not once the Digest registry’s two “Use for …” columns are also considered. This strongly suggests the text was originally framed only in terms of the DNS Security Algorithm Numbers registry and not fully generalized when adding the Digest registry.
+      - Because of this, a literal reading leaves open two interpretations: either (a) the allowed-values constraints apply only to the four specifically named columns in the DNSKEY registry (plus the Digest “Use/Implement for DNSSEC Validation” columns, since they share exact names), leaving “Use for DNSSEC Delegation” and “Implement for DNSSEC Delegation” unconstrained; or (b) the authors intended the constraints to apply to *all* “Use for …” and “Implement for …” columns across both registries but failed to name the Delegation columns explicitly.
+      - In practice, Table 3 uses only the same subset of BCP 14 terms in the Delegation columns—MAY, RECOMMENDED, MUST, MUST NOT—so IANA can infer the intended pattern. However, as a normative specification, the scope of the allowed-values rule is not clearly tied to those Delegation columns; an implementer or IANA reviewer cannot prove from the text alone that, for example, “MUST” is disallowed in “Use for DNSSEC Delegation” or that “OPTIONAL” is forbidden in “Implement for DNSSEC Delegation”.
+      - This is a pure scope issue: the rule’s target domain (which exact columns and registries it applies to) is under-specified. Clarifying that the same allowed-values constraints apply to all four “Use for …” and all four “Implement for …” columns across both registries would remove the ambiguity and align the formal scope with the evident intent of the initial tables.
+
+- ResidualUncertainties:
+  - It is plausible that the WG and IANA have an implicit understanding that the Digest Algorithms registry’s policies mirror those of the DNS Security Algorithm Numbers registry (i.e., Specification Required only for all‑MAY initial entries, and the same allowed-values constraints for Delegation columns), and that IANA will interpret the text accordingly. However, this intent is not explicit in the current wording, which leaves the formal scope of these rules ambiguous for future readers and reviewers.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following Section 2 of RFC 9904 literally is implementable and does not break DNSSEC operation on the wire. The main effect is on how IANA and future RFCs manage the registries. There is one real but limited *process*‑level underspecification in the registration policy; other issues are wording/provenance oddities that do not affect protocol behavior.
+
+---
+
+2. **Causal Analysis**
+
+### 2.1. What the text actually causes operationally
+
+If implementers and IANA follow the document as written:
+
+- IANA has already added eight new columns (four for DNSKEY algorithms, four for DS digest algorithms) and populated them from Tables 2 and 3.  
+- Implementers are expected to:
+  - Look at **“Implement for …”** columns for implementation requirements (MUST, RECOMMENDED, MAY, etc.).
+  - Look at **“Use for …”** columns for deployment/usage guidance (on authoritative servers or validators).
+- The allowed values per column are strictly constrained:
+  - **Use for …**: MAY, RECOMMENDED, MUST NOT, NOT RECOMMENDED (no MUST allowed).
+  - **Implement for …**: MAY, RECOMMENDED, MUST, MUST NOT, NOT RECOMMENDED.
+
+The populated tables (Sections 3 and 4) are internally consistent with these constraints, and an implementation that simply consumes the current registries will have a coherent set of implementation and usage recommendations.
+
+No state machine or wire behavior depends directly on these columns; they are meta‑requirements about what algorithms to support and use. So the only real failure modes live in:
+
+- The *process* for adding and changing entries.
+- The correctness and consistency of the initial values.
+
+### 2.2. Registration policy gap for “all-MAY” entries
+
+Section 2.2 defines the registration policy for the DNS Security Algorithm Numbers registry:
+
+> Adding a new entry … with a recommended value of "MAY" in the … columns will be subject to the Specification Required policy … New entries added through the Specification Required process will have the value of "MAY" for all columns.  
+>  
+> Adding a new entry to, or **changing an existing value in**, the … registry that **has any value other than "MAY"** in the … columns requires Standards Action.
+
+The Digest Algorithms registry text is analogous.
+
+If we interpret this in the natural “resulting state” sense (which is how IANA policies are usually read):
+
+- **New entry, all columns = MAY**: falls under the first rule → Specification Required.
+- **New entry, any column ≠ MAY**: the resulting entry “has any value other than ‘MAY’ ” → Standards Action.
+- **Change that results in any column ≠ MAY** (e.g., MAY→RECOMMENDED): resulting entry has a non‑MAY → Standards Action.
+
+However, there is a **hole**:
+
+- **Change to an existing entry where, after the change, all four columns remain “MAY”**:
+  - It is not “adding a new entry” → the first bullet (Specification Required) doesn’t obviously apply.
+  - The resulting entry does *not* “have any value other than ‘MAY’ ” → the second bullet (Standards Action) does not apply either.
+
+Concrete examples:
+
+- Updating the **reference** or description of an algorithm that has all four columns = MAY.
+- Correcting a typo or clarifying text in such an entry, without changing any of the four column values.
+- Potentially even changing an *unrelated* field in the same registry row (e.g., mnemonic) for an all‑MAY algorithm.
+
+For these operations, RFC 9904 does not explicitly state which policy governs the update. In practice:
+
+- IANA and the designated expert will likely default to treating such modifications under **Specification Required**, because that’s the policy that applies to creating such entries.
+- But this is *not* clearly specified, and different parties could plausibly argue different readings of the text.
+
+**Effect on the system:**
+
+- This does **not** affect protocol execution between DNS resolvers and authoritative servers.
+- It *does* introduce ambiguity for future evolution of the registries:
+  - An expert or document author might believe they need **Standards Action** to tweak any part of a row, even if all values stay MAY.
+  - Another might argue no explicit policy applies, leaving IANA in a gray area until the IESG clarifies.
+
+That’s a **causal underspecification** in the registry update process: certain legitimate operations (modifying metadata for an all‑MAY entry) are not clearly covered by any stated policy.
+
+### 2.3. Provenance and “same values” text
+
+Section 2 says:
+
+> The values in the "Implement for" columns are transcribed from [RFC8624].  
+> The "Use for" columns are set to the same values as those in the "Implement for" columns …  
+> Note that the value in the "Use for" column is "RECOMMENDED" when the value in the corresponding "Implement for" column is "MUST".
+
+Mechanically:
+
+- The **“Implement for”** columns in Tables 2 and 3 do match the excerpted RFC 8624 recommendations for the overlapping algorithms (e.g., RSASHA256, ECDSAP256SHA256, SHA‑256, etc.).
+- The **“Use for”** columns are *not* literally the “same values” as “Implement for” where there is a MUST; they systematically downgrade MUST→RECOMMENDED in “Use for”. This is consistent with the explicit “Note that …” sentence, not with the “same values” sentence.
+
+So there is an internal wording inconsistency (“same values” vs. MUST→RECOMMENDED), but the *tables themselves* unambiguously reflect the intended behavior:
+
+- Implement: MUST for the key “mandatory‑to‑implement” algorithms (e.g., RSASHA256, ECDSAP256SHA256, SHA‑256).
+- Use: RECOMMENDED for those same algorithms, never MUST (since MUST is disallowed in “Use for”).
+
+**Effect on the system:**
+
+- Implementers and operators use the actual registry values. These are coherent and consistent with the surrounding explanation (“Use for” is a usage recommendation; “Implement for” may be stronger).
+- The mistaken “set to the same values” phrase is a descriptive error, not a behavioral one. It does not make any algorithm unimplementable or mis‑specified.
+
+So this is *editorial*, not a causal failure.
+
+### 2.4. “Transcribed from RFC 8624” vs. algorithms not listed in the excerpt
+
+Table 2 additionally includes SM2SM3 (17), ECC‑GOST12 (23), PRIVATEDNS (253), and PRIVATEOID (254) with all columns set to MAY. These aren’t present in the excerpted 8624 table, so the blanket statement:
+
+> The values in the "Implement for" columns are transcribed from [RFC8624].
+
+is not strictly accurate for those rows.
+
+Mechanically, however:
+
+- Those rows are perfectly consistent with the registry rules:
+  - All columns = MAY → allowed.
+  - They can be registered under Specification Required per Section 2.2.
+- Implementers simply see that these algorithms are all‑MAY for both implementation and use; they can choose to support or ignore them without any contradiction.
+
+Again, this is a provenance/writing inaccuracy, but the resulting registry contents are well‑defined and interoperable.
+
+---
+
+3. **Problem Classification**
+
+- **Registration‑policy gap for modifications to all‑MAY entries**  
+  → **Causal Underspecification** (IANA/registry process).  
+  Certain reasonable future edits to registry rows whose four recommendation columns are all “MAY” have no clearly stated governing policy (neither Specification Required nor Standards Action is clearly mandated), which may cause process ambiguity for IANA and document authors. It does not affect existing protocol behavior but can complicate future evolution.
+
+- **“Use for” = “same values” vs. MUST→RECOMMENDED, and “transcribed from RFC 8624” overreach**  
+  → **Editorial / Non‑issue** for causal behavior.  
+  The actual tables are internally consistent and executable; the misleading phrasing does not lead to any impossible or contradictory implementation requirement.
+
+---
+
+4. **Minimal Fix Shape (for the real issue)**
+
+A small, local clarification in Section 2.2 and the corresponding Digest Algorithms note would close the policy gap, for example:
+
+- Explicitly state that **any modification** to an entry whose recommendation columns are all “MAY” (including reference or description changes) **MUST follow the Specification Required policy**, and that any operation that results in any column being other than “MAY” **requires Standards Action**.
+
+This would align IANA’s behavior with the evident intent: “MAY‑only” entries are managed under Specification Required; anything stronger is Standards Action.
+
+---
+
+5. **Non‑Issues (Explicitly Benign)**
+
+- The restriction of allowed values per column (no “MUST” in “Use for …”) is consistent with how the tables are populated and does not make any algorithm impossible to use or implement.
+- The migration of canonical recommendations from RFC 8624 into the registries (and, for the Digest registry, removal of the old “Status” column) does not create an unimplementable state; it merely shifts where implementers must look. The new columns and values provide a complete, coherent view of algorithm requirements.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary:  
+  Section 2 of RFC 9904 defines new “Use for …” and “Implement for …” recommendation columns in the DNSSEC algorithm and digest registries, constrains which BCP 14 values may appear in those columns, and sets the IANA policy (Specification Required vs Standards Action) for adding or changing entries. It then populates initial values (Tables 2 and 3), claiming that the “Implement for” values are transcribed from RFC 8624 and that “Use for” values are derived from them.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Conflicting IANA policies for new Digest Algorithms entries that mix “MAY” and non‑“MAY” values across columns
+    - Description:  
+      Section 2.2 defines the IANA policy for the “Digest Algorithms” registry in two overlapping ways. First, it states that adding a new entry “with a recommended value of ‘MAY’ in the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, or ‘Implement for DNSSEC Validation’ columns SHALL follow the Specification Required policy as defined in [RFC8126].” Later, it adds that “Adding a new entry to, or changing an existing value in, the ‘Digest Algorithms’ registry that has any value other than ‘MAY’ in the … columns requires Standards Action.” These two rules are both triggered for a new digest algorithm that has at least one column set to “MAY” and at least one column set to a non‑“MAY” value (e.g., MAY / RECOMMENDED / MAY / RECOMMENDED), which is a natural pattern and already used for SHA‑384 in the initial table . In that case, the first rule demands that the addition SHALL follow the “Specification Required” policy, while the second demands “Standards Action”, i.e., a different IANA policy in RFC 8126 . The document does not clarify whether Standards Action is intended to be in addition to, or instead of, Specification Required, and RFC 8126 explicitly warns against composite formulations like “Expert Review with Specification Required” because they cause confusion .  
+      For the analogous DNSKEY registry text, this ambiguity is avoided by explicitly stating that “New entries added through the Specification Required process will have the value of ‘MAY’ for all columns,” which effectively confines Specification Required to the “all‑MAY” case and leaves anything with a non‑MAY value to “Standards Action” alone . No such disambiguation is present for the Digest Algorithms registry, so the policies overlap.
+    - KeyTextSnippets:
+      - “Adding a new entry to the ‘Digest Algorithms’ registry with a recommended value of ‘MAY’ in the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, or ‘Implement for DNSSEC Validation’ columns SHALL follow the Specification Required policy as defined in [RFC8126].”
+      - “Adding a new entry to, or changing an existing value in, the ‘Digest Algorithms’ registry that has any value other than ‘MAY’ in the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, or ‘Implement for DNSSEC Validation’ columns requires Standards Action.”
+      - “Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Use for …’ columns. Only values of ‘MAY’, ‘RECOMMENDED’, ‘MUST’, ‘MUST NOT’, and ‘NOT RECOMMENDED’ may be placed into the ‘Implement for …’ columns.” 
+      - Table 3 entry for value 4 (SHA‑384): “MAY / RECOMMENDED / MAY / RECOMMENDED” 
+    - Impact:  
+      For future additions to the Digest Algorithms registry where some columns are “MAY” and others are “RECOMMENDED”, “MUST”, or “MUST NOT”, IANA and document authors face contradictory guidance: the addition both “SHALL follow Specification Required” and “requires Standards Action”. This can lead to disagreement over the required level of IETF process (e.g., is a Standards Track RFC mandatory or is an expert‑reviewed external specification sufficient?), slowing or blocking registry updates and creating uncertainty for algorithm deployment planning.
+
+  - Issue-2:
+    - BugType: None
+    - Title: “Implement for” columns said to be transcribed from RFC 8624, but tables also define new algorithms/digests not present in RFC 8624
+    - Description:  
+      Section 2.2 says, “The values in the ‘Implement for’ columns are transcribed from [RFC8624]. The ‘Use for’ columns are set to the same values as those in the ‘Implement for’ columns…” . In Tables 2 and 3, the “Implement for” values for algorithms/digests that actually appear in RFC 8624 (e.g., DNSKEY algorithms 1–16 and digest values 0–4) do match the RFC 8624 tables . However, RFC 9904 also introduces additional rows (e.g., DNSKEY algorithms 17, 23, 253, 254 and digest values 5 and 6) with “MAY” in all “Implement for” columns, and RFC 8624 does not define any implementation recommendations for these code points .  
+      While the provenance statement (“are transcribed from [RFC8624]”) is imprecise for these newly covered algorithms/digests, the normative requirements themselves are not in conflict: RFC 8624 is silent on those values, and RFC 9904 assigns them BCP 14 “MAY” levels via its own tables. The misstatement does not change what implementers or operators MUST, SHOULD, or MAY do; it only risks minor confusion about which document originally set those levels.
+    - KeyTextSnippets:
+      - “The following sections state the initial values that have been populated into these columns. The values in the ‘Implement for’ columns are transcribed from [RFC8624].” 
+      - DNSKEY Table 2 rows for 17 (SM2SM3), 23 (ECC‑GOST12), 253 (PRIVATEDNS), 254 (PRIVATEOID), all with “MAY” in the Implement‑for columns 
+      - Digest Table 3 rows for 5 (GOST R 34.11‑2012) and 6 (SM3), also “MAY” in the Implement‑for columns 
+      - RFC 8624 Section 3.1 and 3.3 tables, which do not list these code points 
+    - Impact:  
+      This is essentially an editorial provenance issue: it may slightly confuse readers about which RFC first specified “MAY” for the newer algorithms/digests, but it does not introduce conflicting or unclear normative requirements for implementation or use. Hence it is not a deontic bug.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Section 2 of RFC 9904 defines new “Use for …” and “Implement for …” recommendation columns in the DNSSEC algorithm and digest registries, constrains the allowed values in those columns, and specifies the IANA registration policies for adding/changing entries, then gives initial tables (Tables 2 and 3) supposedly derived from RFC 8624.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: “Implement for” columns claimed to be transcribed from RFC 8624 but include algorithms/digests not present there
+    - LocationHint: Section 2.2 (paragraph after “Only values of ‘MAY’, ‘RECOMMENDED’, …”), Tables 2 and 3 vs. RFC 8624 Sections 3.1 and 3.3
+    - Evidence:
+      - Snippet1: RFC 9904 Section 2.2: “The following sections state the initial values that have been populated into these columns. The values in the ‘Implement for’ columns are transcribed from [RFC8624].”
+      - Snippet2: RFC 9904 Table 2 includes algorithms 17 (SM2SM3), 23 (ECC-GOST12), 253 (PRIVATEDNS), and 254 (PRIVATEOID) with non-empty “Implement for …” values. RFC 9904 Table 3 includes digest algorithms 5 (GOST R 34.11‑2012) and 6 (SM3) with non-empty “Implement for …” values. RFC 8624 Section 3.1 lists algorithms only for numbers 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16, and does not mention 17, 23, 253, or 254. RFC 8624 Section 3.3 lists digest algorithms only for 0, 1, 2, 3, 4 and does not mention 5 or 6.
+    - TechnicalExplanation: |
+        Section 2.2 of RFC 9904 makes a blanket structural claim that “the values in the ‘Implement for’ columns are transcribed from [RFC8624]”, and then immediately refers to “the following sections”, which are the DNSKEY and Digest tables (Tables 2 and 3). However, RFC 8624’s DNSKEY recommendations (Section 3.1) only cover algorithms 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, and 16, and its DS/CDS recommendations (Section 3.3) only cover digest values 0–4. RFC 9904’s tables introduce additional DNSKEY algorithms (17 SM2SM3, 23 ECC‑GOST12, and the private-use 253/254) and additional digest algorithms (5 GOST R 34.11‑2012 and 6 SM3), each with explicit “Implement for …” cells. Those rows, by definition, cannot be “transcribed” from RFC 8624 because 8624 does not define implementation requirements for them at all.
+        This is a structural inconsistency between the prose that normatively describes the provenance of the “Implement for” values and the actual tables and external reference (RFC 8624). While the table entries themselves are concrete and implementable, the incorrect “transcribed from 8624” claim misstates the normative source for several rows, which can mislead implementers and IANA reviewers about where the requirements originate and how future updates should be reasoned about.
+    - PatchSuggestion: |
+        Narrow the scope of the “transcribed from [RFC8624]” statement so that it only applies where it is actually true, and explicitly exclude newly introduced algorithms/digests. For example, in Section 2.2 replace:
+        
+          “The following sections state the initial values that have been populated into these columns. The values in the ‘Implement for’ columns are transcribed from [RFC8624].”
+        
+        with something like:
+        
+          “The following sections state the initial values that have been populated into these columns. For algorithms and digest types that have implementation recommendations in [RFC8624], the values in the ‘Implement for’ columns are transcribed from [RFC8624]. For algorithms and digest types not covered by [RFC8624], the ‘Implement for’ values are taken from their defining specifications or are set in this document as shown in the tables.”
+
+  - Issue-2:
+    - BugType: Both
+    - ShortLabel: Conflicting/ambiguous IANA policy when Digest Algorithms entries mix MAY and non‑MAY values across columns
+    - LocationHint: Section 2.2, note text “The following note has been added to the ‘Digest Algorithms’ registry”
+    - Evidence:
+      - Snippet1: Digest Algorithms note (first paragraph): “Adding a new entry to the ‘Digest Algorithms’ registry with a recommended value of ‘MAY’ in the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, or ‘Implement for DNSSEC Validation’ columns SHALL follow the Specification Required policy as defined in [RFC8126].”
+      - Snippet2: Digest Algorithms note (second paragraph): “Adding a new entry to, or changing an existing value in, the ‘Digest Algorithms’ registry that has any value other than ‘MAY’ in the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, or ‘Implement for DNSSEC Validation’ columns requires Standards Action.”
+      - Snippet3: By contrast, the analogous note for “DNS Security Algorithm Numbers” explicitly disambiguates the Specification Required case: “[...] with a recommended value of ‘MAY’ in the [...] columns will be subject to the Specification Required policy [...]. New entries added through the Specification Required process will have the value of ‘MAY’ for all columns.”
+    - TechnicalExplanation: |
+        For the DNS Security Algorithm Numbers registry, RFC 9904 clearly partitions IANA policy: new entries where all recommendation columns are “MAY” use Specification Required, and any case where any of the columns is not “MAY” requires Standards Action, explicitly stated as “New entries added through the Specification Required process will have the value of ‘MAY’ for all columns.”
+        For the Digest Algorithms registry, however, the corresponding note omits this “all columns MUST be MAY” clarification and instead has two overlapping rules. The first says that adding a new entry “with a recommended value of ‘MAY’ in the [four] columns” SHALL follow Specification Required; read literally, this applies to any new entry that has at least one “MAY” in those columns. The second rule says that adding/changing an entry that has “any value other than ‘MAY’” in those columns requires Standards Action. For a new entry that mixes values (e.g., some columns “MAY” and at least one “RECOMMENDED”), both conditions are simultaneously true: the presence of at least one “MAY” triggers the first rule, and the presence of at least one non‑MAY triggers the second. This yields structurally conflicting process requirements (Specification Required and Standards Action at the same time) and leaves IANA and authors without unambiguous guidance on which policy to apply.
+        This is both an inconsistency (the two rules overlap and conflict for mixed‑value entries) and an underspecification (the intended behavior for entries with a mix of “MAY” and stricter values across columns is not clearly and uniquely defined). The parallel DNSSEC Algorithm Numbers text strongly suggests the intent was “Specification Required only when all columns are MAY”, but the Digest Algorithms text fails to encode that constraint.
+    - PatchSuggestion: |
+        Align the Digest Algorithms note structurally with the DNS Security Algorithm Numbers note to remove overlap and clarify the mixed‑value case. For example, replace the two Digest Algorithms paragraphs with:
+        
+          “Adding a new entry to the ‘Digest Algorithms’ registry where all of the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, and ‘Implement for DNSSEC Validation’ columns have a recommended value of ‘MAY’ SHALL follow the Specification Required policy as defined in [RFC8126]. New entries added through the Specification Required process will have the value of ‘MAY’ for all four columns.
+          
+          Adding a new entry to, or changing an existing value in, the ‘Digest Algorithms’ registry that has any value other than ‘MAY’ in any of the ‘Use for DNSSEC Delegation’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Delegation’, or ‘Implement for DNSSEC Validation’ columns requires Standards Action.”
+        
+        This mirrors the structure used for the DNS Security Algorithm Numbers registry, eliminates the overlapping conditions, and makes the registration procedure unambiguous for entries that mix MAY and non‑MAY values across columns.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 2 of RFC 9904 adds four “Use for …” and four “Implement for …” columns to the existing IANA “DNS Security Algorithm Numbers” and “Digest Algorithms” registries and defines (a) the allowed BCP 14 values per column, (b) the IANA registration policy split between Specification Required and Standards Action (per RFC 8126), and (c) initial column values that it states are “transcribed from RFC 8624”, with “Use for” values derived from those.
+- OverallCrossRFCLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Over-broad “transcribed from RFC 8624” claim for Implement-for columns
+    - Description: RFC 9904 Section 2.2 says “The values in the ‘Implement for’ columns are transcribed from [RFC8624]” for the “following sections”, i.e., for both the DNSKEY algorithm table (Table 2) and the DS digest table (Table 3). In RFC 8624, the DNSKEY recommendations table (Section 3.1) only covers algorithm numbers 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, and 16, and the DS/CDS digest recommendation table (Section 3.3) only covers digest values 0–4. By contrast, RFC 9904’s initial “Implement for” columns in the DNSKEY registry also include algorithm numbers 17 (SM2SM3), 23 (ECC-GOST12), and the private-use codepoints 253 (PRIVATEDNS) and 254 (PRIVATEOID), all set to “MAY” for both signing and validation, and its digest table includes new values 5 (GOST R 34.11‑2012) and 6 (SM3), likewise set to “MAY” in both Implement-for columns. None of these codepoints (17, 23, 253, 254, 5, 6) have explicit per-algorithm requirement levels in the 8624 tables, so their specific Implement-for values in RFC 9904 could not literally have been line‑by‑line “transcribed” from those tables. RFC 8624 (as updated by RFC 9157) does contain a general statement that “Any algorithm listed in the [DNSKEY‑IANA] and [DS‑IANA] registries that are not mentioned in this document MAY be implemented”, which is consistent with assigning “MAY” in 9904, but that is a generic default, not an explicit per‑codepoint table entry. A careful implementer or designated expert following the text “transcribed from RFC 8624” might reasonably expect to find each of these new Implement-for values backed by an explicit entry in RFC 8624, and will not; this is a provenance mismatch between the two RFCs even though the chosen values (“MAY”) are semantically compatible. The risk is confusion about where the normative Implement-for status for these newer codepoints actually comes from (8624 vs later work such as 9157 vs 9904 itself), which could complicate future updates or reviews of the registries.
+    - EntitiesInvolved: ["RFC 9904 Section 2.2 and Tables 2–3", "RFC 8624 Section 3.1 DNSKEY Algorithms", "RFC 8624 Section 3.3 DS and CDS Algorithms", "RFC 9157 Section 3 (update to RFC 8624)", "DNS Security Algorithm Numbers registry", "Digest Algorithms (DS) registry", "DNSKEY algorithms 17, 23, 253, 254", "DS digest types 5 and 6"]
+    - CrossRefsUsed: ["RFC 8624 DNSKEY algorithm table and DS digest table", "RFC 8624/9157 general MAY-for-unmentioned-algorithms rule", "RFC 4034 private-use algorithms 253 and 254 in the DNSSEC Algorithm registry"]
+    - Confidence: Medium
+
+- IfNoIssues:
+  - Comment: (not applicable; at least one cross-RFC/registry inconsistency was identified)
+
+Regarding the hypothesized second issue about ambiguity in the Digest Algorithms registry policy: I disagree that this rises to a real cross-RFC/registry bug. The combination of the two bullets in RFC 9904 Section 2.2 clearly implies that entries with all four digest-related columns set to “MAY” follow the Specification Required policy, while any new or changed entry that has any value other than “MAY” in any of those columns requires Standards Action, which is consistent with RFC 8126’s model for splitting policies across cases. This may be slightly less explicit than the parallel text for the DNSKEY algorithms registry, but it still yields an unambiguous, interoperable IANA policy.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Low
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Low
+    - ShortLabel: Over‑broad claim that all “Implement for” values are transcribed from RFC 8624
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 2.2 of RFC 9904:
+
+          > “The following sections state the initial values that have been populated into these columns. **The values in the "Implement for" columns are transcribed from [RFC8624].** The "Use for" columns are set to the same values as those in the "Implement for" columns …”
+        - Table 2 in RFC 9904 (DNS Security Algorithm Numbers):
+
+          Includes “Implement for DNSSEC Signing” / “Implement for DNSSEC Validation” entries not present in RFC 8624, specifically:
+          - 17 SM2SM3 – Implement: MAY / MAY
+          - 23 ECC-GOST12 – Implement: MAY / MAY
+          - 253 PRIVATEDNS – Implement: MAY / MAY
+          - 254 PRIVATEOID – Implement: MAY / MAY
+        - Table 3 in RFC 9904 (Digest Algorithms):
+
+          Includes “Implement for DNSSEC Delegation” / “Implement for DNSSEC Validation” entries not present in RFC 8624, specifically:
+          - 5 GOST R 34.11-2012 – Implement: MAY / MAY
+          - 6 SM3 – Implement: MAY / MAY
+      - ContextSnippets:
+        - RFC 8624, Section 3.1 “DNSKEY Algorithms”:
+
+          Table lists implementation recommendations only for algorithms 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, and 16:
+
+          > “+--------+--------------------+-----------------+-------------------+  
+          > | Number | Mnemonics          | DNSSEC Signing  | DNSSEC Validation |  
+          > …  
+          > | 16     | ED448              | MAY             | RECOMMENDED       |  
+          > +--------+--------------------+-----------------+-------------------+”
+        - RFC 8624, Section 3.3 “DS and CDS Algorithms”:
+
+          Table lists digest algorithms only for numbers 0, 1, 2, 3, and 4:
+
+          > “+--------+-----------------+-------------------+-------------------+  
+          > | Number | Mnemonics       | DNSSEC Delegation | DNSSEC Validation |  
+          > …  
+          > | 4      | SHA-384         | MAY               | RECOMMENDED       |  
+          > +--------+-----------------+-------------------+-------------------+”
+        - There is no mention in the provided RFC 8624 excerpts of:
+          - DNSKEY algorithms 17 (SM2SM3), 23 (ECC-GOST12), 253 (PRIVATEDNS), 254 (PRIVATEOID),
+          - DS digest algorithms 5 (GOST R 34.11‑2012) or 6 (SM3).
+
+    - Reasoning:
+      - Section 2.2 of RFC 9904 makes a global statement: “The values in the ‘Implement for’ columns are transcribed from [RFC8624].” The surrounding sentence (“The following sections state the initial values…”) clearly applies to both subsequent initial‑value tables: Table 2 (DNS Security Algorithm Numbers) and Table 3 (Digest Algorithms).
+      - For the algorithms and digests that *do* appear in RFC 8624 (DNSKEY 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16 and DS digest 0–4), the “Implement for …” columns in RFC 9904 match the “DNSSEC Signing/Validation” (for DNSKEY) and “DNSSEC Delegation/Validation” (for DS digest) columns in RFC 8624. In those rows, “transcribed from [RFC8624]” is accurate.
+      - However, RFC 9904’s tables also introduce implementation recommendations for algorithms/digests that *are not present* in the RFC 8624 recommendation tables:
+        - DNSKEY algorithms 17, 23, 253, 254 in Table 2.
+        - DS digest algorithms 5 and 6 in Table 3.
+      - Since these entries do not exist in the RFC 8624 tables, their “Implement for” values cannot literally have been “transcribed from [RFC8624]”. They must instead be:
+        - taken from their defining RFCs; or
+        - newly assigned in RFC 9904 (in practice, all set to MAY/MAY).
+      - This makes the blanket statement “The values in the ‘Implement for’ columns are transcribed from [RFC8624]” technically false if read at face value for *all* rows in Tables 2 and 3.
+      - From an implementer’s perspective, this is unlikely to cause a protocol misimplementation because:
+        - The normative tables in RFC 9904 and the updated IANA registries clearly show the actual “Implement for …” values to use.
+        - Anyone cross‑checking with RFC 8624 will immediately see that algorithms 17, 23, 253, 254 and digests 5, 6 simply do not appear there, so “transcribed from RFC 8624” cannot apply to those rows.
+      - Nevertheless, it is a real text/registry‑origin inconsistency: the document mischaracterizes the provenance of some registry values, which could mildly confuse readers trying to understand how earlier guidance (RFC 8624) relates to the new IANA‑centric model.
+
+    - PatchSuggestion:
+      - Narrow the claim so it only applies where it is true. For example, in Section 2.2 of RFC 9904, replace:
+
+        > “The values in the ‘Implement for’ columns are transcribed from [RFC8624].”
+
+        with something like:
+
+        > “For those DNSSEC algorithms and digest algorithms whose implementation recommendations were previously specified in [RFC8624], the values in the ‘Implement for’ columns are transcribed from [RFC8624]. For other entries, the initial ‘Implement for’ values are taken from their defining specifications or set as specified in this document.”
+
+        A minimal alternative would be:
+
+        > “The values in the ‘Implement for’ columns are, where defined in [RFC8624], transcribed from [RFC8624].”
+
+        Either change makes the provenance statement accurate without altering any registry values.
+
+- Notes:
+  - UsedRouterIssues: Confirmed the router’s candidate issue about the “Implement for” columns and RFC 8624; no additional router‑proposed issues were present in the prompt.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - Only the relevant excerpts of RFC 8624 and related RFCs were provided. It is possible that some of the algorithms/digests not listed in the shown RFC 8624 tables are discussed elsewhere or in other RFCs. However, that does not change the core inconsistency: RFC 9904’s statement attributes all “Implement for” values to RFC 8624, while some clearly cannot have come from those specific recommendation tables.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 2 of RFC 9904 adds four “Use for …” and four “Implement for …” recommendation columns to the DNSSEC algorithm and digest registries, constrains the set of allowed values in those columns, and defines IANA registration policies (Specification Required vs Standards Action) for adding or changing entries. It then describes how initial column values are populated (mostly from RFC 8624) and how “Use for” is derived from “Implement for”, especially when “Implement for” is MUST. The critical domain here is the matrix of recommendation values per algorithm (MAY/RECOMMENDED/MUST/MUST NOT/NOT RECOMMENDED) and the policy boundary between entries that are “all MAY” and entries that contain any non‑MAY value.
+
+- OverallBoundaryBugLikelihood: Medium
+
+- Findings:
+  - Finding-1:
+    - BugType: Inconsistency
+    - ShortLabel: Ambiguous policy for new entries that mix MAY and non‑MAY values across columns
+    - BoundaryAxis: New registry row where at least one column is MAY and at least one column is a non‑MAY value (e.g., RECOMMENDED, MUST, MUST NOT, NOT RECOMMENDED)
+    - ExcerptEvidence: For the “DNS Security Algorithm Numbers” registry, RFC 9904 says:  
+      • “Adding a new entry to the ‘DNS Security Algorithm Numbers’ registry with a recommended value of ‘MAY’ in the ‘Use for DNSSEC Signing’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Signing’, or ‘Implement for DNSSEC Validation’ columns will be subject to the Specification Required policy … New entries added through the Specification Required process will have the value of ‘MAY’ for all columns.”  
+      • “Adding a new entry to, or changing an existing value in, the ‘DNS Security Algorithm Numbers’ registry that has any value other than ‘MAY’ in the ‘Use for DNSSEC Signing’, ‘Use for DNSSEC Validation’, ‘Implement for DNSSEC Signing’, or ‘Implement for DNSSEC Validation’ columns requires Standards Action.”    
+      The corresponding note for the “Digest Algorithms” registry has the same basic structure: a first bullet that says adding a new entry “with a recommended value of ‘MAY’ in the [four] columns SHALL follow the Specification Required policy” and a second bullet that says adding a new entry that “has any value other than ‘MAY’” in those columns requires Standards Action.  
+    - Reasoning: The first bullet in each note is keyed on the presence of MAY in the relevant columns (“with a recommended value of ‘MAY’ in the [columns]”), while the second bullet is keyed on the presence of any non‑MAY in those same columns (“has any value other than ‘MAY’”). For a row in which *all* four columns are MAY, only the first bullet applies (Specification Required), and the second bullet does not (since there is no “value other than MAY”); that case is consistent and clearly intended. For a row with *no* MAY values (all RECOMMENDED/MUST/MUST NOT/etc.), only the second bullet applies (Standards Action), which is also consistent. The boundary problem appears for a mixed row, e.g., Use‑Signing = MAY, Use‑Validation = RECOMMENDED, Implement‑Signing = MAY, Implement‑Validation = RECOMMENDED: such a row both (a) “has a recommended value of ‘MAY’ in [the] columns” (so, per the first bullet, “will be subject to … Specification Required”) and (b) “has any value other than ‘MAY’” (so, per the second bullet, “requires Standards Action”). The added explanatory sentence for the DNSKEY note (“New entries added through the Specification Required process will have the value of ‘MAY’ for all columns.”) makes the *intended* policy clear (only all‑MAY rows can use Specification Required), but it does not grammatically remove the conflicting interpretation that a mixed row “with a recommended value of ‘MAY’” might qualify for Specification Required; the digest note lacks even that clarifying sentence. This leaves a real ambiguity at the precise boundary case of rows that contain both MAY and non‑MAY recommendations.
+    - ImpactAssessment: This inconsistency affects the extensibility process: authors of future documents and IANA cannot unambiguously determine whether a new mixed‑recommendation entry should be handled under Specification Required or MUST follow Standards Action. Different readers could reasonably infer different required policies for the same registration request, which directly impacts whether a Standards Track RFC is mandatory for a given change. While it does not affect on‑the‑wire interoperability of DNSSEC, it does affect consistent evolution of the algorithm and digest registries, which is part of the protocol’s long‑term robustness and agility.
+
+  - Finding-2:
+    - BugType: None
+    - ShortLabel: “Implement for” values vs RFC 8624 coverage (algorithms not listed in 8624)
+    - BoundaryAxis: Algorithms present in the registries but not in RFC 8624’s recommendation tables (e.g., SM2SM3, ECC‑GOST12, PRIVATEDNS, PRIVATEOID)
+    - ExcerptEvidence: RFC 9904 states: “The values in the ‘Implement for’ columns are transcribed from [RFC8624]. The ‘Use for’ columns are set to the same values as those in the ‘Implement for’ columns since the general interpretation to date indicates they have been treated as values for both ‘use’ and ‘implementation’.”    However, Table 2 in RFC 9904 includes algorithms 17 (SM2SM3), 23 (ECC‑GOST12), 253 (PRIVATEDNS), and 254 (PRIVATEOID) with all four columns set to MAY, even though RFC 8624’s DNSKEY table only lists algorithms 1–16.   
+    - Reasoning: Superficially, the statement that “Implement for” values are “transcribed from [RFC8624]” cannot literally be true for algorithm numbers that RFC 8624 never mentioned. That could suggest a gap in how initial “Implement for” values are derived for those algorithms. However, RFC 9904 does not leave these algorithms’ recommendations undefined: Table 2 explicitly gives concrete values (all MAY) for 17, 23, 253, and 254, and Section 7.1 directs IANA to populate the registry columns from that table.    Thus, regardless of the historical source, the specification fully defines the recommendations for those algorithm codes. The slight inaccuracy in the explanatory phrase “transcribed from [RFC8624]” does not create a behavioral ambiguity or a different requirement for different implementations; everyone can rely on the explicit table.
+    - ImpactAssessment: This is at most editorially misleading about provenance, not a boundary or exceptional‑case bug. Implementers and IANA both get unambiguous recommendation values from Tables 2 and 3, including for algorithms not present in RFC 8624, so interoperable behavior is not affected.
+
+- Notes:
+  - Not a bug: The special mapping where “Use for” is set to RECOMMENDED when the corresponding “Implement for” value is MUST (because MUST is disallowed in the “Use for” columns) is explicitly called out and illustrated in the tables, so the boundary between MUST‑implement and RECOMMENDED‑to‑use is well defined.  
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+
+Vector Stores Used: vs_6954b396867881918c52be4a34d151ab
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

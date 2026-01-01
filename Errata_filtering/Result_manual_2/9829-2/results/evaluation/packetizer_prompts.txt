@@ -1,0 +1,597 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary:  
+    RFC 9829 Section 2 conceptually redefines “the” CRL for a certificate as the unique CRL that is both pointed to by the CRLDP and listed (with matching hash) on the issuer’s *current* manifest, and then asserts that a resource certificate “cannot be validated” without consulting that current manifest. RFC 9286, however, has a more nuanced, time-dependent notion of “current manifest” and prescribes explicit behavior when manifest/CRL fetching fails, including continued use of cached objects. The net effect is a mild temporal ambiguity about exactly when a manifest must be consulted and what happens during failure windows. Overall, the temporal risk is low but worth clarifying.
+
+  OverallTemporalRisk: Low
+
+  CandidateIssues:
+    - Id: T1
+      Type: Underspecification
+      ShortLabel: "Meaning of 'current manifest' and validation during fetch failures"
+      Description: |
+        Section 2 of RFC 9829 states that “a resource certificate cannot be validated without
+        consulting the current manifest of the certificate's issuer,” but does not spell out
+        how this interacts with the failure and caching model of RFC 9286. RFC 9286 explicitly
+        allows an RP to continue using cached objects (including CRLs) after a fetch failure and
+        forbids *new* subordinate validations during that failure interval, which creates a
+        subtle distinction between (a) the moment when validation was originally performed
+        (with a then-current manifest) and (b) later continued use of the validated state.
+        Without making that temporal distinction explicit, RFC 9829’s statement can be read
+        either as requiring a fresh manifest for each validation attempt or as merely
+        describing the precondition for the original validation run. This is a temporal
+        underspecification rather than a direct contradiction.
+      TemporalReasoning: |
+        1. RFC 9829 Section 2 asserts that the “appropriate and relevant” CRL is the one that:
+           (a) is the target of the certificate’s CRLDP, and  
+           (b) is listed on the issuing CA’s current manifest with a matching hash.  
+           It then concludes: “In particular, a resource certificate cannot be validated
+           without consulting the current manifest of the certificate's issuer.”  
+
+        2. RFC 9286 defines a clear, time-based “current manifest” notion:
+           - A manifest is “nominally current” until its nextUpdate time or until a higher
+             manifestNumber appears, whichever comes first  .
+           - Each RP “MUST use the current manifest of a CA to control addition of listed files
+             to the set of signed objects the RP employs for validating … certificates, ROAs,
+             and CRLs”  .
+
+        3. RFC 9286 then defines failure sequences for manifests:
+           - If the RP cannot retrieve a manifest or the manifest is invalid (including stale
+             thisUpdate/nextUpdate), it “MUST treat this as a failed fetch; proceed to
+             Section 6.6”  .
+           - If listed files cannot be retrieved or hashes don’t match, this is also a failed
+             fetch, again leading to Section 6.6  .
+
+        4. Section 6.6 then prescribes **temporal behavior after failure**:
+           - The RP “SHOULD continue to use cached versions of the objects associated with this
+             CA instance, until such time as they become stale or they can be replaced by
+             objects from a successful fetch.”
+           - “The RP MUST NOT try to acquire and validate subordinate signed objects … until
+             the next interval when the RP is scheduled to fetch and process data for this CA
+             instance”  .
+
+        5. Putting this on a timeline:
+           - At time T0, a successful fetch occurs; the RP acquires a manifest that is current
+             by thisUpdate/nextUpdate and manifestNumber, and fetches the CRL listed in the
+             manifest; path validation for certificates issued by that CA is performed.
+           - At time T1 > T0, a later fetch fails (e.g., manifest missing or stale); per
+             6.6, the RP stops *new* subordinate validations for this CA instance but
+             continues to use cached CRL and certificates from T0 until they themselves become
+             stale.
+
+        6. Under one reading of RFC 9829’s sentence, “cannot be validated without consulting
+           the current manifest” means “every time you treat the certificate as valid, you must
+           first successfully consult the currently-current manifest.” That would imply that at
+           time T1, when manifest fetching fails, the RP must *stop* treating the certificate
+           as valid, even if it was validated earlier at T0; this conflicts with RFC 9286’s
+           explicit direction to continue using cached objects during a failed fetch window.
+
+        7. Under a different reading, the sentence describes the **original validation act**:
+           any certificate that is regarded as valid must have been validated in a run where
+           the issuer’s then-current manifest was consulted. In this reading, continuing to use
+           cached validation results after T1 (without re-validating) is consistent with 9286
+           and still respects 9829’s statement.
+
+        8. Because RFC 9829 does not disambiguate this time-of-check vs. time-of-use question,
+           two RPs that both follow the words of the documents could adopt different temporal
+           behaviors during failure windows: one aggressively re-validating and failing open
+           or closed, and another following 9286’s cached-objects model, yet both claiming to
+           honor “cannot be validated without consulting the current manifest.”
+      KeyEvidence:
+        ExcerptPoints:
+          - “This document clarifies that, in the RPKI, there is exactly one CRL that is
+            appropriate and relevant for determining the revocation status of a given resource
+            certificate. It is the unique CRL object that is simultaneously: … the target of
+            the certificate's CRL Distribution Points extension, and … listed in the issuing
+            CA's current manifest fileList and has a matching hash … In particular, a resource
+            certificate cannot be validated without consulting the current manifest of the
+            certificate's issuer.” (RFC 9829 Section 2)
+          - “Each RP MUST use the current manifest of a CA to control addition of listed files
+            to the set of signed objects the RP employs for validating basic RPKI objects:
+            certificates, ROAs, and CRLs.” (RFC 9286 Section 6)  
+          - “If an RP cannot retrieve a manifest … or if the manifest is not valid … an RP
+            MUST treat this as a failed fetch; proceed to Section 6.6.” (RFC 9286 Section 6.2)  
+          - “If the current time is later than nextUpdate, then the manifest is stale; the RP
+            MUST treat this as a failed fetch. Proceed to Section 6.6.” (RFC 9286 Section 6.3)  
+          - “Termination of processing means that the RP SHOULD continue to use cached versions
+            of the objects associated with this CA instance … [and] MUST NOT try to acquire and
+            validate subordinate signed objects … until the next interval …” (RFC 9286
+            Section 6.6)  
+        ContextPoints:
+          - “The CRL listed on the certificate issuer's current manifest is the one relevant
+            and appropriate for determining the revocation status of a resource certificate.”
+            (RFC 9829 Section 5)
+      ImpactOnImplementations: |
+        If read strictly, RFC 9829’s Section 2 sentence may lead some implementers to require a
+        fresh, successful consultation of the issuer’s *currently* valid manifest for every
+        validation attempt, causing them to reject previously validated certificates whenever a
+        fetch fails or manifests are stale. Other implementers, following RFC 9286’s Section 6.6,
+        will continue to use cached CRLs and certificates through failures and will not attempt
+        new validations of subordinate objects until a later fetch. This divergence affects RP
+        behavior during repository or network outages and can lead to different revocation
+        handling and reachability decisions in those windows. Clarifying that the requirement
+        in RFC 9829 is about the conditions under which a certificate is *initially validated*,
+        and that continued use of cached validation state under 9286’s rules is still permitted,
+        would remove the ambiguity.
+      AffectedArtifacts:
+        - "RFC 9829 Section 2 (Summary), last sentence"
+        - "RFC 9829 Section 5 (Security Considerations), first paragraph"
+        - "RFC 9286 Sections 6, 6.2–6.6 (manifest processing and failed fetch behavior)"
+      Severity: Low
+
+    - Id: T2
+      Type: Inconsistency
+      ShortLabel: "‘Always exactly one current CRL’ vs. zero-CRL failure states"
+      Description: |
+        RFC 9829 asserts that certain structural properties “guarantee that RPKI RPs will
+        always be able to unambiguously identify exactly one current CRL for each RPKI CA.”
+        However, RFC 9286 explicitly describes states in which an RP is *not* able to obtain a
+        valid, current manifest and/or CRL, and must then treat the fetch as failed and rely
+        on cached data or accept that the CRL is considered missing. Temporally, this means
+        there are legitimate intervals in which there is no “current CRL” available to the RP
+        for a CA instance, only possibly stale or missing data. The “always” guarantee in
+        RFC 9829 overstates what is true across all times and states, even though the intended
+        guarantee clearly holds in the normal, non-failure path.
+      TemporalReasoning: |
+        1. RFC 9829 describes the steady-state behavior: manifests list exactly one CRL, the
+           CRLDP of each resource certificate points to that CRL, and object naming/replacement
+           rules ensure only the most recent CRL is present. It concludes that these properties
+           “guarantee that RPKI RPs will always be able to unambiguously identify exactly one
+           current CRL for each RPKI CA.”
+
+        2. RFC 9286, in contrast, explicitly recognizes transient and failure states over time:
+           - A manifest may be missing, invalid, or stale (thisUpdate/nextUpdate window
+             violated) and thus cause a “failed fetch”  .
+           - If the CRL is not listed on a valid, current manifest acquired during a fetch,
+             “the fetch has failed; proceed to Section 6.6, because the CRL is considered
+             missing”  .
+
+        3. In such failure states, the RP has **no current manifest+CRL pair** that satisfies
+           the “current” criteria (time window and manifestNumber) for that CA instance in the
+           *current fetch cycle*. The correct behavior is to:
+           - Treat the fetch as failed.
+           - Continue to use cached objects, if any, until they become stale or are replaced.
+           There may be zero CRLs that qualify as “current” in the strict RFC 9286 sense at
+           that time.
+
+        4. Thus, on a timeline:
+           - At time T0 (successful fetch), there is exactly one current CRL per CA instance,
+             as RFC 9829 describes.
+           - At time T1, a publication or network problem arises; the manifest is stale or
+             missing, or the CRL is not listed; the fetch at T1 fails, and there is *no*
+             current CRL for that CA instance in the T1 fetch context. The RP may still hold
+             a cached CRL from T0 but that is not “current” relative to the manifest
+             semantics of T1.
+
+        5. RFC 9829’s use of “always” elides these failure intervals. Although it can be read
+           as describing only correct, steady-state operation, the unconditional temporal
+           claim (“always”) is, strictly speaking, inconsistent with the explicit transient
+           failure states allowed and defined in RFC 9286.
+      KeyEvidence:
+        ExcerptPoints:
+          - “Together, these properties guarantee that RPKI RPs will always be able to
+            unambiguously identify exactly one current CRL for each RPKI CA.” (RFC 9829
+            Section 1)
+          - “This document explicates that, in the RPKI, the CRL listed on the certificate
+            issuer's current manifest is the one relevant and appropriate for determining the
+            revocation status of a resource certificate.” (RFC 9829 Section 5)
+        ContextPoints:
+          - “If the EE certificate for the current manifest is revoked … the fetch has failed;
+            proceed to Section 6.6. Similarly, if the CRL is not listed on a valid, current
+            manifest, acquired during a fetch, the fetch has failed; proceed to Section 6.6,
+            because the CRL is considered missing.” (RFC 9286 Section 6)  
+          - “If an RP cannot retrieve a manifest … or if the manifest is not valid … [or is
+            stale] the RP MUST treat this as a failed fetch; proceed to Section 6.6.”
+            (RFC 9286 Sections 6.2–6.3)  
+      ImpactOnImplementations: |
+        This inconsistency is largely conceptual and unlikely to cause interoperability bugs,
+        because the detailed operational behavior in RFC 9286 is clear and normative. However,
+        the “always” phrasing in RFC 9829 could mislead implementers or reviewers into thinking
+        there can never be a state with no current CRL for a CA, whereas RFC 9286 deliberately
+        supports such failure intervals and prescribes fallback behavior. Clarifying that the
+        guarantee holds in the context of a **successful fetch and valid manifest/CRL pair**
+        would better align the temporal model across the documents.
+      AffectedArtifacts:
+        - "RFC 9829 Section 1 (Introduction), paragraph describing the guarantee"
+        - "RFC 9286 Sections 6 and 6.6 (failure states and missing CRLs)"
+      Severity: Low
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 2 of RFC 9829 gives a conceptual summary that, for any given RPKI resource certificate, there is a single “appropriate” CRL, defined via the certificate’s CRLDP and the issuing CA’s “current manifest”; it then states that a resource certificate “cannot be validated” without consulting that current manifest. This interacts non‑trivially with RFC 9286’s detailed manifest failure and caching behaviour.
+
+- ScopeModel:
+  - Targets:
+    - RPKI resource certificates whose revocation status is being determined.
+    - CRLs that may be used to determine revocation status of those certificates.
+    - The manifest associated with the *issuing CA instance* (via SIA id-ad‑rpkiManifest and the CA’s publication point).
+    - Relying Parties (RPs) that perform validation and revocation checking.
+  - Conditions:
+    - A CRL is “appropriate and relevant” for a given resource certificate if:
+      - It is the target of that certificate’s CRL Distribution Points (CRLDP) extension (per RFC 6487 4.8.6), and
+      - It appears in the issuing CA’s “current manifest” fileList with a matching hash (per RFC 9286 4.2.1 / 6.x).
+    - The statement “a resource certificate cannot be validated without consulting the current manifest of the certificate’s issuer” appears unconditional: it is not explicitly restricted to “normal” (non‑failure) fetch situations, nor to initial validation as opposed to reuse of cached validation results.
+    - RFC 9286, however, defines explicit *failure* cases (manifest fetch fails, stale manifest, CRL missing from manifest, etc.) in which the RP:
+      - MUST treat the fetch as failed and
+      - SHOULD continue to use cached versions of objects associated with that CA instance until they become stale or replaced, and
+      - MUST NOT try to acquire and validate *subordinate* signed objects until the next fetch window (RFC 9286 6.6).
+  - NotedAmbiguities:
+    - “Current manifest of the certificate’s issuer” is not explicitly tied to RFC 9286’s precise notion of “current” (per-manifestNumber, thisUpdate/nextUpdate, and local caching when new manifests are invalid or unavailable).
+    - “Cannot be validated without consulting the current manifest” is absolute and does not state whether it:
+      - Applies only when a *new* validation is performed after a successful fetch, or
+      - Also forbids using previously validated objects/certificates when the manifest cannot currently be fetched.
+    - The claim that there is “exactly one CRL” for revocation checking could be read as unconditional, even though RFC 9286 explicitly deals with states where the CRL is considered “missing” (e.g., CRL not listed on a valid manifest) and only cached data is used.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Over‑broad “cannot be validated without consulting the current manifest” vs. RFC 9286’s manifest failure and caching model
+    - ScopeProblemType: Missing conditions/qualifiers on when manifest consultation is required (normal vs failure states; fresh vs cached validation) and what “current” manifest means from the RP’s perspective.
+    - Evidence:
+      - RFC 9829 Section 2:
+
+        > “This document clarifies that, in the RPKI, there is exactly one CRL that is appropriate and relevant for determining the revocation status of a given resource certificate. It is the unique CRL object that is simultaneously:
+        > 
+        > * the target of the certificate's CRL Distribution Points extension, and
+        > 
+        > * listed in the issuing CA's current manifest fileList and has a matching hash (see Section 4.2.1 of [RFC9286]).
+        > 
+        > In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate's issuer.”
+
+      - RFC 9286 Section 6.1:
+
+        > “Each RP MUST use the current manifest of a CA to control addition of listed files to the set of signed objects the RP employs for validating basic RPKI objects: certificates, ROAs, and CRLs. Any files not listed on the manifest MUST NOT be used for validation of these objects.”
+
+      - RFC 9286 Section 6.2–6.5 define various failure conditions (manifest not retrievable/invalid, time outside thisUpdate/nextUpdate, missing files, hash mismatch), and Section 6.6:
+
+        > “If a fetch fails … the RP MUST issue a warning …  
+        > Termination of processing means that the RP SHOULD continue to use cached versions of the objects associated with this CA instance, until such time as they become stale or they can be replaced by objects from a successful fetch. This implies that the RP MUST NOT try to acquire and validate subordinate signed objects, e.g., subordinate CA certificates, until the next interval when the RP is scheduled to fetch and process data for this CA instance.”
+
+      - RFC 9286 also notes “chicken and egg” cases where the CRL is not listed on a valid current manifest and says “the fetch has failed; proceed to Section 6.6, because the CRL is considered missing.”
+    - DetailedReasoning:
+      1. Section 2 of RFC 9829 aims to give a concise conceptual rule: the CRL to be used for revocation checking of a resource certificate is the one that both matches the certificate’s CRLDP and appears (with the correct hash) on the issuer’s “current manifest”. It then states, without qualifiers, that “a resource certificate cannot be validated without consulting the current manifest of the certificate’s issuer.”
+      2. RFC 9286 provides a much more detailed, normative model for how RPs process manifests and CRLs. It mandates using the “current manifest” to control which files can be used for validation (6.1), but also defines explicit *failure* states where the manifest cannot be retrieved or is invalid/stale, or where the CRL is not listed on a valid manifest (6.2–6.5, note before 6.1).
+      3. In those failure states, Section 6.6 instructs the RP to *terminate processing for that CA instance*, but to “continue to use cached versions of the objects associated with this CA instance” until they become stale or until a later successful fetch, and to refrain from acquiring and validating new subordinate objects until the next scheduled fetch.
+      4. Thus, RFC 9286 explicitly contemplates situations in which: (a) there is no usable “current manifest” according to its own validation rules, or the CRL is considered “missing”; yet (b) already‑fetched and previously‑validated objects (including certificates and CRLs) *continue to be used* by the RP.
+      5. The sentence in RFC 9829 Section 2 is phrased in a global, unconditional way (“cannot be validated without consulting the current manifest”), and it does not distinguish between:
+         - A fresh, normative validation run after a successful fetch (where consulting the manifest is clearly required); and
+         - Continued use of already‑validated certificates in a period where the current manifest or CRL cannot be fetched or validated and the RP is intentionally falling back to cached state per RFC 9286 6.6.
+      6. An implementer taking Section 2 at face value could reasonably conclude that *any* attempt to validate or continue to treat a resource certificate as valid (for routing decisions, for example) requires consulting a then‑current manifest instance and treating the certificate as non‑valid if that consult fails, even when RFC 9286 explicitly prescribes continued use of cached data in such failure cases. This would effectively narrow the operational scope allowed by RFC 9286 and undermine its availability‑oriented caching behaviour.
+      7. Conversely, if the intent of RFC 9829 is *not* to override RFC 9286 but only to restate that, in the normal (non‑failure) validation algorithm, the CRL selection and revocation status determination are driven by the CA’s manifest, then Section 2 is missing crucial scoping qualifiers. For example, it does not say “in normal operation after a successful fetch” or “when (re‑)validating objects from a successfully obtained current manifest,” nor does it clarify that the rule does not preclude the RFC 9286 6.6 cache‑reuse behaviour during manifest/CRL outages.
+      8. The same over‑broad phrasing affects “issuing CA’s current manifest”: RFC 9286’s notion of “current” involves manifestNumber monotonicity and time checks, plus local caching when new manifests are invalid. RFC 9829 Section 2 does not say whether it refers to the “logically intended latest manifest in the repository” or to the RP’s locally current validated manifest. In failure scenarios, that difference matters: the RP may have no access to the repository‑current manifest, but still rely on an older locally current manifest and its CRL.
+      9. The net result is a scope ambiguity: read literally, Section 2 appears to globally forbid validation in exactly the cases where RFC 9286 deliberately allows continued use of cached data. Read leniently, Section 2 is only descriptive of the normal validation algorithm and silently assumes that 9286’s failure model still applies. The document does not state which reading is intended, nor does it declare any update to RFC 9286 to resolve the tension.
+      10. This ambiguity is scope‑centric: it is not that the high‑level idea (tying CRL selection to the manifest) is wrong, but rather that the conditions and phases in which the “cannot be validated without consulting the current manifest” rule applies are not stated precisely enough to align cleanly with RFC 9286’s explicit “failed fetch + cached data” behaviour. Clarifying that Section 2’s statement is about the normal validation algorithm under a successfully validated manifest, and does not override RFC 9286’s Section 6.6 failure/cache semantics, would remove this ambiguity.
+
+- ResidualUncertainties:
+  - The authors may have intended Section 2 of RFC 9829 to be purely descriptive (non‑normative) of normal operation and to leave RFC 9286’s failure semantics untouched; if so, the text could profit from explicitly saying so, or from referencing RFC 9286 Section 6 when using the term “current manifest.”
+  - It is not entirely clear from the given text whether the working group intended to forbid, relax, or leave unchanged the continued use of cached CRLs/certificates when a manifest/CRL fetch fails; the only explicit “updates” declaration is to RFC 6487, not RFC 9286.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following the documents as written (including RFC 9286’s manifest algorithm), nothing becomes unimplementable and no fundamental invariant is broken. Section 2 of RFC 9829 is an informative summary; the actual normative behavior (including failure and cache handling) still comes from RFC 9286 and the updated text in RFC 6487, and these are mechanically consistent.
+
+---
+
+2. **Causal Analysis**
+
+**a. What RFC 9829 actually changes**
+
+- The only normative changes are in Section 3:
+  - Step 5 of the RFC 6487 validation algorithm is updated to say that the issuer’s *current CRL* is “identified by the issuer's current manifest and the CRLDP of the certificate.”
+  - RPs MUST ignore the CRL Number extension, beyond basic syntax checks.
+- Section 2 (“Summary”) says:
+  - There is exactly one relevant CRL per CA, namely the one that is both:
+    - the target of the certificate’s CRLDP, and
+    - listed on the issuer’s *current* manifest with a matching hash.
+  - “In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate's issuer.”
+
+Crucially, Section 1.1 says BCP 14 keywords only apply when in ALL CAPS, so the “cannot” in Section 2 is *not* a normative keyword.
+
+**b. What RFC 9286 requires RPs to do**
+
+From RFC 9286:
+
+- Each RP **MUST use the current manifest of a CA** to control which files it admits into the validation set for certificates, ROAs, and CRLs; files not listed MUST NOT be used for validation.
+- “Current manifest” is defined by:
+  - manifestNumber monotonicity; and
+  - time window: current time between thisUpdate and nextUpdate (Sections 4.2.1, 6.3).
+- Fetch and validation proceed as:
+  - Fetch manifest by SIA id-ad-rpkiManifest URI (6.2).
+  - Check thisUpdate/nextUpdate (6.3).
+  - Retrieve all listed files (6.4).
+  - Check hashes (6.5).
+  - If anything fails, the *fetch has failed* and:
+    - RP **MUST** treat it as a failed fetch and go to 6.6.
+- On failed fetch (6.6):
+  - The RP **SHOULD use cached data from a previous, successful fetch** for this CA instance, until they become stale or can be replaced.
+  - RP **MUST NOT** try to acquire and validate *new* subordinate signed objects for this CA instance until the next scheduled fetch.
+
+In practice, after a successful fetch, the RP has a *designated* manifest and a set of associated files (including a CRL) that are “current” as of that fetch. Later, if new fetches fail, RFC 9286 instructs the RP to keep using this cached set.
+
+**c. Does 9829 Section 2 contradict 9286 caching?**
+
+Mechanically:
+
+- Under normal operation, when the RP first populates its cache:
+  1. It fetches and validates the manifest.
+  2. Uses that manifest to admit the CRL and other files into the “usable” set.
+  3. During certificate path validation:
+     - To perform revocation check, it uses the CRL that:
+       - matches the CRLDP URI in the certificate, **and**
+       - is listed on the issuer’s (then-)current manifest with a matching hash.
+
+  This exactly matches RFC 9829’s description of how the unique CRL is identified.
+
+- Under a later *failed fetch*:
+  - RFC 9286 tells the RP to keep using the cached objects (including the last-known manifest and CRL) from the last successful fetch.
+  - The “current” CRL for purposes of RFC 6487 step 5 is still the one that:
+    - matches the CRLDP, and
+    - is on the last successfully validated manifest (which is, from the RP’s perspective, still the “current manifest” under the RFC 9286 algorithm).
+
+Nothing in RFC 9829 asks the RP to *abandon* this cached manifest/CRL pair or to re-interpret a failed fetch as “all certificates must now be treated as unverifiable”. RFC 9829 does not override the explicit failed‑fetch behavior of RFC 9286; it just removes CRLNumber from consideration and ties the “which CRL?” question to the (concept of) current manifest.
+
+Thus, if you follow *all* the referenced text literally:
+
+- A certificate is only ever validated using a CRL that is:
+  - pointed to by the CRLDP, and
+  - admitted via a (previous or current) manifest that satisfied the “current” criteria when it was fetched.
+- If manifest processing fails and no prior successful fetch exists, you have no current manifest and cannot validate anything for that CA (which is *exactly* RFC 9286’s intended behavior).
+- If manifest processing fails but a previous successful fetch exists, you keep using the prior “current manifest” and associated CRL as your best-known state—consistent with both RFC 9286 and the intuition behind RFC 9829.
+
+There is no execution path where an RP is *forced* by this text to discard the RFC 9286 cache-handling behavior.
+
+**d. Where the wording might mislead but not break**
+
+The phrase in RFC 9829 §2:
+
+> “a resource certificate cannot be validated without consulting the current manifest of the certificate's issuer”
+
+is:
+
+- Informative (not BCP 14 normative).
+- Slightly informal about what “consulting” and “current” mean:
+  - It can mean “you must base your CRL choice, at some point, on a manifest that was (at that time) current under RFC 9286”; or
+  - It could be misread by a casual reader as “on each individual validation, you must successfully fetch and validate a freshly current manifest”.
+
+Only the second reading would conflict with RFC 9286’s failed‑fetch caching behavior, but that requires ignoring both the BCP 14 caveat and the detailed manifest processing rules in RFC 9286. An implementer “following the text literally” is expected to apply those rules, so the first, consistent reading is the one that aligns with the rest of the specification.
+
+---
+
+3. **Problem Classification**
+
+- **Causal Inconsistency**: None. The combined algorithms from RFC 9286, RFC 6487 (as updated), and RFC 9829 are executable and coherent. RPs can:
+  - unambiguously select one CRL per CA; and
+  - continue to operate in the face of manifest fetch failures using cached data.
+- **Causal Underspecification**: At most, there is a *mild* ambiguity in the informal sentence in RFC 9829 §2 about “cannot be validated without consulting the current manifest”, but the precise, normative behavior is fully specified in RFC 9286 and the updated RFC 6487 text.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If desired for clarity (not correctness), Section 2 of RFC 9829 could be tightened to say something like:
+
+> “In particular, the revocation status used when validating a resource certificate MUST be derived from the issuer’s current manifest as determined by [RFC9286], including any use of previously cached manifests and CRLs as described there.”
+
+This would make explicit that:
+- “consulting the current manifest” includes using the last-known-good manifest/CRL per RFC 9286’s failed‑fetch rules, and
+- nothing in RFC 9829 changes the cache‑handling logic.
+
+---
+
+5. **Non-Issues**
+
+- The uniqueness claim for the CRL (CRLDP target + manifest hash) holds both in normal and cached operation, from the RP’s perspective.
+- The requirement to ignore CRLNumber does not interfere with manifest-based CRL selection; it simply removes a redundant ordering mechanism that could otherwise conflict with manifests in edge cases.
+- There is no state-machine branch where an RP is required to perform an impossible action (e.g., identify a CRL without a manifest) or where the next step is undefined. The “no manifest” case is explicitly handled as a failed fetch in RFC 9286.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 2 of RFC 9829 gives a high‑level conceptual summary of CRL selection in the RPKI and asserts that a resource certificate “cannot be validated” without consulting the issuer’s current manifest. The rest of RFC 9829 updates RFC 6487 to make CRL Number handling effectively irrelevant to RPs and to tie CRL selection explicitly to the issuer’s current manifest. The referenced sections of RFC 9286 and others normatively define how manifests and CRLs are generated, published, and used, including failure and cache‑handling rules.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: Interplay of “cannot be validated without consulting the current manifest” with RFC 9286 cache/failure semantics
+    - Description:  
+      The potentially worrying phrase in RFC 9829 Section 2 is: “In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate's issuer.” This is not expressed using BCP 14 keywords and the document’s requirements language section explicitly limits RFC 2119/8174 interpretation “when, and only when, they appear in all capitals”  . So this line is descriptive / explanatory, not a new capital‑M MUST.  
+      RFC 9286 already provides the normative behavior for manifests and validation: each RP “MUST use the current manifest of a CA to control addition of listed files to the set of signed objects the RP employs for validating basic RPKI objects” and “Any files not listed on the manifest MUST NOT be used for validation of these objects”  . It further requires that the RP “MUST fetch the manifest” for a CA; if it cannot be retrieved or is invalid/stale, the RP “MUST treat this as a failed fetch” and go to Section 6.6  . In Section 6.6, on a failed fetch the RP “SHOULD continue to use cached versions of the objects associated with this CA instance” and “MUST NOT try to acquire and validate subordinate signed objects … until the next interval when the RP is scheduled to fetch and process data for this CA instance”  .  
+      These rules mean that a conformant RP does not perform *new* validation of subordinate objects when it cannot access a current manifest; instead it reuses previously validated and previously manifest‑mediated objects from its cache. This is consistent with the conceptual statement in RFC 9829: at the time a resource certificate is (or was) validated, that validation path necessarily went through a manifest­‑based view of the repository. When later operating from cached state during a manifest failure, the RP is not “validating” in the sense of rerunning the path algorithm; it is continuing to rely on prior validation results, exactly as RFC 9286 prescribes.  
+      Moreover, RFC 9286 itself treats “current manifest” as a formal notion based on thisUpdate/nextUpdate and manifestNumber (Section 4.2.1) and clearly distinguishes between the success path (current manifest exists and is used) and the failure path (no current manifest; fall back to cache and stop further validation)  . RFC 9829’s Section 2 is summarizing the *normal* success path: for a given certificate, the “appropriate and relevant” CRL is the unique CRL that both (a) is pointed to by the certificate’s CRLDP and (b) is listed on the issuer’s current manifest with a matching hash  . RFC 9286 and RFC 6481/6487 already normatively ensure this property in the non‑failure case (manifests MUST list “the most recent CRL” and CRLDP MUST reference the most recent CRL) fileciteturn1file1turn1file3.  
+      Consequently, there is no true deontic inconsistency: RFC 9286 already mandates manifest‑based validation and defines what happens when a current manifest cannot be consulted; RFC 9829’s sentence is a non‑BCP14 conceptual restatement of that design, not a conflicting new requirement that would forbid the cache‑fallback behavior.
+    - KeyTextSnippets:
+      - RFC 9829 Section 2: “This document clarifies that, in the RPKI, there is exactly one CRL that is appropriate and relevant for determining the revocation status of a given resource certificate. It is the unique CRL object that is simultaneously … the target of the certificate's CRL Distribution Points extension, and … listed in the issuing CA's current manifest fileList and has a matching hash … In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate's issuer.”  
+      - RFC 9829 Section 1.1: “…key words ‘MUST’, ‘MUST NOT’, … are to be interpreted as described in BCP 14 … when, and only when, they appear in all capitals, as shown here.”  
+      - RFC 9286 Section 6: “Each RP MUST use the current manifest of a CA to control addition of listed files to the set of signed objects the RP employs for validating basic RPKI objects. Any files not listed on the manifest MUST NOT be used for validation of these objects.”  
+      - RFC 9286 Section 6.2–6.3: “The RP MUST fetch the manifest … If an RP cannot retrieve a manifest … or if the manifest is not valid … an RP MUST treat this as a failed fetch; proceed to Section 6.6.” … “If the current time is later than nextUpdate, then the manifest is stale; the RP MUST treat this as a failed fetch. Proceed to Section 6.6.”  
+      - RFC 9286 Section 6.6: “If a fetch fails … the RP MUST issue a warning … Termination of processing means that the RP SHOULD continue to use cached versions of the objects associated with this CA instance … This implies that the RP MUST NOT try to acquire and validate subordinate signed objects … until the next interval when the RP is scheduled to fetch and process data for this CA instance.”  
+    - Impact: Because the “cannot be validated” phrase is descriptive and RFC 9286 already normatively governs both normal and failure behavior (including cache use and prohibition of new validation without a current manifest), implementers following the BCP 14 rules will not be misled into behavior that contradicts RFC 9286. At most, the sentence could be read informally and somewhat strongly; but it does not create a real normative conflict or gap in the deontic structure.
+
+- IfNoRealIssue:
+  The apparent tension arises only if one (a) treats a non‑BCP14 phrase in RFC 9829 Section 2 as a hard normative prohibition and (b) conflates “reusing previously validated, manifest‑vetted objects from cache” with “performing new certificate validation without a manifest.” RFC 9286’s detailed rules already resolve this: new validation is not allowed when a current manifest cannot be fetched, but cached, previously validated material continues to be used. Thus, the normative story across RFC 9829 and RFC 9286 is coherent, and no deontic bug needs to be fixed.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9829 Section 2 conceptually asserts that in the RPKI there is exactly one “appropriate and relevant” CRL per resource certificate, identified as the unique CRL that is both the target of the certificate’s CRLDP and listed (with matching hash) on the issuer’s current manifest, and concludes that a resource certificate cannot be validated without consulting the issuer’s current manifest. This is intended to align CRL handling with the manifest semantics in RFC 9286, RFC 6481, and the RPKI certificate profile in RFC 6487.
+- OverallCrossRFCLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: “Cannot be validated without current manifest” vs manifest failure and cache semantics
+    - Description: RFC 9829 Section 2 states, “In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate's issuer.” By contrast, RFC 9286 defines explicit behavior when a manifest fetch fails or the manifest is invalid or stale: the RP MUST treat this as a failed fetch and then “SHOULD continue to use cached versions of the objects associated with this CA instance, until such time as they become stale or they can be replaced by objects from a successful fetch,” and MUST NOT try to acquire and validate new subordinate signed objects during that failure period (Section 6.2–6.6 of RFC 9286). In other words, RFC 9286 explicitly contemplates periods where there is no *newly fetched* “current” manifest or CRL, yet existing, previously validated certificates and CRLs are still used for validation based on cached state, without reconsulting a manifest at validation time. RFC 9829’s unqualified wording in Section 2 could be read to mean that *any* validation of a resource certificate is impermissible unless the RP is currently able to obtain and process the issuer’s current manifest, which would contradict RFC 9286’s fallback requirement to keep using cached objects when a fetch fails. The tension is mitigated by the fact that Section 2 is descriptive (no BCP 14 keywords) and the normative fallback rules remain in RFC 9286, but the text is sufficiently absolute (“cannot be validated”) that an implementer could reasonably infer a stricter requirement than RFC 9286 intends and, for example, mark all certificates from a CA invalid whenever the current manifest fetch fails instead of continuing to rely on cached validated state. A clarifying reference to RFC 9286’s failure and cache-handling rules, or a qualification that the statement applies to *normal acquisition/validation of new objects*, would remove this ambiguity.
+    - EntitiesInvolved: ["RFC 9829 Section 2", "RFC 9286 Section 6 (6.1–6.6) manifest processing and failed fetches", "RFC 6481 Section 2.1–2.2 (manifest and CRL presence)", "RFC 6487 Section 7.2 Step 5 (updated by RFC 9829 Section 3.2)"]
+    - CrossRefsUsed: ["RFC 9829 Section 2 summary text", "RFC 9286 Section 6.1–6.6 on current manifest, failed fetches, and continued use of cached objects", "RFC 9286 Appendix B bullet on clarifying requirement for a current CRL to be present, listed, and verified"]
+    - Confidence: Medium
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  The excerpt establishes how, in RPKI, an RP identifies the relevant CRL for a given certificate: the CRL must be both the target of the certificate’s CRLDP and listed (with matching hash) on the issuing CA’s current manifest. It also reiterates the manifest-processing rules from RFC 9286, including what to do when manifests or CRLs are missing/invalid, and it updates RFC 6487 so that RPs ignore CRL Number for ordering and instead rely on manifestNumber. The domain includes: manifest validity (thisUpdate/nextUpdate, manifestNumber), CRLDP URIs, presence or absence of valid manifests and CRLs, and syntactic validity of the CRL Number extension.
+
+- OverallBoundaryBugLikelihood: Medium
+
+- Findings:
+
+  - Finding-1:
+    - BugType: None
+    - ShortLabel: No conflict between “cannot be validated without consulting the current manifest” and RFC 9286 failure handling
+    - BoundaryAxis: Manifest unavailable / failed fetch / use of cached data
+    - ExcerptEvidence:  
+      * RFC 9829 Section 2: “In particular, a resource certificate cannot be validated without consulting the current manifest of the certificate's issuer.”  
+      * RFC 9286 Section 6: “Each RP MUST use the current manifest of a CA to control addition of listed files to the set of signed objects the RP employs for validating basic RPKI objects: certificates, ROAs, and CRLs.”  
+      * RFC 9286 Sections 6.2–6.6: If the manifest cannot be retrieved or is invalid or stale, “the RP MUST treat this as a failed fetch; proceed to Section 6.6.” If a fetch fails, the RP “SHOULD use cached data from a previous, successful fetch” and “MUST NOT try to acquire and validate subordinate signed objects … until the next interval when the RP is scheduled to fetch and process data for this CA instance.”  
+    - Reasoning:  
+      The candidate concern is that 9829’s statement (“cannot be validated without consulting the current manifest”) might contradict RFC 9286’s explicit allowance to continue using cached data when a manifest fetch fails. However, RFC 9286 already says that validation of *new* subordinate objects is not allowed after a failed fetch: the RP “MUST NOT try to acquire and validate subordinate signed objects” until the next scheduled fetch, and cached data is only for continued use of *objects* and results previously obtained.    
+      In normal operation, validation of a certificate path requires using the “current manifest of a CA” to decide which objects (including the CRL) are admissible; 9286 already makes this a MUST for addition of objects to the validation set.    When a manifest fetch fails, 9286 does not allow you to proceed with fresh validation under those conditions; instead, you stop processing for that CA instance and rely on cached objects and prior decisions until you can fetch again. Thus, there is no defined operational state in which an RP is supposed to perform *new* validation of a resource certificate without consulting a (still-current) manifest.  
+      Therefore, 9829’s “cannot be validated without consulting the current manifest” is consistent with 9286’s model: it restates the design intent that revocation checking depends on the manifest-identified CRL, and the failure-handling logic in 9286 ensures that if a current manifest is unavailable, new validation is not attempted. The apparent tension is mostly stylistic: Section 2 of 9829 is a non-BCP14 summary and does not alter the failure-mode semantics already laid out in 9286.
+    - ImpactAssessment:  
+      Implementers who follow RFC 9286 correctly (including the “MUST NOT validate subordinate objects after a failed fetch” rule) will not see divergent behavior from 9829’s summary statement. Different interpretations of the summary alone do not create an interoperability or security bug, because the normative behavior is already pinned down in 9286 and the updated 6487 step 5.
+
+  - Finding-2:
+    - BugType: Underspecification
+    - ShortLabel: Behavior undefined when CRL Number extension fails the syntactic check
+    - BoundaryAxis: Malformed / out-of-range / critical CRL Number extension on an otherwise valid CRL
+    - ExcerptEvidence:  
+      RFC 6487 Section 5 (old text): “An RPKI CA MUST include the two extensions, Authority Key Identifier and CRL Number, in every CRL that it issues. RPs MUST be prepared to process CRLs with these extensions. No other CRL extensions are allowed.”    
+      RFC 9829 Section 3.1 (second change, NEW text): “An RPKI CA MUST include exactly two extensions in every CRL that it issues: an Authority Key Identifier (AKI) and a CRL Number. No other CRL extensions are allowed.  
+      -  RPs MUST process the AKI extension.  
+      -  RPs MUST ignore the CRL Number extension except for checking that it is marked as non-critical and contains a non-negative integer less than or equal to 2^159-1.”  
+    - Reasoning:  
+      The domain here includes CRLs that may be malformed or non-conformant with CA-side requirements: e.g., the CRL Number extension is present but (a) marked critical, (b) encodes a negative INTEGER, or (c) encodes an INTEGER > 2^159-1. Such CRLs are possible in the presence of CA software bugs or attacks that substitute syntactically-invalid but signature-valid CRLs.  
+      The new RP-side rule says RPs “MUST ignore” the CRL Number extension *except* for checking those two syntactic properties. However, it does not say what to do when that check fails. It does not say “MUST reject the CRL”, “MUST treat the CRL as missing”, “MUST treat the extension as absent but otherwise accept the CRL”, or similar. The old text simply required that RPs be prepared to process CRLs “with these extensions”, which also did not define explicit error behavior, but 9829 tightens the syntactic expectations without providing the corresponding error-handling rule.  
+      Because this is an error-path that is squarely within the valid input space (malicious or buggy issuers can easily emit such CRLs, and they will still be well-formed CMS/CRL objects), different RPs can reasonably diverge: some may reject the CRL outright, some may ignore the bad extension and still accept the CRL, others may treat the CRL as missing and fall back to cached data or consider revocation status indeterminate. Nothing in 9829 or the referenced sections of 5280, 6481, 6487, or 9286, as provided here, resolves this ambiguity for RPKI RPs.
+    - ImpactAssessment:  
+      This underspecification can lead to non-interoperable revocation behavior in the presence of malformed CRL Number extensions: some RPs may consider certificates revoked (using a CRL they deem valid), while others may treat the CRL as unusable and either rely on stale data or treat revocation status as unknown. In adversarial settings, an attacker who can cause a CA to emit such a CRL (or substitute it in a repository) could exploit this divergence to create inconsistent routing security decisions across RPs.
+
+- Notes:
+  - Not a bug, but worth noting as a boundary point: Section 2 of RFC 9829 describes the “exactly one CRL” relationship in terms of the CRLDP and the issuer’s current manifest for “a given resource certificate” without explicitly excluding self-signed (trust-anchor) certificates, for which RFC 6487 requires that the CRLDP extension be omitted.    In practice, trust anchors are handled specially and are not typically subject to the same revocation-path processing as non-self-signed certificates, so this omission is largely harmless and does not create an observable interoperability problem.
+
+[Used vector stores: vs_6954b8208e048191882274909a84f96b]
+
+
+Vector Stores Used: vs_6954b8208e048191882274909a84f96b
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

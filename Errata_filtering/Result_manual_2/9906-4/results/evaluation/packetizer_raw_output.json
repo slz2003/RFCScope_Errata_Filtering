@@ -1,0 +1,72 @@
+{
+  "reports": [
+    {
+      "label": "Ambiguous Operational Scope in Section 4 Regarding ECC‑GOST-based Terminology",
+      "bug_type": "Underspecification",
+      "explanation": "Section 4’s operational guidance uses the generic term 'ECC‑GOST-based' without clearly specifying that it applies to both the GOST R 34.10‑2001 (DNSKEY/RRSIG) algorithm and the GOST R 34.11‑94 digest for DS records, leading to potential misinterpretation.",
+      "justification": [
+        "Normative Section 2 explicitly deprecates both the GOST R 34.10‑2001 (identified by the mnemonic ‘ECC‑GOST’) for DNSKEY/RRSIG and the GOST R 34.11‑94 for DS records, but Section 4 only refers to 'ECC‑GOST' without further clarification.",
+        "This ambiguity could cause registry operators or implementers to filter or prohibit records based solely on the DNSKEY algorithm (12) rather than all DS records using the deprecated digest (3)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Section 2 deprecates both: “The GOST R 34.11‑94 algorithm … MUST NOT be used when creating Delegation Signer (DS) records. … The GOST R 34.10‑2001 algorithm (mnemonic ‘ECC‑GOST’) MUST NOT be used when creating DNS Public Key (DNSKEY) and Resource Record Signature (RRSIG) records.”"
+          },
+          {
+            "id": "E2",
+            "text": "Section 4: “This document removes support for ECC‑GOST. Zone operators currently making use of ECC‑GOST‑based algorithms should switch to algorithms that remain supported. DNS registries should prohibit their clients from uploading and publishing ECC‑GOST‑based DS records…”"
+          }
+        ],
+        "summary": [
+          "(E1) shows that Section 2 clearly mandates prohibition of both the signing algorithm and the DS digest.",
+          "(E2) demonstrates that Section 4 uses ambiguous language ('ECC‑GOST-based') without explicitly naming the affected algorithms."
+        ]
+      },
+      "fix_direction": "Clarify Section 4 to explicitly mention both the GOST R 34.10‑2001 (for DNSKEY/RRSIG) and the GOST R 34.11‑94 digest (for DS records) so that the operational guidance aligns with the normative deprecation in Section 2.",
+      "severity": "Medium",
+      "severity_basis": "The ambiguity can mislead non-cryptographer operators or registry implementers, potentially resulting in incorrect filtering of DS records despite the clear normative requirements elsewhere.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: Issue-1",
+        "Terminology Expert: Issue-1"
+      ],
+      "report_id": "9906-4-1"
+    },
+    {
+      "label": "Misnamed IANA Registry Column References in Section 5 Notes",
+      "bug_type": "Inconsistency",
+      "explanation": "The notes in Section 5 refer to incorrect registry column names by mixing terms from the DNS Security Algorithm Numbers and Digest Algorithms registries.",
+      "justification": [
+        "For the algorithm 12 entry, the note incorrectly lists 'Implement for DNSSEC Delegation' instead of the correct 'Implement for DNSSEC Signing'.",
+        "For the digest 3 entry, the note mistakenly mentions 'Use for DNSSEC Signing' rather than 'Use for DNSSEC Delegation', leading to mismatches with the defined column names in RFC 9904."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "RFC 9906, Section 5, after specifying the updated entry for GOST R 34.10‑2001 (12) in the ‘DNS Security Algorithm Numbers’ registry, adds: “Note: The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”"
+          },
+          {
+            "id": "E2",
+            "text": "RFC 9906, Section 5, for the digest algorithm 3 entry: “Note: The ‘Use for DNSSEC Signing’ and ‘Implement for DNSSEC Delegation’ columns were already set to MUST NOT.”"
+          }
+        ],
+        "summary": [
+          "(E1) indicates that the algorithm registry note erroneously refers to a delegation column instead of the signing column.",
+          "(E2) shows that the digest registry note incorrectly uses the signing column name instead of the delegation column."
+        ]
+      },
+      "fix_direction": "Revise the notes in Section 5 so that for the DNS Security Algorithm Numbers registry the note references 'Implement for DNSSEC Signing' and for the Digest Algorithms registry the note references 'Use for DNSSEC Delegation', in accordance with RFC 9904.",
+      "severity": "Low",
+      "severity_basis": "The issue is editorial and poses minimal risk to interoperability, though it may confuse implementers or reviewers relying on the notes.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: Issue-2",
+        "Terminology Expert: Issue-2"
+      ],
+      "report_id": "9906-4-2"
+    }
+  ]
+}

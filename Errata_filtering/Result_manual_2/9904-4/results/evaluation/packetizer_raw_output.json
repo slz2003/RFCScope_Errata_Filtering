@@ -1,0 +1,41 @@
+{
+  "reports": [
+    {
+      "label": "Ambiguous Handling of Digest Type 0 (NULL) – CDS Signaling Conflict",
+      "bug_type": "Cross-RFC Inconsistency and Underspecification",
+      "explanation": "RFC 9904’s Table 3 assigns digest type 0 ('NULL (CDS only)') a MUST NOT recommendation in all columns, which creates ambiguity by effectively forbidding its use even for the CDS-based DS removal signaling specified in RFC 8078 and described in RFC 8624.",
+      "justification": [
+        "RFC 9904 Table 3 clearly sets digest type 0 as 'NULL (CDS only)' with MUST NOT for both 'Use' and 'Implement' in all relevant columns, leaving no explicit exception for CDS usage (E1).",
+        "In contrast, RFC 8624’s treatment of digest 0 includes an explanatory footnote that permits its special CDS-only use for signaling DS removal per RFC 8078, an important nuance omitted from RFC 9904 (E2)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "RFC 9904 Table 3 (Value 0): “NULL (CDS only) | Use DNSSEC Delegation: MUST NOT | Use DNSSEC Validation: MUST NOT | Implement for DNSSEC Delegation: MUST NOT | Implement for DNSSEC Validation: MUST NOT”"
+          },
+          {
+            "id": "E2",
+            "text": "RFC 8624 §3.3: Table row for 0 “NULL (CDS only)” with “MUST NOT [*] / MUST NOT [*]” and footnote: “This is a special type of CDS record signaling removal of DS at the parent in [RFC8078].  NULL is a special case; see [RFC8078].”"
+          }
+        ],
+        "summary": [
+          "(E1) RFC 9904 Table 3 shows that digest type 0 is assigned MUST NOT in all delegation and validation aspects.",
+          "(E2) RFC 8624 specifies a special CDS-only use for digest 0 with an explanatory footnote referring to RFC8078, which is not carried over into RFC 9904."
+        ]
+      },
+      "fix_direction": "Clarify RFC 9904 by explicitly stating that the MUST NOT recommendations for digest type 0 apply solely to DS record usage, and that the CDS signaling mechanism (as defined in RFC 8078 and originally noted in RFC 8624) is exempt. This could be done by restoring the explanatory footnote or adding scoped language in Section 4.",
+      "severity": "Medium",
+      "severity_basis": "The ambiguous language may lead implementers to universally reject digest type 0, thereby disabling the CDS-based automated DS removal mechanism and causing potential interoperability issues.",
+      "confidence": "High",
+      "experts": [
+        "ActorDirectionality: Issue-1",
+        "Scope: Issue-1",
+        "Causal: Issue-1",
+        "Deontic: Issue-1",
+        "CrossRFC: Issue-1"
+      ],
+      "report_id": "9904-4-1"
+    }
+  ]
+}

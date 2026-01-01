@@ -1,0 +1,112 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 1 of RFC 9748 states that all NTP registries are at `https://www.iana.org/assignments/ntp-parameters` and that all NTS registries are at `https://www.iana.org/assignments/nts`, and positions the document as a comprehensive review and correction of “all NTP and NTS registries”.
+- OverallCrossRFCLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Wrong / over‑broad IANA location for NTS registries
+    - Description: The introduction claims that “the NTS registries can all be found at `<https://www.iana.org/assignments/nts>`”. RFC 8915 creates several *NTS‑specific* registries (“Network Time Security Key Establishment Record Types”, “Network Time Security Next Protocols”, “Network Time Security Error Codes”, and “Network Time Security Warning Codes”) and also allocates NTS‑related values in generic IANA registries (service port, ALPN ID, TLS exporter label, and NTP Extension Field Types and Kiss‑o'-Death Codes) in Sections 7.1–7.5. Those generic registries are not hosted under a dedicated NTS page at all; they live on their own, long‑standing registry pages (Service Name and Port, ALPN Protocol IDs, TLS Exporter Labels, NTP Parameters). Separately, IANA’s convention for protocol‑specific parameter pages is to use a “‑parameters” slug (e.g., `ntp-parameters`, `tls-parameters`), and the NTS registries defined in RFC 8915 are grouped under a “Network Time Security (NTS) Parameters” page whose canonical path is `nts-parameters`, not a bare `/nts`. As a result, the statement “can all be found at … /nts” is doubly inaccurate: it (a) points to the wrong URL for the NTS parameter page and (b) suggests all NTS‑related registry actions reside there, which is not true for the allocations made into existing generic registries. An implementer who follows the text literally may either hit a non‑existent page or overlook the generic registries where some NTS values actually live, causing confusion when trying to locate or verify codepoints. This is best corrected by changing the URL to the actual NTS parameter page and softening the wording to clarify that only the dedicated NTS parameter registries (not all NTS‑related allocations) are on that page.
+    - EntitiesInvolved: ["RFC 9748 Section 1 (NTS registries URL and ‘can all be found’ claim)", "RFC 8915 Section 7.1–7.5 (NTS-related allocations into existing registries)", "RFC 8915 Section 7.6–7.8 (NTS-specific registries)", "IANA ‘Network Time Protocol (NTP) Parameters’ page", "IANA ‘Network Time Security (NTS) Parameters’ page"]
+    - CrossRefsUsed: ["RFC 9748 Section 1 text on registry locations", "RFC 9748 Section 2.3 summarizing RFC 8915 registries", "RFC 8915 Sections 7.1–7.8 defining NTS-related and NTS-specific registries", "RFC 5905 Section 16 describing NTP registry creation and grouping under ‘NTP Parameters’"]
+    - Confidence: Medium
+- IfNoIssues:
+  - Comment:
+
+[Used vector stores: vs_6954bae1147c81918aa2fe330008bd93]
+
+
+Vector Stores Used: vs_6954bae1147c81918aa2fe330008bd93
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

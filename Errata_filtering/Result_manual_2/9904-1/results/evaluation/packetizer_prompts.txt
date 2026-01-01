@@ -1,0 +1,435 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    The excerpt defines a conceptual lifecycle for DNSSEC algorithms (introduction, potential elevation to MUST, then gradual deprecation and final retirement) and maps that lifecycle onto IANA registry fields that distinguish “implement” vs “use”. The ordering between deployment and implementation is discussed both for new algorithms and for deprecation. Overall, the temporal story is coherent, but there are a couple of places where the evolution steps are only loosely described or appear to conflict with later procedural text, which could leave future RFC authors uncertain about the intended order of status changes.
+  OverallTemporalRisk: Low
+  CandidateIssues:
+    - Id: T1
+      Type: Underspecification
+      ShortLabel: "Path from MAY → RECOMMENDED → MUST is only loosely defined"
+      Description: |
+        Section 1.2 describes an expected temporal evolution for newly introduced algorithms and for deprecation, but it does so in qualitative terms (“expected”, “gradually”) without clearly aligning that lifecycle with the concrete IANA procedures in Section 2.2. In particular, the text says an algorithm “is expected to be first introduced as RECOMMENDED instead of a MUST”, while Section 2.2 and the IANA registry notes say that new entries added via “Specification Required” will have value MAY in all columns, and any non-MAY value requires “Standards Action”. The intended multi-step sequence (initial MAY, then RECOMMENDED, then maybe MUST) is not spelled out as an explicit ordered path for future documents, which may cause ambiguity about when “first introduced as RECOMMENDED” is supposed to happen relative to the initial MAY registration.
+      TemporalReasoning: |
+        From Section 1.2, the conceptual timeline is:
+
+        - New algorithm appears → it is not yet “mandatory to implement”.
+        - Future documents may make it “mandatory to implement”, but “there is no guarantee” of that.
+        - “Similarly, an algorithm that has not been mentioned as mandatory to implement is expected to be first introduced as RECOMMENDED instead of a MUST.”
+
+        That last sentence implies a temporal ordering for *requirement levels*: before a given algorithm ever becomes MUST-to-implement, there should be a RECOMMENDED phase.
+
+        Section 2.2 then defines the actual IANA procedure:
+
+        - Adding a new algorithm via Specification Required is only allowed with MAY in all four “Use/Implement” columns, and “New entries added through the Specification Required process will have the value of ‘MAY’ for all columns.”
+        - Any change to a value other than MAY in those columns requires “Standards Action”.
+
+        So any realistic lifecycle in the registries must be:
+
+        1. Initial registration: all MAY (Specification Required).
+        2. Later update RFC: some columns become RECOMMENDED (Standards Action).
+        3. Possibly later update RFC: some columns become MUST (Standards Action).
+
+        The text in 1.2 about being “first introduced as RECOMMENDED instead of a MUST” is correct in spirit, but it doesn’t explicitly acknowledge that there is an *earlier* “MAY-only” phase and that “introduced as RECOMMENDED” is about the *first time it is proposed to be mandatory*, not the first time it appears in the registry. This creates room for confusion about what “first introduced” refers to on a timeline. Future spec authors might misinterpret this as saying that the *first registry insertion* should be RECOMMENDED (which is impossible under the rules in 2.2) instead of understanding it as the first non-MAY elevation step.
+      KeyEvidence:
+        ExcerptPoints:
+          - “Similarly, an algorithm that has not been mentioned as mandatory to implement is expected to be first introduced as RECOMMENDED instead of a MUST.” (Section 1.2)
+          - “Adding a new entry to the ‘DNS Security Algorithm Numbers’ registry with a recommended value of ‘MAY’… New entries added through the Specification Required process will have the value of ‘MAY’ for all columns.” (Section 2.2)
+          - “Adding a new entry to, or changing an existing value in, the ‘DNS Security Algorithm Numbers’ registry that has any value other than ‘MAY’… requires Standards Action.” (Section 2.2)
+      ImpactOnImplementations: |
+        This affects mainly future RFC authors and IANA reviewers rather than wire-level interoperability. Ambiguity in how to interpret “first introduced as RECOMMENDED” relative to the mandatory “MAY-only” initial registration could lead to inconsistent expectations about when it is appropriate to propose RECOMMENDED vs MUST, and about what constitutes a “premature” MUST. Implementers tracking the registries over time might see unexpected jumps (e.g., MAY→MUST in a single RFC) and be unsure whether that violates the intended gradual escalation model. The risk is organizational and process-focused rather than a direct runtime failure, so severity is low but the ordering would benefit from clearer, more explicit lifecycle wording.
+      AffectedArtifacts:
+        - "Section 1.2, paragraph beginning ‘It is expected that the deprecation of an algorithm will be performed gradually.’"
+        - "Section 2.2, note on adding/changing values in ‘DNS Security Algorithm Numbers’ registry"
+      Severity: Low
+
+    - Id: T2
+      Type: Underspecification
+      ShortLabel: "Qualitative deprecation sequence (MUST → NOT RECOMMENDED/MAY → MUST NOT) lacks detailed timing guidance"
+      Description: |
+        The deprecation narrative in Section 1.2 gives an intended order of requirement-level changes and deployment behavior (gradual downgrade and late removal), but it remains high level and does not say *when* to move from one step to another or tie those steps precisely to observable deployment states. This is intentional to some degree, but it means that different IETF documents could choose very different deprecation schedules while still claiming to follow this document, potentially surprising implementations and operators that rely on the gradual-change model described here.
+      TemporalReasoning: |
+        Section 1.2 lays out the intended temporal sequence for deprecation:
+
+        - An algorithm starts life as something stronger than MUST NOT (often MUST or RECOMMENDED to implement).
+        - “It is expected that the deprecation of an algorithm will be performed gradually.”
+        - “Unless there are strong security reasons, an algorithm is expected to be downgraded from MUST to NOT RECOMMENDED or MAY, instead of directly from MUST to MUST NOT.”
+        - “Since the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure, it is recommended that algorithms that have been downgraded to NOT RECOMMENDED or lower not be used … to create new DNSKEYs. This ensures that the use of deprecated algorithms decreases over time.”
+        - “Once an algorithm has reached a sufficiently low level of deployment, it can be marked as MUST NOT, so that recursive resolvers can remove support for validating it. Validating recursive resolvers are encouraged to retain support for all algorithms not marked as MUST NOT.”
+
+        This suggests a timeline:
+
+        1. Status = MUST (or RECOMMENDED).
+        2. Downgrade to NOT RECOMMENDED or MAY in “Use for” (and possibly in “Implement for”), with advice to stop creating new keys.
+        3. Observe decreasing deployment.
+        4. Once deployment is “sufficiently low”, update status to MUST NOT, after which validators may drop support.
+
+        However, the document does not define any objective or even qualitative criteria for “sufficiently low level of deployment”, nor does it give guidance on typical time gaps (e.g., “at least one key rollover cycle” or “at least N years”) between steps. Likewise, it does not specify whether, during step 2, the “Implement for” columns should generally lag behind the “Use for” columns (i.e., continue to implement while discouraging use) or whether both sets of columns are usually downgraded together and only diverge in edge cases. These choices are left to future documents without explicit linkage back to the conceptual ordering that Section 1.2 describes.
+      KeyEvidence:
+        ExcerptPoints:
+          - “It is expected that the deprecation of an algorithm will be performed gradually. This provides time for implementations to update their implemented algorithms while remaining interoperable.” (Section 1.2)
+          - “Unless there are strong security reasons, an algorithm is expected to be downgraded from MUST to NOT RECOMMENDED or MAY, instead of directly from MUST to MUST NOT.” (Section 1.2)
+          - “Once an algorithm has reached a sufficiently low level of deployment, it can be marked as MUST NOT, so that recursive resolvers can remove support for validating it.” (Section 1.2)
+          - “Validating recursive resolvers are encouraged to retain support for all algorithms not marked as MUST NOT.” (Section 1.2)
+          - “We note that the values for ‘Implement for’ and ‘Use for’ may diverge in the future as implementations generally precede deployments.” (Section 2.2)
+        ContextPoints:
+          - "High-level discussion of DNSSEC deployment and implementation expectations in RFC 9364 Sections 1 and 1.2, which also emphasize evolution over time but don’t specify concrete timing for algorithm transitions."
+      ImpactOnImplementations: |
+        This does not introduce a direct protocol inconsistency, but it means that implementers and operators cannot rely on a predictable minimum “grace period” between a downgrade to NOT RECOMMENDED/MAY and a later transition to MUST NOT. Different algorithms might see very different deprecation speeds depending on how future RFCs interpret “gradual” and “sufficiently low level of deployment.” Validators that want to be conservative might choose to keep supporting algorithms longer than strictly necessary, while others may track the registries aggressively, leading to differing behaviors in the field. The interoperability impact is likely modest because the registry values themselves will still be clear at any given point in time, but expectations about *how fast* those values will change over time remain underspecified.
+      AffectedArtifacts:
+        - "Section 1.2 (all paragraphs discussing gradual deprecation and downgrade paths)"
+        - "Section 2.2 (mention of possible divergence between ‘Use’ and ‘Implement’ columns over time)"
+      Severity: Low
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: >
+    The excerpt defines how DNSSEC algorithm requirement levels are moved into IANA registries and distinguishes between roles such as implementers, authoritative servers/DNSSEC signers, validating recursive resolvers/validators, and IANA. It uses separate “Implement for …” vs “Use for …” columns to target implementers versus operators, and gives guidance on how algorithms are introduced and deprecated over time.
+
+- OverallAssessment: ProbablyNoBug
+
+- FindingsOnRoutedIssues:
+  # No explicit routed CandidateIssues were provided for this dimension.
+  # This section is therefore empty.
+  []
+
+- AdditionalActorIssues:
+  - NewIssue-1:
+    BugType: Underspecification
+    Summary: >
+      The sentence about DS algorithm rollover places a strong (MUST) requirement on a vague actor "users", which is underspecified given the otherwise clear role distinctions in the document. It is not explicitly clear that this requirement is aimed at zone operators (those managing DS and KSK) as opposed to, e.g., validating resolvers or end users.
+    Evidence:
+      - "DS algorithm rollover in a live zone is also a complex process. Upgrading an algorithm at the same time as rolling to the new Key Signing Key (KSK) key will lead to DNSSEC validation failures, and users MUST upgrade the DS algorithm first before rolling to a new KSK."
+      - Reasoning: >
+          All the surrounding text is about zone-side operations (DS algorithm rollover, KSK roll), which only zone administrators and/or parent operators can perform. Using the generic term "users" for a BCP 14 MUST is actor-ambiguous in a document that elsewhere carefully distinguishes authoritative servers, DNSSEC signers, validators, and implementers. A clearer subject such as "zone operators" or "operators of signed zones" would more precisely attach the obligation to the correct party.
+
+  - NewIssue-2:
+    BugType: Underspecification
+    Summary: >
+      The document uses several near-synonymous labels for the validating side (DNSSEC validators, validating resolvers, validating recursive resolvers) in different places and contexts, including in the column definitions and operational guidance. This can introduce some ambiguity about which validating components are in scope for certain recommendations, especially when tied to specific “Use for DNSSEC Validation” / “Implement for DNSSEC Validation” guidance.
+    Evidence:
+      - Column descriptions: "Use for DNSSEC Validation: Indicates the recommendation for using the algorithm in DNSSEC validators." / "Implement for DNSSEC Validation: Indicates the recommendation for implementing the algorithm within DNSSEC validators." and, for digest algorithms, "Implement for DNSSEC Validation: Indicates the recommendation for implementing the algorithm within validating resolvers."
+      - Section 1.2: "Once an algorithm has reached a sufficiently low level of deployment, it can be marked as MUST NOT, so that recursive resolvers can remove support for validating it. Validating recursive resolvers are encouraged to retain support for all algorithms not marked as MUST NOT."
+      - Reasoning: >
+          The registry column descriptions target “DNSSEC validators” / “validating resolvers” as the consumer of validation-related recommendations, while Section 1.2 singles out “recursive resolvers” and “validating recursive resolvers”. In practice, these are overlapping but not necessarily identical roles (e.g., stub or forwarding validators). The text never explicitly states whether non-recursive validators are in or out of scope for the validation recommendations, which is a mild role-clarity gap rather than a direct contradiction.
+
+- IfNoActorIssues:
+  Comment: >
+    No clear actor/direction contradictions were found: the separation between authoritative servers/DNSSEC signers, validators/recursive resolvers, implementers, and IANA is generally coherent. The identified issues are minor ambiguities in which actor a requirement is aimed at, not reversals of message direction or impossible role assignments.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: RFC 9904 moves DNSSEC algorithm requirement levels into IANA registries, separates “implement” vs “use” guidance, and describes how algorithm requirement levels should evolve over time, with BCP 14 terminology used in the registry columns. It also gives high-level operational guidance to implementers and operators on deprecation, unknown/unsupported algorithms, and rollover.
+
+- ScopeModel:
+  - Targets:
+    - DNSSEC algorithms in the IANA “DNS Security Algorithm Numbers” registry, as used in DNSKEY/RRSIG/DS, and their per-algorithm requirement levels.
+    - Digest algorithms in the IANA “Digest Algorithms” registry for DS records, again with per-algorithm requirement levels.
+    - “Use for …” columns: recommendations for *deploying/using* an algorithm in:
+      - authoritative servers (signing),
+      - DNSSEC validators (validation),
+      - delegation (DS) and validation (DS).
+    - “Implement for …” columns: recommendations for *implementing* an algorithm in:
+      - DNSSEC signing software,
+      - DNSSEC validators / validating resolvers,
+      - DS-related delegation and validation code.
+    - Implementations of DNSSEC validators and authoritative/signing software, and operators deploying signed zones and DS records.
+  - Conditions:
+    - Changes to registry entries:
+      - New entries with “MAY” in any of the four columns use Specification Required; such entries created via that path are “MAY” in all columns.
+      - Any entry/column with a value other than “MAY” requires Standards Action.
+    - Column value constraints:
+      - “Use for …” columns: allowed values: MAY, RECOMMENDED, MUST NOT, NOT RECOMMENDED.
+      - “Implement for …” columns: allowed values: MAY, RECOMMENDED, MUST, MUST NOT, NOT RECOMMENDED; MUST is explicitly not allowed in “Use for …”.
+    - Evolution/deprecation:
+      - Algorithms making it to “mandatory to implement” (MUST in Implement columns) are expected already to be present in most implementations.
+      - Deprecation is *expected* to be gradual: normally change MUST → NOT RECOMMENDED or MAY, not directly to MUST NOT, unless strong security reasons.
+      - New “mandatory” algorithms are *expected* to be first introduced as RECOMMENDED, not immediately as MUST.
+      - Algorithms downgraded to NOT RECOMMENDED or lower are *recommended* (lowercase) not to be used by authoritative servers/signers for *new* DNSKEYs, to drive deployment down.
+      - Once deployment is “sufficiently low”, an algorithm can be marked MUST NOT so validators can drop validation support.
+      - Validators are “encouraged” to retain support for all algorithms not marked MUST NOT.
+    - Requirements language:
+      - BCP 14 terms in all caps are normative *only* in that form (Section 1.3); elsewhere they may appear as labels in registry columns.
+  - NotedAmbiguities:
+    - The phrase “Since the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure” does not specify *from whose perspective* (which validator, which set of supported algorithms) or *under what combination of algorithms* this holds, even though DNSSEC’s actual behavior is per-validator and per-chain, and allows multiple algorithms in parallel.
+    - The deprecation-path language in Section 1.2 (“downgraded from MUST to NOT RECOMMENDED or MAY… first introduced as RECOMMENDED instead of a MUST”) does not explicitly say whether it is speaking only about the *Implement* columns or both Implement and Use, although the context suggests primarily the implementation requirement level.
+    - “Validating recursive resolvers are encouraged to retain support for all algorithms not marked as MUST NOT” is generic: it does not spell out whether this applies identically to both DNSKEY signing algorithms and DS digest algorithms, though the intent appears to be “all DNSSEC algorithms covered by these registries”.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Over-broad statement that “using an unknown DNSKEY algorithm” makes “the zone” insecure, without scoping it per-validator and per-algorithm set
+    - ScopeProblemType: Over-generalized condition and missing actor/algorithm-scope on security status (“zone is treated as insecure”)
+    - Evidence:
+      - Section 1.2: “Since the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure, it is recommended that algorithms that have been downgraded to NOT RECOMMENDED or lower not be used by authoritative nameservers and DNSSEC signers to create new DNSKEYs. This ensures that the use of deprecated algorithms decreases over time.”  
+      - DNSSEC background (4034 et al.): Zones can be signed with multiple algorithms in parallel; the registry and 8624 tables explicitly list multiple recommended/mandatory algorithms at once, and algorithm agility is an intended property of DNSSEC (e.g., RFC 4034 Appendix A’s extensible algorithm registries).
+      - Table 2 shows multiple algorithms that are simultaneously RECOMMENDED or MUST for validation (e.g., RSASHA256 (8) and ECDSAP256SHA256 (13)), illustrating multi-algorithm operation.
+    - DetailedReasoning:
+      - The sentence in Section 1.2 is phrased as a universal rule: “the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure,” with no qualifiers about which validator, which set of supported algorithms, or whether any *other* supported algorithms are also in use for the same zone.
+      - In DNSSEC as defined by the core specifications (RFC 4033/4034/4035, updated by RFC 6840), the effective security status for a particular validator is determined by whether there exists at least one complete validating chain using an algorithm that validator supports; the mere presence of an unknown/unsupported algorithm does not automatically downgrade the zone to insecure if another supported algorithm is also in use.
+      - For example, a zone signed with both algorithm 8 (RSASHA256, MUST for validation in RFC 8624) and a new, as-yet-unsupported algorithm X will still validate as secure for a validator that supports 8 but not X; only a validator that supports neither 8 nor X will necessarily treat the zone as insecure. The effect is therefore *per-validator and conditional on the available algorithm set*, not a global property of the zone.
+      - The wording in RFC 9904 does not reflect this per-validator, per-algorithm-chain scope and can reasonably be read by an operator as “if I use any unknown algorithm in my DNSKEYs, my zone becomes insecure,” which is stronger and less nuanced than what the DNSSEC protocol specifies. That reading would contradict the algorithm-agility design that permits multiple algorithms simultaneously to smooth transitions.
+      - This scope over-generalization matters in this document in particular because the misstatement is used as the rationale for a deployment recommendation: to avoid “the zone [being] treated as insecure,” operators are told not to use downgraded algorithms for *new* DNSKEYs. While the general direction (reduce use of deprecated algorithms) is sound, the justification relies on an oversimplified and, in some scenarios, incorrect characterization of DNSSEC’s behavior.
+      - A more accurate and scoped formulation would say something like: “From the perspective of a validating resolver that does not implement any algorithm used by a zone’s DNSKEYs (reachable via DS), that zone will be treated as insecure.” This clarifies that the effect is per-validator and depends on the *set* of algorithms actually used for signing, and it aligns with the multi-algorithm behavior implied by the registry tables and the DNSSEC design.
+      - As written, the unqualified “using an unknown DNSKEY algorithm” → “zone is treated as insecure” linkage is both an underspecification (missing conditions and actor) and, when read literally and globally, inconsistent with the algorithm-agility behavior specified in the DNSSEC core documents. An erratum could therefore reasonably narrow the scope by adding the “for a validator that does not support any of the zone’s signing algorithms” condition or by explicitly referencing the algorithm-agility rules in the core DNSSEC specs.
+
+- ResidualUncertainties:
+  - The exact validation-path wording in RFC 4035/6840 is not quoted in the provided material; the analysis relies on the well-established behavior that a zone can be signed with multiple algorithms and that insecurity arises for a validator only when no usable algorithm is in common along the chain. An erratum would ideally cite the precise sections in RFC 4035/6840 that define this behavior.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Section 1.2’s sentence about “the effect of using an unknown DNSKEY algorithm” is an oversimplified description of DNSSEC validation behavior. Taken literally and out of context, it could be read more broadly than what RFC 4035 / RFC 6840 actually specify, but it does **not** create an unimplementable state machine or a hard interoperability failure. At worst, it could encourage an over‑conservative interpretation that weakens security (treating some zones as insecure when they could be validated), but it doesn’t break resolution.
+
+---
+
+2. **Causal Analysis**
+
+The key sentence in §1.2 of RFC 9904 is:
+
+> “Since the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure, it is recommended that algorithms that have been downgraded to NOT RECOMMENDED or lower not be used by authoritative nameservers and DNSSEC signers to create new DNSKEYs.”
+
+Mechanically, in DNSSEC as defined by RFC 4033/4034/4035 and clarified by RFC 6840 (algorithm agility):
+
+- A validating resolver:
+  - Ignores DNSKEYs and RRSIGs that use algorithms it does not support.
+  - Ignores DS records that refer to algorithms it does not support.
+  - Tries to find at least one “path” where a DS, DNSKEY, and RRSIG all use algorithms it supports.
+- Outcomes:
+  - If **at least one supported algorithm path exists**, the resolver can fully validate and mark data as *secure*.
+  - If **no supported algorithm path exists** (i.e., all relevant DNSKEY/RRSIG/DS algorithms are unknown/unsupported), the resolver cannot validate and treats the zone as effectively *unsigned* (insecure) rather than causing hard failure; this is the basis for algorithm agility.
+
+So, more precise is:
+
+> For a given validator, if all effective signing algorithms in use for a zone are unsupported/unknown, that validator will treat the zone as insecure.
+
+The RFC 9904 text compresses this into:
+
+> “the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure”
+
+which is strictly true only when **all** usable keys (from that validator’s point of view) are using unknown/unsupported algorithms. In mixed‑algorithm deployments:
+
+- Zone Z has DNSKEYs with algorithm 13 (ECDSAP256SHA256) and a brand‑new algorithm X.
+- DS records cover both keys.
+- A validator that supports 13 but not X will:
+  - Ignore DS/DNSKEY/RRSIG that use X.
+  - Successfully validate using algorithm 13.
+  - Treat Z as *secure*, not insecure.
+
+If an implementer naively took 9904’s sentence as a literal, unconditional rule and **overrode** the algorithm‑handling rules in RFC 4035/6840, they might implement:
+
+- “If any DNSKEY uses an unknown algorithm, treat the *entire* zone as insecure.”
+
+Causally, that leads to:
+
+- Zones with both supported and unknown algorithms being downgraded to insecure by such a resolver, even though they *could* be validated.
+- No wire‑protocol breakage: responses still resolve; they just lack the AD bit/secure status when they could have had it.
+- Security is weakened relative to baseline DNSSEC practice, but no deadlocks, unparseable messages, or inconsistent state machines arise.
+
+In practice, however:
+
+- RFC 9904 does **not** redefine validation logic; it is updating algorithm *recommendations* and IANA registry handling.
+- §1.3 explicitly restricts BCP 14 key words to all‑caps; the sentence in question uses “recommended” lower‑case, so it is explanatory rather than a new normative rule.
+- The authoritative guidance on how unknown algorithms affect validation remains in RFC 4035 and its updates; a conformant implementer must follow those for DNSSEC to work at all.
+
+The guidance that follows this sentence — “do not use downgraded algorithms to create new DNSKEYs; once usage is low, mark them MUST NOT so resolvers can drop support” — only relies on the true property that:
+
+- A resolver that *no longer supports an algorithm at all* will treat a zone signed **only** with that algorithm as insecure.
+
+That property holds under the core DNSSEC specs, so the overall migration story in RFC 9904 remains coherent.
+
+---
+
+3. **Problem Classification**
+
+- **Type**: Neither a hard *Causal Inconsistency* nor a strong *Causal Underspecification*.
+- It is best characterized as an **imprecise explanatory statement**:
+  - Over-broad as written.
+  - But not a new normative requirement and not something that makes the protocol unimplementable or inherently non‑interoperable.
+
+The worst realistic failure mode is that an implementer misreads this as a normative rule and voluntarily chooses to downgrade some zones to “insecure” in more cases than necessary. That weakens security but does not break DNS operation or contradict any mandatory wire behavior.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the working group wanted to tighten this, a minimal clarification would be along the lines of:
+
+- Replace:
+
+  > “Since the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure…”
+
+- With something like:
+
+  > “Since, for a given validator, if all DNSKEY/RRSIG algorithms in use are unsupported or unknown then the zone is effectively treated as insecure by that validator…”
+
+or explicitly reference the algorithm‑agility behavior in RFC 6840. This would align the prose with actual validation semantics without changing any registry behavior.
+
+---
+
+5. **Non-Issues**
+
+- There is no place in this excerpt where a role is required to send an impossible message, reference a non‑existent field, or follow an unrealizable transition.
+- The IANA registry procedures and allowed column values are mechanically consistent and do not conflict with the deployment‑transition narrative in §1.2.
+- The advice to reduce use of downgraded algorithms before resolvers drop support is sound under the actual DNSSEC algorithm‑agility rules.
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: RFC 9904 moves DNSSEC algorithm requirement levels into IANA registries, defines “use” vs “implement” recommendation columns, and describes how requirement levels are expected to evolve over time. It also sets registry-update policies and gives operational guidance on deprecating and deploying algorithms.
+
+- OverallDeonticRisk: Low
+
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - Title: Over‑broad statement about the effect of “unknown DNSKEY algorithm” on zone security status
+    - Description: Section 1.2 states: “Since the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure, it is recommended that algorithms that have been downgraded to NOT RECOMMENDED or lower not be used by authoritative nameservers and DNSSEC signers to create new DNSKEYs.” This sentence is not framed with BCP 14 key words, but it asserts a protocol effect (“zone is treated as insecure”) as if it were unqualifiedly true. In DNSSEC, however, whether a zone is effectively “insecure” to a given validator depends on whether that validator has any usable algorithm in common with the zone’s DNSKEY/DS set, not merely on the presence of an unknown algorithm. A zone may legitimately publish multiple DNSKEY algorithms; validators that support at least one of them can still validate, while simply ignoring unknown algorithms. The text in RFC 9904 does not distinguish these cases and can be read as “any use of an unknown DNSKEY algorithm causes the zone to be treated as insecure,” which overstates the actual condition and collapses per‑validator, per‑algorithm behavior into a single global outcome. Because this oversimplified statement is used as the rationale for the subsequent recommendation about not using downgraded algorithms for new DNSKEYs, it blurs the relationship between the deprecation levels in the IANA registry and the algorithm‑agility mechanisms in DNSSEC.
+    - KeyTextSnippets:
+      - “Since the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure, it is recommended that algorithms that have been downgraded to NOT RECOMMENDED or lower not be used by authoritative nameservers and DNSSEC signers to create new DNSKEYs.”
+      - “It is expected that the deprecation of an algorithm will be performed gradually. This provides time for implementations to update their implemented algorithms while remaining interoperable.”
+    - Impact: This ambiguity can mislead operators and implementers into believing that merely adding a not‑yet‑widely‑implemented or new algorithm to a zone (even alongside a well‑supported one) will immediately render the zone “insecure” to all validators, which is not how DNSSEC algorithm agility is intended to work. That, in turn, could discourage safe multi‑algorithm transition strategies and make people overly conservative in deploying new algorithms or in interpreting when it is safe to phase out old ones. Clarifying that “insecure” status arises only when, for a given validator, none of the zone’s configured signing algorithms are supported would align the explanatory text with the underlying DNSSEC behavior without changing the actual registry‑based requirements.
+
+- IfNoRealIssue:
+  - N/A (one real, albeit low‑severity, deontic/semantic issue identified).
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9904 moves DNSSEC algorithm requirement levels from RFC 8624 into the IANA “DNS Security Algorithm Numbers” and “Digest Algorithms” registries, introduces “Use for …” and “Implement for …” columns, and explains how requirement levels should evolve (introduction, deprecation). It uses RFC 9364 as a high‑level pointer to DNSSEC and BCP 14 terminology from RFC 2119/8174 to define the semantics of values like MUST, RECOMMENDED, and MAY. Most of the text aligns those new registry columns with the existing recommendations in RFC 8624 and the general IANA policy framework in RFC 8126.
+
+- OverallCrossRFCLikelihood: Medium
+
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous effect of “unknown DNSKEY algorithm” vs core DNSSEC validation rules
+    - Description: RFC 9904 Section 1.2 states, “Since the effect of using an unknown DNSKEY algorithm is that the zone is treated as insecure, it is recommended that algorithms that have been downgraded to NOT RECOMMENDED or lower not be used … to create new DNSKEYs.” In the DNSSEC core specifications, as summarized in RFC 9364, DNSSEC itself is defined by RFC 4033/4034/4035, with RFC 6840 providing important updates. RFC 4035 (as updated by RFC 6840’s algorithm‑agility rules) does not say that the mere presence or “use” of an unknown/unsupported DNSKEY algorithm makes a zone insecure; instead, a validator treats a zone as insecure only when there is no algorithm in common between the DS/DNSKEY set and the validator’s supported algorithms. If a zone is signed with multiple algorithms (e.g., both a widely supported algorithm like RSASHA256 and a newer one like ED25519), validators that lack support for the newer algorithm can still validate using the supported one and must not treat the zone as insecure just because an additional unknown algorithm appears. The sentence in RFC 9904 is therefore an oversimplification: read literally, an operator could infer that *any* introduction of an unknown algorithm downgrades the whole zone to “insecure”, which conflicts with the multi‑algorithm behavior defined in the DNSSEC core documents. A more precise statement would have explicitly scoped the “zone is treated as insecure” outcome to those validators for which *all* effective signing algorithms (as reflected in DS/DNSKEY) are unknown/unsupported, and ideally would have pointed back to the algorithm‑agility behavior from RFC 4035/RFC 6840 as identified via RFC 9364. This is primarily an underspecification/wording issue rather than a wire‑format conflict, but it can mislead careful operators about the risks of deploying additional algorithms alongside existing ones.
+    - EntitiesInvolved: ["RFC 9904 Section 1.2 ('effect of using an unknown DNSKEY algorithm')", "RFC 9364 Section 1 (core DNSSEC documents)", "DNSSEC validator behavior in RFC 4035 (as updated by RFC 6840)"]
+    - CrossRefsUsed: ["RFC 9904 Section 1.2 text in the excerpt", "RFC 9364 Section 1 overview of core DNSSEC RFCs", "General DNSSEC validation/algorithm‑agility behavior from RFC 4035/6840 implied via RFC 9364"]
+    - Confidence: Medium
+
+[Used vector stores: vs_6954b396867881918c52be4a34d151ab]
+
+
+Vector Stores Used: vs_6954b396867881918c52be4a34d151ab
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

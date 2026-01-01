@@ -1,0 +1,128 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 5 of RFC 9734 describes the IANA registrations for a new Extended Key Usage OID (id-kp-imUri, value 40 under 1.3.6.1.5.5.7.3) and a new ASN.1 module OID (id-mod-im-eku, value 113 under 1.3.6.1.5.5.7.0), and Appendix A provides the corresponding ASN.1 module.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - No ordering, timers, or state transitions are involved; this is pure registry and ASN.1 definition text.
+  - ActorDirectionality: LOW - No roles, send/receive, or directionality semantics are specified here.
+  - Scope: LOW - The scope (PKIX EKU registry and PKIX module identifier registry) is clearly and narrowly stated; no ambiguity about where rules apply.
+  - Causal: LOW - No algorithmic behavior is specified; the text only states what OIDs are registered.
+  - Quantitative: LOW - Numeric values (40 and 113) are consistent with the ASN.1 arcs and the stated registry roots; no size/range issues appear.
+  - Deontic: LOW - No significant use of RFC 2119 language in this section beyond descriptive wording; nothing to reconcile.
+  - Structural: LOW - The ASN.1 module’s OIDs match the IANA tables (id-kp-imUri = { id-kp 40 } and module OID = { pkix(7) id-mod(0) id-mod-im-eku(113) }); no mismatch between prose, tables, and ASN.1 is apparent.
+  - CrossRFC: LOW - The referenced PKIX registries and OID arcs are consistent with RFC 5280 conventions; the use of X.690 as an ASN.1 reference in one sentence is, at most, editorial and not a clear protocol bug.
+  - Terminology: LOW - Names used in the IANA tables (id-kp-imUri, id-mod-im-eku) align with the definitions in Sections 3 and Appendix A; no competing terms.
+  - Boundary: LOW - No edge-case behavior is relevant; this is static registry and module definition.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No substantive inconsistencies or underspecification in IANA/ASN.1 OID definitions
+    Relevant Dimensions: 
+    Sketch: The OID values and names in the IANA tables and the ASN.1 module are internally consistent and align...
+
+Response ID: resp_0581e1cef13ea76f006954bc7bee648197a9d57eb60c5261c9
+
+
+Vector Stores Used: vs_6954bbca662c81919c531db936e840f4
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

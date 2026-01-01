@@ -1,0 +1,424 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 2 of RFC 9859 defines the DSYNC RRtype’s on-the-wire RDATA layout (RRtype, Scheme, Port, Target), its presentation format, and basic semantics, and Section 6.2 defines the associated IANA registry for DSYNC schemes and RRtype–scheme combinations.
+
+- ScopeModel:
+  - Targets:
+    - The DSYNC RDATA fields: RRtype (the “generalized NOTIFY” RR type), Scheme (contact method), Port (transport port for the notification service), and Target (domain name of the notification endpoint).
+    - Consumers/producers of DSYNC records (authoritative servers and tools that encode/decode DSYNC RDATA).
+    - The IANA “DSYNC: Location of Synchronization Endpoints” registry that tracks combinations of RRtype and Scheme (and scheme ranges) for DSYNC.
+  - Conditions:
+    - RRtype in DSYNC RDATA is, “for now”, only defined for CDS and CSYNC values, and indicates which RRset type is being notified about.
+    - Scheme is an 8-bit value where 0 is “null scheme” to be ignored, 1 (NOTIFY) is defined in this RFC, 128–255 are reserved for Private Use, and others are currently unassigned; future assignments are via the registry in Section 6.2.
+    - Port is specified as a 16-bit unsigned integer in network byte order; DSYNC RDATA with Port=0 is to be ignored by consumers.
+    - DSYNC Target is a fully qualified domain name that “MUST resolve to one or more address records”.
+    - At the publication level (Section 3), there MUST NOT be more than one DSYNC RR for each (RRtype, Scheme) combination under a given owner name.
+  - NotedAmbiguities:
+    - The wire-format figure for DSYNC RDATA (Figure 1) shows RRtype, Scheme, and Port compressed into a single 32-bit row, which is inconsistent with the textual field-size descriptions and makes the bit-extent of Port ambiguous.
+    - The DSYNC scheme registry (Section 6.2) requires each registration to specify an RRtype, but the initial table contains rows where RRtype is blank (for Scheme=0 and for scheme ranges 2–127 and 128–255), while the text also states that “schemes are independent of the RRtype”; it is unclear whether scheme semantics are global or scoped per-RRtype, and how the blank-RRtype rows are meant to apply.
+    - The text says “for now, only CDS and CSYNC are supported values” for the DSYNC RRtype field, but does not normatively state what consumers must do if they encounter a DSYNC RR whose RRtype field is another value (ignore, treat as error, etc.).
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Ambiguous bit-length and position (scope) of the Port field in the DSYNC RDATA wire-format figure
+    - ScopeProblemType: Ambiguous field extent / bit-allocation in wire format (Port field)
+    - Evidence:
+      - Figure 1 shows a single 32-bit row labeled “| RRtype | Scheme | Port” before “Target ...” starts on the next line.
+      - The Scheme description: “This is an 8-bit unsigned integer.”
+      - The Port description: “This is a 16-bit unsigned integer in network byte order. Records with value 0 are ignored by consumers.”
+      - RRtype is defined as a DNS RR TYPE value, which in DNS RDATA is conventionally 16 bits (see RFC 1035 general RR format).
+    - DetailedReasoning:
+      - The figure gives the only explicit visual specification of field ordering and relative positions in DSYNC RDATA; it shows RRtype, Scheme, and Port visually occupying a single 32-bit row, which in standard DNS bit diagrams implies they collectively consume precisely 32 bits.
+      - Given conventional DNS practice and the RFC 1035 RR format, RRtype is naturally 16 bits, and Scheme is explicitly 8 bits; if Port were also 8 bits, these three would sum to 16+8+8 = 32 bits, exactly filling one row, which is what the figure suggests.
+      - However, the text for Port explicitly says it is “a 16-bit unsigned integer in network byte order,” which, combined with a 16-bit RRtype and 8-bit Scheme, adds up to 16+8+16 = 40 bits before the Target name starts.
+      - A 40-bit preamble cannot be represented correctly by a single 32-bit row; either the Port field must span across row boundaries (with its high-order 8 bits in the first row and the low-order 8 bits in the next), or the figure must show an additional half-row segment for Port before the Target field.
+      - As drawn, Figure 1 appears to give Port only 8 bits and to start the Target field immediately after those 8 bits, which conflicts with the prose that specifies a 16-bit Port; the “scope” of which bits belong to Port and where Target begins is thus ambiguous.
+      - Implementers who follow the figure literally may encode/decode Port as an 8-bit field and interpret the first octet of the supposed Target name as the second half of Port or vice versa, leading to incorrect RDLENGTH calculations and misalignment when parsing the domain-name-encoded Target.
+      - Conversely, implementers who follow the textual description will treat Port as 16 bits and expect Target to start two octets after Scheme, i.e., at a different offset than the figure suggests, causing wire-format incompatibility between different implementations.
+      - Given that port numbers in DNS-based protocols are universally 16-bit quantities, the textual description is almost certainly intention-revealing; therefore, the figure’s bit layout is misleading and needs correction so that the field’s bit-extent (its “on-the-wire scope”) is unambiguous.
+      - A reasonable erratum would clarify that RRtype is 16 bits, Scheme is 8 bits, and Port is 16 bits, with the Port field occupying 16 bits (possibly spanning two rows in the diagram) before the Target label length octet, and redraw Figure 1 accordingly.
+
+  - Issue-2:
+    - BugType: Both
+    - ShortLabel: Ambiguous scope of DSYNC scheme registry entries across RRtypes (global vs per-RRtype semantics)
+    - ScopeProblemType: Unclear applicability domain for scheme values and registry rows (global scheme vs RRtype-scoped entries)
+    - Evidence:
+      - Section 2.1: “Scheme: The mode used for contacting the desired notification address. This is an 8-bit unsigned integer. Records with value 0 (null scheme) are ignored by consumers. Value 1 is described in this document, and values 128-255 are Reserved for Private Use. Other values are currently unassigned. Future assignments are maintained in the registry created in Section 6.2.”
+      - Section 2.3: “Schemes are independent of the RRtype. They merely specify a method of contacting the target (whereas the RRtype is part of the notification payload).”
+      - Section 6.2 table: rows with blank RRtype for Scheme 0 (“Null scheme (no-op)”), for “2-127 Unassigned”, and for “128-255 Reserved for Private Use,” and separate rows for (RRtype=CDS, Scheme=1) and (RRtype=CSYNC, Scheme=1).
+      - Section 6.2 text: “Requests to register additional entries MUST include the following fields: RRtype: An RRtype that is defined for use; Scheme: The mode used for contacting the desired notification address; … A scheme number may have exactly one mnemonic.”
+    - DetailedReasoning:
+      - The prose in Section 2.3 explicitly states that “schemes are independent of the RRtype,” which strongly suggests that the meaning of a given scheme number (e.g., 1 = NOTIFY) is global: the same contacting method regardless of which RRtype is being notified about.
+      - At the same time, Section 6.2 defines a registry whose entries must “include … RRtype [and] Scheme” and whose initial contents have rows keyed by specific RRtype + Scheme pairs for CDS/1 and CSYNC/1, alongside rows where the RRtype column is left blank for Scheme 0 and for scheme ranges 2–127 and 128–255.
+      - Requiring RRtype in every registration while also saying that schemes are independent of RRtype creates a tension: is the registry keyed by Scheme only (global semantics per scheme value), or by the tuple (RRtype, Scheme) (different or repeated semantics per RRtype)?
+      - The blank-RRtype rows deepen this ambiguity: an implementer or IANA expert cannot tell whether “0: Null scheme (no-op)” is meant to apply for all RRtypes automatically (i.e., (ANY RRtype, 0) is reserved) or whether additional (RRtype, 0) entries should be registered per-RRtype; similarly for “2–127: Unassigned” and “128–255: Reserved for Private Use”.
+      - The rule “A scheme number may have exactly one mnemonic” implies that the mnemonic is keyed by the numeric Scheme alone (global across all RRtypes), yet the registry’s structure—with RRtype and Scheme columns—allows, and the initial contents already include, multiple rows sharing the same Scheme (e.g., CDS/1 and CSYNC/1), which would have to share that mnemonic.
+      - From a scope perspective, it is unclear to what *objects* the “Null scheme (no-op)” or the “Reserved for Private Use” ranges apply: all DSYNC uses collectively, or separately within each RRtype’s subspace; the table’s use of blank RRtype suggests “all RRtypes,” but the registration rules requiring RRtype contradict that by implying that an RRtype must always be specified.
+      - This ambiguity affects both IANA experts (who must decide whether new specifications should register a global scheme or an RRtype-specific (RRtype, Scheme) pair) and protocol designers (who must know whether defining “Scheme 1 = NOTIFY” for a new DSYNC RRtype requires a new registry entry or simply reuses the existing Scheme 1 semantics).
+      - Without a clear statement on whether scheme values are globally scoped or per-RRtype scoped in the registry, different parties may adopt incompatible expectations: some may treat scheme 1 as a single globally defined code with one mnemonic and uniform meaning, others may think each new RRtype needs its own (RRtype,1) registration, and still others may assume that scheme 0 and 128–255 reservations automatically apply to all RRtypes.
+      - The combination of: (a) “schemes are independent of the RRtype,” (b) a registry that formally requires RRtype as a field for each registration, and (c) initial rows with an empty RRtype, constitutes both an inconsistency (conflicting signals about the keying of the registry) and an underspecification (no explicit rule about how blank-RRtype rows should be interpreted and applied across RRtypes).
+      - A clarifying erratum should explicitly define whether the registry key is Scheme alone or (RRtype, Scheme), spell out the intended meaning of blank-RRtype rows (e.g., “applies to all RRtypes”), and explain how “schemes are independent of the RRtype” is reconciled with per-RRtype registry entries, so that the scope of each scheme value and registry row is unambiguous.
+
+- ResidualUncertainties:
+  - The text says “For now, only CDS and CSYNC are supported values” for the DSYNC RRtype field but does not specify consumer behavior on encountering other RRtype values inside DSYNC RDATA; it is unclear whether such records must be ignored, treated as errors, or are reserved for future specifications, though this is more a general underspecification than a sharp, clearly conflicting scope error.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Section 2 has a concrete structural inconsistency: the DSYNC RDATA wire-format figure implies an 8‑bit Port field, while the prose defines Port as a 16‑bit unsigned integer. If different implementers follow different parts of the text, their encoders/decoders will disagree on the position of the Target name and on the port value, making DSYNC records non‑interoperable and often unusable.
+
+---
+
+2. **Causal Analysis**
+
+**What the spec says:**
+
+- Figure 1 shows one 32‑bit row labeled:
+
+  ```
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | RRtype                        | Scheme        | Port
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                  | Target ...  /
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-/
+  ```
+
+  Visually, that is naturally read as:
+  - `RRtype`: 16 bits
+  - `Scheme`: 8 bits
+  - `Port`: 8 bits  
+  and then the `Target` starts immediately after the 32‑bit row.
+
+- The prose for the fields says:
+  - `Scheme`: “an 8-bit unsigned integer.”
+  - `Port`: “This is a 16-bit unsigned integer in network byte order. Records with value 0 are ignored by consumers.”
+  - `Target`: “The fully-qualified, uncompressed domain name …”
+
+So the textual description requires:
+
+- `RRtype`: 16 bits (by DNS RR type conventions)
+- `Scheme`: 8 bits
+- `Port`: **16 bits**
+- then `Target` (domain name)
+
+That’s 40 bits before Target, which cannot match the single 32‑bit row in the diagram.
+
+**What happens if implementers choose different interpretations:**
+
+Let’s consider two plausible implementer behaviors:
+
+### A. Implementer trusts the prose (Port = 16 bits)
+
+Encoding DSYNC RDATA:
+
+1. Write `RRtype` (2 octets).
+2. Write `Scheme` (1 octet).
+3. Write `Port` as a 16‑bit value (2 octets, network byte order).
+4. Write `Target` in DNS name wire format.
+
+So the RDATA layout is: `2 + 1 + 2 + len(Target)` bytes.
+
+Decoding:
+
+1. Read 2 bytes → RRtype.
+2. Read 1 byte → Scheme.
+3. Read **2 bytes** → Port.
+4. Remaining bytes → Target DNS name.
+
+This is consistent with the text and with the requirement that a DNS port is in the normal 16‑bit space (0–65535).
+
+### B. Implementer trusts the figure (Port = 8 bits)
+
+Encoding DSYNC RDATA:
+
+1. Write `RRtype` (2 octets).
+2. Write `Scheme` (1 octet).
+3. Write `Port` as **1 octet**.
+4. Write `Target`.
+
+So the RDATA is `2 + 1 + 1 + len(Target)` bytes, and `Port` is effectively restricted to 0–255.
+
+Decoding:
+
+1. Read 2 bytes → RRtype.
+2. Read 1 byte → Scheme.
+3. Read **1 byte** → Port.
+4. Remaining bytes → Target.
+
+**Interoperability failure:**
+
+Now look at cross‑implementation behavior.
+
+- **A → B (sender A, receiver B)**  
+  - A encodes port as 16 bits, say 5300 (0x14B4), then encodes Target.  
+  - Total RDLENGTH reflects `2+1+2+len(Target)`.  
+  - B reads:
+    - RRtype: ok.
+    - Scheme: ok.
+    - Port: reads only the **first** port byte (0x14 = 20), ignoring the second.
+    - Next byte (0xB4) is interpreted as the first label length of the Target name.
+  - Consequences:
+    - If the port’s high byte is nonzero (typical for ports > 255), that high byte becomes a bogus label length (e.g., 0xB4 = 180 > 63). B’s name parser is likely to treat the RDATA as malformed and ignore the record.
+    - If the high byte is zero (ports < 256), B sees Port = 0 and the next octet as the first label length. But Port = 0 is specified as “Records with value 0 are ignored by consumers.” So B will ignore the DSYNC even though A intended a valid port (e.g., 53).
+
+  In both subcases, B effectively never gets a usable DSYNC endpoint.
+
+- **B → A (sender B, receiver A)**  
+  - B encodes port in 1 byte and then writes Target. Its RDLENGTH is `2+1+1+len(Target)`.
+  - A decodes assuming a 16‑bit port:
+    - Reads RRtype (2 bytes), Scheme (1 byte).
+    - Reads **2 bytes** for Port: first is B’s 8‑bit port, second is actually the first label length of Target.
+    - That consumes one byte of the Target. A then tries to parse the remaining bytes as a DNS name; the name is now misaligned and likely unparsable.
+  - A will treat the RDATA as invalid or, at best, misinterpret both Port and Target.
+
+So a 1‑byte vs 2‑byte Port interpretation leads directly to:
+
+- Off‑by‑one errors in locating the start of Target.
+- Frequent parsing failures on both sides.
+- Where parsing “succeeds”, Port or Target will be wrong.
+
+**Operational impact:**
+
+- DSYNC is used only for locating notification endpoints; failure to parse DSYNC records means:
+  - Notification senders cannot discover parent endpoints and fall back to existing scanning mechanisms.
+  - Parent operators’ published DSYNC records are effectively ignored by some peers.
+- Core DNS and DNSSEC operation are not broken, but the generalized notification mechanism becomes non‑interoperable between differing implementations.
+
+This is exactly the kind of structural inconsistency that causes silent failure of a new extension: records appear on the wire but are not understood by all parties.
+
+---
+
+3. **Problem Classification**
+
+- **Causal Inconsistency**:  
+  The spec simultaneously:
+  - Describes Port as a 16‑bit integer in network byte order, and
+  - Presents a bit diagram that only has 8 spare bits after RRtype (16) and Scheme (8) before Target.  
+
+  Following one part of the document literally makes it impossible to follow the other; different choices lead to incompatible encodings and decodings.
+
+There is also a minor **causal underspecification** element: the spec does not explicitly resolve which of the two (text vs. figure) is authoritative when they conflict.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+A minimal, local repair would be:
+
+- Explicitly state the sizes in the text, e.g., “RRtype: 16 bits; Scheme: 8 bits; Port: 16 bits,” and
+- Correct Figure 1 so that:
+  - the Port field clearly occupies 16 bits (spanning into the next 32‑bit row, or dedicating a full 32‑bit row: e.g., `| RRtype | Scheme | Port |` with an extra row before `Target`), and
+  - the start of `Target` is shown after those 40 bits.
+
+No change is needed to the semantics (“16‑bit unsigned integer in network byte order”) or to the presentation format.
+
+---
+
+5. **Non-Issues**
+
+- The linkage to the IANA registry in Section 6.2 and the use of RRtype+Scheme pairs are coherent and do not introduce wire‑format ambiguity.
+- The RRtype field width is unambiguously 16 bits by DNS conventions, and the Scheme field is consistently defined as 8 bits in both figure and text. The only substantive mechanical problem is the Port field layout.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Quantitative Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary:  
+  Section 2 of RFC 9859 defines the DSYNC RR’s RDATA: a fixed part consisting of RRtype, Scheme, and Port, followed by a domain-name Target. It also defines numeric ranges and registries for the 8‑bit Scheme field and gives presentation examples that include specific port numbers.
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: DSYNC Port field size vs wire-format diagram
+    - Description:  
+      The DSYNC Port field is normatively specified as a 16‑bit unsigned integer, but the wire-format diagram in Figure 1 lays out RRtype, Scheme, and Port in a single 32‑bit row in a way that strongly suggests the Port is only 8 bits. The example records also use port values in the thousands, which are incompatible with an 8‑bit field. This creates a structural inconsistency about where the Target name begins and how many octets the fixed header occupies in RDATA.
+    - Evidence:  
+      - Wire-format figure:
+
+        ```
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        | RRtype                        | Scheme        | Port
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                        | Target ...  /
+        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-/
+        ```
+
+        This shows a single 32‑bit row containing RRtype, Scheme, and Port before the Target begins. With RRtype naturally 16 bits and Scheme defined as 8 bits, only 8 bits are visually left for Port in that row.
+
+      - Port field text:
+
+        > “Port: The transport port number on the target host of the notification service. This is a 16-bit unsigned integer in network byte order. Records with value 0 are ignored by consumers.”
+
+      - Scheme field text (showing it is 8‑bit):
+
+        > “Scheme: … This is an 8-bit unsigned integer. Records with value 0 (null scheme) are ignored… Value 1 is described in this document, and values 128-255 are Reserved for Private Use.”
+
+      - Example RRs in Section 2.3:
+
+        > `IN DSYNC  CDS   NOTIFY 5359 cds-scanner.example.net.`  
+        > `IN DSYNC  CSYNC NOTIFY 5360 csync-scanner.example.net.`
+
+        These use port values 5359 and 5360, which require more than 8 bits (they are > 255), implicitly confirming that Port cannot be an 8‑bit field.
+    - QuantitativeReasoning:  
+      - From the text and DNS conventions:
+        - RRtype is a DNS TYPE code and, per the RRtype registry it references, is a 16‑bit integer.
+        - Scheme is explicitly 8 bits.
+        - Port is explicitly 16 bits, with the full TCP/UDP port range (0–65535) implied by “transport port number” and confirmed by example ports in the 5000+ range.
+      - Therefore, the fixed-size header before Target must occupy 16 + 8 + 16 = 40 bits = 5 octets. In a 32‑bit-per-row diagram, that cannot be fully contained in a single row as drawn. The figure instead visually suggests:
+
+        - Row 1: 16‑bit RRtype + 8‑bit Scheme + 8‑bit Port = 32 bits.
+        - Row 2: Target starts immediately at the next 32‑bit row boundary.
+
+        This implies only 8 bits of Port, contradicting the 16‑bit definition and the example values.  
+      - A correct layout for a 16‑bit Port would require Port to span the last 8 bits of the first row and the first 8 bits of the next row (or for the diagram to show Port consuming 16 bits across a row boundary), and the current figure does not do that clearly: it labels “Port” entirely on the first row and shows the next row starting with a bar for “Target,” suggesting Target starts immediately after only 8 bits of Port.
+    - Consequences:  
+      - Implementers who follow the prose will encode DSYNC RDATA as: 2 octets RRtype, 1 octet Scheme, 2 octets Port, then the domain-name Target. Implementers who follow the figure literally may instead encode 2 + 1 + 1 octets for RRtype, Scheme, and Port, and begin the Target name one octet earlier.
+      - On the wire, this causes misalignment of the Target domain name: a decoder expecting a 16‑bit Port will interpret the first label-length octet of the Target as the low byte of Port, then try to parse the “Target” starting one byte later, leading to malformed names and incorrect RDLENGTH handling.
+      - Since port values like 5359 cannot be represented in an 8‑bit field, a figure-based 8‑bit implementation will also either truncate or reject such values, creating clear interoperability failures when different implementations derive different RDATA lengths and contents for the same DSYNC RR.
+
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Examined the DSYNC RR RDATA wire-format figure, its accompanying field descriptions (RRtype, Scheme, Port, Target), and the related registry material for DSYNC schemes.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: DSYNC Port field bit-width mismatch between wire-format figure and prose
+    - LocationHint: Section 2.1, Figure 1 “DSYNC RDATA Wire Format” vs. Port field description
+    - Evidence:
+      - Snippet1: The wire-format diagram shows one 32‑bit row labeled “| RRtype                        | Scheme        | Port” under the standard 0–31 bit header, implying that RRtype, Scheme, and Port together occupy exactly 32 bits in that row.
+      - Snippet2: The Port field description states: “Port:  The transport port number on the target host of the notification service.  This is a 16-bit unsigned integer in network byte order.”
+    - TechnicalExplanation: |
+        The ASCII art for the DSYNC RDATA wire format uses a standard 32-bit per row layout with bit positions labeled from 0 to 31. In the first row, it labels three fields—RRtype, Scheme, and Port—within a single 32‑bit row. The usual interpretation of such DNS diagrams is that RRtype takes 16 bits (0–15), Scheme takes 8 bits (16–23), and Port takes the remaining 8 bits (24–31). There is no indication that Port continues into the next row: the following row is labeled only with “Target ...”, not “Port (cont.)”. This makes Port appear to be an 8‑bit field in the diagram.
+        However, the prose explicitly defines Port as “a 16-bit unsigned integer in network byte order,” i.e., two octets. That cannot be reconciled with a single 8‑bit slot in a 32‑bit row, and the diagram does not show any continuation of Port into the next row. As a result, an implementer following the diagram could encode/decode only 8 bits of Port and start the Target name one octet earlier than an implementer following the prose (who would use 16 bits). This creates a direct structural inconsistency in the wire format: the offset and length of the Port and Target fields on the wire become ambiguous, leading to non‑interoperable encoders/decoders.
+    - PatchSuggestion: |
+        Clarify the wire-format figure so that the Port field visibly occupies 16 bits (two octets), consistent with the prose. For example, adjust Figure 1 along the following lines (conceptually):
+
+          0                   1                   2                   3
+          0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+         | RRtype                        | Scheme        |   Port (hi)  |
+         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+         |   Port (lo)   | Target ...                                   /
+         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+        and, if desired, add a short clarifying sentence such as:
+        “The Port field is a 16-bit unsigned integer, with the high-order 8 bits in bits 24–31 of the first row and the low-order 8 bits in bits 0–7 of the second row of the diagram.”
+        Alternatively, any equivalent adjustment that clearly allocates 16 bits to Port and shows where Target starts (e.g., putting all 16 bits of Port in a new row before Target) would resolve the inconsistency.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+
+Vector Stores Used: vs_6954b56ccec08191857d5b98195079cb
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

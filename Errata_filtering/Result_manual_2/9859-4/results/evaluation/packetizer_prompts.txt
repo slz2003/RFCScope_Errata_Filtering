@@ -1,0 +1,631 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: Section 4 of RFC 9859 defines a fairly clear temporal story: discover an endpoint via DSYNC, send a single-child NOTIFY(CDS) or NOTIFY(CSYNC) after the child’s data has propagated, rely on RFC 1996 retry timers for delivery, optionally get asynchronous error reports via the EDNS0 Report-Channel, and have the parent-side processing preempt and then adjust existing scanning timers. I do not see internal contradictions or missing edge-case behavior that would make the procedures unrealizable in time.
+  OverallTemporalRisk: None
+  CandidateIssues:
+    - Id: T1
+      Type: None
+      ShortLabel: No temporal issues detected
+      Description: |
+        The ordering of discovery, notification, retries, and parent-side processing in RFC 9859’s Section 4 is coherent and consistent with the referenced RFCs (1996, 7344, 7477, 8078, 9615, 9567, 8914). Endpoint discovery via DSYNC is defined as a terminating iterative procedure, notification sending is explicitly coupled to RRset creation/change with a recommended delay to avoid race conditions against zone propagation, and the receiver behavior cleanly separates (a) acknowledging the NOTIFY (to influence retry behavior) from (b) actually acting on the contents. Integration with existing polling/scanning mechanisms, as well as with asynchronous error reporting via the EDNS0 Report-Channel option, is described in a way that respects the existing temporal models in the referenced RFCs.
+      TemporalReasoning: |
+        The timeline on the child side is: create or change a CDS/CDNSKEY/CSYNC RRset → perform DSYNC-based discovery of a parent-side endpoint (Section 4.1) → optionally delay sending NOTIFY until the new records are consistently served by the authoritative set, to avoid early checks that still see stale data (Section 4.2) → send one NOTIFY per child whose RRset changed, using RFC 1996 semantics for NOTIFY, including its retry timing when no response is received (Section 4.2.1 with [RFC1996], Sections 3.5–3.6). On the parent side, upon receipt of a NOTIFY that refers to exactly one child, the recipient either: (1) acknowledges and schedules an immediate check of the child’s CDS/CDNSKEY/CSYNC RRsets, which is explicitly defined as “the same DNS lookups and verifications” that would be done by timer-based mechanisms such as CDS polling or DNSSEC bootstrapping [RFC7344] [RFC8078] [RFC9615]; or (2) acknowledges but deliberately does not act (for example due to rate limiting), to prevent redundant retries (Section 4.3). When scanning is also in use, the NOTIFY-induced check “preempts” the scanning timer, and if a real change is detected, implementations MAY reduce the future polling frequency; if later a change is detected only through scanning, the NOTIFY-related state is cleared and the system reverts to the default schedule, which yields a consistent state evolution for the timer subsystem. Optional EDNS0 Report-Channel use is explicitly asynchronous: the NOTIFY sender MAY include the option, and if the parent encounters processing errors—even after having sent the standard NOTIFY response—it MAY send a separate report query describing the extended error, which aligns with the decoupled, out-of-band reporting model of [RFC9567] and [RFC8914]. At no point is there a requirement that depends on information that would not yet be available, and there are no cyclic or contradictory “before/after” constraints across these steps.
+      KeyEvidence:
+        ExcerptPoints:
+          - “The notification sender MUST perform the following steps: 1. Construct the lookup name… 2. Perform a lookup of type DSYNC… If this results in a positive DSYNC answer, return it. 3. If the query resulted in a negative response: … then go to step 2 … Otherwise, return null (no notification target available).” (Section 4.1)
+          - “When creating or changing a CDS/CDNSKEY/CSYNC RRset in the child zone, the DNS operator SHOULD send a suitable notification… A NOTIFY message can only carry information about changes concerning one child zone. When there are changes to several child zones, the sender MUST send a separate notification for each one.” (Section 4.2)
+          - “If the primary sends a notification at the exact time of publication, there is a potential for CDS/CDNSKEY/CSYNC processing to be attempted before the corresponding records are served… Therefore, it is RECOMMENDED that the child would delay sending notifications… until a consistent public view of the pertinent records could be ensured.” (Section 4.2)
+          - “If no response is received, senders SHOULD employ the same logic as for SOA notifications ([RFC1996], Sections 3.5 and 3.6).” (Section 4.2.1)
+          - “Upon receipt of a (potentially forwarded) NOTIFY message… the receiving side… has two options: 1. Acknowledge… and schedule an immediate check… 2. Do not act upon the notification. To prevent retries, recipients SHOULD acknowledge the notification by sending a NOTIFY response even when otherwise ignoring the request…” (Section 4.3)
+          - “When using periodic scanning, notifications preempt the scanning timer. If the NOTIFY-induced check finds that the CDS/CDNSKEY/CSYNC RRset is indeed new or has changed, the corresponding child’s timer may be reset and the scanning frequency reduced… If a CDS/CDNSKEY/CSYNC change is later detected through scanning (without having received a notification), the NOTIFY-related state SHOULD be cleared, reverting to the default scanning schedule for this child.” (Section 4.3)
+        ContextPoints:
+          - “[RFC1996], Sections 3.5–3.6, 4.7” (NOTIFY request/response behavior, timing, and retries)
+          - “[RFC7344], Section 6.1; [RFC8078], Sections 2–3; [RFC9615], Sections 4.2–4.3” (timer-based CDS/CDNSKEY scanning and notification-based triggers)
+          - “[RFC7477], Sections 2–3” (CSYNC polling semantics and step ordering)
+          - “[RFC9567], Sections 6.1–6.3” and “[RFC8914], Section 4” (construction and timing of error-report queries)
+      ImpactOnImplementations: |
+        Implementers get a clear, realizable ordering for: endpoint discovery; when to send NOTIFY relative to zone publication; how long and how often to retry in the absence of a NOTIFY response (by referencing RFC 1996); how to interleave on-demand NOTIFY-triggered checks with existing periodic scanning timers; and how to send and interpret asynchronous error-report queries. There is no ambiguity that would force different compliant implementations into observably incompatible timelines, and no unreachable or cyclic state is implied by the text. Any remaining choices (e.g., exact delay before sending a NOTIFY or precise tuning of scanning intervals) are intentionally left to local policy and do not undermine interoperability.
+      AffectedArtifacts: []
+      Severity: Low
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: >
+    The excerpt defines a generalized DNS NOTIFY mechanism for delegation maintenance,
+    where a child-side sender (or delegated service) discovers a parent-side notification
+    endpoint via DSYNC, sends NOTIFY(CDS/CDNSKEY/CSYNC) to that endpoint, and the parent
+    registry/registrar (or delegate) receives and processes the notifications. Optionally,
+    the NOTIFY sender can request error reports via the EDNS0 Report-Channel option, in
+    which case the parent-side processor sends separate DNS “report queries” with EDE
+    codes back toward an agent domain associated with the child.
+
+- OverallAssessment: NoBug
+
+- FindingsOnRoutedIssues:
+  - Issue-1:
+    - RelatedIssueId: "Issue-1"
+    - Assessment: ProbablyNoBug
+    - BugType: None
+    - Summary: >
+        From an actor/direction standpoint, there is no clear conflict between RFC 9859’s
+        allowance for including an EDNS0 Report-Channel option in NOTIFY messages and
+        RFC 9567’s “MUST NOT be included in queries” requirement, because those MUST-level
+        constraints are scoped to the “reporting resolver” role in RFC 9567, whereas RFC 9859
+        places the option on a different actor (the NOTIFY sender) and does not instruct the
+        reporting resolver to violate RFC 9567. The roles that actually send the error-report
+        queries remain aligned with RFC 9567’s directionality.
+    - Evidence:
+      - ExcerptSnippets:
+        - RFC 9859, Section 4.2.1: “senders MAY include an EDNS0 Report-Channel option [RFC9567] in the NOTIFY message to request that the receiving side report any errors by making a report query… (The prohibition of this option in queries ([RFC9567], Section 6.1) only applies to resolver queries and thus does not cover NOTIFY messages.)”
+        - RFC 9859, Section 4.3: “If the NOTIFY message contains an EDNS0 Report-Channel option… the processing party SHOULD report any errors… by sending a report query with an appropriate EDE code… Reporting may be done asynchronously (outside of the NOTIFY transaction).”
+        - RFC 9567, Section 6.1 (Reporting Resolver Specification): “The EDNS0 Report-Channel option MUST NOT be included in queries.”
+        - RFC 9567, Section 6.2: “The authoritative server includes the EDNS0 Report-Channel option unsolicited in responses. There is no requirement that the EDNS0 Report-Channel option be present in queries.”
+      - Reasoning: >
+          RFC 9567’s “MUST NOT be included in queries” appears under the “Reporting Resolver
+          Specification”, and the surrounding text clearly refers to the resolver’s own
+          error-reporting queries (to prevent recursive/cascading reporting). Those queries
+          are sent by the reporting resolver toward the monitoring agent; that is the actor
+          constrained by the MUST NOT. In RFC 9859, the EDNS0 Report-Channel option is added
+          by the NOTIFY sender (child-side or its delegate) to a NOTIFY request, in order to
+          tell the receiving parent-side processor where to send *future* error-report
+          queries. The actor that actually emits the error-report query in RFC 9859 is the
+          “receiving side (parent registry or registrar)”, which is functionally equivalent
+          to the RFC 9567 “reporting resolver” and is only instructed to “send a report
+          query with an appropriate EDE code” — there is no instruction to include the
+          Report-Channel option in those report queries. Thus, no actor that is subject to
+          RFC 9567’s “MUST NOT in queries” is told by RFC 9859 to violate it; RFC 9859 is
+          simply reusing the EDNS0 option in a non-reporting request. The direction of the
+          actual error reports (parent → agent domain) remains consistent with RFC 9567’s
+          model (reporting resolver → monitoring agent).
+
+- AdditionalActorIssues:
+  - None
+
+- IfNoActorIssues:
+  - Comment: >
+      No actor/direction/role problems detected in this excerpt. The roles of child vs
+      parent (and registry vs registrar), notification sender vs recipient, and reporting
+      party vs agent domain are consistently assigned, and the described message and error-
+      reporting flows are coherent from an actor/directionality perspective.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 4 of RFC 9859 defines the scope and mechanics of CDS/CDNSKEY/CSYNC-triggered generalized NOTIFY, including endpoint discovery via DSYNC, sending and processing of notifications, and optional error reporting via the EDNS0 Report‑Channel option. It also ties this behavior into existing CDS/CDNSKEY/CSYNC processing specifications and DNS error-reporting (RFC 9567 / RFC 8914).
+
+- ScopeModel:
+  - Targets:
+    - Generalized NOTIFY messages with qtype=CDS or CSYNC, used for delegation maintenance, sent from “child side” (DNS operator or other sender) to “parent side” entities (registry/registrar or designated party).
+    - DSYNC RRs published under `_dsync` labels in parent zones, used by senders to discover notification endpoints; DSYNC RDATA contains RRtype (CDS or CSYNC now), Scheme (1=NOTIFY), Port, Target.
+    - Parent‑side entities that receive NOTIFY(CDS) or NOTIFY(CSYNC) at those endpoints and then perform CDS/CDNSKEY/CSYNC processing.
+    - Optional use of the EDNS0 Report‑Channel option (RFC 9567) in NOTIFY requests, with agent domains constrained relative to the child’s NS hostnames.
+  - Conditions:
+    - Endpoint discovery (4.1) is performed by “the notification sender” when it wants to send delegation maintenance notifications; it MUST perform the given algorithm, including DNSSEC validation “if DNSSEC is enabled”.
+    - DSYNC zones are RECOMMENDED, but not REQUIRED, to be DNSSEC‑signed; senders “may choose to ignore unsigned DSYNC records” (Security Considerations).
+    - NOTIFY messages for delegation maintenance MUST follow RFC 1996 message formatting, except that qtype is CDS or CSYNC instead of SOA.
+    - A NOTIFY message “can only carry information about changes concerning one child zone” and MUST be sent separately per child when there are multiple changes.
+    - Receivers of NOTIFY(CDS) SHOULD trigger the same CDS/CDNSKEY processing they would otherwise trigger via timers (RFC 7344 / 8078 / 9615); similarly for CSYNC (RFC 7477).
+    - Use of EDNS0 Report‑Channel is optional: senders MAY include it in NOTIFY; receivers then MAY/SHOULD send report queries with EDE codes to the indicated agent domain, subject to specific constraints.
+    - Report-Channel agent domains “MUST be subordinate or equal to one of the NS hostnames, as listed in the child's delegation in the parent zone.”
+    - Receivers MUST implement rate limiting for notification processing (Security Considerations), recommended per source IP and per child zone name.
+  - NotedAmbiguities:
+    - What exactly counts as a “positive DSYNC answer” in step 2 of endpoint discovery once DNSSEC validation is attempted (Secure vs Insecure vs Bogus vs Indeterminate), and how unsigned-but-available DSYNC should be treated.
+    - Whether the prohibition “The EDNS0 Report-Channel option MUST NOT be included in queries” in RFC 9567 Section 6.1 is globally scoped to all DNS queries (QR=0) or only to resolver-originated report queries; RFC 9859 asserts the latter without that being explicit in RFC 9567.
+    - For Report‑Channel agent domains, it is not fully explicit which role (sender vs receiver) is responsible for enforcing the “MUST be subordinate or equal to one of the NS hostnames” requirement and what a receiver MUST do when this condition is not met.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Ambiguous scope of RFC 9567’s “MUST NOT in queries” vs RFC 9859’s use of EDNS0 Report‑Channel in NOTIFY requests
+    - ScopeProblemType: Ambiguous actor/domain for a strong prohibition (“MUST NOT in queries”) leading to apparent conflict with a later extension
+    - Evidence:
+      - RFC 9859 Section 4.2.1: “senders MAY include an EDNS0 Report-Channel option [RFC9567] in the NOTIFY message ... (The prohibition of this option in queries ([RFC9567], Section 6.1) only applies to resolver queries and thus does not cover NOTIFY messages.)”
+      - RFC 9567 Section 6.1 (“Reporting Resolver Specification”): “The EDNS0 Report-Channel option MUST NOT be included in queries.”
+      - RFC 9567 Section 6.2 (“Authoritative Server Specification”): “The authoritative server includes the EDNS0 Report-Channel option unsolicited in responses.  There is no requirement that the EDNS0 Report-Channel option be present in queries.”
+    - DetailedReasoning:
+      - RFC 9567 defines the EDNS0 Report‑Channel option in the specific context of reporting resolvers and authoritative servers; Section 6.1 is titled “Reporting Resolver Specification” and within that context states that “The EDNS0 Report‑Channel option MUST NOT be included in queries.”
+      - A strict, opcode‑centric reading of “queries” (all QR=0 messages, regardless of opcode or sender role) would appear to forbid placing this option in any DNS request, including NOTIFY, from any actor.
+      - RFC 9859 Section 4.2.1 explicitly authorizes senders to “include an EDNS0 Report‑Channel option in the NOTIFY message” and justifies this by asserting that the 9567 prohibition “only applies to resolver queries and thus does not cover NOTIFY messages.”
+      - The phrase “resolver queries” does not appear in RFC 9567; instead, the scope is implicit via the section heading “Reporting Resolver Specification”. A conservative implementer could reasonably read “MUST NOT be included in queries” as a blanket rule for that option, generating tension with RFC 9859’s “MAY include”.
+      - Under one interpretation (global prohibition), RFC 9859 contradicts RFC 9567 unless it explicitly Updates 9567 or narrows the scope of that MUST NOT. Under another interpretation (section‑scoped prohibition applying only to reporting resolvers’ ordinary and error‑report queries), RFC 9859 is legitimate but is relying on an unstated narrowing of the word “queries”.
+      - This is fundamentally a scope issue: RFC 9567 does not explicitly state whether non‑resolver actors are out of scope for the “MUST NOT in queries” rule, and RFC 9859 takes a strong position that they are. This can lead to inconsistent implementations: some implementers may refuse to ever put Report‑Channel in any QR=0 message, while others will follow RFC 9859 and use it in NOTIFY.
+      - An erratum or clarification would be appropriate to make the intended scope explicit: either (a) clearly constrain RFC 9567’s “MUST NOT” to reporting resolvers’ *error-report* queries only, explicitly leaving other uses to future documents like RFC 9859; or (b) state that RFC 9859 updates RFC 9567 by defining an additional, non‑resolver use of the option in NOTIFY messages.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: Unclear DNSSEC validation semantics and acceptance criteria for DSYNC in endpoint discovery
+    - ScopeProblemType: Missing conditional scope for “positive DSYNC answer” across DNSSEC validation states (Secure/Insecure/Bogus/Indeterminate, signed vs unsigned)
+    - Evidence:
+      - RFC 9859 Section 4.1 step 2: “Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled.  If this results in a positive DSYNC answer, return it.”
+      - RFC 9859 Section 3: “It is RECOMMENDED that zones containing DSYNC records be secured with DNSSEC.”
+      - RFC 9859 Security Considerations: “zones containing DSYNC records are not required to be signed.  … The illegitimate target is also enabled to learn notification contents in real time, which may be a privacy concern for the sender.  If so, the sender may choose to ignore unsigned DSYNC records.”
+    - DetailedReasoning:
+      - The endpoint discovery algorithm is normatively specified and says the sender MUST perform DSYNC lookups and “validate the response if DNSSEC is enabled,” then “If this results in a positive DSYNC answer, return it.”
+      - In DNSSEC‑aware resolution there are at least four possible validation states: Secure, Insecure, Bogus, and Indeterminate. The text does not define which of these states are eligible to be treated as a “positive DSYNC answer” after validation.
+      - Separately, the Security Considerations explicitly allow DSYNC zones to be unsigned and note that “the sender may choose to ignore unsigned DSYNC records,” but this is presented as an optional privacy consideration, not integrated into the normative discovery algorithm.
+      - This leaves several important cases underspecified:
+        - If DNSSEC is available and validation returns Bogus, must the DSYNC RRset be ignored (treat as “no endpoint”), or may it still be used?
+        - If validation is Indeterminate (e.g., SERVFAIL or chain issue), should implementations retry, treat as ‘no DSYNC’, or fall back to unsigned acceptance?
+        - If the DSYNC RRset is unsigned but DNSSEC is deployed for the zone (Insecure result), is that a “positive DSYNC answer” or should it be discarded if the sender “chooses to ignore unsigned DSYNC records”?
+      - Because step 2’s phrase “validate the response if DNSSEC is enabled” is not tied to any acceptance or rejection rules, different implementations can legitimately diverge: some might accept any syntactically correct DSYNC RRset regardless of validation state, others might require Secure, others might ignore unsigned DSYNC only, etc.
+      - This is a scope issue for the discovery algorithm: it fails to specify under which DNSSEC validation conditions the DSYNC result is considered in‑scope for selection as a valid notification endpoint and when it must be out‑of‑scope and ignored.
+      - While the security model deems misdirected notifications relatively low‑risk, the mixture of a normative discovery algorithm and non‑normative “may choose to ignore unsigned DSYNC” guidance is likely to produce inconsistent behavior and surprises when DSYNC zones transition between signed/unsigned or encounter DNSSEC misconfigurations.
+      - An erratum could clarify that “positive DSYNC answer” only includes responses whose validation status is Secure (and optionally Insecure, if unsigned is acceptable), and explicitly state that Bogus/Indeterminate results MUST be treated as failure of endpoint discovery, or otherwise spell out the intended policy.
+
+  - Issue-3:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous responsibility and behavior for enforcing the agent-domain NS-subordination requirement
+    - ScopeProblemType: Mis-scoped requirement (which party must enforce it) and missing behavior for out-of-scope values
+    - Evidence:
+      - RFC 9859 Section 4.2.1: “When including this EDNS0 option, the second label (QTYPE) of the report query name is equal to the qtype received in the NOTIFY message.  Its agent domain MUST be subordinate or equal to one of the NS hostnames, as listed in the child's delegation in the parent zone.  This is to prevent malicious senders from causing the NOTIFY recipient to send unsolicited report queries to unrelated third parties.”
+      - RFC 9859 Section 4.3: “If the NOTIFY message contains an EDNS0 Report-Channel option [RFC9567] with an agent domain subordinate or equal to one of the NS hostnames listed in the delegation, the processing party SHOULD report any errors occurring during CDS/CDNSKEY/CSYNC processing by sending a report query…”
+    - DetailedReasoning:
+      - Section 4.2.1 describes the use of EDNS0 Report‑Channel in NOTIFY messages and states that the agent domain “MUST be subordinate or equal to one of the NS hostnames” for the child’s delegation, explicitly motivated by preventing malicious senders from causing off‑target error‑report traffic.
+      - Grammatically and contextually, this “MUST” appears to be directed at the sender when *including* the EDNS0 option, i.e., the sender SHOULD choose such an agent domain. However, for malicious senders, this obligation has no effect, and security depends on what the receiver does.
+      - Section 4.3 then gives receiver‑side behavior: “If the NOTIFY message contains an EDNS0 Report‑Channel option … with an agent domain subordinate or equal to one of the NS hostnames … the processing party SHOULD report any errors…” This positively defines when reports SHOULD be sent, but says nothing about what MUST happen when the agent domain is *not* subordinate/equal.
+      - Combining the two sections, it is clear that honest senders are expected to choose “in‑bailiwick” agent domains, and honest receivers SHOULD act only on such in‑bailiwick values. However, the protocol behavior when a malformed or malicious NOTIFY specifies an out‑of‑scope agent domain is not normatively defined.
+      - A strict but naive reading could lead a receiver to conclude that Section 4.2.1’s “MUST be subordinate or equal” is solely a sender obligation, and since Section 4.3 only has a positive “if subordinate/equal then SHOULD report” rule, it is permissible (though not required) to also send reports for other agent domains. That would defeat the stated security goal “to prevent malicious senders from causing the NOTIFY recipient to send unsolicited report queries to unrelated third parties.”
+      - This is a scope problem: the requirement that “agent domain MUST be subordinate or equal” needs to be clearly scoped to *both* sides of the interaction, and the receiver’s behavior for agent domains outside this scope must be explicitly specified (e.g., “the receiver MUST ignore the Report‑Channel option and MUST NOT send any report queries” when the condition is not met).
+      - Clarifying that the “MUST be subordinate or equal” is enforced on the *receiver’s* decision to send report queries (not just on the sender’s choice of agent domain) would resolve the ambiguity and properly constrain the scope of acceptable agent domains.
+
+- ResidualUncertainties:
+  - The precise intended semantics of “positive DSYNC answer” may depend on the authors’ assumptions about the underlying DNS resolver behavior (e.g., that applications see only “Secure or Insecure” data because Bogus results do not deliver an RRset at all). Without that assumption spelled out, the current wording remains ambiguous.
+  - It is unclear whether the IESG explicitly intended RFC 9859 to “extend” RFC 9567 to new, non‑resolver uses of the Report‑Channel option, or whether they assumed the section scoping in RFC 9567 was sufficiently clear to avoid conflicts. An explicit “Updates: 9567” tag could have made this intention unambiguous.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+- The mechanisms in Section 4 are mechanically implementable and interoperable as written.  
+- The EDNS0 Report-Channel use with NOTIFY does **not** create a real protocol inconsistency with RFC 9567.  
+- The DSYNC endpoint discovery algorithm is slightly under‑specified for DNSSEC validation failures, but the only effect is “no notification sent”, not protocol breakage.
+
+---
+
+2. **Causal Analysis**
+
+### Issue 1 – EDNS0 Report-Channel in NOTIFY vs RFC 9567 “MUST NOT in queries”
+
+**What 9859 does**
+
+- 9859 allows a child (the notification sender) to include an EDNS0 Report-Channel option in NOTIFY messages so the parent can send back asynchronous error reports via a report query constructed per RFC 9567 / RFC 8914:
+
+  > senders MAY include an EDNS0 Report-Channel option [RFC9567] in the NOTIFY message … (The prohibition of this option in queries ([RFC9567], Section 6.1) only applies to resolver queries and thus does not cover NOTIFY messages.)
+
+- The receiving side then sends a **separate** report query with an appropriate EDE code, using the naming scheme of RFC 9567 (first label `_er`, second label is the QTYPE in decimal, then QNAME, then EDE code, `_er`, then agent domain).
+
+**What 9567 actually constrains**
+
+- Section 6 is explicitly role‑scoped:
+
+  - 6.1 is “Reporting Resolver Specification” and says:
+
+    > The EDNS0 Report-Channel option MUST NOT be included in queries.
+
+  - 6.2 is “Authoritative Server Specification” and says the authoritative server includes the option *in responses*; it is explicitly silent about what it should do if it ever receives one in a query.
+
+- So, in the 9567 model:
+  - **Only the authoritative server** is supposed to originate EDNS0 Report-Channel options, and only in responses.
+  - **Only the reporting resolver** originates the *report queries*, and those queries MUST NOT contain Report-Channel.
+
+**What actually happens if both RFCs are followed literally**
+
+Consider a concrete deployment:
+
+1. A child name server (or a separate service acting for the child) sends a NOTIFY(CDS) to the parent’s notification endpoint with an EDNS0 Report-Channel option giving some `agent-domain.example`.
+
+   - This sender is not a “reporting resolver” in 9567’s terminology. 9567 never says anything about such a party, nor about NOTIFY at all. The “MUST NOT” is scoped to *reporting resolvers* and to *queries they send as error reports*.
+   - The NOTIFY message itself is **not** an error-report query; it’s a generalized NOTIFY. So 9567’s MUST NOT does not literally apply to this message originator or context.
+
+2. The parent notification endpoint receives this NOTIFY with an EDNS0 Report-Channel option.
+
+   - As an “authoritative‑style” component, 9567 6.2 does not forbid receipt of this option in a query; it only specifies how *it* sends the option in responses.
+   - Standard EDNS behavior is to ignore unrecognized or unexpected options, not to reject the whole message. Even if an implementation chooses to ignore Report-Channel in queries, the NOTIFY itself remains usable, so the timing hint still works.
+
+3. If the parent encounters an error processing the CDS/CDNSKEY/CSYNC change, it will act as a **reporting resolver** with respect to 9567 and send a report query (opcode=QUERY) to the agent domain, including an EDE option but **not** the Report-Channel option (still complying with 6.1).
+
+So:
+
+- Nobody is ever required by 9859 to send Report-Channel *in a 9567 report query*.
+- The only place 9859 uses Report-Channel is in a NOTIFY, which 9567 does not govern.
+- A 9567‑conformant implementation can safely **ignore** the option in NOTIFYs without breaking 9859’s core functionality; error reporting is optional (“MAY include…”, “SHOULD report…”).
+
+**Causality / failure modes**
+
+- Worst case: an implementation (mis)reads 9567 and decides “any QR=0 message containing Report-Channel is invalid” and discards the NOTIFY.
+  - The result is: no early processing of CDS/CDNSKEY/CSYNC (back to pure scanning) and no error reporting. That is **exactly** the pre‑9859 behavior.
+  - No DNSSEC or delegation state is corrupted; we just fail to get optimization hints.
+- There is no path where including the option causes the parent to accept a malformed DS/CDNSKEY/CSYNC update or to leak incorrect DNS data.
+
+**Conclusion on Issue 1**
+
+- This is **not** a causal inconsistency. The specs’ roles line up: 9567’s MUST NOT targets the reporting resolver’s *error-report queries*, and 9859’s use is outside that role.
+- Implementations that strictly follow both RFCs remain interoperable. At worst, the error-reporting feature is ignored, which is safe.
+
+---
+
+### Issue 2 – DNSSEC handling for DSYNC in endpoint discovery
+
+**Text in 9859**
+
+Section 4.1 step 2:
+
+> Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.
+
+Security considerations:
+
+> It is RECOMMENDED that zones containing DSYNC records be secured with DNSSEC.  
+> … zones containing DSYNC records are not required to be signed. Spoofed DSYNC responses would prevent notifications from reaching their legitimate target … If so, the sender may choose to ignore unsigned DSYNC records.
+
+So:
+
+- DSYNC signing is **recommended**, not required.
+- The sender is told to “validate” when DNSSEC is enabled, but there is no normative rule for what to do on:
+  - **BOGUS** validation (tampered/incorrect RRSIG).
+  - **INDETERMINATE** / mixed cases.
+  - Unsigned but DNSSEC‑capable parent zone.
+
+**What an implementer can actually do**
+
+A reasonable implementation will have one of two shapes:
+
+1. Use a validating resolver (AD bit / local validator):
+
+   - If the DSYNC RRset is **Secure** → treat as “positive DSYNC answer, return it”.
+   - If it is **unsigned / Insecure**:
+     - The library still returns an answer; AD=0. 9859 doesn’t forbid using it, and security text explicitly allows unsigned DSYNC. Many implementations will simply accept it.
+   - If it is **Bogus**:
+     - A validating resolver typically returns SERVFAIL or otherwise withholds the answer; step 2 therefore never “results in a positive DSYNC answer”, so no endpoint is found. The algorithm then either:
+       - falls into step 3 if the implementation maps SERVFAIL to a “negative” result (not really correct per DNS), or
+       - treats it as a hard error and stops discovery altogether.
+
+2. Use a non‑validating resolver:
+
+   - “Validate the response if DNSSEC is enabled” is a no‑op; the code never looks at DNSSEC state at all.
+   - Any answer with DSYNC present is a “positive DSYNC answer”; it will be used irrespective of DNSSEC.
+
+**Does this ambiguity break anything?**
+
+Key invariant for this mechanism:
+
+- Generalized NOTIFYs are only **hints about timing**; they do not directly change DS/NS/CSYNC state. The actual DS/CDNSKEY/CSYNC processing is done by parental agents following RFCs 7344/7477/9615, including DNSSEC validation and acceptance policies.
+
+Consequences of each behavior:
+
+- If a sender **accepts** an insecure or even bogus DSYNC RRset:
+  - Notifications may be directed to an attacker’s endpoint, or dropped entirely.
+  - The attacker can learn, sooner, that CDS/CDNSKEY/CSYNC changed, or suppress some notifications completely.
+  - But this does **not** let the attacker change DS/NS/CSYNC records: the parent will still re‑fetch and validate CDS/CDNSKEY/CSYNC per RFC 7344/7477/9615 before making any change.
+  - This kind of redirection or suppression is *explicitly* acknowledged in the Security Considerations (“Spoofed DSYNC responses would prevent notifications from reaching their legitimate target…”).
+
+- If a sender **rejects** any DSYNC whose DNSSEC validation is not Secure:
+  - You fall back to not sending notifications for that child, again reverting to timer‑based scanning.
+  - This may hurt timeliness, but not correctness.
+
+- If a sender gets a DNSSEC **BOGUS** outcome and the validating resolver returns SERVFAIL:
+  - The spec doesn’t say what to do; an implementation might:
+    - Treat it as “no endpoint available” and stop — which is safe and just sacrifices optimization.
+    - Or retry / back off — still safe.
+
+In all of these cases, the worst realistic behavior is “no NOTIFY is sent” or “NOTIFY goes to the wrong listener”, which:
+
+- Does not break DNS data integrity (because actual DS/CDNSKEY/CSYNC changes are checked independently).
+- Matches the explicitly accepted threat model in Section 5.
+
+**Interoperability impact**
+
+Different implementations will vary in how conservative they are about DNSSEC results, but:
+
+- They all produce valid, regular DSYNC queries and standard NOTIFY messages.
+- The parent’s side of the wire protocol (what it receives) is unaffected by the child’s DNSSEC policy; the only difference is which children send NOTIFY at all and where.
+- Parents do not depend on every child sending notifications; they still run timer‑based scanning per 7344/7477/9615.
+
+So this is not an interoperability failure—just variability in how eagerly children use the optimization.
+
+**Conclusion on Issue 2**
+
+- This is a **causal underspecification**, but it only affects when/if a child sends NOTIFY, not the correctness of delegation maintenance or DNSSEC state.
+- There is no path where literal implementation leads to broken DS, NS, or CSYNC records or to an unimplementable state machine.
+
+---
+
+3. **Problem Classification**
+
+- **Issue 1 (Report-Channel vs 9567)**: **No causal inconsistency**. The section is implementable as written and does not violate 9567’s actual role‑scoped requirements.
+- **Issue 2 (DSYNC DNSSEC behavior)**: **Causal Underspecification**, but low impact. It leaves behavior for DNSSEC error states and unsigned zones to local policy; that only changes whether the optimization is used.
+
+---
+
+4. **Minimal Fix Shape (for Issue 2 only)**
+
+If the authors want tighter guidance without changing the protocol:
+
+- In Section 4.1 step 2, add explicit handling such as:
+
+  > If DNSSEC validation fails (Bogus/Indeterminate) for the DSYNC RRset when DNSSEC is enabled, the sender MUST treat the result as if no DSYNC record were available and MUST NOT use that RRset as a notification endpoint.
+
+- Optionally clarify:
+
+  > If the DSYNC RRset is unsigned or the response is Insecure, the sender MAY either accept it or ignore it according to local policy (e.g., for privacy).
+
+This would make the discovery algorithm fully explicit in all DNSSEC states without changing any on‑the‑wire behavior.
+
+---
+
+5. **Non‑Issues**
+
+- The statement in 9859 that the 9567 “MUST NOT be included in queries” prohibition “only applies to resolver queries” is consistent with 9567’s actual role scoping (Reporting Resolver Specification vs Authoritative Server Specification) and does not introduce a behavioral conflict.
+- The use of 9567’s naming scheme for report queries (QTYPE as second label, EDE code as a label, etc.) is mechanically consistent with 9567 and produces unambiguous, parseable report names.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 4 of RFC 9859 defines how CDS/CDNSKEY/CSYNC-triggered generalized DNS NOTIFY messages are formatted and used, how DSYNC-based endpoint discovery works, how and when notifications are sent and retried, how parents process them, and how optional error reporting via the EDNS0 Report-Channel option is integrated, with security requirements (notably rate limiting) and some interaction with RFCs 7344, 7477, 8078, 9615, 9567, and 8914.
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Underspecification
+    - Title: DSYNC endpoint discovery underspecifies behavior on DNSSEC validation failure or unsigned data
+    - Description:  
+      Section 4.1 defines a *mandatory* endpoint-discovery algorithm: “the notification sender MUST perform the following steps”, including step 2: “Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.”    However, the text never normatively specifies what to do when validation fails (BOGUS/INDETERMINATE), or when the DSYNC RRset is unsigned even though DNSSEC is available, or on other resolution failures (e.g., SERVFAIL, timeout). Step 3 addresses only the case “If the query resulted in a negative response” and then gives a deterministic fallback algorithm, but does not say whether validation failures or insecure RRsets are to be treated as “negative”, “fatal”, or “positive but less trusted” outcomes.    
+      This interacts with Section 3 (“It is RECOMMENDED that zones containing DSYNC records be secured with DNSSEC”  ) and Section 5’s security text (“zones containing DSYNC records are not required to be signed … the sender may choose to ignore unsigned DSYNC records”  ). The latter is non‑BCP14 (“may choose”) and thus not a clear normative override of the algorithm in 4.1. Taken together, a fully compliant implementation MUST follow the step list in 4.1, including “validate the response if DNSSEC is enabled”, but is left without a normative rule for how the validation result constrains endpoint selection. Different implementers can (while claiming conformance) choose to: (a) treat BOGUS as “no DSYNC” and fall back; (b) abort discovery entirely; (c) ignore validation failure and still “return” the DSYNC RRset. They can also differ on whether to honor or ignore unsigned DSYNC responses when DNSSEC is possible. This is a genuine normative gap in an otherwise prescriptive algorithm.  
+    - KeyTextSnippets:
+      - “To locate the target for outgoing delegation maintenance notifications, the notification sender MUST perform the following steps: … Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.”  
+      - “If the query resulted in a negative response: … Otherwise, return null (no notification target available).”  
+      - “There MUST NOT be more than one DSYNC record for each combination of RRtype and Scheme. It is RECOMMENDED that zones containing DSYNC records be secured with DNSSEC.”  
+      - “In order to facilitate schemes that are authenticated outside of DNSSEC (such as via SIG(0)), zones containing DSYNC records are not required to be signed. … If so, the sender may choose to ignore unsigned DSYNC records.”  
+    - Impact:  
+      Because the endpoint-discovery procedure is mandatory, leaving the handling of DNSSEC validation failure and unsigned RRsets unstated means different implementations can choose different effective security policies while all remain “compliant”. Some implementations may inadvertently treat BOGUS or otherwise suspicious answers as valid DSYNC endpoints, sending sensitive notifications and solicited error reports to an attacker-controlled target, while others may silently drop notifications. This leads to divergent behavior and unclear security expectations, especially in environments where DNSSEC is partially deployed.
+
+  - Issue-2:
+    - BugType: None
+    - Title: EDNS0 Report-Channel in NOTIFY vs RFC 9567’s “MUST NOT be included in queries”
+    - Description:  
+      Section 4.2.1 of RFC 9859 allows senders to include an EDNS0 Report-Channel option in NOTIFY messages: “senders MAY include an EDNS0 Report-Channel option [RFC9567] in the NOTIFY message… (The prohibition of this option in queries ([RFC9567], Section 6.1) only applies to resolver queries and thus does not cover NOTIFY messages.)”    RFC 9567 Section 6.1, under “Reporting Resolver Specification”, states: “The EDNS0 Report-Channel option MUST NOT be included in queries.”    
+      At first glance this looks like a conflict between a MAY-include and a MUST-NOT-include, but the scopes differ. In RFC 9567, the subject is explicitly the “reporting resolver” role; the prohibition constrains DNS queries sent by that role, and error-report queries constructed under Section 6.1.1 do not themselves carry the option.   In RFC 9859, the actor is a NOTIFY sender (typically an authoritative-side entity) using the option in a different direction — to advertise an agent domain where it wishes to receive error reports. The report queries themselves, sent by the NOTIFY recipient, still follow RFC 9567’s construction and do not include the option. Thus, a single implementation can comply with both RFCs simply by never including the Report-Channel option in any DNS *queries* it makes in the “reporting resolver” role, while optionally including it in NOTIFY requests in its “authoritative/notification-sender” role. In that case, the 9567 MUST NOT is not violated, and the 9859 MAY remains purely permissive.  
+      The parenthetical sentence in RFC 9859 that “the prohibition … only applies to resolver queries” is interpretive commentary about RFC 9567, not a 2119 upgrade or downgrade of any requirement, and it does not introduce a normative contradiction. At most, it could be clarified editorially, but it does not create a deontic bug.
+    - KeyTextSnippets:
+      - “senders MAY include an EDNS0 Report-Channel option [RFC9567] in the NOTIFY message… (The prohibition of this option in queries ([RFC9567], Section 6.1) only applies to resolver queries and thus does not cover NOTIFY messages.)”  
+      - “Reporting Resolver Specification … The EDNS0 Report-Channel option MUST NOT be included in queries.”  
+    - Impact:  
+      No interoperability or security requirement is actually broken: implementations can satisfy both RFC 9567 and RFC 9859 without conflict. The apparent tension is resolved by role scoping and the fact that RFC 9859 uses “MAY” (optional) rather than “MUST”, so an implementation that is also a reporting resolver can simply refrain from exercising this MAY while acting in that role.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Section 4 of RFC 9859 defines generalized DNS NOTIFY usage for CDS/CDNSKEY/CSYNC, and integrates optional error reporting using the EDNS0 Report-Channel option defined in RFC 9567, including how to construct the corresponding error-report QNAME.
+- OverallBugLikelihood: Medium
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Use of EDNS0 Report-Channel option in NOTIFY “queries” vs RFC 9567’s “MUST NOT in queries”
+    - LocationHint: RFC 9859, Section 4.2.1 (Timeouts and Error Handling) vs RFC 9567, Section 6.1
+    - Evidence:
+      - Snippet1: “senders MAY include an EDNS0 Report-Channel option [RFC9567] in the NOTIFY message … (The prohibition of this option in queries ([RFC9567], Section 6.1) only applies to resolver queries and thus does not cover NOTIFY messages.)”
+      - Snippet2: “The EDNS0 Report-Channel option MUST NOT be included in queries.” (RFC 9567, Section 6.1, “Reporting Resolver Specification”)
+    - TechnicalExplanation: |
+        RFC 9567 normatively states that the EDNS0 Report-Channel option “MUST NOT be included in queries”, and it defines the option’s use as being added by authoritative servers to responses, with reporting resolvers later constructing separate report queries based on the advertised agent domain. Syntactically, in DNS terms, a NOTIFY request is still a DNS message with QR=0 and opcode=NOTIFY; it is a “query” message on the wire, and any EDNS0 OPT RR it carries is part of the query’s Additional section as far as the DNS message format is concerned. RFC 9859, however, explicitly allows senders to include this option in NOTIFY messages and then attempts to narrow RFC 9567’s “MUST NOT in queries” to “resolver queries” only, even though the original normative sentence is phrased generically and not scoped by opcode or by actor in the text of the requirement itself. This creates a structural/normative ambiguity: an implementation trying to comply strictly with RFC 9567 would consider any appearance of the Report-Channel option in a NOTIFY request to be non-compliant, while an implementation following RFC 9859 would send exactly such messages and expect them to be honored. The conflict is about where, at the message-format level, this EDNS0 option is permitted to appear (queries vs. responses), so it is a syntactic/encoding-level inconsistency between the two specifications rather than a purely semantic policy difference.
+    - PatchSuggestion: |
+        Clarify the relationship to RFC 9567 and explicitly adjust its constraints for this new use. For example, in RFC 9859 Section 1 (or 4.2.1), add something like:
+
+        “This document updates RFC 9567 by additionally permitting the EDNS0 Report-Channel option to appear in DNS NOTIFY requests (opcode 4, QR=0) used for delegation maintenance notifications, while other DNS queries remain prohibited from including this option.”
+
+        and replace the current parenthetical sentence in Section 4.2.1 with:
+
+        “Although RFC 9567 states that the EDNS0 Report-Channel option MUST NOT be included in queries, this specification defines an exception for NOTIFY requests used for generalized notifications and thereby updates RFC 9567 accordingly.”
+
+        Alternatively, if updating RFC 9567 is not desired, remove the allowance to include the Report-Channel option in NOTIFY and instead specify an error-reporting mechanism that adheres to RFC 9567’s original rule that the option only appears in responses and that report queries are constructed solely by reporting resolvers.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9859 Section 4 defines CDS/CDNSKEY/CSYNC-triggered generalized DNS NOTIFY, how parents discover endpoints via DSYNC, and optionally how the child can ask the parent to send asynchronous error reports using the EDNS0 Report-Channel option from RFC 9567 combined with Extended DNS Errors from RFC 8914.
+
+- OverallCrossRFCLikelihood: Medium
+
+- Issues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Ambiguous override of RFC 9567’s “MUST NOT in queries” for Report-Channel
+    - Description: RFC 9859 Section 4.2.1 allows a NOTIFY sender to include an EDNS0 Report-Channel option [RFC9567] in the NOTIFY message and explicitly states that “the prohibition of this option in queries ([RFC9567], Section 6.1) only applies to resolver queries and thus does not cover NOTIFY messages.” In RFC 9567 Section 6.1, however, the normative text in the “Reporting Resolver Specification” says simply: “The EDNS0 Report-Channel option MUST NOT be included in queries,” without any explicit qualifier by opcode or actor beyond the section title. A careful reader of RFC 9567 can reasonably interpret this as a general prohibition on placing this option in *any* DNS query (including NOTIFY), and RFC 9567 elsewhere only defines the option’s use in *responses* from authoritative servers and report queries from resolvers, not in arbitrary client queries. RFC 9859 effectively narrows the scope of that MUST NOT by interpretation and then defines a new, inverse usage (child sending the option to the parent to indicate an agent domain), but it does so without declaring an “Updates: 9567” relationship or otherwise clearly stating that it is extending the option’s specification. As a result, implementers who follow RFC 9567 literally may consider including Report-Channel in NOTIFY queries non-compliant and ignore or reject such packets, while implementers of RFC 9859 will generate and expect them to be honored, creating a real risk of inconsistent behavior and under-specified interoperability. The core problem is that the interplay between the two RFCs leaves the status of Report-Channel in NOTIFY (and more generally in non-resolver queries) ambiguous, straddling the line between a silent extension and a de facto relaxation of a prior MUST NOT.
+    - EntitiesInvolved: ["RFC 9859 Section 4.2.1", "RFC 9567 Section 6.1", "EDNS0 Report-Channel option", "DNS NOTIFY opcode", "RFC 8914 Extended DNS Errors"]
+    - CrossRefsUsed: ["RFC 9567 §6.1 Reporting Resolver Specification", "RFC 9567 §6.1.1 Constructing the Report Query", "RFC 8914 §4 EDE codes"]
+    - Confidence: Medium
+
+- IfNoIssues:
+  - Comment:
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: The excerpt defines how a child discovers where to send generalized NOTIFY(CDS)/NOTIFY(CSYNC) messages using DSYNC records under _dsync, how those NOTIFYs are sent and retried, optional coupling to EDNS0 Report-Channel–based error reports, and how a parent-side entity processes the notifications. The main state spaces involved are (a) DNS lookups for DSYNC records under various owner names, including DNSSEC validation status; (b) existence and content of DSYNC RRs (RRtype, Scheme, Port, Target); and (c) receipt/processing of NOTIFYs and optional error reports.
+
+- OverallBoundaryBugLikelihood: Medium
+
+- Findings:
+
+  - Finding-1:
+    - BugType: Underspecification
+    - ShortLabel: DNSSEC validation outcome and unsigned DSYNC handling in endpoint discovery
+    - BoundaryAxis: DNSSEC validation status for DSYNC lookups (secure vs insecure/unsigned vs bogus/indeterminate)
+    - ExcerptEvidence:
+      - Endpoint discovery step 2: “Perform a lookup of type DSYNC for the lookup name, and validate the response if DNSSEC is enabled. If this results in a positive DSYNC answer, return it.” (Section 4.1)
+      - Security considerations: “It is RECOMMENDED that zones containing DSYNC records be secured with DNSSEC.” and later “zones containing DSYNC records are not required to be signed. … If so, the sender may choose to ignore unsigned DSYNC records.” (Section 3 and Section 5)
+    - Reasoning:
+      - The algorithm explicitly says to validate the DSYNC response “if DNSSEC is enabled” but then only conditions progress on “a positive DSYNC answer,” without specifying how the DNSSEC validation result affects that notion of “positive”. In DNSSEC, validation has four standard outcomes: Secure, Insecure (unsigned but otherwise OK), Bogus, and Indeterminate.
+      - The text never states whether a DSYNC RRset that validates as Bogus or Indeterminate should be treated as if it were absent (i.e., a “negative response”), as a hard error that aborts discovery, or as still “positive” but unsafe to use.
+      - Separately, the Security Considerations say “the sender may choose to ignore unsigned DSYNC records,” which corresponds to treating Insecure responses (where signatures are absent or there is no chain of trust) as if they did not exist. However, Section 4.1’s discovery procedure does not say whether such “ignored for security policy” answers should then be processed as though there had been a negative DSYNC response (triggering the fallback steps in 4.1) or as immediate “no notification target available”.
+      - Because the only defined control flow in 4.1 step 3 is “If the query resulted in a negative response … [do fallback X/Y or return null]”, implementers are forced to guess whether “validation failure” (Bogus/Indeterminate) and “ignored unsigned DSYNC” should be mapped into this “negative response” bucket or treated differently. Different implementers can reasonably make different choices.
+    - ImpactAssessment: This ambiguity can cause materially different behavior in the face of DNSSEC issues: some implementations will happily use insecure or even Bogus DSYNC records, potentially sending NOTIFYs to spoofed endpoints, while others will refuse and either give up or fall back to more generic _dsync names. That affects both interoperability (which endpoint is discovered) and security (exposure to misdirected or suppressed notifications), and it is not clearly constrained by the current text.
+
+  - Finding-2:
+    - BugType: Underspecification
+    - ShortLabel: Undefined behavior on DSYNC lookup errors other than “negative response”
+    - BoundaryAxis: DNS response codes and failures for DSYNC lookup (NXDOMAIN/NODATA vs SERVFAIL/REFUSED/timeouts)
+    - ExcerptEvidence:
+      - “Perform a lookup of type DSYNC … If this results in a positive DSYNC answer, return it.” (Section 4.1, step 2)
+      - “If the query resulted in a negative response: * If the response's SOA record indicates … [fallback] … * Otherwise … [other fallback] … * Otherwise, return null (no notification target available).” (Section 4.1, step 3)
+    - Reasoning:
+      - The algorithm’s control flow explicitly distinguishes between a “positive DSYNC answer” and a “negative response”, and uses the latter to drive fallback to other _dsync names. In normal DNS terminology, a “negative response” usually means NXDOMAIN or NODATA with a covering SOA.
+      - However, in practice DSYNC lookups can also yield SERVFAIL, REFUSED, FORMERR, or simply time out. These are not “positive answers”, but they are also not classic “negative responses” with an SOA; the text does not say whether they should be treated as “negative” for purposes of step 3, retried, or treated as hard failures that abort discovery.
+      - Because the decision to move the _dsync label (walking up the tree or stripping leading labels) is conditioned only on “the query resulted in a negative response,” different implementations might:
+        * Map SERVFAIL/REFUSED/timeouts to “negative” and still try the higher-level _dsync names, or
+        * Treat them as fatal and stop discovery, never attempting fallbacks.
+      - Both behaviors are plausible readings of the current text, and neither is ruled out.
+    - ImpactAssessment: This leads to inconsistent endpoint discovery in realistic failure scenarios. In one implementation, a transient SERVFAIL from child._dsync.example could cause fallback to _dsync.example (finding a wildcard endpoint); in another, it may cause the sender to conclude that “no notification target is available” and never send NOTIFYs. That divergence is observable and can change whether notifications are delivered at all.
+
+  - Finding-3:
+    - BugType: Underspecification
+    - ShortLabel: No behavior defined when DSYNC RRset exists but all RRs are unusable
+    - BoundaryAxis: DSYNC RRset present but all records are effectively “no-op” (Scheme=0 or Port=0) or otherwise unusable
+    - ExcerptEvidence:
+      - Scheme field: “Records with value 0 (null scheme) are ignored by consumers.” (Section 2.1)
+      - Port field: “Records with value 0 are ignored by consumers.” (Section 2.1)
+      - Endpoint discovery: “If this results in a positive DSYNC answer, return it.” (Section 4.1, step 2)
+      - IANA table: Scheme 0 is “Null scheme (no-op)”. (Section 6.2)
+    - Reasoning:
+      - A DSYNC RRset can legitimately exist at an owner name but contain only records with Scheme=0 (null scheme) and/or Port=0, all of which “are ignored by consumers.” In effect, there is no usable endpoint derived from that RRset.
+      - The discovery algorithm, however, treats any “positive DSYNC answer” as final: step 2 says to “return it” as soon as such an answer is seen. There is no specified behavior for the case where the answer is syntactically “positive” (RRset exists) but, after applying the RDATA semantics, it contains no usable records.
+      - One reasonable interpretation is that “positive DSYNC answer” means “at least one usable DSYNC RR after filtering,” in which case the “all no-op” case should be handled like “negative response” and trigger the fallback logic in step 3. Another reasonable interpretation is that *any* RRset at that name – even if it’s all null-scheme / port-0 – is final and should block fallback to more generic _dsync names.
+      - The document does not state which interpretation is intended, nor does it say whether Scheme=0/Port=0 are intended as an explicit “opt-out” that masks any wildcard or higher-level DSYNC records.
+    - ImpactAssessment: Different implementations could treat an “all-no-op” DSYNC RRset as (a) an explicit final opt-out from notifications for that child, or (b) a misconfiguration equivalent to no DSYNC, allowing fallback to a wildcard or zone-wide endpoint. That changes whether and where NOTIFYs are sent for affected children and can create subtle configuration-dependent interoperability differences when operators use Scheme=0 or Port=0 in practice.
+
+- Notes:
+  - Not a bug, but worth noting: the text carefully constrains error-reporting to an agent domain subordinate or equal to one of the child’s NS hostnames before using the EDNS0 Report-Channel option, which closes an obvious reflection/amplification edge case. The handling when this condition is not met is implicitly “do not send report queries” via the precondition in Section 4.3, and that implication is clear enough that it does not rise to an underspecification.
+
+[Used vector stores: vs_6954b56ccec08191857d5b98195079cb]
+
+
+Vector Stores Used: vs_6954b56ccec08191857d5b98195079cb
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

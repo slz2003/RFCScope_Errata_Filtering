@@ -1,0 +1,280 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 3 of RFC 9844 positions the document relative to prior work: it relies on RFC 4007’s scoped-address / zone-identifier model, motivates the need via IPv6-mostly deployments, and claims to update RFC 3986 (indirectly, by obsoleting RFC 6874), RFC 7622, RFC 8089, and RFC 4007. The section is largely about which systems, protocols, and documents are in scope for the new UI requirement and for the removal of URI zone-identifier syntax.
+
+- ScopeModel:
+  - Targets:
+    - User interfaces that “allow or require the user to enter an IPv6 address other than a global unicast address” (later normatively constrained in Section 5).
+    - IPv6 scoped-address semantics and zone identifiers as defined by RFC 4007 (including their mapping to numeric zone indices).
+    - URI syntax as defined by RFC 3986 and previously modified by RFC 6874; in particular, the IP-literal / IPv6address / IPv6addrz rules for zone identifiers.
+    - Protocols and formats that reference RFC 6874: XMPP JIDs’ domainpart (RFC 7622) and the file: URI scheme (RFC 8089), to the extent that they depended on 6874.
+    - Implementations of RFC 4007 that have (or interact with) UIs for entering addresses, and OS/socket APIs (e.g., getaddrinfo()) that map human-readable zone identifiers to numeric indices.
+  - Conditions:
+    - Devices “whose network stack does not support the model of a human-readable zone identifier described in [RFC4007] are out of scope for this document.”
+    - The UI requirement in Section 5 is conditioned on allowing/requiring entry of non-global IPv6 addresses; and implementers can choose among several UI patterns if the direct “fe80::1%eth0” form is “impossible for practical reasons.”
+    - The document explicitly carves out: “the recommendations and normative statements in this document do not apply to URIs fetched by web browsers.”
+    - Obsoleting RFC 6874 is asserted to globally “revert[] the change that it made to the URI syntax defined by [RFC3986], so [RFC3986] is no longer updated by [RFC6874].”
+    - For RFC 7622 and RFC 8089, the only described update is “deleting their references to [RFC6874].”
+  - NotedAmbiguities:
+    - What exactly “updates [RFC7622] and [RFC8089] by deleting their references to [RFC6874]” means in concrete, patch-style terms: which occurrences, and whether any semantic text tied to 6874 is also affected.
+    - To what extent the new UI requirement, described as an update to RFC 4007, applies across all RFC 4007–conformant nodes versus only those with human-readable zone identifiers and UIs, given the “out of scope” exclusion.
+    - Whether and how the UI requirement applies to UIs whose input is URIs (or JIDs, file: URIs, etc.) in non-browser applications, since only “URIs fetched by web browsers” are explicitly exempted.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous scope of the “updates” to RFC 7622 and RFC 8089 via “deleting their references to RFC 6874”
+    - ScopeProblemType: Unclear cross-RFC update scope / missing patch-style instructions; unclear semantic impact on URI-like address slots
+    - Evidence:
+      - RFC 9844 Section 3: “This document completely obsoletes [RFC6874]… Note that obsoleting [RFC6874] reverts the change that it made to the URI syntax defined by [RFC3986]… This document also updates [RFC7622] and [RFC8089] by deleting their references to [RFC6874].”
+      - RFC 7622 excerpt: RFC 6874 appears only in the Normative References list; the domainpart rules describe IPv4/IPv6 addresses and FQDNs but do not mention zone identifiers explicitly or tie domainpart syntax to RFC 6874.
+      - RFC 8089 excerpt: RFC 6874 similarly appears in the Normative References list; no explicit patch in RFC 9844 specifies whether any other occurrences (if any exist in the body of RFC 8089) are to be changed.
+    - DetailedReasoning:
+      - RFC 9844 claims to “update” RFC 7622 and RFC 8089 solely “by deleting their references to [RFC6874]”. This is unusually high-level language for a cross-RFC update: it does not say which references (normative, informative, in-body citations) are removed, nor whether any text that depends on 6874’s syntax is to be altered.
+      - In the provided excerpt of RFC 7622, 6874 appears only in the Normative References, and the domainpart syntax is described in terms of IPv4/IPv6 addresses and FQDNs, with a normative reference to RFC 3986 but no explicit mention of IPv6 zone identifiers. From that excerpt alone, deleting the bibliography entry has no obvious semantic effect, but RFC 9844 still declares that as an “update”.
+      - For RFC 8089, we only see 6874 in the Normative References. It is plausible (and in the actual RFC is the case) that 6874 was cited to define how IPv6 literals with zone identifiers appear in file: URIs. RFC 9844 does not clearly say whether this usage, if present in main text, is now discouraged, remains allowed as a local extension, or is simply no longer tied to 6874’s generic-URI semantics.
+      - Since RFC 9844 also states that obsoleting 6874 “reverts the change that it made to the URI syntax defined by [RFC3986],” an implementer could infer that all 6874-style IPv6addrz zone-identifier forms should disappear from all URI-based protocols, including XMPP JIDs and file: URIs. However, that conclusion is not explicitly stated in the updates to RFC 7622 and RFC 8089, which only mention reference deletion, not behavior.
+      - Conversely, if an implementer reads RFC 7622 or RFC 8089 in isolation (without tracking the “Updated by” metadata), they may still see a normative reference to 6874 and (if the body text mentions it) conclude that zone identifiers in IPv6 literals remain allowed in those contexts, contradicting the intent of RFC 9844 to retire 6874’s URI-level extension.
+      - The lack of precise, patch-style instructions (“In Section X, delete reference [RFC6874] from the Normative References list; in Section Y, replace ‘as specified in [RFC6874]’ with …; no change to allowed syntax in this specification is implied”) makes the effective scope of the update unclear: is it purely bibliographic, or does it alter what syntax XMPP and file: URIs are expected to accept?
+      - This is fundamentally a scope issue: the document attempts to adjust the domain of applicability of 6874’s URI extension across other protocols but does so in a way that does not clearly delimit which syntactic positions (e.g., JID domainpart, file: authority host) are affected and what their post-9844 expectations are. That ambiguity can lead to diverging interpretations about whether IPv6 zone identifiers are still permissible in those protocols.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: Unclear scope of the new “UI requirement” as an update to RFC 4007 vs the earlier out-of-scope exclusion
+    - ScopeProblemType: Inconsistent / insufficiently delimited target population for an added requirement to RFC 4007
+    - Evidence:
+      - RFC 9844 Introduction: “Devices whose network stack does not support the model of a human-readable zone identifier described in [RFC4007] are out of scope for this document.”
+      - RFC 9844 Section 3: “It also updates [RFC4007] by adding a new requirement that user interfaces support the zone identifier as described in Section 5.”
+      - RFC 9844 Section 5: “A user interface (UI) that allows or requires the user to enter an IPv6 address other than a global unicast address MUST provide a means for entering a link-local address or a scoped multicast address and selecting a zone identifier as specified by [RFC4007]…”
+    - DetailedReasoning:
+      - RFC 4007 is an architectural specification for IPv6 scoped addresses and zone indices; its natural target is “nodes” implementing the IPv6 stack, many of which may be headless devices or may expose only programmatic interfaces rather than human-facing UIs.
+      - RFC 9844 explicitly limits its own scope by stating that “Devices whose network stack does not support the model of a human-readable zone identifier described in [RFC4007] are out of scope for this document.” This suggests that some valid RFC 4007 implementations (e.g., ones that only expose numeric zone indices, or that have no user-facing UI at all) are intentionally not covered by 9844’s requirements.
+      - Despite this, Section 3 of RFC 9844 summarizes: “It also updates [RFC4007] by adding a new requirement that user interfaces support the zone identifier as described in Section 5.” That phrasing reads as if the update applies generically to RFC 4007, without restating the limiting conditions (presence of a human-readable zone-identifier model and a UI that accepts IPv6 addresses).
+      - Taken literally and in isolation, an implementer of RFC 4007 could conclude that *any* conformant implementation is now required to provide a user interface that meets Section 5’s MUSTs, even if the node has no concept of a human-readable zone identifier or no human-facing UI. That contradicts the earlier “out of scope” statement.
+      - Conversely, if implementers give precedence to the “out of scope” exclusion, then the declaration that RFC 9844 “updates [RFC4007] by adding a new requirement” is misleadingly broad — the requirement is effectively limited to a subset: RFC 4007–based stacks that (a) support human-readable zone identifiers and (b) expose UIs that allow or require entering IPv6 addresses.
+      - The ambiguity is a scope problem because the update is attached to an architectural spec (RFC 4007) with a broad domain (“IPv6 scoped address architecture”) while the actual normative content of RFC 9844 is targeted at a much narrower class of systems (UIs for address input). The summary sentence in Section 3 does not clearly inherit these conditions, which can cause differing interpretations about which RFC 4007 deployments are now non-conformant if they lack such UIs.
+      - Clarifying that the update to RFC 4007 is limited to “implementations that provide user interfaces for entering IPv6 addresses and that support the RFC 4007 human-readable zone identifier model” would make the scope explicit and prevent implementers from over- or under-applying the new requirement.
+
+- ResidualUncertainties:
+  - The provided excerpts of RFC 7622 and RFC 8089 do not show whether their main text (beyond references lists) explicitly ties any syntax or behavior to RFC 6874. If such text exists, the ambiguity around “deleting their references” becomes more acute, because it would be unclear whether that syntax remains valid but just lacks a reference, or is implicitly deprecated.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 3 of RFC 9844 describes how this document relates, normatively and procedurally, to prior RFCs: it explains reliance on RFC 4007’s model, motivates the need in IPv6-mostly deployments, and states that RFC 9844 obsoletes RFC 6874, reverts URI syntax to RFC 3986, and “updates” RFC 7622, RFC 8089, and RFC 4007.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: “Updates/Obsoletes” relationships are process/meta, not a broken normative structure
+    - Description:  
+      The key normative-looking claims in Section 3 are: that RFC 9844 “completely obsoletes [RFC6874] … and replaces it with a generic UI requirement”, that “obsoleting [RFC6874] reverts the change that it made to the URI syntax defined by [RFC3986], so [RFC3986] is no longer updated by [RFC6874]”, that it “updates [RFC7622] and [RFC8089] by deleting their references to [RFC6874]”, and that it “also updates [RFC4007] by adding a new requirement that user interfaces support the zone identifier as described in Section 5.” These are all statements about document relationships and scope, not new protocol actions beyond what is already normatively specified in Section 5 (the UI MUST/SHOULD/MAY rules).  
+      For RFC 7622 and RFC 8089, the provided excerpts show RFC 6874 only in their Normative References lists and not used in behavioral text or ABNF; there is no indication in the quoted 7622 domainpart rules or 8089 references that any protocol behavior depends on RFC 6874 beyond citing it as a background spec. Removing a reference from the References section is straightforward (“deleting their references to [RFC6874]”) and does not leave behavior undefined: the remaining normative rules and references (e.g., to RFC 3986, RFC 5234, RFC 5890/5892, etc.) still fully define syntax and processing.  
+      The statement that obsoleting RFC 6874 “reverts the change that it made to the URI syntax defined by [RFC3986]” is likewise descriptive: RFC 3986’s own text and ABNF never changed; RFC 6874 had provided an extension, and by obsoleting 6874, RFC 9844 is signaling that extension is no longer to be followed. This does not conflict with any remaining normative text in RFC 3986 as quoted here.  
+      Finally, the claim that RFC 9844 “updates [RFC4007] by adding a new requirement that user interfaces support the zone identifier as described in Section 5” is consistent with the actual BCP 14 requirement in Section 5 (“A user interface … MUST provide a means for entering a link-local address … and selecting a zone identifier as specified by [RFC4007]”). RFC 4007 itself did not normatively regulate UIs, so this is an additive layering, not a contradiction. No internal conflict arises between the 4007 architecture (zone indices are local, must not be sent on the wire) and the new UI requirement; indeed Section 6 of RFC 9844 reiterates that zone identifiers are local and should not be transmitted further.  
+      Taken together, the “obsoletes” and “updates” statements in Section 3 are process/relationship declarations that align with the normative content elsewhere in RFC 9844 and in the quoted prior RFCs. They do not create contradictory obligations, nor do they leave required behavior undefined for implementers.
+    - KeyTextSnippets:
+      - “This document completely obsoletes [RFC6874] … and replaces it with a generic UI requirement.”
+      - “Note that obsoleting [RFC6874] reverts the change that it made to the URI syntax defined by [RFC3986], so [RFC3986] is no longer updated by [RFC6874].”
+      - “This document also updates [RFC7622] and [RFC8089] by deleting their references to [RFC6874].”
+      - “It also updates [RFC4007] by adding a new requirement that user interfaces support the zone identifier as described in Section 5.”
+      - RFC 7622 §3.2 plus its Normative References list including RFC 3986 and RFC 6874.
+      - RFC 8089 §7.1 Normative References including RFC 3986 and RFC 6874.
+    - Impact: Since there is no conflicting or incomplete set of obligations, implementers of UIs, XMPP domainparts, or file URIs will still have a clear, coherent set of rules: UIs MUST support zone identifiers as per Section 5 of RFC 9844; zone identifiers in URI syntax revert to the base RFC 3986 model now that RFC 6874 is obsoleted; and RFCs 7622 and 8089 simply stop treating RFC 6874 as a current normative dependency. No interoperability or security break arises from this relationship wording as given.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Section 3 of RFC 9844 declares relationships to other specs: it says RFC 6874 is completely obsoleted and that this “reverts” RFC 3986’s URI syntax change; it also claims to update RFC 7622 and RFC 8089 “by deleting their references to RFC 6874,” and to update RFC 4007 by adding a UI requirement.
+- OverallBugLikelihood: Medium
+
+Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous update of RFC 7622 via “deleting references to RFC6874” leaves JID IP-literal syntax unclear
+    - LocationHint: RFC 9844 Section 3 vs. RFC 7622 Section 3 (JID ABNF)
+    - Evidence:
+      - Snippet1 (RFC 9844 Section 3): “This document completely obsoletes [RFC6874] … Note that obsoleting [RFC6874] reverts the change that it made to the URI syntax defined by [RFC3986]… This document also updates [RFC7622] and [RFC8089] by deleting their references to [RFC6874].”
+      - Snippet2 (RFC 7622 JID ABNF and note):  
+        `domainpart   = IP-literal / IPv4address / ifqdn`  
+        `; the "IPv4address" and "IP-literal" rules are defined in RFCs 3986 and 6874, respectively...`  
+        Implementation Note: “Reuse of the IP-literal rule from [RFC6874] … Also note that the IP-literal rule was updated between [RFC3986] and [RFC6874] to optionally add a zone identifier to any literal address.”   
+      - Snippet3 (RFC 3986 host ABNF): `IP-literal = "[" ( IPv6address / IPvFuture ) "]"` followed by: “This syntax does not support IPv6 scoped addressing zone identifiers.” 
+    - TechnicalExplanation: |
+        RFC 7622 normatively reuses IP-literal and IPv4address from RFC 3986 and RFC 6874 “respectively”, and its Implementation Note explicitly relies on the fact that RFC 6874 updated the IP-literal rule to allow an optional zone identifier in literal IPv6 addresses.  By contrast, RFC 3986’s own ABNF for IP-literal explicitly states that it “does not support IPv6 scoped addressing zone identifiers.” 
+        
+        RFC 9844 claims to “completely obsolete” RFC 6874 and to “revert” the change it made to RFC 3986’s URI syntax, and then further claims to “update[] [RFC7622] … by deleting [its] references to [RFC6874].” However, RFC 9844 does not supply any concrete patch text or revised ABNF for RFC 7622. If one interpreted “deleting their references” literally (e.g., removing “[RFC6874]” from the comments and Implementation Note in RFC 7622), the remaining text would (a) still depend on the IP-literal rule name but without a precise definition that includes zone IDs, and (b) leave the Implementation Note’s statement about an updated IP-literal rule no longer matching any normative referenced grammar. Implementers are left without a clear, normative statement as to whether JIDs may still include IPv6 literals with zone identifiers, and it is unclear whether the domainpart’s IP-literal should now follow the zone-ID-free RFC 3986 syntax or retain the semantics previously imported from RFC 6874.
+        
+        This is a structural underspecification in RFC 9844’s change description: it asserts an “update” to RFC 7622 but does not specify the exact syntactic changes, in a context where RFC 7622 uses the referenced RFC not just in its References section but as a source of critical ABNF and explanatory text. For RFC 8089, by contrast, RFC 6874 appears only in the Normative References list provided in the excerpt, with no inline grammar or prose depending on it, so “deleting [its] references to [RFC6874]” there would be essentially a bibliographic cleanup and not structurally ambiguous. 
+    - PatchSuggestion: |
+        Clarify the update to RFC 7622 with explicit patch text instead of the vague “deleting their references” wording. For example, in RFC 9844, replace:
+
+        > “This document also updates [RFC7622] and [RFC8089] by deleting their references to [RFC6874].”
+
+        with something along the lines of:
+
+        > “This document updates [RFC7622] as follows:
+        > 
+        > * In Section 3, in the definition of `domainpart`, the comment
+        >   ‘; the "IPv4address" and "IP-literal" rules are defined in RFCs 3986 and 6874, respectively’ is replaced with:
+        >   ‘; the "IPv4address" and "IP-literal" rules are defined in RFC 3986’.
+        > * In the immediately following Implementation Note, delete the sentence
+        >   ‘Also note that the IP-literal rule was updated between [RFC3986] and [RFC6874] to optionally add a zone identifier to any literal address.’
+        >   and any other text that relies on [RFC6874]’s modification of IP-literal.
+        > 
+        > As a consequence, the `IP-literal` used in XMPP JIDs reverts to the unmodified syntax defined in [RFC3986], which does not support zone identifiers.”
+
+        And then, optionally:
+
+        > “This document updates [RFC8089] by removing [RFC6874] from its Normative References; no change is made to the ABNF or examples in [RFC8089].”
+
+        This makes the structural effect on RFC 7622 explicit and removes any ambiguity about whether zone identifiers are still permitted in XMPP JID domainparts.
+
+  - Issue-2:
+    - BugType: None
+    - ShortLabel: Numeric zone identifier recommendation vs. RFC 4007 Section 11.2
+    - LocationHint: RFC 9844 Section 3 discussion of decimal interface numbers
+    - Evidence:
+      - Snippet1 (RFC 9844 Section 3): “in most operating systems, it is possible to use the underlying interface number, represented as a decimal integer, as an equivalent to the human-readable string. This is recommended by Section 11.2 of [RFC4007], but it is not required.”
+      - Snippet2 (RFC 4007 Section 11.2): “For example, to represent link index 2, the implementation can simply use ‘2’ as <zone_id>… An implementation SHOULD support at least numerical indices that are non-negative decimal integers as <zone_id>.” 
+    - TechnicalExplanation: |
+        RFC 4007 Section 11.2 normatively recommends that implementations support non-negative decimal integers as valid <zone_id> values and gives an example where the textual <zone_id> “2” represents link index 2.  RFC 9844’s paraphrase that Section 11.2 “recommends” using “the underlying interface number, represented as a decimal integer” is a slightly informal restatement, but it is consistent with the intent of 11.2 and with existing practice (e.g., RFC 6991’s YANG types treat the canonical zone index format as numerical, referencing RFC 4007 Section 11.2). 
+        
+        The wording might be read as equating the numeric <zone_id> with an interface index specifically, whereas RFC 4007 speaks more generally in terms of “link index” and “zone index,” but for the scoped link-local use cases in RFC 9844 this nuance does not create a syntactic contradiction or ambiguity in implementations. It remains clear that a decimal representation of the underlying zone index is permitted and recommended. Therefore, this does not rise to the level of a structural or syntactic bug.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 3 of RFC 9844 explains how the document relates to RFC 4007’s scoped-address model, motivates the work via IPv6-only / IPv6-mostly deployments (RFC 8925 and an IPv6-mops draft), and states document-relationship changes: obsoleting RFC 6874, thereby restoring RFC 3986’s original IPv6-literal syntax, and updating RFC 7622, RFC 8089, and RFC 4007.
+- OverallCrossRFCLikelihood: Low
+- Issues: []
+- IfNoIssues:
+  - Comment:  
+    I do not see a concrete cross-RFC or registry bug in the provided text; the apparent issues are either purely editorial/meta or are consistent with the referenced specifications:
+
+    • On “updates [RFC7622] and [RFC8089] by deleting their references to [RFC6874]”:  
+    The supplied excerpts of RFC 7622 and RFC 8089 show RFC 6874 only in their reference lists, not in the quoted protocol text. RFC 7622’s domainpart rules speak only in terms of FQDNs, IPv4/IPv6 addresses, and hostnames, without invoking scoped IPv6 zone identifiers or RFC 6874 semantics in its body  . Likewise, the excerpt from RFC 8089 merely lists 6874 as a normative reference, with no shown body text depending on it  .  
+    RFC 9844’s statement that it “updates [RFC7622] and [RFC8089] by deleting their references to [RFC6874]” is therefore best read as a bibliographic update: once 6874 is obsoleted, these documents should no longer normatively depend on it. Since the visible protocol text in 7622 and 8089 does not derive behavior from 6874, there is no clear interoperability ambiguity: implementations that follow 7622’s and 8089’s own syntax plus RFC 3986 (which explicitly does not support scoped IPv6 zone identifiers in IP-literals  ) already effectively behave as RFC 9844 intends. Any remaining dependency is meta-level (what shows up in the RFC references and metadata), not a protocol-level conflict.
+
+    • On the reference to “Section 11.2 of [RFC4007]” about decimal numeric interface indices:  
+    RFC 9844 says that in most OSes it is possible to use the underlying interface number (a decimal integer) as an equivalent to the human-readable zone identifier, and that “this is recommended by Section 11.2 of [RFC4007], but it is not required.” The provided RFC 4007 excerpt stops at Section 6 and does not include 11.x, but other parts of 4007 clearly define a per-node zone index space and explain that indices can be arbitrary implementation-chosen integers that are local to the node  . Section 11.2 indeed discusses textual forms and recommends supporting decimal numeric zone indices in addition to names in the human-facing representation. RFC 9844’s wording (“underlying interface number, represented as a decimal integer”) is a slightly narrow way of phrasing that generic “zone index” recommendation, but that narrowing only appears in non-normative explanatory text and is explicitly labeled “not required.” It does not contradict RFC 4007’s semantics and does not create a situation where following 9844 would violate 4007. At worst it is a mildly imprecise paraphrase, not something that would cause one implementation to be non-interoperable with another.
+
+    • On obsoleting RFC 6874 and the claim that RFC 3986 is “no longer updated” by it:  
+    RFC 6874 explicitly states that it updates RFC 3986 by extending the IP-literal syntax to allow zone identifiers in literal IPv6 addresses in URIs  . RFC 9844 states that it “completely obsoletes [RFC6874]” and that, as a result, “obsoleting [RFC6874] reverts the change that it made to the URI syntax defined by [RFC3986], so [RFC3986] is no longer updated by [RFC6874].” This is consistent with standard IETF document-relationship semantics: once 6874 is obsoleted and its extension is explicitly withdrawn, it should no longer be viewed as updating 3986, and 3986’s original ABNF (which “does not support IPv6 scoped addressing zone identifiers”  ) remains in force. This is meta-status guidance rather than a conflicting protocol requirement, and it aligns with how implementers and the RFC Editor are expected to interpret “Obsoletes” and “Updates.”
+
+    Given the above, there is no specific place where “Model A” (literal reading of RFC 9844) and “Model B” (literal reading of the cited RFCs’ normative text and syntax) cannot both be true. Any differences are descriptive or editorial rather than changes in codepoints, syntax, or required behavior that would cause interoperability problems.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+
+Vector Stores Used: vs_6954b7ba9a608191955f277a83faabec
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

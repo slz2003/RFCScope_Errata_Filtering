@@ -1,0 +1,139 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 6 of RFC 9844 gives security guidance for zone identifiers in UIs, drawing on RFC 4007’s scoped-address model. It reiterates that zone identifiers are local-only, advises against sending them “on the wire,” and gives robustness advice about length limits and character sets. RFC 4007’s referenced text normatively constrains the *textual* `<address>%<zone_id>` format to within a node and “MUST NOT be sent on the wire unless every node … agrees on the semantics.”
+- OverallDeonticRisk: Low
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Over-broad and slightly inaccurate restatement of RFC 4007’s “MUST NOT be sent on the wire” rule
+    - Description:
+      RFC 4007’s normative “MUST NOT be sent on the wire” constraint is scoped specifically to the *textual representation* `<address>%<zone_id>` and explicitly allows transmission when “every node that interprets the format agrees on the semantics”: “Hence, the format MUST be used only within a node and MUST NOT be sent on the wire unless every node that interprets the format agrees on the semantics.”  
+      In contrast, RFC 9844 §6 says, “As explained in [RFC4007], zone identifiers are of local significance only and must not be sent on the wire… Therefore, software that obtains a zone identifier through a UI should not transmit it further.” This text (a) generalizes from the specific textual `<address>%<zone_id>` format to “zone identifiers” in general, and (b) omits the “unless every node … agrees on the semantics” exception, presenting RFC 4007 as if it imposed an unconditional prohibition.  
+      Because RFC 9844 also declares that BCP 14 terms apply “when, and only when, they appear in all capitals,” the “must not” and “should not” in §6 are not themselves normative under RFC 9844. However, §6 purports to *summarize* RFC 4007’s normative position and does so inaccurately: RFC 4007 allows on-the-wire use of the textual format under coordinated semantics, while RFC 9844 describes it as simply “must not be sent on the wire” and then derives a blanket recommendation that software “should not transmit [a zone identifier] further.” This can reasonably mislead implementers about what RFC 4007 actually requires and about whether 9844 is updating 4007’s security model beyond its stated UI requirement.
+    - KeyTextSnippets:
+      - RFC 9844 §6: “As explained in [RFC4007], zone identifiers are of local significance only and must not be sent on the wire. In particular, see the final security consideration of [RFC4007]… Therefore, software that obtains a zone identifier through a UI should not transmit it further.”
+      - RFC 4007 §11.2: “It cannot be assumed that indices are common across all nodes in a zone (see Section 6). Hence, the format MUST be used only within a node and MUST NOT be sent on the wire unless every node that interprets the format agrees on the semantics.”
+      - RFC 4007 §12: “Since the use of the textual representation of non-global addresses is restricted to use within a single node, it does not create a security vulnerability from outside the node. However, a malicious node might send a packet that contains a textual IPv6 non-global address with a zone index, intending to deceive the receiving node…”
+    - Impact:
+      Implementers relying on RFC 9844 §6 as a summary of RFC 4007 may believe that any on-the-wire use of zone identifiers (including the `<address>%<zone_id>` textual form in a management or control protocol with well-defined semantics) is forbidden by RFC 4007, when in fact RFC 4007 allows it under coordinated semantics. This can unnecessarily constrain legitimate designs and obscures the precise scope of the original “MUST NOT be sent on the wire unless … agrees on the semantics” rule. A clarifying erratum could note that the prohibition in RFC 4007 is specific to the textual format and qualified by the “unless every node … agrees” condition, while still recommending that typical UI-driven software avoid forwarding such textual zone identifiers.
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: RFC 9844 §6 provides security guidance for user interfaces handling IPv6 zone identifiers, explicitly basing its statements on RFC 4007’s scoped-address and textual-representation model. It restates 4007’s “local significance” and “not on the wire” points and adds UI-specific recommendations about not forwarding zone identifiers and limiting length/characters.
+- OverallCrossRFCLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Over-broad restatement of RFC 4007 “MUST NOT be sent on the wire” rule
+    - Description: RFC 9844 §6 says, “As explained in [RFC4007], zone identifiers are of local significance only and must not be sent on the wire… Therefore, software that obtains a zone identifier through a UI should not transmit it further.” In RFC 4007, the normative “MUST NOT be sent on the wire unless …” applies specifically to the *textual format* `<address>%<zone_id>` defined in §11.2, and it contains an explicit exception: “the format MUST be used only within a node and MUST NOT be sent on the wire unless every node that interprets the format agrees on the semantics.” RFC 4007 also focuses on *textual non-global addresses as data* in §12, cautioning receivers that such packets might be malicious, but it does not impose a blanket prohibition on all representations or uses of zone identifiers, nor does it forbid well-defined exchanges between nodes that intentionally agree on the semantics of that textual format. By phrasing “must not be sent on the wire” as a general property of “zone identifiers” and attributing this directly to RFC 4007, RFC 9844 appears to (a) generalize a rule that in RFC 4007 is scoped to the textual `<address>%<zone_id>` representation and (b) omit the “unless every node that interprets the format agrees on the semantics” qualifier. A careful implementer reading only RFC 9844 could reasonably conclude that any transmission of zone identifiers obtained via a UI—even in a management or configuration protocol where all participating nodes intentionally agree on the semantics of `<address>%<zone_id>`—is contrary to what RFC 4007 “explains,” whereas RFC 4007 explicitly allows such uses under that exception. This is not an interop-breaking encoding mismatch, but it is a cross-RFC mischaracterization that can unnecessarily forbid use cases that RFC 4007 deliberately permits.
+    - EntitiesInvolved: ["RFC 9844 Section 6", "RFC 4007 Section 6 (zone indices local to the node)", "RFC 4007 Section 11.2 (textual <address>%<zone_id> format and ‘MUST NOT be sent on the wire unless…’)", "RFC 4007 Section 12 (security considerations about textual non-global addresses as data)", "IPv6 textual format <address>%<zone_id>", "Zone identifiers / zone indices"]
+    - CrossRefsUsed: ["RFC 4007 §6 statement that zone indices are strictly local to the node", "RFC 4007 §11.2 paragraph: ‘Hence, the format MUST be used only within a node and MUST NOT be sent on the wire unless every node that interprets the format agrees on the semantics.’", "RFC 4007 §12 paragraph about packets that contain textual non-global addresses as data"]
+    - Confidence: Medium
+- IfNoIssues:
+  - Comment:
+
+[Used vector stores: vs_6954b7ba9a608191955f277a83faabec]
+
+
+Vector Stores Used: vs_6954b7ba9a608191955f277a83faabec
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

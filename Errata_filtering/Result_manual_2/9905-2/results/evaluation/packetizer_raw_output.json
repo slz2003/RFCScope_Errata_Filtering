@@ -1,0 +1,126 @@
+{
+  "reports": [
+    {
+      "label": "Conflicting Operational Guidance for SHA‑1‐based DNSSEC Algorithms (RSASHA1 & RSASHA1‐NSEC3‐SHA1)",
+      "bug_type": "Inconsistency",
+      "explanation": "The RFC simultaneously requires implementations to support SHA‑1‐based algorithms while mandating that operators treat them as unsupported/insecure, which conflicts with the IANA registry’s recommendation to use these algorithms for DNSSEC validation.",
+      "justification": [
+        "The text directs validating resolver implementations to continue supporting these algorithms while instructing operators to treat them as insecure if no alternative validation method is available.",
+        "IANA registry entries list ‘Use for DNSSEC Validation:  RECOMMENDED’ and ‘Implement for DNSSEC Validation:  MUST’, which contradicts Section 2’s mandate to treat these algorithms as unsupported for security.",
+        "This normative conflict may lead to divergent resolver behavior and inconsistent security state outcomes."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Validating resolver implementations ([RFC9499], Section 10) MUST continue to support validation using these algorithms..."
+          },
+          {
+            "id": "E2",
+            "text": "Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms."
+          },
+          {
+            "id": "E3",
+            "text": "IANA tables (for SHA‑1 digest and RSASHA1 / RSASHA1‑NSEC3‑SHA1):\n          - \"Use for DNSSEC Validation:  RECOMMENDED\"\n          - \"Implement for DNSSEC Validation:  MUST\""
+          },
+          {
+            "id": "E4",
+            "text": "Operators should take care when deploying software packages and operating systems that may have already removed support for the SHA-1 algorithm.  In these situations, software may need to be manually built and deployed by an operator to continue supporting the required levels indicated by the 'Use for DNSSEC Validation' and 'Implement for DNSSEC Validation' columns, which this document is not changing."
+          }
+        ],
+        "summary": [
+          "(E1) The RFC mandates continued implementation support for SHA‑1–based algorithms.",
+          "(E2) Operators are told to treat these algorithms as unsupported and to render responses insecure.",
+          "(E3) IANA registry entries still recommend using these algorithms for validation.",
+          "(E4) Operational considerations acknowledge that support may need to be manually maintained."
+        ]
+      },
+      "fix_direction": "Clarify and align the normative guidance: either update the IANA registry recommendations to reflect the requirement to treat these algorithms as unsupported/insecure, or explicitly state that the 'RECOMMENDED' status applies only to implementation and not to operational security classification.",
+      "severity": "High",
+      "severity_basis": "The conflicting instructions can lead to divergent DNSSEC validation outcomes and undermine the intended security deprecation of SHA‑1–based algorithms.",
+      "confidence": "High",
+      "experts": [
+        "ActorDirectionality: Issue-1",
+        "ActorDirectionality: NewIssue-1",
+        "Scope: Issue-1",
+        "Deontic: Issue-1",
+        "CrossRFC: Issue-1",
+        "Boundary: Finding-1"
+      ],
+      "report_id": "9905-2-1"
+    },
+    {
+      "label": "Underspecified Definition of 'Accepted/Supported' Cryptographic Algorithms",
+      "bug_type": "Underspecification",
+      "explanation": "The RFC uses terms like 'accepted cryptographic algorithms' and 'supported signing algorithms' without providing a clear definition or mapping to the formal IANA registry categories, leading to ambiguity in determining when a zone should be regarded as insecure.",
+      "justification": [
+        "Section 2 refers to DS records being treated as insecure if no DS records of 'accepted cryptographic algorithms' are available, but does not define what constitutes an accepted algorithm.",
+        "Similarly, the term 'supported signing algorithms' is used to decide validation outcomes without clear cross‐referencing to IANA definitions.",
+        "This lack of explicit definition can result in inconsistent implementation and interpretation among different resolvers."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Operators of validating resolvers MUST treat RSASHA1 and RSASHA1‑NSEC3‑SHA1 DS records as insecure.  If no other DS records of accepted cryptographic algorithms are available, the DNS records below the delegation point MUST be treated as insecure."
+          },
+          {
+            "id": "E2",
+            "text": "…Operators of validating resolvers MUST treat DNSSEC signing algorithms RSASHA1 and RSASHA1‑NSEC3‑SHA1 as unsupported, rendering responses insecure if they cannot be validated by other supported signing algorithms."
+          },
+          {
+            "id": "E3",
+            "text": "Section 5, IANA tables: introduce formal categories “Use for DNSSEC Signing/Validation” and “Implement for DNSSEC Signing/Validation” for digest and algorithm values, but these terms are not directly tied to “accepted cryptographic algorithms” or “supported signing algorithms” in section 2."
+          }
+        ],
+        "summary": [
+          "(E1) The RFC mandates insecure treatment if no DS records of accepted cryptographic algorithms are present.",
+          "(E2) It similarly instructs that signing algorithms be treated as unsupported without defining 'supported'.",
+          "(E3) The formal IANA categories are not explicitly linked to these informal terms."
+        ]
+      },
+      "fix_direction": "Provide explicit definitions or cross-references linking 'accepted cryptographic algorithms' and 'supported signing algorithms' to the formal IANA registry categories to ensure consistent interpretation.",
+      "severity": "Medium",
+      "severity_basis": "Ambiguity in key terminology may lead to inconsistent security state determinations among different validating resolvers, though it is primarily a configuration and policy issue.",
+      "confidence": "High",
+      "experts": [
+        "Scope: Issue-2"
+      ],
+      "report_id": "9905-2-2"
+    },
+    {
+      "label": "Unclear Long‑Term Status and SIG(0) Handling for SHA‑1‑Based Algorithms",
+      "bug_type": "Ambiguity",
+      "explanation": "The RFC does not clarify the long‑term deprecation strategy for SHA‑1–based validation support or its applicability to SIG(0)/transaction security, leaving future operator actions and interpretations uncertain.",
+      "justification": [
+        "The normative text mandates that implementations MUST continue to support validation for transitional purposes but provides no explicit sunset mechanism.",
+        "There is no discussion of how RSASHA1/RSASHA1‑NSEC3‑SHA1 should be handled in the context of SIG(0), despite IANA indicating they remain usable for transaction security.",
+        "This lack of explicit guidance could lead to divergent long‑term practices in DNSSEC deployment."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "The intended long‑term status of SHA‑1‑based validation support is unclear. The phrase “MUST continue to support validation… as they are diminishing in use but still actively in use for some domains as of this publication” suggests a transitional intent, but the normative text has no explicit sunset or mechanism to update the IANA “Use for DNSSEC Validation” status when operational practice changes."
+          },
+          {
+            "id": "E2",
+            "text": "The document does not say anything about RSASHA1/RSASHA1‑NSEC3‑SHA1 when used solely for SIG(0)/transaction security, even though the IANA table (“Trans. Sec.: Y”) implies they remain usable there."
+          }
+        ],
+        "summary": [
+          "(E1) The RFC implies a transitional approach to SHA‑1 support without defining a sunset mechanism.",
+          "(E2) It is silent on the use of these algorithms for SIG(0)/transaction security despite IANA indications."
+        ]
+      },
+      "fix_direction": "Include explicit language regarding the eventual deprecation of SHA‑1–based validation support and clarify whether and how these algorithms should be used for SIG(0)/transaction security.",
+      "severity": "Medium",
+      "severity_basis": "The absence of clear long‑term policy may lead to inconsistent practices and uncertainty in future deployments, although it does not create an immediate protocol failure.",
+      "confidence": "High",
+      "experts": [
+        "Scope: ResidualUncertainties"
+      ],
+      "report_id": "9905-2-3"
+    }
+  ]
+}
