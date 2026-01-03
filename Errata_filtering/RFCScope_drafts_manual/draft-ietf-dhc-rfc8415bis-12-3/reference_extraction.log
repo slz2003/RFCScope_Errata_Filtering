@@ -1,0 +1,48 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This section, which contained background on IPv6 specifications of
+   relevance to DHCPv6, has been removed; those interested should refer
+   to [RFC8415].  However, this section is retained to kee...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): background on IPv6 specifications of relevance to DHCPv6
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): section numbering consistent
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'background on IPv6 specifications of relevance to DHCPv6'
+  Result: Found in Section A
+  Section Title: Summary of Changes
+  Content Preview:    This appendix provides a summary of the significant changes made to
+   this updated DHCPv6 specif...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'section numbering consistent'
+  Result: Found in Section 26.2
+  Section Title: Informative References
+  Content Preview:    [IANA-HARDWARE-TYPES ]
+              IANA, "Hardware Types",
+              <https://www.iana.org/...
+---------------------------------------------------------------------------
+

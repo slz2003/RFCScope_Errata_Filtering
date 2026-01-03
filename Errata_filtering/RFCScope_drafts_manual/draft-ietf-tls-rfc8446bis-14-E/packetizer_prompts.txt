@@ -1,0 +1,365 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    Appendix E’s guidance on which version to use when resuming a session was written in a world where TLS 1.0 and 1.1 were still legal, and it now co‑exists with new text that outright forbids negotiating those versions. Over time this creates a mismatch: historical tickets from TLS 1.0/1.1 sessions and the “resume with the same version” recommendation now collide with “MUST NOT negotiate” requirements. The draft never explicitly spells out what a conformant implementation should do with such old tickets, leaving a temporal gap in how behavior should evolve once these versions are deprecated.
+  OverallTemporalRisk: Medium
+  CandidateIssues:
+    - Id: T1
+      Type: Both
+      ShortLabel: Resumption version vs deprecation of TLS 1.0/1.1
+      Description: |
+        The backward‑compatibility appendix retains a recommendation that a client resuming a session “SHOULD initiate the connection using the version that was previously negotiated”, inherited from RFC 8446’s Appendix D.1 . In the bis draft, however, the introduction explicitly says it now forbids negotiating TLS 1.0 and 1.1 in line with RFC 8996, and the updated security/backward‑compatibility text reiterates that SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1 MUST NOT be negotiated for any reason. Over time, this creates a temporal inconsistency: if a client holds a resumption ticket from an old TLS 1.0 or 1.1 session and literally follows the “SHOULD initiate using the version previously negotiated”, it would be trying to initiate with versions that the same document now says MUST NOT be negotiated. At the same time, the bis draft does not state what must be done with such “legacy” tickets, so implementations are left to infer whether these tickets must be ignored, cause an immediate full handshake at a higher version, or be used in some other way. This is both a normative‑ordering tension (SHOULD vs new MUST NOT) and an underspecification of the required sequence of behavior across time as implementations phase out old versions.
+      TemporalReasoning: |
+        1. In the original TLS 1.3 spec, Appendix D.1 says: when a TLS 1.3 client talks to an older server, it sends a ClientHello with TLS 1.2 in legacy_version but also lists its real preferences in supported_versions; if the server negotiates an older version, “a client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated” . This expresses an intended ordering across connections: first full handshake at version V_old, then subsequent resumption handshakes initiated at the same V_old.
+        2. The bis draft adds new global constraints: Section 1.2 says it “forbid[s] negotiating TLS 1.0 and 1.1 as they are now deprecated by [RFC8996]”, and the updated backward‑compatibility/security text (mirroring RFC 8446’s Appendix D.5 but extended) states that SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1 “MUST NOT be negotiated for any reason” .
+        3. Consider a timeline where an implementation originally supported TLS 1.0/1.1, established a session at TLS 1.0 or 1.1 and obtained a resumption ticket under that version. After it upgrades to conform fully to this bis draft, it must now honor the new “MUST NOT negotiate TLS 1.0/1.1” constraint.
+        4. If the client later attempts to resume using that ticket, the E.1 recommendation would have it initiate “using the version that was previously negotiated”, here TLS 1.0 or 1.1. There are two temporal possibilities:
+           - The client still offers TLS 1.0/1.1 (to satisfy the SHOULD), in which case a successful handshake selecting TLS 1.0/1.1 would violate the new MUST NOT.
+           - Or, to satisfy the MUST NOT, the client stops offering 1.0/1.1 in supported_versions; then it literally cannot follow the E.1 “SHOULD initiate using the version previously negotiated” for such old tickets.
+        5. The document never states how to resolve this for pre‑existing tickets: whether such tickets MUST be treated as unusable for resumption once their negotiated version is deprecated, whether they MAY be used only in a higher‑version handshake (and if so, how the server is to interpret them), or whether clients SHOULD simply ignore the E.1 recommendation whenever the prior version is now forbidden.
+        6. Because this guidance is about behavior across *multiple* handshakes over time (initial session vs later resumption) and the normative landscape changes in between, it is a temporal inconsistency (a SHOULD prescribing an order of versions that can now be illegal) and an underspecification (no clear sequence of required steps for handling old tickets once 1.0/1.1 are no longer allowed).
+      KeyEvidence:
+        ExcerptPoints:
+          - “This document is a minor update to TLS 1.3 that … Forbid negotiating TLS 1.0 and 1.1 as they are now deprecated by [RFC8996].” (Section 1.2 of the bis draft, from the user‑provided excerpt)
+          - In the backward‑compatibility appendix (carried over from RFC 8446): “A TLS 1.3 client … will send a normal TLS 1.3 ClientHello … If the server does not support TLS 1.3, it will respond with a ServerHello containing an older version number. … A client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated.” 
+          - In the security/backward‑compatibility restrictions: SSL 3.0 and SSL 2.0 “MUST NOT be negotiated for any reason”, and in the bis text this is extended to include TLS 1.0 and TLS 1.1 as well (by reference to RFC 8996 and the stated intent to forbid negotiating them) .
+        ContextPoints:
+          - RFC 5246 Appendix E.1, which previously told a TLS 1.2 client that “Whenever a client already knows the highest protocol version known to a server (for example, when resuming a session), it SHOULD initiate the connection in that native protocol” , showing the historical origin of this recommendation.
+          - RFC 8446 Appendix D.1, whose wording on resumption versioning is what the bis draft is updating and tightening in other respects .
+      ImpactOnImplementations: |
+        Implementations that strictly follow all MUST/MUST NOTs will stop offering TLS 1.0 and 1.1 and will never negotiate those versions again, which necessarily means they cannot follow Appendix E.1’s resumption‑version SHOULD for historical tickets from 1.0/1.1 sessions. Different implementers may resolve this tension differently (e.g., by silently discarding such tickets and forcing a full TLS 1.2/1.3 handshake, or by continuing to offer 1.0/1.1 for resumption only), leading to divergent behavior and potential non‑compliance. Without explicit guidance, some stacks might keep negotiating 1.0/1.1 for “resumption only” in order to conform to E.1’s advice, directly violating the security goal of RFC 8996, while others might discard tickets unexpectedly, surprising applications that assumed resumption would keep working across upgrades. Clarifying that “initiate with the previously negotiated version” only applies when that version is still permitted, and that tickets from now‑forbidden versions MUST NOT be used for resumption (or MUST trigger a full handshake at a safe version), would remove this ambiguity.
+      AffectedArtifacts:
+        - "Section 1.2, bullet forbidding negotiation of TLS 1.0 and 1.1"
+        - "Appendix E.1 (Negotiating with an Older Server) sentence on resumption version choice"
+        - "Appendix E.5 (Security Restrictions Related to Backward Compatibility) where TLS 1.0/1.1 deprecation is enforced"
+      Severity: Medium
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Appendix E describes backward compatibility of TLS 1.3 with older TLS/SSL versions, including how clients negotiate down to earlier versions and how they use tickets for resumption. The bis draft additionally forbids negotiating TLS 1.0 and 1.1, aligning TLS 1.3 with RFC 8996.
+
+- ScopeModel:
+  - Targets:
+    - TLS 1.3 clients that:
+      - Connect to servers not supporting TLS 1.3, and
+      - Possess resumption tickets from prior connections (potentially at TLS 1.0/1.1/1.2).
+    - TLS servers that negotiate “a version of TLS prior to TLS 1.3” (effectively TLS 1.2, once 1.0/1.1 are forbidden).
+    - Generic “implementations that negotiate the use of older versions of TLS”.
+  - Conditions:
+    - Section E.1 (based on RFC 8446 Appendix D.1) says: a TLS 1.3 client talking to an older server uses a TLS 1.3-style ClientHello with 0x0303 in legacy_version and the proper supported_versions extension. If the server replies with an older version, “the negotiation will proceed as appropriate for the negotiated protocol” and “a client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated.” 
+    - Section 1.2 of the bis draft introduces a new global rule: “Forbid negotiating TLS 1.0 and 1.1 as they are now deprecated by [RFC8996].”
+    - Appendix E.5 (in bis, per the problem statement) reiterates that SSL 2.0, SSL 3.0, TLS 1.0 and TLS 1.1 “MUST NOT be negotiated for any reason”, complementing the existing text that already bans SSL 2.0 and SSL 3.0 in RFC 8446. 
+    - Supported versions extension rules: implementations “MUST send this extension in the ClientHello containing all versions of TLS which they are prepared to negotiate,” minimally including 0x0304 and any earlier versions they still allow. 
+  - NotedAmbiguities:
+    - Scope of “A client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated”: the text does not restrict this to tickets from TLS 1.2+ sessions; it reads as applying to any prior version, including ones now forbidden.
+    - The document does not state explicitly what a conformant implementation should do with existing tickets from TLS 1.0/1.1 sessions once those versions are banned (e.g., are they unusable, or must they be treated as full handshakes?).
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Resumption-version SHOULD for all prior versions conflicts with new MUST-NOT on TLS 1.0/1.1 and leaves handling of old tickets undefined
+    - ScopeProblemType: Unbounded applicability of a resumption-version rule vs. global deprecation scope; missing conditional on allowable protocol versions
+    - Evidence:
+      - New requirement in the bis draft’s Section 1.2: “Forbid negotiating TLS 1.0 and 1.1 as they are now deprecated by [RFC8996].”
+      - Backward-compatibility text carried over from RFC 8446 Appendix D.1: after describing how a TLS 1.3 client negotiates with older servers, it says: “A client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated.” 
+      - Appendix E.5 in the bis draft (as described) extends the existing bans on SSL 2.0/3.0 to also say that SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1 “MUST NOT be negotiated for any reason,” building on language like “the security of SSL 3.0 … is considered insufficient … and it MUST NOT be negotiated for any reason” and similarly for SSL 2.0 in RFC 8446. 
+      - The supported_versions rules require a TLS 1.3 client to list “all versions of TLS which they are prepared to negotiate” in that extension. 
+    - DetailedReasoning:
+      1. The backward-compatibility guidance in E.1 is explicitly scoped to “a TLS 1.3 client who wishes to negotiate with servers that do not support TLS 1.3” and then, unconditionally, to “a client using a ticket for resumption” from such a server. For that client, the document says it “SHOULD initiate the connection using the version that was previously negotiated.” 
+      2. In the original RFC 8446, that advice was coherent: all prior versions (TLS 1.0, 1.1, 1.2) were allowed, so “previously negotiated version” could safely mean any of them, and the client could offer that version as its “native” or highest version when using a resumption ticket.
+      3. The bis draft, however, introduces a new global constraint: it “forbid[s] negotiating TLS 1.0 and 1.1 as they are now deprecated by [RFC8996]” (Section 1.2), and Appendix E.5 further states that SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1 “MUST NOT be negotiated for any reason,” analogously to the existing SSL 2.0/3.0 bans. 
+      4. For a client that has a resumption ticket from an old TLS 1.0 or 1.1 session, these two rules now pull in opposite directions: E.1’s SHOULD tells the client to “initiate the connection using the version that was previously negotiated” (i.e., 1.0 or 1.1), whereas the new global requirement says those versions MUST NOT be negotiated at all. Strictly following the MUST NOT requires the client never to be “prepared to negotiate” 1.0/1.1, and thus never to list them in supported_versions, contradicting the literal reading of “using the version that was previously negotiated” in such cases.
+      5. In BCP 14 terms, a “MUST NOT negotiate 1.0/1.1” requirement will override a conflicting SHOULD, but the document does not say that explicitly. An implementer following E.1 in isolation could incorrectly conclude that they should still send TLS 1.0/1.1 as the leading version when resuming against old servers, despite those versions now being forbidden by this same RFC and RFC 8996.
+      6. In addition, the document never states what a strictly conformant implementation is supposed to do with existing tickets from TLS 1.0/1.1 sessions once it adopts this RFC: it does not state that such tickets MUST be treated as non-resumable, nor that clients MUST instead initiate at TLS 1.2+ when using them. That leaves the scope of the resumption guidance ambiguous for legacy sessions.
+      7. This is fundamentally a scope error: E.1’s resumption-version rule is written as if it applies uniformly to all “previously negotiated” versions, but the rest of the bis document has narrowed the permitted version space to 1.2 and above. The condition “provided that previously negotiated version is still an allowed TLS version under this specification” is missing.
+      8. The simplest coherent interpretation—“initiate using the previously negotiated version, but only if that version is ≥ TLS 1.2; otherwise behave as for a first-time connection at the minimum allowed version”—is not stated anywhere. Implementers must infer it themselves, and different interpretations (e.g., still offering 1.0/1.1 to maximize interop) would lead to non-compliance with the new MUST NOT.
+      9. If implemented literally without constraining the scope of E.1, a TLS 1.3 client could try to resume TLS 1.0/1.1 sessions by offering those versions as its highest supported version, in contradiction to the bis text and RFC 8996, undermining the intended deprecation and potentially exposing users to weaker protocol versions.
+      10. Recommended fix: tighten the scope of E.1’s resumption rule and explicitly cover legacy tickets. For example, replace “A client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated” with something like: “A client using a ticket for resumption SHOULD, if the previously negotiated version is still permitted by this specification (i.e., TLS 1.2 or later), initiate the connection offering that version as its highest supported version. Tickets established using TLS 1.0 or TLS 1.1 MUST NOT be used for resumption by implementations of this specification; such connections MUST instead be initiated using TLS 1.2 or higher as if no resumption were possible.” This makes the scope explicit and resolves the internal conflict between the global ban and the resumption guidance.
+
+- ResidualUncertainties:
+  - The exact way the bis draft text in Appendix E.5 is worded for TLS 1.0/1.1 is not visible in the file snapshot (which shows the original SSL 2.0/3.0 bans), though Section 1.2 clearly signals an intent to forbid TLS 1.0/1.1 as well. If E.5 is not updated accordingly, there may be a second, more minor editorial inconsistency between Section 1.2 and Appendix E.5 that the editors might also wish to address.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following the bis-14 text literally does not make the protocol unimplementable or force insecure behavior. The “SHOULD initiate using the previously negotiated version” guidance in Appendix E.1 is now implicitly constrained by stronger “MUST NOT negotiate TLS 1.0/1.1” requirements, so a compliant implementation will simply ignore that SHOULD for obsolete versions; at worst this is a minor, low‑impact underspecification about how to treat legacy 1.0/1.1 resumption tickets.
+
+---
+
+2. **Causal Analysis**
+
+**Relevant pieces of text**
+
+- Appendix E.1 (from RFC 8446, carried into bis) says that when talking to an older server:
+
+  > “A client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated.” 
+
+- RFC 8996, which bis folds in, says:
+
+  > “TLS 1.0 MUST NOT be used.  Negotiation of TLS 1.0 from any version of TLS MUST NOT be permitted… Pragmatically, clients MUST NOT send a ClientHello with ClientHello.client_version set to {03,01} … Any party receiving a Hello message with the protocol version set to {03,01} MUST respond with a ‘protocol_version’ alert…”   
+
+  It also deprecates TLS 1.1, and bis explicitly says it “forbid[s] negotiating TLS 1.0 and 1.1 as they are now deprecated by [RFC8996].”
+
+- Appendix E.5 in RFC 8446 already contains the pattern “SSL 3.0 and SSL 2.0 … MUST NOT be negotiated for any reason.”   
+  Bis-14 extends this style of absolute prohibition to TLS 1.0 and TLS 1.1.
+
+So we have:
+
+- A **SHOULD** about which version to *initiate* with during resumption (previously negotiated version).
+- A **MUST NOT** about which protocol versions may actually be negotiated (TLS 1.0 and 1.1 forbidden).
+
+**What actually happens if you implement this?**
+
+Consider a client that:
+
+- Implements TLS 1.3 and TLS 1.2 only (typical post‑8996), and
+- Has some very old session tickets or session IDs from TLS 1.0/1.1 connections lying around.
+
+There are two natural ways an implementer might read E.1:
+
+---
+
+**Path A: Obey the MUST NOT; treat the SHOULD as conditional**
+
+Implementation behavior:
+
+- When resuming a session from a previous TLS 1.2 or 1.3 handshake, the client “initiates using the version previously negotiated”, i.e., that means TLS 1.2 or 1.3, which are still allowed. This matches E.1 and is fully compliant.
+- When resuming from an ancient TLS 1.0/1.1 session, the client *cannot* “initiate using the version previously negotiated” without violating the MUST NOT. So it instead:
+  - Either discards those old tickets / session IDs and does a fresh handshake offering only TLS 1.3/1.2; or
+  - Attempts resumption but *still* offers only TLS 1.3/1.2 in `supported_versions`, so the resumption state will not match and the server falls back to a full handshake.
+
+In either case:
+
+- No TLS 1.0/1.1 session is ever successfully resumed or negotiated, so the security invariant from RFC 8996 (“MUST NOT be used”) is preserved.
+- The only effect is that existing 1.0/1.1 tickets become unusable—resumption silently fails and you get a full (and secure) handshake instead.
+
+This is **fully executable** and preserves all protocol invariants. The “SHOULD initiate using the previously negotiated version” simply becomes “SHOULD, when that version is still permissible”; a SHOULD is explicitly weaker than a MUST, so there is no logical contradiction.
+
+---
+
+**Path B: Obey the SHOULD for obsolete versions and ignore the MUST NOT**
+
+Alternatively, an implementer might naively keep TLS 1.0/1.1 code around and decide to “be nice” to very old servers:
+
+- On resumption for a 1.0 session, the client sets its `ClientHello` version / `supported_versions` so that TLS 1.0 is offered and will be negotiated, satisfying the E.1 SHOULD.
+- But that now **directly violates** RFC 8996’s “TLS 1.0 MUST NOT be used. Negotiation … MUST NOT be permitted” and bis’s “forbid negotiating TLS 1.0 and 1.1”.
+
+This leads to insecure behavior (continuing to use banned protocol versions), but the cause is not that the spec makes it impossible to comply; it is that the implementer chose to satisfy a SHOULD at the expense of a MUST. Normatively, that’s incorrect: MUST overrides SHOULD.
+
+From the causal standpoint, though, the protocol is still mechanically coherent: if you ignore the new MUST NOTs, you can continue to negotiate TLS 1.0/1.1 just as before. That’s a *compliance* problem, not a contradiction that makes the algorithm unexecutable.
+
+---
+
+**Is there any path with no defined behavior?**
+
+The only ambiguous corner is:
+
+- “What exactly should a conformant implementation do with stored TLS 1.0/1.1 resumption state?”
+
+Today’s text does not spell this out. However, nothing else in the protocol *depends* on those old tickets working. If a client:
+
+- Either never attempts to resume them, or
+- Attempts but always fails the resumption and does a fresh handshake,
+
+no security invariant is broken and interoperability degrades only in the sense that a micro‑optimization (resumption) is lost for those ancient sessions.
+
+No handshake paths are left without a defined next step, and no role is asked to send or process an impossible message. The protocol still works.
+
+---
+
+3. **Problem Classification**
+
+This is, at most, a **minor causal underspecification**, not a fundamental causal inconsistency:
+
+- The main protocol is fully implementable and secure if you follow the MUST NOTs from RFC 8996 and bis.
+- The E.1 resumption guidance (“SHOULD initiate using the version previously negotiated”) is now implicitly constrained to versions that are still allowed to be negotiated (TLS 1.2 and above). That restriction is not written explicitly, but any implementer who obeys the MUST NOTs will naturally do the right thing.
+- The only behavior truly left undefined is how to treat legacy 1.0/1.1 tickets; but any reasonable choice (discarding or treating them as non‑resumable) is compatible with the rest of the spec and has no security downside.
+
+So there is no state-machine deadlock, unimplementable step, or crypto computation that cannot be satisfied.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the WG wants to remove the ambiguity and guide implementers more clearly, a small, local tweak would suffice. For example, in Appendix E.1:
+
+- Change:
+
+  > “A client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated.”
+
+- To something like:
+
+  > “A client using a ticket for resumption SHOULD, **if that protocol version is still permitted (e.g., TLS 1.2 or greater)**, initiate the connection using the version that was previously negotiated. If the previous version is no longer permitted (for example, TLS 1.0 or 1.1), the client MUST NOT negotiate that version and SHOULD treat the ticket as non‑resumable.”
+
+This explicitly aligns E.1 with the prohibitions in RFC 8996 and Appendix E.5, without changing any wire behavior.
+
+---
+
+5. **Non-Issues**
+
+- There is no requirement anywhere that a client *must* continue to resume TLS 1.0/1.1 sessions; resumption is an optimization. Dropping resumption for those versions does not violate any other MUSTs.
+- There is no requirement for servers to accept or honor old 1.0/1.1 tickets once those versions are forbidden; servers may simply ignore or reject them and proceed with a TLS 1.2/1.3 handshake.
+
+So while the text could be clearer, the current draft does not create a mechanical or security breakage if implementers obey the stronger MUST NOTs and treat the E.1 sentence as guidance conditioned on protocol versions that remain allowed.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: The draft tightens TLS 1.3 requirements, explicitly forbids negotiating TLS 1.0 and 1.1 in line with RFC 8996, but Appendix E still describes version negotiation and resumption behavior with “older versions” including a recommendation about which protocol version to use when resuming via tickets.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Resumption-version “SHOULD” conflicts with “MUST NOT negotiate TLS 1.0/1.1”
+    - Description:
+      The document announces as a technical change that it will “[f]orbid negotiating TLS 1.0 and 1.1 as they are now deprecated by [RFC8996].”    
+      Appendix E.5 then makes this concrete, stating that “SSL 2.0 [SSL2], SSL 3.0 [RFC6101], TLS 1.0 [RFC2246], and TLS 1.1 [RFC4346] … MUST NOT be negotiated for any reason.”    
+      However, Appendix E.1 retains the guidance that “A client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated.”    
+      For a client holding an old resumption ticket from a TLS 1.0 or 1.1 session, strictly following E.1 would mean initiating the new connection using TLS 1.0 or 1.1, which this same document now forbids. There is no text limiting the scope of that “SHOULD” to versions that remain permitted (TLS 1.2 or higher), so a fully literal reading yields a case where an implementation cannot simultaneously satisfy both requirements: obeying the E.5 MUST NOT necessarily entails violating the E.1 SHOULD for those historical tickets. While RFC 2119 semantics mean the stronger MUST NOT should override a conflicting SHOULD, the specification should not rely on implementers inferring an unstated exception; here the conflict is internal to the same document and concerns a security-sensitive choice (whether to reuse a deprecated protocol version). A minimal correction would be to qualify E.1 along the lines of “SHOULD initiate using the previously negotiated version, if that version is still allowed (i.e., TLS 1.2 or higher), otherwise it MUST NOT attempt resumption using such a ticket and SHOULD initiate with at least TLS 1.2 instead.” Similarly, it would be appropriate to state explicitly that tickets or sessions associated with TLS 1.0 or 1.1 are not to be used for resumption.
+    - KeyTextSnippets:
+      - “*Forbid negotiating TLS 1.0 and 1.1 as they are now deprecated by [RFC8996].*”  
+      - “*The security of SSL 2.0 [SSL2], SSL 3.0 [RFC6101], TLS 1.0 [RFC2246], and TLS 1.1 [RFC4346] are considered insufficient for the reasons enumerated in [RFC6176], [RFC7568], and [RFC8996] and they MUST NOT be negotiated for any reason.*”  
+      - “*A client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated.*”  
+    - Impact:
+      As written, a strictly literal implementer sees two incompatible directives for the TLS version to use when resuming from older (pre‑TLS 1.2) sessions: “SHOULD” reuse the old version vs. “MUST NOT” ever negotiate TLS 1.0/1.1. Most careful implementers will resolve this in favor of the MUST NOT, but the lack of an explicit carve‑out for deprecated versions can cause confusion and divergent behaviors around handling legacy tickets, and in the worst case might encourage continued use of TLS 1.0/1.1 for resumption, contrary to the deprecation intent and security guidance.
+
+- IfNoRealIssue: N/A
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section E discusses how TLS 1.3 negotiates with older TLS/SSL versions, including advice for resumption and version choice when connecting to legacy servers, while the bis draft elsewhere incorporates the deprecation of TLS 1.0 and 1.1 per RFC 8996.
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Resumption version advice vs TLS 1.0/1.1 deprecation
+    - Description: Section E.1 repeats the RFC 8446 text that “A client using a ticket for resumption SHOULD initiate the connection using the version that was previously negotiated.” This reflects the older guidance in TLS 1.0–1.2 that “whenever a client already knows the highest protocol version known to a server (for example, when resuming a session), it SHOULD initiate the connection in that native protocol.” However, the bis document explicitly incorporates RFC 8996’s deprecation of TLS 1.0 and 1.1 and states that negotiating those versions MUST NOT be permitted, e.g., RFC 8996 says “TLS 1.0 MUST NOT be used. Negotiation of TLS 1.0 from any version of TLS MUST NOT be permitted… clients MUST NOT send a ClientHello with client_version set to {03,01},” and similarly for TLS 1.1. If a client holds a resumption ticket from an old TLS 1.0 or 1.1 session, obeying E.1 literally would mean initiating with TLS 1.0/1.1, which directly contradicts the updated MUST NOT in RFC 8996 and in the bis text that adopts it. A strictly compliant implementation that follows the deprecation (by never offering TLS 1.0/1.1) is therefore forced to violate the E.1 SHOULD for those historical tickets, and the draft does not explicitly say that the “use the previously negotiated version” rule only applies when that version is still permitted (i.e., ≥ TLS 1.2). This is an inconsistency (between E.1 and the deprecation requirements) and an underspecification (no clear guidance on how to handle existing 1.0/1.1 tickets: e.g., treating them as non-resumable and always initiating at 1.2 or 1.3). I agree with the router’s hypothesis and would recommend clarifying E.1 to scope that SHOULD to versions not prohibited elsewhere (e.g., “if that version is still allowed by this specification”) and/or to state explicitly that TLS 1.0/1.1 resumption tickets MUST NOT be used.
+    - EntitiesInvolved: ["draft-ietf-tls-rfc8446bis Section 1.2 (forbidding TLS 1.0/1.1)", "draft-ietf-tls-rfc8446bis Appendix E.1 resumption sentence", "RFC 8446 Appendix D.1 (original resumption wording)", "RFC 5246 Appendix E.1 (resumption version guidance)", "RFC 8996 Sections 3–4 (TLS 1.0/1.1 MUST NOT be negotiated)"]
+    - CrossRefsUsed: ["RFC8446 Appendix D.1 text showing the resumption SHOULD for previously negotiated version", "RFC5246 Appendix E.1 compatibility guidance for resumption version", "RFC8996 prohibition on negotiating TLS 1.0/1.1 and on sending ClientHello/ServerHello with those versions"]
+    - Confidence: High
+- IfNoIssues:
+  - Comment: Not applicable; one high-likelihood cross-RFC/registry issue identified.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+
+Vector Stores Used: vs_6958ce993c388191a7c9f32559e3b152
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This section is informative not normative.  It describes how well the
+   protocol satisfies the agreed requirements for a more Accurate ECN
+   feedback protocol [RFC7560].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7560
+  Reference Type: TEXT
+  Reference Value (keywords/section): Accurate ECN feedback protocol
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '1'
+  Match Type: Exact match
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7560:
+  Search Keywords: 'Accurate ECN feedback protocol'
+  Result: Found in Section 4
+  Section Title: Requirements
+  Content Preview:    The requirements of the accurate ECN feedback protocol are to have
+   fairly accurate (not necess...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Accuracy:  From each ACK, the Data Sender can infer the number of new
+      CE marked segments since the previous ACK.  This provides better
+      accuracy on CE feedback than Classic ECN.  In addi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Overhead:  The AccECN scheme is divided into two parts.  The
+      essential feedback part reuses the 3 flags already assigned to ECN
+      in the TCP header.  The supplementary feedback part adds ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Ordering:  The order in which marks arrive at the Data Receiver is
+      preserved in AccECN feedback, because the Data Receiver is
+      expected to send an ACK immediately whenever a different ma...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Timeliness:  While the same ECN markings are arriving continually at 
+      the Data Receiver, it can defer ACKs as TCP does normally, but it
+      will immediately send an ACK as soon as a differe...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Timeliness vs Overhead:  Change-Triggered ACKs are intended to enable
+      latency-sensitive uses of ECN feedback by capturing the timing of
+      transitions but not wasting resources while the s...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Resilience:  All information is provided based on counters.
+      Therefore if ACKs are lost, the counters on the first ACK
+      following the losses allows the Data Sender to immediately recover
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Resilience against Bias:  Because feedback is based on repetition of
+      counters, random losses do not remove any information, they only
+      delay it.  Therefore, even though some ACKs are cha...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Resilience vs Overhead:  If space is limited in some segments
+      (e.g., because more options are needed on some segments, such as
+      the SACK option after loss), the Data Receiver can send Ac...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Resilience vs Timeliness and Ordering:  Ordering information and the
+      timing of transitions cannot be communicated in three cases: i)
+      during ACK loss; ii) if something on the path strips...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Complexity:  An AccECN implementation solely involves simple counter
+      increments, some modulo arithmetic to communicate the least
+      significant bits and allow for wrap, and some heuristics...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Backward Compatibility:  If only one endpoint supports the AccECN
+      scheme, it will fall-back to the most advanced ECN feedback scheme
+      supported by the other end.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      If AccECN Options are stripped by a middlebox, AccECN still
+      provides basic congestion feedback in the ACE field.  Further,
+      AccECN can be used to detect mangling of the IP ECN field;
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Forward Compatibility:  The behaviour of endpoints and middleboxes is
+      carefully defined for all reserved or currently unused codepoints
+      in the scheme.  Then, the designers of security d...
+################################################################################

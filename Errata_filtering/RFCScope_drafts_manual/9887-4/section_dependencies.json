@@ -1,0 +1,167 @@
+[
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "3.5",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "4.5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "7.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "10.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "5.4.3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "4.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "3.5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "5.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "10.5.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "6.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "4.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

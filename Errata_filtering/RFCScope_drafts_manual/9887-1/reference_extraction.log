@@ -1,0 +1,113 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-1/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   "The Terminal Access Controller Access-Control System Plus (TACACS+)
+   Protocol" [RFC8907] provides device administration for routers,
+   network access servers, and other networked computing devi...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8907
+  Reference Type: TEXT
+  Reference Value (keywords/section): TACACS+ Protocol
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8907:
+  Search Keywords: 'TACACS+ Protocol'
+  Result: Found in Section 4
+  Section Title: TACACS+ Packets and Sessions
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   The content of the protocol is highly sensitive and requires secure
+   transport to safeguard a deployment.  However, TACACS+ lacks
+   effective confidentiality, integrity, and authentication of th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.5
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8907
+  Reference Type: TEXT
+  Reference Value (keywords/section): security mechanisms
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '4.5'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 3.5
+  Section Title: TLS PSK Authentication
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8907:
+  Search Keywords: 'security mechanisms'
+  Result: Found in Section 5
+  Section Title: Authentication
+  Content Preview:    Authentication is the action of determining who a user (or entity)
+   is.  Authentication can tak...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   To address these deficiencies, this document updates the TACACS+
+   protocol to use TLS 1.3 authentication and encryption [RFC8446], and
+   obsoletes the use of TACACS+ obfuscation mechanisms.  The...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: TEXT
+  Reference Value (keywords/section): updates TACACS+ protocol to use TLS 1.3 authentication and encryption
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS 1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9887:
+  Search Keywords: 'updates TACACS+ protocol to use TLS 1.3 authentication and encryption'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    "The Terminal Access Controller Access-Control System Plus (TACACS+)
+   Protocol" [RFC8907] provi...
+---------------------------------------------------------------------------
+

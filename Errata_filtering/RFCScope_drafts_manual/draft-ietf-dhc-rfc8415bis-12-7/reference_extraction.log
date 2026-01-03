@@ -1,0 +1,445 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This section describes various program and networking constants used
+   by DHCP.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The following multicast addresses are used by DHCPv6:
+
+   All_DHCP_Relay_Agents_and_Servers (ff02::1:2)
+      A link-scoped multicast address used by a client to communicate
+      with neighboring ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   All_DHCP_Servers (ff05::1:3)
+      A site-scoped multicast address used by a relay agent to
+      communicate with servers, either because the relay agent wants to
+      send messages to all server...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST listen for DHCP messages on UDP port 546.  Servers and
+   relay agents MUST listen for DHCP messages on UDP port 547. 
+   Therefore, clients MUST send DHCP messages to UDP destination ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 547
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 547
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '547'
+  Match Type: Fuzzy match (score: 50.0)
+  Result: Matched to Section 4
+  Section Title: Terminology
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '547'
+  Match Type: Fuzzy match (score: 50.0)
+  Result: Matched to Section 4
+  Section Title: Terminology
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   It is RECOMMENDED for clients to send messages from UDP source port
+   546, and servers and relay agents from UDP source port 547.  However,
+   clients, servers, and relay agents MAY send DHCP mess...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): UDP source port
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8357
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-dhc-rfc8415bis-12:
+  Search Keywords: 'UDP source port'
+  Result: Found in Section 7.2
+  Section Title: UDP Ports
+  Content Preview:    Clients MUST listen for DHCP messages on UDP port 546.  Servers and
+   relay agents MUST listen f...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8357:
+  Looking for Section: '1'
+  Match Type: Exact match
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP defines the following message types.  The formats of these
+   messages are provided in Sections 8 and 9.  Additional message types
+   have been defined and may be defined in the future; see
+  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 9
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '8'
+  Match Type: Exact match
+  Result: Matched to Section 8
+  Section Title: Client/Server Message Formats
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '9'
+  Match Type: Exact match
+  Result: Matched to Section 9
+  Section Title: Relay Agent/Server Message Formats
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   ADVERTISE (2)             A server sends an Advertise message to
+                             indicate that it is available for DHCP
+                             service, in response to a Solicit m...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   REQUEST (3)               A client sends a Request message to request
+                             configuration parameters, including
+                             addresses and/or delegated prefix...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   CONFIRM (4)               A client sends a Confirm message to any
+                             available server to determine whether the
+                             addresses it was assigned are s...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RENEW (5)                 A client sends a Renew message to the
+                             server that originally provided the
+                             client's leases and configuration
+     ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   REPLY (7)                 A server sends a Reply message containing
+                             assigned leases and configuration
+                             parameters in response to a Solicit,
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RELEASE (8)               A client sends a Release message to the
+                             server that assigned leases to the client
+                             to indicate that the client wil...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DECLINE (9)               A client sends a Decline message to a
+                             server to indicate that the client has
+                             determined that one or more addresse...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RECONFIGURE (10)          A server sends a Reconfigure message to a
+                             client to inform the client that the server
+                             has new or updated configur...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   INFORMATION-REQUEST (11)  A client sends an Information-request
+                             message to a server to request
+                             configuration parameters without the
+       ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RELAY-REPL (13)           A server sends a Relay-reply message to a
+                             relay agent containing a message that the
+                             relay agent delivers to a cli...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+                             The server encapsulates the client message
+                             as an option in the Relay-reply message,
+                             which the relay agent extract...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP makes extensive use of options in messages; some of these are
+   defined later, in Section 21.  Additional options are defined in
+   other documents or may be defined in the future (see [RFC72...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7227
+  Reference Type: TEXT
+  Reference Value (keywords/section): guidance on new option definitions
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21'
+  Match Type: Exact match
+  Result: Matched to Section 21
+  Section Title: DHCP Options
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7227:
+  Search Keywords: 'guidance on new option definitions'
+  Result: Found in Section 14
+  Section Title: Considerations for Creating New Formats
+  Content Preview:    When defining new options, one specific consideration to evaluate is
+   whether or not options of...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP uses status codes to communicate the success or failure of
+   operations requested in messages from clients and servers and to
+   provide additional information about the specific cause of the...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the Status Code option (see Section 21.13) does not appear in a
+   message in which the option could appear, the status of the message
+   is assumed to be Success.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The table of values (Table 1) is used to describe the message
+   transmission behavior of clients and servers.  Some of the values are
+   adjusted by a randomization factor and backoffs (see Sectio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 15
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 14.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '15'
+  Match Type: Exact match
+  Result: Matched to Section 15
+  Section Title: Reliability of Client-Initiated Message Exchanges
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '14.1'
+  Match Type: Exact match
+  Result: Matched to Section 14.1
+  Section Title: Rate Limiting
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   All time values for lifetimes, T1, and T2 are unsigned 32-bit
+   integers and are expressed in units of seconds.  The value 0xffffffff
+   is taken to mean "infinity" when used as a lifetime (as in ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC4861
+  Reference Type: TEXT
+  Reference Value (keywords/section): infinity lifetime
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4861:
+  Search Keywords: 'infinity lifetime'
+  Result: Found in Section 12
+  Section Title: Renumbering Considerations
+  Content Preview:    The Neighbor Discovery protocol together with IPv6 Address
+   Autoconfiguration [ADDRCONF ] provi...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Setting the valid lifetime of an address or a delegated prefix to
+   0xffffffff ("infinity") amounts to a permanent assignment of an
+   address or delegation to a client and should only be used in ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Care should be taken in setting T1 or T2 to 0xffffffff ("infinity").
+   A client will never attempt to extend the lifetimes of any addresses
+   in an IA with T1 set to 0xffffffff.  A client will ne...
+################################################################################

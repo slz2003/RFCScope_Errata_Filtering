@@ -1,0 +1,670 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section 11
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section 11
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/corpus.json
+
+Extracting references from section 11 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/reference_extraction.log
+Focusing on section 11 and its children.
+Processing section 11. DHCP Unique Identifier (DUID)
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 1/3 [02:00<04:00, 120.35s/it]Splitting content into chunks:  67%|██████▋   | 2/3 [08:40<04:44, 284.68s/it]Splitting content into chunks: 100%|██████████| 3/3 [08:40<00:00, 173.36s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each DHCP client and server has a DUID.  DHCP servers use DUIDs to
+   identify clients for the selection of configuration parameters and in
+   the association of IAs with clients.  DHCP clients use...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC6939
+  Reference Type: TEXT
+  Reference Value (keywords/section): Client Link-Layer Address option
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC7844
+  Reference Type: TEXT
+  Reference Value (keywords/section): Anonymity Profiles for DHCP Clients
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6939:
+  Search Keywords: 'Client Link-Layer Address option'
+  Result: Found in Section 4
+  Section Title: DHCPv6 Client Link-Layer Address Option
+  Content Preview:    The format of the DHCPv6 Client Link-Layer Address option is shown
+   below.
+
+      0            ...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7844:
+  Search Keywords: 'Anonymity Profiles for DHCP Clients'
+  Result: Found in Section 5
+  Section Title: Operational Considerations
+  Content Preview:    The anonymity profiles have the effect of hiding the client identity
+   from the DHCP server.  Th...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The DUID is carried in an option because it may be variable in length
+   and because it is not required in all DHCP messages.  The DUID is
+   designed to be unique across all DHCP clients and serve...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): DUID
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7844
+  Reference Type: TEXT
+  Reference Value (keywords/section): change its DUID
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-dhc-rfc8415bis-12:
+  Search Keywords: 'DUID'
+  Result: Found in Section 11.1
+  Section Title: DUID Contents
+  Content Preview:    A DUID consists of a 2-octet type code represented in network byte
+   order, followed by a variab...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7844:
+  Search Keywords: 'change its DUID'
+  Result: Found in Section 3.9
+  Section Title: UUID/GUID-Based Client Machine Identifier Option
+  Content Preview:    The UUID/GUID-based (where "UUID" means "Universally Unique
+   Identifier" and "GUID" means "Glob...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The motivation for having more than one type of DUID is that the DUID
+   must be globally unique and must also be easy to generate.  The sort
+   of globally unique identifier that is easy to genera...
+################################################################################
+Warning: Section 11 not found. Processing all sections.
+Processing section 11.1. DUID Contents
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:18<00:18, 18.42s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:35<00:00, 17.40s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:35<00:00, 17.55s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DUID consists of a 2-octet type code represented in network byte
+   order, followed by a variable number of octets that make up the
+   actual identifier.  The length of the DUID (not including th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6355
+  Reference Type: TEXT
+  Reference Value (keywords/section): Universally Unique Identifier (UUID)
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6355:
+  Search Keywords: 'Universally Unique Identifier (UUID)'
+  Result: Found in Section 3
+  Section Title: UUID Considerations
+  Content Preview:    Although many UUIDs are in use today, not all UUIDs meet DHCP's
+   requirements (see Section 9 of...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Formats for the variable field of the DUID for the first three of the
+   above types are shown below.  The fourth type, DUID-UUID [RFC6355],
+   can be used in situations where there is a UUID store...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6355
+  Reference Type: TEXT
+  Reference Value (keywords/section): DUID-UUID
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6355:
+  Search Keywords: 'DUID-UUID'
+  Result: Found in Section 4
+  Section Title: DUID-UUID Format
+  Content Preview:    The DUID-UUID is carried within Client Identifier or Server
+   Identifier options.  It has the fo...
+---------------------------------------------------------------------------
+
+Processing section 11.2. DUID Based on Link-Layer Address Plus Time (DUID-LLT)
+Splitting content into chunks:   0%|          | 0/7 [00:00<?, ?it/s]Splitting content into chunks:  14%|█▍        | 1/7 [00:17<01:47, 17.87s/it]Splitting content into chunks: 100%|██████████| 7/7 [00:17<00:00,  2.55s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This type of DUID consists of a 2-octet type field containing the
+   value 1, a 2-octet hardware type code, and 4 octets containing a time
+   value, followed by the link-layer address of any one ne...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-HARDWARE-TYPES
+  Reference Type: TEXT
+  Reference Value (keywords/section): Hardware Types
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC2464
+  Reference Type: TEXT
+  Reference Value (keywords/section): Transmission of IPv6 Packets over Ethernet Networks
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC2464:
+  Search Keywords: 'Transmission of IPv6 Packets over Ethernet Networks'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    This document specifies the frame format for transmission of IPv6
+   packets and the method of fo...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+                         Figure 4: DUID-LLT Format 
+   The choice of network interface can be completely arbitrary, as long
+   as that interface provides a globally unique link-layer address for
+   th...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients and servers using this type of DUID MUST store the DUID-LLT
+   in stable storage and MUST continue to use this DUID-LLT even if the
+   network interface used to generate the DUID-LLT is rem...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients and servers that use this DUID SHOULD attempt to configure
+   the time prior to generating the DUID, if that is possible, and MUST
+   use some sort of time source (for example, a real-time ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This method of DUID generation is recommended for all general-purpose
+   computing devices such as desktop computers and laptop computers, and
+   also for devices such as printers, routers, and so ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   It is possible that this algorithm for generating a DUID could result
+   in a client identifier collision.  A DHCP client that generates a
+   DUID-LLT using this mechanism MUST provide an administr...
+################################################################################
+Processing section 11.3. DUID Assigned by Vendor Based on Enterprise Number (DUID-EN)
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks:  25%|██▌       | 1/4 [00:00<00:02,  1.19it/s]Splitting content into chunks:  50%|█████     | 2/4 [00:01<00:01,  1.22it/s]Splitting content into chunks: 100%|██████████| 4/4 [00:15<00:00,  4.51s/it]Splitting content into chunks: 100%|██████████| 4/4 [00:15<00:00,  3.76s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The vendor assigns this form of DUID to the device.  This DUID
+   consists of the 4-octet vendor's registered Private Enterprise Number
+   as maintained by IANA [IANA-PEN ] followed by a unique ide...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-PEN
+  Reference Type: TEXT
+  Reference Value (keywords/section): Private Enterprise Numbers
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The source of the identifier is left up to the vendor defining it,
+   but each identifier part of each DUID-EN MUST be unique to the device
+   that is using it, and MUST be assigned to the device n...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-PEN
+  Reference Type: TEXT
+  Reference Value (keywords/section): Private Enterprise Numbers
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+      +---+---+---+---+---+---+---+---+
+      | 0 | 2 | 0 | 0 |126|217| 12|192|
+      +---+---+---+---+---+---+---+---+
+      |132|211| 3 | 0 | 9 | 18|
+      +---+---+---+---+---+---+
+
+               ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This example includes the 2-octet type of 2 and the Enterprise Number
+   (32473) (from [RFC5612]), followed by 8 octets of identifier data
+   (0x0CC084D303000912).
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5612
+  Reference Type: TEXT
+  Reference Value (keywords/section): Enterprise Number
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5612:
+  Search Keywords: 'Enterprise Number'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview: 
+
+   RFC 1065 [RFC1065] (later superceded by [RFC1155] and [RFC2578])
+   created a subtree (arc) of ...
+---------------------------------------------------------------------------
+
+Processing section 11.4. DUID Based on Link-Layer Address (DUID-LL)
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks:  25%|██▌       | 1/4 [00:01<00:04,  1.35s/it]Splitting content into chunks: 100%|██████████| 4/4 [00:01<00:00,  2.95it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This type of DUID consists of 2 octets containing a DUID type of 3
+   and a 2-octet network hardware type code, followed by the link-layer
+   address of any one network interface that is permanentl...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-HARDWARE-TYPES
+  Reference Type: TEXT
+  Reference Value (keywords/section): Hardware Types
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC2464
+  Reference Type: TEXT
+  Reference Value (keywords/section): Transmission of IPv6 Packets over Ethernet Networks
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The choice of network interface can be completely arbitrary, as long
+   as that interface provides a unique link-layer address and is
+   permanently attached to the device on which the DUID-LL is b...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DUID-LL is recommended for devices that have a permanently
+   connected network interface with a link-layer address and do not have
+   nonvolatile, writable stable storage.  A DUID-LL SHOULD NOT ...
+################################################################################
+Processing section 11.5. DUID Based on Universally Unique Identifier (DUID-UUID)
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:18<00:18, 18.63s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:18<00:00,  9.32s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This type of DUID consists of 16 octets containing a 128-bit UUID.
+   [RFC6355] details when to use this type and how to pick an
+   appropriate source of the UUID.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6355
+  Reference Type: TEXT
+  Reference Value (keywords/section): when to use this type and how to pick an appropriate source of the UUID
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6355:
+  Search Keywords: 'when to use this type and how to pick an appropriate source of the UUID'
+  Result: Found in Section 3
+  Section Title: UUID Considerations
+  Content Preview:    Although many UUIDs are in use today, not all UUIDs meet DHCP's
+   requirements (see Section 9 of...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 11 only.
+Focusing on section 11 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/section_dependencies.json
+
+Creating prompts for section 11...
+Creating expert prompt for section 11 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/focus_section_11_prompt_expert.md
+Expert prompt token count: 66,690 tokens
+Creating router prompt for section 11...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/focus_section_11_prompt_router.md
+Router prompt token count: 65,174 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section 11
+================================================================================
+2026-01-03 03:00:54,167 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:00:54,168 - __main__ - INFO - Router prompt length: 309189 chars
+2026-01-03 03:00:54,168 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:00:54,168 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:00:54,168 - __main__ - INFO - ================================================================================
+2026-01-03 03:00:54,283 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:00:54,283 - __main__ - INFO - User prompt length: 309189 chars
+2026-01-03 03:01:38,292 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:01:38,505 - __main__ - INFO - Router analysis complete. Bug likelihood: Low
+2026-01-03 03:01:38,505 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:01:38,505 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:01:38,505 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:01:38,505 - __main__ - INFO - ================================================================================
+2026-01-03 03:01:38,506 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 03:01:38,824 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 03:01:38,824 - __main__ - INFO - User prompt length: 312111 chars
+2026-01-03 03:01:38,824 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:03:15,343 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:03:15,374 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 03:03:15,374 - __main__ - INFO - 
+Invoking expert: Quantitative (MEDIUM)
+2026-01-03 03:03:15,489 - __main__ - INFO - Invoking expert Quantitative with manual prompt...
+2026-01-03 03:03:15,489 - __main__ - INFO - User prompt length: 311777 chars
+2026-01-03 03:03:15,489 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:04:28,585 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:04:28,588 - __main__ - INFO - Expert Quantitative analysis complete
+2026-01-03 03:04:28,588 - __main__ - INFO - 
+Invoking expert: Deontic (MEDIUM)
+2026-01-03 03:04:28,744 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 03:04:28,744 - __main__ - INFO - User prompt length: 312096 chars
+2026-01-03 03:04:28,744 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:05:49,444 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:05:49,448 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 03:05:49,448 - __main__ - INFO - 
+Invoking expert: Structural (HIGH)
+2026-01-03 03:05:49,568 - __main__ - INFO - Invoking expert Structural with manual prompt...
+2026-01-03 03:05:49,568 - __main__ - INFO - User prompt length: 311761 chars
+2026-01-03 03:05:49,568 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:06:43,878 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:06:43,881 - __main__ - INFO - Expert Structural analysis complete
+2026-01-03 03:06:43,881 - __main__ - INFO - 
+Invoking expert: CrossRFC (MEDIUM)
+2026-01-03 03:06:44,007 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 03:06:44,007 - __main__ - INFO - User prompt length: 314086 chars
+2026-01-03 03:06:44,007 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:07:43,330 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:07:43,332 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 03:07:43,336 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/test_analysis.md
+2026-01-03 03:07:43,342 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/test_analysis.json
+2026-01-03 03:07:43,342 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 11 defines the DHCPv6 Unique Identifier (DUID) concept, the allowed DUID types (LLT, EN, LL, UUID), and detailed formats and requirements for each, including uniqueness, stability, and privacy interactions.
+Overall Bug Likelihood: Low
+
+Dimensions:
+  - Temporal: LOW - No state machines or event ordering; time fields are absolute values, not protocol sequencing.
+  - ActorDirectionality: LOW - Roles (client/server) only matter in who generates/uses DUIDs, but no directional flows to analyze here.
+  - Scope: MEDIUM - Requirements like “each client and server has exactly one DUID” vs. allowing DUID changes, and per-device vs per-interface usage, raise potential scope/interpretation questions.
+  - Causal: LOW - Implementing as written mainly affects uniqueness and privacy characteristics, but there is no clear causal chain that obviously breaks interoperability.
+  - Quantitative: MEDIUM - DUID length limits, composition (type + identifier), and the UUID size could theoretically be misinterpreted; worth checking consistency of sizes and ranges.
+  - Deontic: MEDIUM - Several MUST/SHOULD/MUST NOTs (stability of DUID, storage requirements, use in privacy contexts) interact and could be slightly at odds, especially with RFC 7844.
+  - Structural: HIGH - There are formal diagrams and tables for DUID formats, and they must align with the generic DUID definition and external RFCs (e.g., RFC 6355).
+  - CrossRFC: MEDIUM - References to RFC 6355 (DUID-UUID), RFC 7844 (anonymity profile), RFC 6939, RFC 2464, IANA hardware types, and PEN registry all need to be consistent with how those specs define fields and behaviors.
+  - Terminology: LOW - Terminology (DUID, DUID-LLT/EN/LL/UUID) is consistent with existing RFCs; no apparent naming confusion.
+  - Boundary: LOW - Edge cases (e.g., devices without stable storage, maximum identifier length) are mentioned, but mostly covered; little evidence of a critical missing edge-case rule.
+
+Candidate Issues: 2
+
+  Issue 1:
+    Type: Underspecification
+    Label: Tension between “exactly one DUID” requirement and allowance to change DUID per RFC 7844
+    Relevant Dimensions: Deontic, Scope, CrossRFC
+    Sketch: Section 4.2/11 first assert that each DHCP client and server has “exactly one DUID” and that it “SHO...
+
+  Issue 2:
+    Type: Underspecification
+    Label: Possible ambiguity in DUID-UUID length description vs generic DUID definition
+    Relevant Dimensions: Structural, Quantitative, CrossRFC
+    Sketch: Section 11.1 states that a DUID is a 2‑octet type plus a variable-length identifier (1–128 bytes, no...
+
+Response ID: resp_0aa1828e48e0dc0e006958ccb76fbc8190986ec6e3a5fd2430
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 11 defines what a DUID is, its allowed types (LLT, EN, LL, UUID), and the intended properties of a DUID (global uniqueness, stability), with type-specific generation/storage rules and one explicit exception for clients following RFC 7844 anonymity profiles.
+
+- ScopeModel:
+  - Targets:
+    - DUID as an abstract identifier for “DHCP participants”, concretely scoped to DHCP clients and servers (not relays).
+    - Specific DUID-type formats:
+      - Type 1: D...
+
+## Quantitative Expert Analysis
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary: Section 11 defines the DHCPv6 Unique Identifier (DUID) as a 2‑octet type plus a variable-length identifier (1–128 octets), and then specifies four concrete DUID types (LLT, EN, LL, UUID) with detailed bit/byte layouts, size limits, and handling rules, including stability and use with privacy mechanisms.
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: No quantitative issues in DUID formats and lengths
+    - Description: The DUID framework and ...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 11 defines the DUID concept, its allowed types, and normative requirements on generation, storage, uniqueness, stability, and limited privacy-related behavior (via the RFC 7844 reference). Other parts of the draft rely on the DUID as the key for bindings and client/server identification.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: DUID uniqueness/stability vs RFC 7844 anonymity profiles
+    - Description:
+      T...
+
+## Structural Expert Analysis
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Section 11 defines the generic DUID structure and four concrete DUID types (LLT, EN, LL, UUID), with bitfield diagrams and an example, and Sections 21.2–21.3 define how DUIDs are carried in Client/Server Identifier options. RFC 6355 is referenced for the DUID-UUID format.
+- OverallBugLikelihood: Low
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: DUID-UUID prose length vs generic DUID definition
+    - LocationHint: Section 11.1 and Section ...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 11 of rfc8415bis defines the DHCPv6 Unique Identifier (DUID), its types and formats (LLT, EN, LL, UUID), and their use in Client/Server Identifier options, with references to external registries (IANA hardware types, IANA Private Enterprise Numbers) and related RFCs (RFC6355 for DUID‑UUID, RFC7844 for anonymity, RFC6939 for link-layer address, RFC2464 for Ethernet addresses).
+- OverallCrossRFCLikelihood: Low
+- Issues:
+  - Issue-1:
+    - BugType: Underspe...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Low
+Experts: ✓ 5 invoked
+  Dimensions: Scope, Quantitative, Deontic, Structural, CrossRFC
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section 11
+################################################################################
+

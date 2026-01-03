@@ -1,0 +1,153 @@
+################################################################################
+Processing: RFC 9887, Section 7
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for RFC 9887, Section 7
+================================================================================
+Preparing RFC 9887 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7
+
+Extracting references from the references section of the RFC.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/references.json
+
+Parsing the contents of the RFC.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/corpus.json
+
+Extracting references from section 7 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/reference_extraction.log
+Focusing on section 7 and its children.
+Processing section 7. IANA Considerations
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:03<00:03,  3.46s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:03<00:00,  1.73s/it]
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   IANA has allocated the following new well-known system in the
+   "Service Name and Transport Protocol Port Number Registry" (see
+   <https://www.iana.org/assignments/service-names-port-numbers >). ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Well-Known TCP/IP Port Number
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Service Name:  tacacss
+   Port Number:  300
+   Transport Protocol:  TCP
+   Description:  TLS Secure Login Host Protocol (TACACSS)
+   Assignee:  IESG
+   Contact:  IETF Chair
+   Reference:  RFC 9887 ...
+################################################################################
+Warning: Section 7 not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 7 only.
+Focusing on section 7 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/section_dependencies.json
+
+Creating prompts for section 7...
+Creating expert prompt for section 7 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/focus_section_7_prompt_expert.md
+Expert prompt token count: 6,578 tokens
+Creating router prompt for section 7...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/focus_section_7_prompt_router.md
+Router prompt token count: 6,590 tokens
+
+RFC 9887 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958c1299d1881919236f07c8d11bc8e
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for RFC 9887, Section 7
+================================================================================
+2026-01-03 02:27:31,374 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:27:31,399 - __main__ - INFO - Router prompt length: 28530 chars
+2026-01-03 02:27:31,399 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:27:31,399 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:27:31,400 - __main__ - INFO - ================================================================================
+2026-01-03 02:27:32,114 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:27:32,114 - __main__ - INFO - User prompt length: 28530 chars
+2026-01-03 02:27:54,413 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:27:55,021 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 02:27:55,021 - __main__ - INFO - Using existing vector store(s): vs_6958c1299d1881919236f07c8d11bc8e
+2026-01-03 02:27:55,022 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:27:55,022 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:27:55,022 - __main__ - INFO - ================================================================================
+2026-01-03 02:27:55,053 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/test_analysis.md
+2026-01-03 02:27:55,058 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7/test_analysis.json
+2026-01-03 02:27:55,058 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-7
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 7 requests and documents an IANA allocation of TCP port 300, service name "tacacss", as the default port for TACACS+ over TLS, with a short justification pointer to Section 5.3.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - No sequencing, timers, or ordering behavior is specified here; it just declares a registry entry.
+  - ActorDirectionality: LOW - No sender/receiver roles or directional behaviors are involved in the IANA registration text.
+  - Scope: LOW - The scope (TCP only, specific service name, specific port) is clear and consistent with the rest of the document.
+  - Causal: LOW - Declaring a service name and port does not create algorithmic or behavioral cause–effect chains that could break interoperability.
+  - Quantitative: LOW - The only number is the port value 300, consistently used elsewhere (Sections 3.1 and 5.2) and properly tied to TCP; no ranges or size calculations are involved.
+  - Deontic: LOW - There are no new RFC 2119 requirements here; just a description of an IANA action and a pointer to justification in Section 5.3.
+  - Structural: LOW - The IANA template fields (Service Name, Port Number, Transport Protocol, Description, Assignee, Contact, Reference) match standard registry structure; no ABNF/YANG/ASN.1 appears.
+  - CrossRFC: LOW - The only cross-reference is to the IANA “Service Name and Transport Protocol Port Number Registry” and an internal reference to Section 5.3; nothing appears inconsistent with RFC 8907 or RFC 5425.
+  - Terminology: LOW - Names (“tacacss”, TCP, TLS, TACACS+) are used consistently with earlier sections; the slightly odd phrase “new well-known system” appears to be a minor wording quirk, not a semantic inconsistency.
+  - Boundary: LOW - No edge cases or exceptional behaviors are specified; this section only registers a fixed port and service name.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No substantive inconsistency or underspecification in the IANA port registration
+    Relevant Dimensions: 
+    Sketch: Section 7 cleanly defines a single TCP port (300) with service name “tacacss” and ties it to the res...
+
+Response ID: resp_0e0ad5538d551b4f006958c4e7004081909035e13b46996ad8
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958c1299d1881919236f07c8d11bc8e
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed RFC 9887, Section 7
+################################################################################
+

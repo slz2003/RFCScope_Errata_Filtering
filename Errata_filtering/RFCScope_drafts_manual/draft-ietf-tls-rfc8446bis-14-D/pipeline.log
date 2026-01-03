@@ -1,0 +1,251 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section D
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section D
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/corpus.json
+
+Extracting references from section D only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/reference_extraction.log
+Focusing on section D and its children.
+Processing section D. Updates to TLS 1.2
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 1/3 [04:44<09:28, 284.20s/it]Splitting content into chunks:  67%|██████▋   | 2/3 [09:00<04:27, 267.89s/it]Splitting content into chunks: 100%|██████████| 3/3 [09:40<00:00, 163.98s/it]Splitting content into chunks: 100%|██████████| 3/3 [09:40<00:00, 193.67s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   To align with the names used this document, the following terms from
+   [RFC5246] are renamed:
+
+   *  The master secret, computed in Section 8.1 of [RFC5246], is
+      renamed to the main secret.  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5246
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5246
+  Reference Type: TEXT
+  Reference Value (keywords/section): master secret renamed to main secret
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC5246:
+  Looking for Section: '8.1'
+  Match Type: Exact match
+  Result: Matched to Section 8.1
+  Section Title: Computing the Master Secret
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5246:
+  Search Keywords: 'master secret renamed to main secret'
+  Result: Found in Section 8.1
+  Section Title: Computing the Master Secret
+  Content Preview:    For all key exchange methods, the same algorithm is used to convert
+   the pre_master_secret into...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  The PreMasterSecret and EncryptedPreMasterSecret structures,
+      defined in Section 7.4.7.1 of [RFC5246], are renamed to
+      PreliminarySecret and EncryptedPreliminarySecret, respectively.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5246
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.4.7.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5246
+  Reference Type: TEXT
+  Reference Value (keywords/section): PreMasterSecret and EncryptedPreMasterSecret structures
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC5246:
+  Looking for Section: '7.4.7.1'
+  Match Type: Exact match
+  Result: Matched to Section 7.4.7.1
+  Section Title: RSA-Encrypted Premaster Secret Message
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5246:
+  Search Keywords: 'PreMasterSecret and EncryptedPreMasterSecret structures'
+  Result: Found in Section 7.4.7.1
+  Section Title: RSA-Encrypted Premaster Secret Message
+  Content Preview:    Meaning of this message:
+
+      If RSA is being used for key agreement and authentication, the
+  ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Correspondingly, the extension defined in [RFC7627] is renamed to the
+   "Extended Main Secret" extension.  The extension code point is
+   renamed to "extended_main_secret".  The label parameter to...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7627
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7627
+  Reference Type: TEXT
+  Reference Value (keywords/section): Extended Main Secret extension
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7627:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: The Extended Master Secret
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7627:
+  Search Keywords: 'Extended Main Secret extension'
+  Result: Found in Section 5.1
+  Section Title: Extension Definition
+  Content Preview:    This document defines a new TLS extension, "extended_master_secret"
+   (with extension type 0x001...
+---------------------------------------------------------------------------
+
+Warning: Section D not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section D only.
+Focusing on section D and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/section_dependencies.json
+
+Creating prompts for section D...
+Creating expert prompt for section D with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/focus_section_D_prompt_expert.md
+Expert prompt token count: 67,907 tokens
+Creating router prompt for section D...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/focus_section_D_prompt_router.md
+Router prompt token count: 65,205 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958ce993c388191a7c9f32559e3b152
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section D
+================================================================================
+2026-01-03 04:02:41,391 - __main__ - INFO - Loading router user prompt...
+2026-01-03 04:02:41,393 - __main__ - INFO - Router prompt length: 305673 chars
+2026-01-03 04:02:41,393 - __main__ - INFO - 
+================================================================================
+2026-01-03 04:02:41,393 - __main__ - INFO - TESTING ROUTER
+2026-01-03 04:02:41,393 - __main__ - INFO - ================================================================================
+2026-01-03 04:02:41,517 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 04:02:41,517 - __main__ - INFO - User prompt length: 305673 chars
+2026-01-03 04:03:21,826 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 04:03:21,976 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 04:03:21,976 - __main__ - INFO - Using existing vector store(s): vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 04:03:21,976 - __main__ - INFO - 
+================================================================================
+2026-01-03 04:03:21,976 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 04:03:21,976 - __main__ - INFO - ================================================================================
+2026-01-03 04:03:21,980 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/test_analysis.md
+2026-01-03 04:03:21,982 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/test_analysis.json
+2026-01-03 04:03:21,982 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section D normatively renames TLS 1.2 terms from RFC 5246 and RFC 7627 (e.g., “master secret” → “main secret”, “extended_master_secret” extension → “extended_main_secret”), while explicitly keeping the on-the-wire PRF label strings unchanged for compatibility. It is a terminology and registry-update section, not a new protocol mechanism.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - No sequencing, timers, or state-machine changes are introduced here.
+  - ActorDirectionality: LOW - No sender/receiver role logic is affected; only names of secrets and structures.
+  - Scope: LOW - The scope (“TLS 1.2 terminology and the RFC 7627 extension”) is clear and constrained; no subtle per-context rules.
+  - Causal: LOW - Renames are explicitly stated as non-changing for PRF labels, so implementing this section literally does not alter protocol behavior.
+  - Quantitative: LOW - No numeric ranges, lengths, or counts are modified.
+  - Deontic: LOW - There are no new or conflicting MUST/SHOULD behavior requirements; the text is descriptive/renaming.
+  - Structural: LOW - No new ABNF/YANG/ASN.1/struct definitions affecting encodings; only names of existing structs/variables are being conceptually renamed.
+  - CrossRFC: LOW - References to RFC 5246 §8.1 and §7.4.7.1 and RFC 7627 §4 are correct and consistent with their contents; IANA rename for the extension is also mirrored in §11.1.
+  - Terminology: LOW - This section is purely about terminology alignment; the “master”→“main” vs. PRF label “master secret” mismatch is explicitly called out as intentional for compatibility.
+  - Boundary: LOW - No edge-case protocol behaviors or limits are affected.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No substantive protocol or interoperability error in TLS 1.2 update/renaming text
+    Relevant Dimensions: 
+    Sketch: Section D only renames the TLS 1.2 “master/premaster” terminology and the RFC 7627 extension name an...
+
+Response ID: resp_044004f966f6b256006958db330a048193942dfe68b6ae05ee
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958ce993c388191a7c9f32559e3b152
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section D
+################################################################################
+

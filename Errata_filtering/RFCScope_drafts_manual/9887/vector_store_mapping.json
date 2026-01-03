@@ -1,0 +1,41 @@
+{
+  "_combined": {
+    "vector_store_id": "vs_6958c1299d1881919236f07c8d11bc8e",
+    "rfcs": [
+      "RFC2119",
+      "RFC3365",
+      "RFC5280",
+      "RFC5425",
+      "RFC6066",
+      "RFC6151",
+      "RFC7250",
+      "RFC7924",
+      "RFC8174",
+      "RFC8446",
+      "RFC8907",
+      "RFC9190",
+      "RFC9257",
+      "RFC9525",
+      "RFC9813",
+      "draft-ietf-opsawg-secure-tacacs-yang-13",
+      "draft-ietf-uta-require-tls13-12"
+    ]
+  },
+  "RFC3365": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC8174": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC9813": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC9525": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC9190": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC2119": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC7924": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC8446": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC9257": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC5280": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC6066": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC6151": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC7250": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC5425": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "RFC8907": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "draft-ietf-uta-require-tls13-12": "vs_6958c1299d1881919236f07c8d11bc8e",
+  "draft-ietf-opsawg-secure-tacacs-yang-13": "vs_6958c1299d1881919236f07c8d11bc8e"
+}

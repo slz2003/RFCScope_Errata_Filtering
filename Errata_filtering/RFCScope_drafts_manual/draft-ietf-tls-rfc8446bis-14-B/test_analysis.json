@@ -1,0 +1,66 @@
+{
+  "routing_summary": {
+    "excerpt_summary": "Section B defines the formal TLS 1.3 protocol data structures and constant values (record layer, alerts, handshake, extensions, cipher suites), largely as a consolidated, implementation-oriented restatement of definitions that also appear in the main body.",
+    "overall_bug_likelihood": "None",
+    "dimensions": {
+      "Temporal": {
+        "relevance": "LOW",
+        "explanation": "Section B is almost entirely type/constant definitions; no ordering or state-machine logic beyond what is already in the main text."
+      },
+      "ActorDirectionality": {
+        "relevance": "LOW",
+        "explanation": "The excerpt does not assign behaviors to client/server; it only declares shared data structures."
+      },
+      "Scope": {
+        "relevance": "LOW",
+        "explanation": "The scope (TLS 1.3 vs older versions) is already clarified in the surrounding appendix text; Section B itself is just structural."
+      },
+      "Causal": {
+        "relevance": "LOW",
+        "explanation": "These are declarative layouts; no algorithms or cause-effect chains are introduced here beyond what is specified elsewhere."
+      },
+      "Quantitative": {
+        "relevance": "LOW",
+        "explanation": "Lengths and ranges (e.g., vector floors, max sizes) match those in the main sections of the draft and RFC 8446; no clear numeric inconsistencies appear."
+      },
+      "Deontic": {
+        "relevance": "LOW",
+        "explanation": "Normative requirements (“MUST”, “MUST NOT”) about when to send/use these types are in earlier sections; Section B itself mostly omits new normative language."
+      },
+      "Structural": {
+        "relevance": "LOW",
+        "explanation": "The structures in B are consistent with the earlier definitions (e.g., in Sections 4, 5, 6); added *_RESERVED ranges simply restate registry content and do not contradict the main text."
+      },
+      "CrossRFC": {
+        "relevance": "LOW",
+        "explanation": "Cross-references in comments (e.g., to RFC 6066, 7919, 8422, 8446, 8879, 9147) align with how those registries and code points are defined in the referenced RFCs."
+      },
+      "Terminology": {
+        "relevance": "LOW",
+        "explanation": "Where the same types appear both in the main body and in Appendix B (e.g., HandshakeType, ContentType, CertificateType), the differences are limited to inclusion of RESERVED values and are consistent with the stated intent that these are for backward compatibility only."
+      },
+      "Boundary": {
+        "relevance": "LOW",
+        "explanation": "Edge cases (e.g., minimum lengths, empty vectors) follow the same constraints already explained in the main sections; no new edge behavior is introduced here."
+      }
+    },
+    "candidate_issues": [
+      {
+        "bug_type": "None",
+        "short_label": "",
+        "relevant_dimensions": [],
+        "sketch_for_experts": ""
+      }
+    ]
+  },
+  "expert_analyses": {},
+  "vector_store_ids": [
+    "vs_6958ce993c388191a7c9f32559e3b152"
+  ],
+  "metadata": {
+    "model": "gpt-5.1",
+    "router_reasoning_effort": "medium",
+    "expert_reasoning_effort": "medium",
+    "test_mode": "manual"
+  }
+}

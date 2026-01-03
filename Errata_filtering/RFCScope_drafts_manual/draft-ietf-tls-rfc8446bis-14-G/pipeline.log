@@ -1,0 +1,130 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section G
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section G
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/corpus.json
+
+Extracting references from section G only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/reference_extraction.log
+Focusing on section G and its children.
+Processing section G. Change Log
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 278.67it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   [[RFC EDITOR: Please remove in final RFC.]] Since -06 - Updated text
+   about differences from RFC 8446. - Clarify which parts of IANA
+   considerations are new to this document. - Upgrade the requ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Require that message reinjection be done with the current hash.
+      Potentially a clarification and potentially a wire format change
+      depending on previous interpretation (Issue 1227)
+
+  ...
+################################################################################
+Warning: Section G not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section G only.
+Focusing on section G and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/section_dependencies.json
+
+Creating prompts for section G...
+Creating expert prompt for section G with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/focus_section_G_prompt_expert.md
+Expert prompt token count: 92,896 tokens
+Creating router prompt for section G...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/focus_section_G_prompt_router.md
+Router prompt token count: 65,345 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958ce993c388191a7c9f32559e3b152
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section G
+================================================================================
+2026-01-03 04:10:48,869 - __main__ - INFO - Loading router user prompt...
+2026-01-03 04:10:48,872 - __main__ - INFO - Router prompt length: 418825 chars
+2026-01-03 04:10:48,872 - __main__ - INFO - 
+================================================================================
+2026-01-03 04:10:48,872 - __main__ - INFO - TESTING ROUTER
+2026-01-03 04:10:48,872 - __main__ - INFO - ================================================================================
+2026-01-03 04:10:48,976 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 04:10:48,976 - __main__ - INFO - User prompt length: 418825 chars
+2026-01-03 04:11:11,474 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 04:11:11,620 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 04:11:11,620 - __main__ - INFO - Using existing vector store(s): vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 04:11:11,620 - __main__ - INFO - 
+================================================================================
+2026-01-03 04:11:11,620 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 04:11:11,620 - __main__ - INFO - ================================================================================
+2026-01-03 04:11:11,624 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/test_analysis.md
+2026-01-03 04:11:11,626 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/test_analysis.json
+2026-01-03 04:11:11,626 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section G is an editor-only changelog summarizing differences between draft -06/-05/-04/... and earlier versions, referencing already-updated normative text elsewhere in the draft.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - The changelog mentions changes over draft versions, but no protocol event ordering or state sequencing is specified here.
+  - ActorDirectionality: LOW - It only narrates what was changed; no sender/receiver behavior is normatively defined.
+  - Scope: LOW - Mentions of “clarify X” or “upgrade requirement to MUST” are descriptive of edits already present elsewhere; no new scope rules are introduced here.
+  - Causal: LOW - It does not prescribe behavior; it only documents that other sections were modified.
+  - Quantitative: LOW - No numeric limits or sizes are defined here beyond referencing that key usage limits text was ported; the actual limits live in Sections 4.6.3 and 5.5, which are already internally consistent.
+  - Deontic: LOW - It reports that some requirements were upgraded (e.g., SHOULD→MUST) but the operative requirements are in the main body; no conflicting MUST/SHOULD appears in G itself.
+  - Structural: LOW - This is prose meta-information, not ABNF/YANG/structures; nothing to cross-check structurally.
+  - CrossRFC: LOW - It notes that references to RFC 9147, RFC 8773, RFC 9525 were added and extension tables updated, but those details are specified—and appear consistent—in the corresponding sections.
+  - Terminology: LOW - It notes terminology cleanups (e.g., “master”→“main”) already reflected elsewhere; no inconsistent new terms are introduced here.
+  - Boundary: LOW - No edge-case behavior is defined; it merely states that clarifications (e.g., ignoring NST when no resumption) were added to normative sections.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: Changelog is informational and consistent with main text
+    Relevant Dimensions: 
+    Sketch: Section G is explicitly marked for removal by the RFC Editor and only narrates edits already visible...
+
+Response ID: resp_0690cd2021c72588006958dd19b3108193be16372aa566ece5
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958ce993c388191a7c9f32559e3b152
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section G
+################################################################################
+

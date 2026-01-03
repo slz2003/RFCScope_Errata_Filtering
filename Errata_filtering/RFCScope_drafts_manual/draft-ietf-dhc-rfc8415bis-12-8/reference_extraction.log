@@ -1,0 +1,68 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   All DHCP messages sent between clients and servers share an identical
+   fixed-format header and a variable-format area for options.
+
+   All values in the message header and in options are in netwo...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '7.3'
+  Match Type: Exact match
+  Result: Matched to Section 7.3
+  Section Title: DHCP Message Types
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   options                 Options carried in this message; options are
+                           described in Section 21.  A variable-length
+                           field (4 octets less than the ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21'
+  Match Type: Exact match
+  Result: Matched to Section 21
+  Section Title: DHCP Options
+---------------------------------------------------------------------------
+

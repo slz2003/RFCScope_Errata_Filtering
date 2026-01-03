@@ -1,0 +1,892 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Appendix A gives concrete DNS examples (zone snippets and decoded CBOR / X.509) for RAA, HDA, and a registrant, intended to be consistent with the normative CDDL (Sections 5.1/5.2) and the IANA registries (Section 6). Elsewhere, the RFC defines the HHIT RRType structure, the HHIT Entity Type IANA registry, and global rules about DET reverse names and DNS publication.
+
+- ScopeModel:
+  - Targets:
+    - HHIT RRType instances (wire format and semantics) for various roles: RAA auth, HDA auth/issue, registrant (UAS), as shown in Appendix A.
+    - The `hhit-entity-type` field (first element of the HHIT CBOR array) whose valid values are defined by the “HHIT Entity Types” IANA registry in Section 6.2.2/Table 2.
+    - DET reverse DNS names under `ip6.arpa.` (or `ip6.example.com.` in examples) that “MUST resolve to an HHIT RRType” for DETs (Section 4).
+    - BRID RRType instances and their CBOR field structure, including `uas_type`, `uas_ids`, and `auth` (Broadcast Endorsements).
+  - Conditions:
+    - HHIT RRType field `hhit-entity-type` is “a number with values defined in Section 6.2.2” (i.e., the IANA registry), and “may provide a signal of additional information and/or different handling” (Section 5.1.2).
+    - All DETs, being IPv6 addresses under `ip6.arpa.`, “MUST resolve to an HHIT RRType” and, for UAS RID, “the BRID RRType MUST be present” (Section 4).
+    - DNSSEC “MUST be used for apex entities… and is RECOMMENDED for other entities” (Section 4).
+    - Section 7.2 recommends that “no RRTypes under a DET’s specific domain name be published unless and until it is required for use by other parties,” which “would cause at least the HHIT RRType to not be in the DNS” before use.
+    - The HHIT Entity Types registry is FCFS for all entries (Section 6.2.2), and this RFC defines an initial subset of values only (Table 2).
+  - NotedAmbiguities:
+    - Appendix A is not explicitly marked as Informative vs. Normative, but is described as “examples” that are “meant to be consistent” with the normative CDDL and registries; implementers may still treat example encodings as indicative of real assigned values.
+    - The examples assign comments and apparent semantics to HHIT Entity Type values 10, 14, and 15, but those numeric values are not listed in the initial registry in Table 2.
+    - Section 4’s unconditional “DETs … MUST resolve to an HHIT RRType” is not explicitly scoped in time or deployment, while Section 7.2 explicitly describes and even recommends situations where no RRTypes (including HHIT) are published yet.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Examples implicitly assign global semantics to unregistered HHIT Entity Type values (10, 14, 15), outside the scope of the IANA registry
+    - ScopeProblemType: Registry scope vs. example scope; unregistered numeric types given specific roles
+    - Evidence:
+      - HHIT RRType CDDL: `hhit-rr = [ hhit-entity-type: uint, hid-abbreviation: tstr .size(15), canonical-registration-cert: bstr ]` and “HHIT Entity Type: The HHIT Entity Type field is a number with values defined in Section 6.2.2.” (Section 5.1.2).
+      - IANA registry description: “HHIT Entity Type: Numeric, field of the HHIT RRType to encode the HHIT Entity Type. All entries in this registry are under the First Come First Served policy.” (Section 6.2.2).
+      - Initial values table includes only 0, 1, 5, 9, 13, 16–27 (Table 2: HHIT Entity Type Initial Values).
+      - Appendix A decoded CBOR examples:
+        - RAA auth HHIT: `[ 10,  # Reserved (RAA Auth from DKI) , "3ff8 0000", <cert> ]` (Figure 10).
+        - HDA auth HHIT: `[ 14,  # Reserved (HDA Auth from DKI) , "3ff8 000a", <cert> ]` (Figure 14).
+        - HDA issue HHIT: `[ 15,  # Reserved (HDA Issue from DKI) , "3ff8 000a", <cert> ]` (Figure 16).
+    - DetailedReasoning:
+      - The HHIT Entity Type field is normatively defined to use values “defined in Section 6.2.2”, which establishes an IANA registry with FCFS allocation and an explicit initial set of values (0, 1, 5, 9, 13, 16–27) scoped globally. Any semantics for specific numeric types are supposed to come via this registry.
+      - Appendix A’s examples, however, show actual HHIT RRType encodings where the first CBOR element is 10, 14, or 15, and these are annotated with comments such as “# Reserved (RAA Auth from DKI)” and “# Reserved (HDA Issue from DKI)”. That is, the examples attribute concrete roles and “Reserved” status to those numeric codes.
+      - Yet in the normative registry table (Table 2), 10, 14, and 15 are not listed among the initial values; they are neither marked Reserved nor assigned. Under the FCFS policy, they are therefore globally unassigned and available for allocation by any future document or requester.
+      - This creates a scope mismatch: the IANA registry is the normative authority for global HHIT Entity Type values, but Appendix A examples appear to pre-emptively define semantics for three codes that remain unregistered. Implementers may treat these example values as if they are standardized or reserved (e.g., recognizing type 10 as “RAA Auth from DKI”), despite no registry entry.
+      - If someone later uses FCFS to register value 10 (or 14 or 15) for a different purpose, there will be a silent semantic collision between that future assignment and any deployments that followed the examples and assumed the “DKI” meanings shown here.
+      - Conversely, if the intent of the authors was that 10/14/15 are genuinely reserved for DKI-related roles, then Table 2’s initial assignments are incomplete: the registry’s normative scope omits types that the document’s examples implicitly treat as fixed.
+      - Since the text in Section 5.1.2 expressly says the field’s values are “defined in Section 6.2.2” and there is no text declaring “local-use” or “example-only” codes, the current document leaves the scope of those example values ambiguous: are they global, local, or hypothetical?
+      - This ambiguity is scope-related and implementer-impacting: it affects which numeric values are safe to use in interoperable deployments and who “owns” the semantics of types 10, 14, and 15.
+      - A corrective erratum should either (a) extend Table 2 to include 10, 14, and 15 with the intended DKI-based semantics (e.g., RAA Auth, HDA Auth, HDA Issue) and clearly reserve them, or (b) change the Appendix A examples to use only values that are either already registered here (e.g., 1, 5, 9, 13, 16–27) or explicitly “Not Defined” (0) or clearly marked as hypothetical/private, thereby keeping the IANA registry as the sole authoritative definition for real entity types.
+
+  - Issue-2:
+    - BugType: Both
+    - ShortLabel: Unconditional “MUST resolve to HHIT” vs. recommended “just in time” non-publication of RRTypes leaves temporal scope of DET DNS requirements unclear
+    - ScopeProblemType: Temporal / conditional scope of a global MUST; security section carves out de facto exceptions without stating them as such
+    - Evidence:
+      - Public registry section: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present…” (Section 4).
+      - Security considerations: “When practical, it is RECOMMENDED that no RRTypes under a DET’s specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed. The combination of this ‘just in time’ publishing mechanism and DNSSEC is out of scope for this document.” (Section 7.2).
+    - DetailedReasoning:
+      - Section 4 states in unconditional language that DETs “MUST resolve to an HHIT RRType,” and for the UAS RID use case, that “the BRID RRType MUST be present.” Taken at face value, this applies at all times for any DET in the prefix, i.e., every reverse lookup under the DET namespace must yield HHIT (and BRID for UAS RID).
+      - Section 7.2, however, explicitly recommends a “just in time” publishing mechanism for privacy: “no RRTypes under a DET’s specific domain name” should be published “unless and until it is required for use by other parties,” and the text makes clear that this would “cause at least the HHIT RRType to not be in the DNS” prior to use.
+      - The security section further says that the combination of this just-in-time mechanism with DNSSEC “is out of scope for this document,” which effectively acknowledges that there is a deployment pattern where the normative condition “MUST resolve to an HHIT RRType” does not hold prior to some activation point, but does not restate or adjust the scope of that earlier MUST.
+      - From a scope perspective, the document thus contains two incompatible views:
+        - A global, unconditional requirement that all DET reverse names resolve to HHIT (and optionally BRID).
+        - A deployment recommendation that, in some circumstances, those names not have HHIT (or any RRTypes) until needed.
+      - Implementers of resolvers or validation logic that take the Section 4 MUST literally might treat an NXDOMAIN or NODATA result (no HHIT) as a protocol violation or misconfiguration, whereas Section 7.2 envisions exactly such a state as a recommended privacy-preserving configuration prior to use.
+      - Conversely, implementers of registries might assume that withholding HHIT/BRID records before use is fully compliant because it is “RECOMMENDED” in Section 7.2, without realizing that this contradicts the literal wording of the earlier Section 4 requirement unless some temporal or conditional scope is implied.
+      - The underlying problem is that the scope of the “MUST resolve” requirement is not stated in terms of time or operational state (e.g., “for DETs that are currently registered and active for public lookup”), while the security guidance implicitly restricts it to “when the DET is actually in use by other parties.”
+      - A clarifying erratum could resolve this by narrowing the scope of Section 4’s MUST, for example: “When a DET is active for public lookup, its reverse name under ip6.arpa. MUST resolve to an HHIT RRType (and BRID for UAS RID). Prior to activation, operators MAY withhold these RRTypes as described in Section 7.2.” This preserves the intended security pattern while eliminating the present normative contradiction.
+      - Without such clarification, different implementations can legitimately read the text in incompatible ways, leading to divergent expectations about when a DET “must” be resolvable via DNS and whether just-in-time publication is allowed or recommended.
+
+- ResidualUncertainties:
+  - The document references “[drip-dki ]” in multiple places, and Appendix A comments describe the example entity types as “from DKI,” but the excerpt does not include any DKI-related normative text. It is unclear whether, in parallel, an external DKI document was intended to register values 10, 14, and 15 in the IANA HHIT Entity Types registry; if such a registration has since occurred, the appropriate fix might be to add cross-references in this RFC or adjust the examples to explicitly point to that registry entry.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Appendix A’s CBOR examples for both HHIT and BRID RRs do not match the CDDL structures and size constraints given in Sections 5.1/5.2. If one implementer follows the CDDL literally and another copies the Appendix A encodings, they will produce *incompatible wire formats* and fail to parse each other’s HHIT/BRID RDATA. This is a **causal underspecification / inconsistency** between the normative model and the examples, not a purely stylistic issue.
+
+---
+
+2. **Causal Analysis**
+
+### 2.1 HHIT RR: HID Abbreviation Length
+
+**Normative structure (Figure 4)**
+
+```cddl
+hhit-rr = [
+    hhit-entity-type: uint,
+    hid-abbreviation: tstr .size(15),
+    canonical-registration-cert: bstr
+]
+```
+
+So a conforming HHIT RDATA, when interpreted as CBOR, is a 3‑element array; the second element is a UTF-8 text string of **exactly 15 characters**.
+
+**Textual field description**
+
+> HID Abbreviation: ... The convention for such abbreviations is a matter of local policy. Absent of such a policy, this field MUST be filled with the four character hexadecimal representations of the RAA and HDA (in that order) with a separator character, such as a space, in between. For example … 000A 0014.
+
+That “MUST” default is **9 characters**: `4 + 1 + 4 = 9`.
+
+**Appendix A examples**
+
+In all decoded HHIT examples, the HID Abbreviation is:
+
+- RAA auth HHIT (Figure 10): `"3ff8 0000"` (9 characters)
+- HDA auth HHIT (Figure 14): `"3ff8 000a"` (9 characters)
+- HDA issue HHIT (Figure 16): `"3ff8 000a"` (9 characters)
+- Registrant HHIT (Figure 19): `"3ff8 000a"` (9 characters)
+
+All of these violate the CDDL constraint `.size(15)`.
+
+**What happens if an implementer follows the CDDL literally?**
+
+- Encoder A implements HHIT RR using the CDDL mechanically. It enforces `.size(15)` and emits a 15‑character `hid-abbreviation` (e.g., `000A 0014.....` with some padding or extended format).
+- Decoder A enforces the CDDL: if it sees a `hid-abbreviation` string with length ≠ 15, it rejects the HHIT RDATA as malformed.
+
+Meanwhile, implementer B copies directly from Appendix A and:
+
+- Encodes exactly `"3ff8 000a"` (9 characters), believing that is the intended format.
+
+On the wire:
+
+- A’s decoder will reject B’s HHIT RR (string too short).
+- If B also validates against `.size(15)`, B cannot reproduce Appendix A encodings and will consider them invalid; if B ignores the CDDL and only uses examples, B will be incompatible with A.
+
+**Impact**
+
+- Failure is at the *RR parsing level*: a receiver that validates against the CDDL will discard otherwise valid certificates because it deems the HHIT RR malformed.
+- That in turn prevents it from obtaining the Canonical Registration Certificate and validating membership in the DET hierarchy, degrading availability and trust.
+
+This is not just a cosmetic mismatch: there is no single wire format that simultaneously satisfies both:
+
+- The `.size(15)` CDDL constraint, and
+- The concrete CBOR encodings shown in Appendix A.
+
+So the spec is **internally inconsistent** on this point.
+
+---
+
+### 2.2 BRID RR: Structure and Length of `uas_ids` and `auth`
+
+**Normative CDDL (Figure 5)**
+
+Key parts:
+
+```cddl
+bcast-rr = {
+    uas_type => nibble-field,
+    uas_ids  => [+ uas-id-grp],
+    ? auth   => [+ auth-grp],
+    ...
+}
+uas-id-grp = [
+    id_type: &uas-id-types,
+    uas_id: bstr .size(20)
+]
+auth-grp = [
+    a_type: &auth-types,
+    a_data: bstr .size(1..362)
+]
+uas-id-types = (none: 0, serial: 1, session_id: 4)
+
+uas_type = 0
+uas_ids  = 1
+auth     = 2
+...
+```
+
+Interpreted literally:
+
+- `bcast-rr` is a CBOR map.
+- Key `1` (`uas_ids`) maps to an array of one or more `uas-id-grp` arrays, i.e.:
+
+  ```cbor-diag
+  1: [ [ id_type, uas_id ], [ id_type, uas_id ], ... ]
+  ```
+
+- Key `2` (`auth`) maps to an array of one or more `auth-grp` arrays:
+
+  ```cbor-diag
+  2: [ [ a_type, a_data ], [ a_type, a_data ], ... ]
+  ```
+
+- For each `uas-id-grp`, the `uas_id` field is **exactly 20 bytes**.
+
+**Appendix A decoded BRID example (Figure 21)**
+
+```cbor-diag
+{
+    0: 0,
+    1: [4, h'012001003FFE000A05130824699A4BC6B2'],
+    2: [
+        5, h'01FADEF6670AEDF66720...450C',
+        5, h'0197E0F667A7EEF66720...D40B',
+        5, h'010AE1F6671AEFF66720...4D0C',
+        5, h'01DCE2F667ECF0F66720...A701'
+    ]
+}
+```
+
+Two separate problems emerge:
+
+#### 2.2.1 Container Shape Mismatch
+
+- **For `uas_ids` (key `1`)**:  
+  Example: `1: [4, h'...']`  
+  This is a *single* array with two elements. According to the CDDL, the *value for key `1`* must be an array of one or more `uas-id-grp` arrays, i.e., it should look like:
+
+  ```cbor-diag
+  1: [ [4, h'...'] ]
+  ```
+
+  not
+
+  ```cbor-diag
+  1: [4, h'...']
+  ```
+
+- **For `auth` (key `2`)**:  
+  Example shows a *flat* array alternating types and data:
+
+  ```cbor-diag
+  2: [ 5, h'...', 5, h'...', 5, h'...', 5, h'...' ]
+  ```
+
+  But the CDDL requires:
+
+  ```cbor-diag
+  2: [
+      [5, h'...'],
+      [5, h'...'],
+      [5, h'...'],
+      [5, h'...']
+  ]
+  ```
+
+Thus, the Appendix A BRID example **does not obey the grouping implied by the CDDL**.
+
+**Consequence if implementers follow different parts literally**
+
+- Implementer A (Cddl‑faithful) encodes:
+
+  ```cbor-diag
+  1: [ [4, <20-byte bstr>] ]
+  2: [ [5, <bstr>], [5, <bstr>], ... ]
+  ```
+
+- Implementer B copies Appendix A and encodes:
+
+  ```cbor-diag
+  1: [4, <bstr>]
+  2: [5, <bstr>, 5, <bstr>, ...]
+  ```
+
+When A’s decoder processes B’s BRID RR:
+
+- For key `1` (`uas_ids`):
+
+  - It expects `+ uas-id-grp`, i.e., an array whose elements are arrays.
+  - It receives a first element `4` (an integer), which is not an array; decoding against the CDDL shape fails.
+
+- For key `2` (`auth`):
+
+  - It expects an array of `auth-grp` arrays.
+  - It sees `5` (integer), not `[5, <bstr>]`; again decoding fails.
+
+A robust implementation that enforces the CDDL will reject the entire BRID RR as malformed. Since BRID is used to carry Broadcast Endorsements used for cross-validation of Broadcast RID [Section 5.2, Section 7.1], such rejections mean:
+
+- Observers cannot use DNS as a backup/verification source for RID endorsements when they see BRID RRs encoded per Appendix A.
+- Cross-validation between Broadcast RID and DNS fails, undermining a key DRIP use case.
+
+So, **two implementations both “following the spec” (one following CDDL, one following Appendix A) will not interoperate on BRID**.
+
+#### 2.2.2 `uas_id` Length Mismatch
+
+Normative CDDL:
+
+```cddl
+uas-id-grp = [
+    id_type: &uas-id-types,
+    uas_id: bstr .size(20)
+]
+```
+
+This means `uas_id` must be **exactly 20 bytes**, matching the 20‑byte UAS ID size from ASTM F3411.
+
+In the Appendix A example, the `uas_id` value is:
+
+```cbor-diag
+h'012001003FFE000A05130824699A4BC6B2'
+```
+
+Count the hex digits:
+
+- The string is 34 hex characters → 17 bytes, **not** 20 bytes.
+
+So the Appendix example violates `.size(20)` as well.
+
+**Impact**
+
+- A decoder that enforces the `.size(20)` constraint will reject this BRID RR.
+- An encoder that copies this example will systematically produce 17‑byte UAS IDs, incompatible with an ASTM‑compliant implementation expecting 20 bytes.
+
+Again: this is not just decorative. The `uas_id` is the primary binding back to the DET/UAS identifier; mis‑sized values prevent conformant decoders from aligning BRID records with Broadcast or external RID data.
+
+---
+
+3. **Problem Classification**
+
+- **HHIT HID Abbreviation length mismatch**  
+  → **Causal Inconsistency / Underspecification**  
+  The specification gives a fixed length (15) in CDDL, but all concrete examples and the natural reading of the “MUST be filled with four‑hex‑chars + separator + four‑hex‑chars” text yield 9 characters. Different “by‑the‑book” readings of the spec lead to incompatible HHIT encodings.
+
+- **BRID `uas_ids` and `auth` container shape mismatch**  
+  → **Causal Inconsistency**  
+  CDDL requires arrays-of-arrays (`+ uas-id-grp`, `+ auth-grp`), while Appendix A demonstrates flattened arrays. These encodings are mutually incompatible; one cannot be parsed as the other under the given CDDL.
+
+- **BRID `uas_id` size mismatch (17 vs 20 bytes)**  
+  → **Causal Inconsistency**  
+  The example violates the `.size(20)` constraint, causing CDDL-faithful decoders to reject it. If examples are used as guidance, encoders will emit invalid UAS IDs, and even if decoders are lax, these IDs don’t match the expected 20-byte RID identifiers.
+
+None of these make the *intended* protocol unimplementable; rather, they mean the published RFC describes *two* mutually incompatible encodings (the CDDL‑implied one and the Appendix A one), so the actual on‑the‑wire format is not uniquely defined.
+
+---
+
+4. **Minimal Fix Shape (Informative)**
+
+- **For HHIT HID Abbreviation:**
+  - Either:
+    - Change the CDDL to `hid-abbreviation: tstr` (or `tstr .size(1..15)`), and keep Appendix A as-is, clarifying that “000A 0014” is the default form and implementations MAY use other locally defined abbreviations.
+  - Or:
+    - Keep `.size(15)` and update all Appendix A examples to show 15‑character abbreviations explicitly (e.g., padding policy), plus clarify that the default form is 15 chars.
+
+- **For BRID `uas_ids` and `auth`:**
+  - Decide what the *actual* intended CBOR structure is, then:
+    - If arrays of groups are intended (likely, given the CDDL), fix Appendix A to show:
+
+      ```cbor-diag
+      1: [ [4, h'...'] ]
+      2: [
+          [5, h'...'],
+          [5, h'...'],
+          ...
+      ]
+      ```
+
+    - Or, if the flattened form is preferred, adjust the CDDL to match, e.g., make `uas_ids` and `auth` simple sequences instead of `+` of group arrays.
+
+- **For BRID `uas_id` length:**
+  - Adjust the example UAS ID hex so it actually contains 40 hex digits (20 bytes), or adjust the CDDL if the protocol truly wants a different length (which would then need explicit justification relative to ASTM F3411).
+
+These fixes are local to Sections 5.1/5.2 and Appendix A and do not require architectural or cryptographic redesign.
+
+---
+
+5. **Non-Issues / Minor Points**
+
+- The HHIT Entity Type values used in Appendix A (e.g., 10, 14, 15) appear as comments like “# Reserved (HDA Auth from DKI)”. They are not listed in the initial IANA registry table but there is nothing in the encoding itself that breaks if a receiver sees an unrecognized entity type — it can treat it as an opaque classification. This is mainly an IANA/registry bookkeeping issue, not a protocol breakage.
+- The use of `ip6.example.com.` instead of `ip6.arpa.` in Appendix A is explicitly stated as non-production and does not affect the wire format mechanics.
+
+The **real** interoperability hazards stem from the HHIT and BRID CBOR structure/length mismatches between the normative CDDL and Appendix A, as described above.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Quantitative Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary: The excerpt defines how DRIP Entity Tags (DETs) are mapped into DNS, specifies two CBOR-encoded RRTypes (HHIT and BRID) using CDDL, and then gives fully worked DNS zone examples in Appendix A, including CBOR and DER decodings. The key quantitative aspects are the CDDL field sizes and structures and the consistency of the examples with those definitions.
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: HID Abbreviation length mismatch
+    - Description: The CDDL constrains the HID Abbreviation in the HHIT RR to exactly 15 characters, but the normative prose and all examples use a 9-character format. An implementation that enforces the CDDL literally will reject the example HHIT RRs and any HID abbreviations constructed as described in the text.
+    - Evidence: The HHIT CDDL defines:
+      
+      `hid-abbreviation: tstr .size(15)` (Figure 4: HHIT Wire Format CDDL)  
+      
+      The prose says: “Absent of such a policy, this field MUST be filled with the four character hexadecimal representations of the RAA and HDA (in that order) with a separator character, such as a space, in between. For example, ... would be abbreviated as: 000A 0014.” That string is 4 + 1 + 4 = 9 characters. The decoded examples in Appendix A use `"3ff8 0000"` and `"3ff8 000a"` as the HID Abbreviation (Figures 10, 14, 16, 19), also 9 characters.
+    - QuantitativeReasoning: In CDDL, `.size(15)` is an exact length constraint: the text string must be exactly 15 code points long. The mandated “000A 0014” format and the example `"3ff8 0000"` and `"3ff8 000a"` are all 9 characters long, not 15. So a CBOR validator enforcing the CDDL will treat a 9-character value as invalid, while an implementation following the prose “MUST be filled with ... 000A 0014” will produce exactly those 9-character values. Both constraints cannot be satisfied simultaneously.
+    - Consequences: 
+      - Encoders following the prose and examples will generate 9-character HID abbreviations that fail CDDL-based validation (including automated code generated from the CDDL).  
+      - Encoders following the CDDL and forcing exactly 15-character strings would have to invent padding or a different format, producing values that do not match the documented “MUST” and examples.  
+      - Implementations on each side could therefore reject each other’s HHIT RRs purely on this length mismatch, harming interoperability.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: BRID array structure vs CDDL (grouping mismatch)
+    - Description: The CDDL for the BRID RR defines `uas_ids` and `auth` as arrays of *groups* (`uas-id-grp` and `auth-grp`), each of which is itself defined as an array of two elements. Interpreted per normal CDDL usage, this means the BRID map entries should contain arrays of 2‑element arrays (e.g., `[[id_type, uas_id], ...]`). The decoded BRID example in Appendix A instead shows flat arrays alternating type and value (e.g., `[5, h'...1', 5, h'...2', ...]`), so its structure does not match the declared CDDL.
+    - Evidence:
+      - CDDL (Figure 5):
+        - `bcast-rr = { ... uas_ids => [+ uas-id-grp], ? auth => [+ auth-grp], ... }`
+        - `uas-id-grp = [ id_type: &uas-id-types, uas_id: bstr .size(20) ]`
+        - `auth-grp = [ a_type: &auth-types, a_data: bstr .size(1..362) ]`
+      - Decoded BRID CBOR (Figure 21):
+        - `1: [4, h'012001003FFE000A05130824699A4BC6B2']`
+        - `2: [5, h'...data1...', 5, h'...data2...', 5, h'...data3...', 5, h'...data4...']`
+        These are single-level arrays whose direct elements are integers and byte strings.
+    - QuantitativeReasoning:  
+      - `uas-id-grp = [ id_type, uas_id ]` defines a two-element array type.  
+      - `uas_ids => [+ uas-id-grp]` describes a value that is an array with one or more *repetitions* of that `uas-id-grp` type inside it. Under the usual CDDL reading, each repetition is one `uas-id-grp` array, so the value is an array of 2-element arrays: e.g., `[[id_type1, uas_id1], [id_type2, uas_id2], ...]`.  
+      - Similarly, `auth-grp = [ a_type, a_data ]` and `auth => [+ auth-grp]` lead to an expected value like `[[5, h'...1'], [5, h'...2'], ...]`.  
+      - The example instead encodes `uas_ids` as `[4, h'...']` (a single 2‑element array, no extra level) and `auth` as a flat sequence `[5, h'...1', 5, h'...2', ...]`, not an array-of-arrays. That flat form cannot be simultaneously interpreted as “array of `auth-grp` arrays” per the straightforward reading of this CDDL.
+    - Consequences:
+      - An implementation using the CDDL to generate decoders will typically expect `uas_ids` and `auth` values to be arrays of 2‑element arrays; it will reject BRID RRs encoded in the flat structure shown in Figure 21.  
+      - Conversely, implementers copying the example’s flat structure will produce BRID records that do not conform to the documented CDDL, leading to interoperability failures with validators or code generators that follow the CDDL literally.  
+      - The mismatch leaves ambiguity: different implementations may choose different CBOR layouts (nested vs flat) for the same logical data.
+
+  - Issue-3:
+    - BugType: Inconsistency
+    - ShortLabel: BRID UAS ID length (20-byte CDDL vs 17-byte example)
+    - Description: The BRID CDDL requires the UAS ID byte string in `uas-id-grp` to be exactly 20 bytes. The Appendix A BRID example uses a 17-byte value instead. This makes the example structurally non-conforming to the normative CDDL and will be rejected by any implementation that enforces the specified size.
+    - Evidence:
+      - CDDL (Figure 5):  
+        `uas-id-grp = [ id_type: &uas-id-types, uas_id: bstr .size(20) ]`  
+        So `uas_id` must be exactly 20 bytes.
+      - Decoded BRID CBOR (Figure 21), for key `1` (uas_ids):
+        `1: [4, h'012001003FFE000A05130824699A4BC6B2']`  
+        The hex string `012001003FFE000A05130824699A4BC6B2` is 34 hex characters.
+    - QuantitativeReasoning: A byte string of N bytes is represented in hex by 2N hex digits. The example `h'012001003FFE000A05130824699A4BC6B2'` has 34 hex characters; 34 / 2 = 17 bytes. The `.size(20)` constraint requires exactly 20 bytes, i.e., 40 hex digits. Hence the example UAS ID is 3 bytes shorter than the CDDL requires and cannot satisfy the `.size(20)` condition.
+    - Consequences:
+      - Encoders that implement the CDDL as written will always emit 20-byte `uas_id` values; a decoder following the CDDL will reject the 17-byte example as invalid.  
+      - Implementers copying the example literally will produce BRID records that do not pass schema validation or that are rejected by other implementations expecting a 20-byte UAS ID (and, more generally, by tools auto-generated from the CDDL).  
+      - Given that UAS IDs for ASTM F3411 Broadcast RID are generally 20 bytes, this discrepancy risks both interoperability problems and confusion about the correct on-the-wire size.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary:  
+  The RFC defines how DET-related DNS RRs (HHIT and BRID) are structured, encoded, and deployed, including CDDL-based CBOR formats, DNS placement, DNSSEC usage, and operational/privacy guidance. Appendix A gives concrete example zone files and decoded contents that are intended to match those normative definitions and IANA registries.
+
+- OverallDeonticRisk: High
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: HID Abbreviation length: CDDL `.size(15)` vs. normative “000A 0014” format
+    - Description:  
+      The HHIT RR’s CBOR schema normatively constrains `hid-abbreviation` to a text string of length 15: `hid-abbreviation: tstr .size(15),` in Figure 4. In the same section, the prose imposes a different normative requirement when no local policy exists: “Absent of such a policy, this field MUST be filled with the four character hexadecimal representations of the RAA and HDA (in that order) with a separator character, such as a space, in between. For example … 000A 0014.” That example and the pattern described (4 + 1 + 4) yield a 9‑character string, which cannot satisfy `.size(15)` under RFC 8610 semantics, where `.size(15)` means “exactly 15” characters, not “up to 15”. Appendix A’s examples consistently use 9‑character strings such as `"3ff8 0000"` and `"3ff8 000a"`, reinforcing the 9‑character expectation for correct HHIT RRs, while still being non-conformant to the CDDL. Implementers following the CDDL validator will reject the very form that the normative prose and examples say MUST be used in the absence of a local policy, and implementers following the prose will produce HHIT RRs that violate the CDDL constraint. This is a genuine normative conflict on the wire-format requirements.
+    - KeyTextSnippets:
+      - CDDL definition:  
+        `hid-abbreviation: tstr .size(15),` (Figure 4: HHIT Wire Format CDDL)
+      - Prose requirement:  
+        “Absent of such a policy, this field MUST be filled with the four character hexadecimal representations of the RAA and HDA (in that order) with a separator character, such as a space, in between. For example, a DET with an RAA value of 10 and HDA value of 20 would be abbreviated as: 000A 0014.”
+      - Example CBOR decodes in Appendix A (e.g., Figure 10, Figure 14, Figure 16, Figure 19) all show `"3ff8 0000"`, `"3ff8 000a"`, etc. as the second element of the HHIT array.
+    - Impact:  
+      This discrepancy can cause interoperability failures between producers that follow the prose/examples (9‑character strings) and validators/parsers that enforce the CDDL (expecting length 15). Different implementations may reject each other’s HHIT RRs as malformed, or silently truncate/normalize the field, undermining consistent DET display semantics and any tooling that relies on strict CDDL conformance.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - Title: DETs “MUST resolve to an HHIT RRType” vs. RECOMMENDED “just-in-time” non-publication of HHIT RRs
+    - Description:  
+      Section 4 states an unconditional requirement on DNS contents: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) …”. This reads as: for any DET in scope, a reverse-DNS query MUST always find an HHIT RR (and, for UAS RID, a BRID RR as well). In contrast, Section 7.2 introduces a privacy-motivated recommendation: “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key …”. The latter explicitly contemplates DETs whose reverse name exists but has *no* HHIT RR, at least until “required for use”. Since both statements cover the same objects (DETs’ reverse domains) and time period after registration, an implementation cannot simultaneously satisfy “MUST resolve to an HHIT RRType” at all times and “RECOMMENDED that no RRTypes … be published” (leading to no HHIT) before first use. BCP 14 semantics say a MUST-level requirement is not optional, yet here it is effectively overridden by a SHOULD‑strength recommendation; this is a direct normative conflict rather than a simple prioritization of MUST over SHOULD.
+    - KeyTextSnippets:
+      - Section 4:  
+        “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”
+      - Section 7.2:  
+        “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.”
+    - Impact:  
+      Implementers and deployers are left without a consistent compliance target: one reading forces always-on HHIT publication for every registered DET; another encourages withholding that very RR until “just in time”. Different operators may choose incompatible interpretations (strict MUST vs. privacy‑motivated SHOULD), leading to systems that assume HHIT is always resolvable encountering zones where it is intentionally absent, or conversely, operators being told that a RECOMMENDED practice (withholding HHIT) is actually non-compliant. This undermines both interoperability and the security/privacy goals the text is trying to achieve.
+
+- IfNoRealIssue:  
+  Not applicable; the two issues above are genuine normative inconsistencies affecting wire-format validation and DNS deployment behavior.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: I examined the CDDL definitions for the HHIT and BRID RRTypes, their prose field descriptions, and the concrete CBOR diagnostic examples in Appendix A of RFC 9886, plus the related IANA registry text.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: HID Abbreviation length mismatch between CDDL and examples/prose
+    - LocationHint: Section 5.1.2, Figure 4 (HHIT CDDL) and Appendix A HHIT examples (Figures 10, 14, 16, 19)
+    - Evidence:
+      - Snippet1: The HHIT wire format CDDL defines `hid-abbreviation` as `tstr .size(15)` in `hhit-rr = [ hhit-entity-type: uint, hid-abbreviation: tstr .size(15), canonical-registration-cert: bstr ]` (Figure 4).
+      - Snippet2: The prose says, “Absent of such a policy, this field MUST be filled with the four character hexadecimal representations of the RAA and HDA (in that order) with a separator character, such as a space, in between. For example … `000A 0014`.” All HHIT CBOR examples use strings like `"3ff8 0000"` and `"3ff8 000a"` as the HID abbreviation in the decoded HHIT RRType (Figures 10, 14, 16, 19).
+    - TechnicalExplanation: |
+        In CDDL, `.size(15)` on a `tstr` constrains the string to exactly 15 Unicode code points. The examples and the normative “absent policy” rule both yield a 9-character string: four hex digits for the RAA, one separator, and four hex digits for the HDA (e.g., `000A 0014`, `3ff8 0000`). A conforming validator implementing the CDDL would reject these 9-character values as invalid HHIT RRs, while an implementation following the prose and examples would generate exactly these 9-character strings. Thus, the normative structural specification (CDDL) and the normative default format in the text, as well as all the provided examples, disagree on the allowed length of `hid-abbreviation`.
+    - PatchSuggestion: |
+        Align the length constraint with the actual intended and exemplified format. For example, in Figure 4 change:
+        
+            hid-abbreviation: tstr .size(15)
+        
+        to:
+        
+            hid-abbreviation: tstr .size(9)
+        
+        Alternatively, if longer formats are intended to be allowed by local policy, relax the constraint and clarify the text, e.g.:
+        
+            hid-abbreviation: tstr .size(1..15)
+        
+        and add a sentence after the field description such as:
+        
+            “When no local policy is defined, the HID Abbreviation MUST be exactly 9 characters long (`RRRR SSSS` as in the example `000A 0014`).”
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: BRID `uas_id` length (CDDL .size(20) vs 17-byte example)
+    - LocationHint: Section 5.2.2, Figure 5 (BRID CDDL) and Appendix A BRID example (Figures 18 and 21)
+    - Evidence:
+      - Snippet1: The BRID CDDL defines the UAS ID group as `uas-id-grp = [ id_type: &uas-id-types, uas_id: bstr .size(20) ]` (Figure 5), so `uas_id` is a byte string of exactly 20 bytes.
+      - Snippet2: In the decoded BRID CBOR example (Figure 21), the `uas_ids` entry is `1: [4, h'012001003FFE000A05130824699A4BC6B2']`. The hex string has 34 hex digits, corresponding to 17 bytes.
+    - TechnicalExplanation: |
+        The CDDL explicitly constrains `uas_id` to `bstr .size(20)`, i.e., exactly 20 octets. The example’s value `h'012001003FFE000A05130824699A4BC6B2'` is only 34 hex characters long, which encodes 17 bytes, not 20. A strict CDDL-based implementation will therefore reject the example BRID RR as structurally invalid. This is a direct structural inconsistency between the normative type definition and the concrete example encoding, and it is not explainable by CDDL group flattening or any diagnostic-notation variation: the byte string itself is too short for the specified size.
+    - PatchSuggestion: |
+        Correct the example so that the `uas_id` byte string is 20 bytes long, consistent with `bstr .size(20)`. For example, in Figure 21 replace:
+        
+            1: [4, h'012001003FFE000A05130824699A4BC6B2'],
+        
+        with a 40-hex-digit (20-byte) value, such as:
+        
+            1: [4, h'012001003FFE000A05130824699A4BC6B2ABCD1234'],
+        
+        or with whatever 20-byte UAS ID the authors intended. The key requirement is that the example’s `uas_id` length be adjusted to match the `bstr .size(20)` constraint. (No change to the CDDL is needed if 20 bytes is indeed the intended size.)
+
+
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: Examples use HHIT Entity Type codes (10, 14, 15) with implied semantics that are not defined in this RFC’s HHIT Entity Type registry
+    - Evidence:
+      - ExcerptSnippets:
+        - Definition of the field and its value source:
+
+          - “HHIT Entity Type:  The HHIT Entity Type field is a number with values defined in Section 6.2.2.” (Section 5.1.2, HHIT RR field descriptions)
+
+        - Registry definition:
+
+          - “This document requests a new registry for HHIT Entity Types under the ‘Drone Remote ID Protocol’ registry group …”
+          - “HHIT Entity Type:  Numeric, field of the HHIT RRType to encode the HHIT Entity Type.  All entries in this registry are under the First Come First Served policy (Section 4.4 of [RFC8126]).” (Section 6.2.2)
+
+        - Initial values actually defined by this RFC:
+
+          - “##### 6.2.2.3. Initial Values
+
+             The following values are defined by this document:
+
+             …  
+             0  Not Defined  
+             1  DRIP Identity Management Entity (DIME)  
+             5  Apex  
+             9  Registered Assigning Authority (RAA)  
+             13 HHIT Domain Authority (HDA)  
+             16 Unmanned Aircraft (UA)  
+             17 Ground Control Station (GCS)  
+             18 Unmanned Aircraft System (UAS)  
+             19 Remote Identification (RID) Module  
+             20 Pilot  
+             21 Operator  
+             22 Discovery & Synchronization Service (DSS)  
+             23 UAS Service Supplier (USS)  
+             24 Network RID Service Provider (SP)  
+             25 Network RID Display Provider (DP)  
+             26 Supplemental Data Service Provider (SDSP)  
+             27 Crowd Sourced RID Finder” (Table 2)
+
+        - Examples in Appendix A using codes not present in the initial values table, with comments assigning semantics:
+
+          - Figure 10 – RAA example HHIT CBOR:
+
+            - `[ 10,  # Reserved (RAA Auth from DKI) , "3ff8 0000", … ]`
+
+          - Figure 14 – HDA Auth HHIT CBOR:
+
+            - `[ 14,  # Reserved (HDA Auth from DKI) , "3ff8 000a", … ]`
+
+          - Figure 16 – HDA Issue HHIT CBOR:
+
+            - `[ 15,  # Reserved (HDA Issue from DKI) , "3ff8 000a", … ]`
+
+        - Contrast: Registrant (UAS) example *does* use a defined code:
+
+          - Figure 19 – registrant HHIT CBOR:
+
+            - `[ 18,  # Uncrewed Aircraft System (UAS) , "3ff8 000a", … ]`
+
+            where 18 matches the registry entry “Unmanned Aircraft System (UAS)” in Table 2.
+      - ContextSnippets:
+        - The document’s stated intent for Appendix A:
+
+          - “The examples are meant to be consistent with the CDDL definitions in Sections 5.1/5.2 and with the IANA registries in Section 6.” (from user’s problem statement describing Appendix A)
+
+    - Reasoning:
+      - Conceptual model:
+        - The HHIT RRType has a first field `hhit-entity-type: uint` (Figure 4).
+        - Section 5.1.2 explicitly states that this field “is a number with values defined in Section 6.2.2.”
+        - Section 6.2.2 defines the IANA “HHIT Entity Types” registry and provides an initial set of values in Table 2. Those are the only values this RFC itself defines.
+      - Alignment check:
+        - From this RFC’s text, the only HHIT Entity Type values explicitly defined are 0, 1, 5, 9, 13, 16–27 (Table 2).
+        - The examples for RAA and HDA authority certificates in Appendix A use values 10, 14, and 15, and annotate them with strongly suggestive semantics:
+
+          - “Reserved (RAA Auth from DKI)”
+          - “Reserved (HDA Auth from DKI)”
+          - “Reserved (HDA Issue from DKI)”
+
+        - These codes (10, 14, 15) do not appear in Table 2 and are not normatively described anywhere else in the provided text (no registry entry, no prose definition).
+        - The examples thus implicitly ascribe semantics to numeric codes that, according to the registry section, are under First-Come First-Served policy and *not* allocated by this RFC.
+      - Why this is more than editorial:
+        - Section 5.1.2 tightly couples the HHIT Entity Type field to the IANA registry created in Section 6.2.2, i.e., implementations are expected to treat the field as taking values from that registry.
+        - Appendix A is non-normative, but it is explicitly stated to be “meant to be consistent … with the IANA registries in Section 6.” Using codes 10, 14, 15 with specific semantics that are *not* present in the registry is therefore inconsistent with that intent and with the registry text as it stands.
+        - The comments “Reserved (… from DKI)” are particularly problematic: in IANA terminology “Reserved” often means “not available for general allocation,” yet Section 6.2.2 says all entries are FCFS and Table 2 does not reserve 10, 14, or 15. An implementer could reasonably infer that these values are already de facto reserved for “RAA Auth”, “HDA Auth”, and “HDA Issue” and start using them operationally on that assumption.
+        - Because the registry is FCFS, nothing in this RFC actually *reserves* 10, 14, 15. If some other party were to request one of those values for a different meaning before any DKI specification formally registers them, implementations that copied the examples would then be out of sync with the registry and with other implementations.
+        - Conversely, if a future DRIP DKI specification *does* register these values with exactly these semantics, the examples will line up, but this RFC currently gives readers the impression that the reservation is already defined (“Reserved (… from DKI)”) without a corresponding IANA action in Section 6.2.2.
+      - Net effect:
+        - From a terminology and naming standpoint, we have:
+          - A numeric field whose values are said to be “defined in Section 6.2.2.”
+          - A Section 6.2.2 that defines an IANA registry and only a specific subset of initial values.
+          - Examples that assign names/roles and a “Reserved” status to codes *not* present in that registry.
+        - That is an internal inconsistency between the examples and the registry text. It is subtle (because the examples are non-normative) but easily capable of misleading careful implementers about which codes are currently valid and which ones are actually reserved/defined.
+        - Because it concerns IANA-assigned numeric identifiers and could lead to conflicting usage of registry values, it rises above a mere editorial nit and warrants an erratum or future document update.
+    - PatchSuggestion:
+      - The core requirement is to align Appendix A’s use of HHIT Entity Type values with the IANA registry described in Section 6.2.2, or to clearly mark any non-aligned values as hypothetical.
+      - Minimal options the RFC could be corrected to adopt (any one would resolve the inconsistency):
+        1. **Change the example values to existing registered types:**
+           - In Figures 10, 14, and 16, replace:
+             - `10  # Reserved (RAA Auth from DKI)` with `9  # Registered Assigning Authority (RAA)`  
+               (matching the “Registered Assigning Authority (RAA)” entry in Table 2)
+             - `14  # Reserved (HDA Auth from DKI)` and `15  # Reserved (HDA Issue from DKI)` with `13  # HHIT Domain Authority (HDA)`
+           - This keeps the examples within the set of entity types explicitly defined by this RFC. The “Auth” vs “Issue” distinction is already represented in the certificate Basic Constraints and usage; it does not need distinct Entity Type codes.
+        2. **Or, if the intent really was to use distinct DKI-specific codes:**
+           - Amend Section 6.2.2.3 (Table 2) to *also* include entries for values 10, 14, and 15, with names consistent with the comments in Appendix A, for example:
+             - `10  RAA Authentication Key (DKI)`  
+             - `14  HDA Authentication Key (DKI)`  
+             - `15  HDA Issuing Key (DKI)`
+           - And in Section 6.2.2, add a brief explanatory sentence that these values are reserved for use by the DRIP Key Infrastructure (DKI) profile (referencing the DKI document).
+           - This would make the examples and the IANA registry formally consistent.
+        3. **At minimum, if neither of the above is done:**
+           - Clarify in Appendix A that the codes 10, 14, and 15 shown in the CBOR examples are *hypothetical* DKI assignments and are not defined by this RFC or registered in the “HHIT Entity Types” registry, e.g.:
+             - Replace the inline comments with text such as  
+               `# Example value only; 10 is not defined in Table 2 and must not be used unless allocated by IANA for this purpose.`
+           - This would at least remove the misleading impression that the values are already reserved or defined, although the stronger fixes (1) or (2) are preferable.
+
+  - Issue-2:
+    - BugType: None
+    - Severity: Low
+    - ShortLabel: “Uncrewed Aircraft System (UAS)” vs registry name “Unmanned Aircraft System (UAS)” in a comment
+    - Evidence:
+      - ExcerptSnippets:
+        - Figure 19 comment:
+
+          - `[ 18,  # Uncrewed Aircraft System (UAS) , "3ff8 000a", … ]`
+
+        - Table 2 entry:
+
+          - `18    Unmanned Aircraft System (UAS)` (HHIT Entity Type Initial Values)
+    - Reasoning:
+      - The numeric code (18) and the abbreviation (UAS) match between the example and Table 2.
+      - The example uses the more modern term “Uncrewed Aircraft System” where Table 2 uses “Unmanned Aircraft System”. This is purely a wording difference in a non-normative comment, not a change of identifier or semantics.
+      - There is no chance of implementer confusion about which value to use; the mapping from concept to numeric code is consistent. At most, this is an editorial modernization of terminology in a comment.
+    - PatchSuggestion:
+      - None. No normative terminology bug; at most, future revisions could harmonize the wording if desired for style.
+
+- Notes:
+  - UsedRouterIssues: Confirmed the router’s Candidate Issue about the use of unregistered HHIT Entity Type values 10, 14, and 15 in Appendix A examples; refined it by tying it explicitly to the wording in Section 5.1.2 and the initial registry contents in Section 6.2.2/Table 2, and by analyzing possible fixes.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - I did not have the actual IANA “HHIT Entity Types” registry contents as they may exist *after* publication of RFC 9886, nor the full text of the referenced [drip-dki] document. It is possible that later documents have formally registered values 10, 14, and 15 with the semantics implied by the examples. The analysis above is strictly based on the internal consistency of RFC 9886 as provided; it treats the examples’ use of those values as inconsistent with the registry *as defined within this RFC*.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  The excerpt defines how DETs are represented in DNS using two new RRTypes: HHIT (RRType 67) and BRID (RRType 68), with their CBOR wire formats specified via CDDL in Sections 5.1/5.2 and allocation rules in the IANA registries in Section 6. Appendix A then gives concrete zone file snippets and CBOR/X.509 decodings for an example RAA, HDA, and registrant, and explicitly claims these examples are consistent with the CDDL and IANA sections. The key domains here are CBOR array/map structures, fixed-size text/byte strings, and numeric type values governed by registries.
+
+- OverallBoundaryBugLikelihood: High
+
+- Findings:
+
+  - Finding-1:
+    - BugType: Inconsistency
+    - ShortLabel: HID Abbreviation length constraint vs examples
+    - BoundaryAxis: Fixed-length string boundary for HID Abbreviation (`.size(15)`)
+    - ExcerptEvidence:  
+      CDDL for HHIT RR:  
+      `hhit-rr = [ hhit-entity-type: uint, hid-abbreviation: tstr .size(15), canonical-registration-cert: bstr ]` (Figure 4).  
+      HID Abbreviation description:  
+      “Absent of such a policy, this field MUST be filled with the four character hexadecimal representations of the RAA and HDA (in that order) with a separator character, such as a space, in between. For example … ‘000A 0014’.”  
+      Appendix A HHIT examples decode `hid-abbreviation` as `"3ff8 0000"` and `"3ff8 000a"` (Figures 10, 14, 16, 19), which are 9-character strings.
+    - Reasoning:  
+      The CDDL uses `tstr .size(15)`, which in CDDL means the string MUST be exactly 15 bytes long, not “up to 15”. The textual rule says that, absent local policy, the content MUST be `"RRRR HHHH"` (4 hex digits + 1 separator + 4 hex digits = 9 characters). The examples follow the textual rule and have 9-character strings like `"3ff8 0000"`, `"3ff8 000a"`. Under a strict CDDL-based implementation, such 9-character strings violate `.size(15)` and would be rejected as malformed HHIT RRs. Conversely, an implementation that enforces the examples and textual rule might generate 9-character strings that do not pass a strict schema validator built from the CDDL.
+    - ImpactAssessment:  
+      This is a direct schema-vs-example conflict at the length boundary. Different implementations may reject each other’s HHIT RRs depending on whether they enforce the CDDL length (15) or the example/textual format (9), leading to interoperability failures when validating or generating HHIT records.
+
+  - Finding-2:
+    - BugType: Inconsistency
+    - ShortLabel: BRID `uas_id` fixed length vs example value length
+    - BoundaryAxis: Fixed-length byte string boundary for `uas_id` (`.size(20)`)
+    - ExcerptEvidence:  
+      CDDL for `uas-id-grp`:  
+      `uas-id-grp = [ id_type: &uas-id-types, uas_id: bstr .size(20) ]` (Figure 5).  
+      Appendix A BRID CBOR example (Figure 21):  
+      `1: [4, h'012001003FFE000A05130824699A4BC6B2'],` where the bstr value `h'012001003FFE000A05130824699A4BC6B2'` is 34 hex digits = 17 bytes.
+    - Reasoning:  
+      The CDDL mandates that every `uas_id` be exactly 20 bytes long, regardless of `id_type`. In the example, `id_type` is 4 (`session_id`), but the provided `uas_id` is only 17 bytes. There is no conditional in the CDDL allowing a shorter length for certain id types; the `.size(20)` applies unconditionally. A strict implementation following the CDDL will reject this BRID RR as invalid, while an implementation using the example as guidance might accept and/or generate 17-byte IDs.
+    - ImpactAssessment:  
+      This is a clear mismatch at the length boundary: the single most important identifier field in BRID can be encoded in a length that contradicts the normative CDDL. It will cause interoperable encoders/decoders to disagree on what constitutes a valid BRID RR and may cause failures when validating or using session IDs in practice.
+
+  - Finding-3:
+    - BugType: Inconsistency
+    - ShortLabel: BRID `auth` and `uas_ids` array structure vs CDDL (`+` groups)
+    - BoundaryAxis: Multiplicity/structure boundary when more than one group is present (`+ uas-id-grp`, `+ auth-grp`)
+    - ExcerptEvidence:  
+      CDDL (Figure 5):  
+      ```  
+      bcast-rr = {
+          uas_type => nibble-field,
+          uas_ids => [+ uas-id-grp],
+          ? auth => [+ auth-grp],
+          ...
+      }
+      uas-id-grp = [
+          id_type: &uas-id-types,
+          uas_id: bstr .size(20)
+      ]
+      auth-grp = [
+          a_type: &auth-types,
+          a_data: bstr .size(1..362)
+      ]
+      ```  
+      BRID CBOR example (Figure 21):  
+      - For `uas_ids` (key 1):  
+        `1: [4, h'012001003FFE000A05130824699A4BC6B2'],`  
+        i.e., a single flat array `[id_type, uas_id]`.  
+      - For `auth` (key 2) with multiple endorsements:  
+        ```  
+        2: [
+            5, h'...450C',
+            5, h'...D40B',
+            5, h'...4D0C',
+            5, h'...A701'
+        ]
+        ```  
+        i.e., a single array with elements `a_type, a_data, a_type, a_data, ...`, not nested arrays.
+    - Reasoning:  
+      In CDDL, `+ auth-grp` means “one or more instances of `auth-grp` in an array”; and `auth-grp` itself is defined as an array `[a_type, a_data]`. Thus, the value for `auth` should be an array of arrays: `[[a_type, a_data], [a_type, a_data], ...]`. Similarly, `+ uas-id-grp` implies that `uas_ids` should be `[[id_type, uas_id], ...]`. The examples instead use a single flat array for `uas_ids` (just `[id_type, uas_id]`), and for `auth` they flatten four groups as `[a_type, a_data, a_type, a_data, ...]`—no grouping at the inner array level. This discrepancy only becomes unambiguous at the “>1 endorsement” boundary: with one group, flat `[a_type, a_data]` could be misread, but with four groups it clearly contradicts the CDDL shape. Implementers using the CDDL to drive decoders will expect nested arrays and reject data shaped like the example, while implementers copying the example will produce flat arrays that don’t validate against the schema.
+    - ImpactAssessment:  
+      This is a structural wire-format inconsistency that directly affects multi-endorsement BRID RRs—precisely the “one or more” case the `+` is meant to cover. Different encoders/decoders may produce and expect different CBOR structures, leading to interoperability failures when exchanging BRID RRs with multiple `auth` entries or when validating `uas_ids`.
+
+  - Finding-4:
+    - BugType: Inconsistency
+    - ShortLabel: Use of unregistered HHIT Entity Type values in examples
+    - BoundaryAxis: Reserved/unassigned numeric value usage at registry boundaries
+    - ExcerptEvidence:  
+      HHIT Entity Types registry (Table 2, Section 6.2.2.3) defines initial values:  
+      0, 1, 5, 9, 13, 16–27 with specific meanings (e.g., 9 = RAA, 13 = HDA, 18 = UAS).  
+      Appendix A CBOR examples use other values, commented as:  
+      - Figure 10: `[ 10,  # Reserved (RAA Auth from DKI) , "3ff8 0000", ... ]`  
+      - Figure 14: `[ 14,  # Reserved (HDA Auth from DKI) , ... ]`  
+      - Figure 16: `[ 15,  # Reserved (HDA Issue from DKI) , ... ]`  
+      but these values (10, 14, 15) do not appear as reserved or assigned in the IANA initial registry table.
+    - Reasoning:  
+      Section 6.2.2 states that the HHIT Entity Type registry is FCFS and lists explicit initial values, without marking 10, 14, or 15 as reserved for any purpose. In contrast, the examples annotate these values as “Reserved (… from DKI)” and use them in actual HHIT RRs to convey special roles (RAA Auth, HDA Auth, HDA Issue). At the numeric boundary, this creates conflicting signals: are 10/14/15 truly reserved for these semantics, are they unassigned and free to be allocated by others, or are they only informal example values? Implementers may treat these example comments as de facto reservations, while IANA’s registry (as specified in the same RFC) does not.
+    - ImpactAssessment:  
+      While this is less about encoding than about registry semantics, it affects how implementations treat unknown or “reserved” entity types on the boundary between defined and undefined values. If IANA later allocates 10, 14, or 15 for other purposes, existing deployments that assumed the example semantics may misinterpret those types; conversely, new allocations may be delayed or contested due to confusion about whether these values were implicitly reserved for DKI.
+
+- Notes:
+  - Not a bug (by this analysis), but worth noting: the use of a Private Use RAA value (16376) in examples is consistent with the “Private Use” range (15360–16383) in Table 1 and 6.2.1.5; it does not conflict with the allocation policy.  
+  - Also not a bug: the requirement that DETs be under `ip6.arpa` while Private Use RAAs cannot receive public root delegations is reconciled by the text in 6.2.1.5, which explicitly scopes those lookups to private DNS; this is a deployment consideration, not an inconsistency in the boundary rules.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+
+Vector Stores Used: vs_6958be4c24408191bdbddafd81dfd4e3
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

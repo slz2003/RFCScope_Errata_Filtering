@@ -1,0 +1,165 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-8/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If ever the supplementary feedback part of AccECN based on one of the
+   new AccECN TCP Options is unusable (due for example to middlebox
+   interference) the essential feedback part of AccECN's co...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.5
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.5
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.5
+  Section Title: Safety against Ambiguity of the ACE Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.5
+  Section Title: Safety against Ambiguity of the ACE Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '5.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.1
+  Section Title: Compatibility with SYN Cookies
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   There is concern that ECN feedback could be altered or suppressed,
+   particularly because a misbehaving Data Receiver could increase its
+   own throughput at the expense of others.  AccECN is comp...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Compatibility with Feedback Integrity Mechanisms
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   In Section 3.2.3 a Data Sender is allowed to ignore an unrecognized
+   TCP AccECN Option length and read as many whole 3-octet fields from
+   it as possible up to a maximum of 3, treating the remai...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3
+  Section Title: The AccECN Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.3.2
+  Section Title: Requirements for Transparent Middleboxes and TCP Normalizers
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The AccECN protocol is not believed to introduce any new privacy
+   concerns, because it merely counts and feeds back signals at the
+   transport layer that had already been visible at the IP layer...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A generic privacy concern of any new protocol is that for a while it
+   will be used by a small population of hosts, and thus show up more
+   easily.  However, it is expected that this option will ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   As Accurate ECN exposes more bits in the TCP header which could be
+   tampered with without interfering with the transport excessively, it
+   may allow an additional way to identify specific data s...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Overall, Accurate ECN does not change the risk profile on privacy to
+   a user dramatically beyond what is already possible using classic
+   ECN.  However, in order to prevent such attacks and mean...
+################################################################################

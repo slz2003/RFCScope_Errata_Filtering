@@ -1,0 +1,175 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Operational and deployment considerations are spread throughout the
+   document.  While avoiding repetition, it is useful for the impatient
+   to direct particular attention to Sections 5.2 and 5.1...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1.5
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: TACACS+ Configuration
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 5.1.5
+  Section Title: TLS Server Name Indicator (SNI)
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5'
+  Match Type: Exact match
+  Result: Matched to Section 5
+  Section Title: Security Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   It is essential for operators to understand the implications of a TLS
+   certificate-based authentication solution, including the correct
+   handling of certificates, CAs, and all elements of TLS c...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: BCP195
+  Reference Type: TEXT
+  Reference Value (keywords/section): guidance
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC195:
+  Search Keywords: 'guidance'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Section 5.2 mentions that for an optimal deployment of TLS TACACS+,
+   TLS should be universally applied throughout the deployment.
+   However, during the migration process from a non-TLS TACACS+
+ ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: TACACS+ Configuration
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Some TACACS+ client devices in a deployment may not implement TLS.
+   These devices will require access to non-TLS TACACS+ servers.
+   Operators must follow the recommendation of Section 5.1.1 and ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.1.1
+  Section Title: TLS Use
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   [TACACS-YANG ] specifies a YANG model for managing TACACS+ clients,
+   including TLS support.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-opsawg-secure-tacacs-yang-13
+  Reference Type: TEXT
+  Reference Value (keywords/section): YANG model for managing TACACS+ clients
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-opsawg-secure-tacacs-yang-13:
+  Search Keywords: 'YANG model for managing TACACS+ clients'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    The System Management data model [RFC7317] defines separate
+   functionality to support local and...
+---------------------------------------------------------------------------
+

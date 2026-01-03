@@ -1,0 +1,459 @@
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 6 describes operational models for DHCPv6: stateless DHCP, non-temporary address assignment, prefix delegation (including CE-router behavior and renumbering considerations), use of multiple IA_NA/IA_PD instances, and registration of self-generated addresses per RFC 9686.
+Overall Bug Likelihood: Low
+
+Dimensions:
+  - Temporal: MEDIUM - Lifetimes, renewal/rebind timing, and constraints about when Release may be sent depend on time and state.
+  - ActorDirectionality: MEDIUM - Clear role separation (client, server, PD client vs downstream clients) is important for Release behavior and prefix/address use.
+  - Scope: HIGH - Text mixes global vs delegated prefixes, WAN vs LAN lifetimes, and multiple IA instances; correctness depends on scoping each rule to the right context.
+  - Causal: MEDIUM - Instructions about not releasing PD while space is “outstanding”, and constraints on derived address lifetimes, can affect whether downstream hosts lose connectivity or violate BCP 9096.
+  - Quantitative: LOW - Lifetimes are involved but no tricky numeric ranges; mostly qualitative “must not exceed” relations.
+  - Deontic: MEDIUM - Several strong MUST/MUST NOT requirements (e.g., no Release while space is outstanding; lifetime constraints) that could conflict with other sections or external RFCs if misphrased.
+  - Structural: LOW - No ABNF/YANG/etc. in this section; structure is mostly prose.
+  - CrossRFC: MEDIUM - Behavior is explicitly tied to RFC 7084, 7368, 3769, 9096, 8987, 7934, and 9686; consistency with those specs matters.
+  - Terminology: MEDIUM - Uses defined terms “lease”, “binding”, and “delegated prefix”; minor misuse could cause confusion for implementers.
+  - Boundary: MEDIUM - Text addresses edge conditions (valid lifetime expiry, “outstanding” sub-allocations, self-generated addresses) where behavior must be clear.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Misuse of “lease” terminology for self-generated address registration (RFC 9686 model)
+    Relevant Dimensions: Terminology, Causal, CrossRFC
+    Sketch: In Section 4, this draft defines “lease” as a contract by which the server *grants* use of an addres...
+
+Response ID: resp_022b4f1d735f8442006958c853635c8194bcfc7ed6429159f6
+
+================================================================================
+EXPERT ANALYSES
+================================================================================
+================================================================================
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    Section 6 is mostly descriptive, laying out operational “models” that are then normatively defined later (Sections 12, 14, 18, 21) or in external RFCs (9096, 9686, 7934). The basic time-related behaviors—address/prefix lifetimes, T1/T2, renew/rebind, and release—are controlled elsewhere and generally consistent. The main temporal risks in Section 6 are not hard contradictions but spots where the prose could be read as implying behaviors that are underspecified or subtly different from the detailed procedures.
+  OverallTemporalRisk: Low
+  CandidateIssues:
+    - Id: T1
+      Type: Underspecification
+      ShortLabel: "Timing and state for adding extra IA_NA / IA_PD via Request/Renew"
+      Description: |
+        Section 6.5 encourages clients to acquire additional addresses or prefixes later in time by sending extra Request messages or by including new IA options in a Renew. This is consistent in spirit with the base protocol but not explicitly wired into the more formal client state machine in Section 18, which primarily presents Request as part of the initial four‑message exchange and Renew/Rebind as purely lifetime‑driven events. The result is a slight temporal underspecification: implementers must infer how “late” Requests and Renew‑with‑new‑IA behave with respect to existing bindings, T1/T2 synchronization, and renew/rebind scheduling, rather than having a clearly spelled‑out timeline for the “add more IAs later” case.
+      TemporalReasoning: |
+        - Section 6.5 says (emphasis added):
+
+          * “A client can send multiple IA_NA options in its initial transmissions. **Alternatively, it can send an extra Request message with additional new IA_NA options (or include them in a Renew message).**”  
+
+        - Section 18.2.2 describes Request as the message used to “populate IAs with leases and obtain other configuration information” during the normal four‑message Solicit/Advertise/Request/Reply exchange. It does not explicitly describe the use of Request much later in the session, solely to add new IAs after an initial configuration has already been completed.  
+        - Section 18.2.4 describes Renew as driven by T1 (or by client discretion when T1/T2 are 0), and says the client MAY include IA options “for each binding it desires but has been unable to obtain,” including IA_PD with a prefix‑length hint. This clearly supports renewing existing IAs and requesting missing ones, but the case of *introducing completely new IA_NA/IA_PD instances out of band* (to satisfy RFC 7934’s “more addresses per host” goal) is not described in a timing‑oriented way.  
+        - Section 18.1 requires servers to return the same T1/T2 values across all IA options in a Reply, to simplify renewal scheduling: “servers MUST return the same T1/T2 values for all IA options in a Reply.”  
+        - If a client follows 6.5 and, long after the initial configuration, sends:
+          - a Request containing only *new* IA_NA/IA_PD instances, or
+          - a Renew where it introduces *additional* IA_NA/IA_PD on top of older ones,
+          the server will send a Reply covering some mix of old and new IAs and must harmonize their T1/T2 in that single Reply. But the interaction between the previous T1/T2 of “old” IAs and the newly introduced IAs—and the client’s obligation to realign its renewal schedule—is left to inference: the temporal model for “add-more‑IAs” is not spelled out explicitly like the initial and lifetime‑driven cases.
+        - The protocol as specified is capable of handling these cases (servers can accept new IAs and pick new T1/T2, and clients are told in 18.1 to be prepared to select appropriate T1/T2), but Section 6.5’s recommendation to use “extra Request” or “Renew with new IA” is not linked back to a concrete, step‑by‑step timeline.
+      KeyEvidence:
+        ExcerptPoints:
+          - “Alternatively, it can send an extra Request message with additional new IA_NA options (or include them in a Renew message).” (Section 6.5)  
+          - Description of Request in Section 18.2.2 as the message to “populate IAs with leases” after server selection, without an explicit “add‑more‑IAs‑later” timeline.  
+          - Section 18.1 requirement that “servers MUST return the same T1/T2 values for all IA options in a Reply … so that the client will generate a single transaction when renewing or rebinding its leases.”  
+        ContextPoints:
+          - RFC 7934’s motivation for multiple addresses per host and mention of DHCPv6 IA_NA and PD as one of the mechanisms to provide more than one address.  
+      ImpactOnImplementations: |
+        Implementers can reasonably support “late” Requests and adding new IA options in Renew messages, but they must make design choices about:
+        - how to merge new and existing IAs’ T1/T2 and adjust the client’s renewal schedule,
+        - whether to always include all existing IAs in these “extra” Requests to re‑synchronize timers, and
+        - how to handle servers that may treat a post‑bootstrap Request differently from the initial four‑message exchange.
+        Different interpretations may lead to slightly divergent timing behaviors (e.g., some clients renewing earlier or later than others for added IAs), which can complicate interoperability testing and debugging, especially in multi‑IA, multi‑prefix deployments motivated by RFC 7934.
+      AffectedArtifacts:
+        - "Section 6.5 (Multiple Addresses and Prefixes), bullets on extra Request and Renew"
+        - "Section 18.1 (A Single Exchange for Multiple IA Options)"
+        - "Section 18.2.2 (Creation and Transmission of Request Messages)"
+        - "Section 18.2.4 (Creation and Transmission of Renew Messages)"
+      Severity: Low
+
+    - Id: T2
+      Type: Underspecification
+      ShortLabel: "Lifecycle description for self-generated address registration vs DHCPv6 lease timing"
+      Description: |
+        Section 6.6 describes registering self-generated addresses (per RFC 9686) as having “most of the lifecycle” of a normal DHCPv6 lease, including periodic renewal and eventual expiry. While conceptually true at a high level, the timing and state machine for ADDR‑REG‑INFORM / ADDR‑REG‑REPLY differ in important ways from normal IA_NA/IA_PD leases controlled by T1/T2 and Renew/Rebind. Section 6.6 does not clearly distinguish those differences or point back to the concrete timing rules in RFC 9686, which may lead some readers to incorrectly assume that the usual T1/T2, Renew/Rebind timeline applies to self‑generated address registration.
+      TemporalReasoning: |
+        - Section 6.6 characterizes the behavior as:
+
+          * “The major specificity of this mechanism is that the address selection is not done by the DHCP server, but by the device itself. **The most of the lifecycle remains the same in principle: a lease is created by the server, and the device performs periodic actions to get the lease renewed, and eventually the lease can expire.** However, this mechanism uses different message types (ADDR‑REG‑INFORM and ADDR‑REG‑REPLY) and has different source address requirements, as defined in [RFC9686].”  
+
+        - In contrast, normal IA_NA/IA_PD leases use explicit T1/T2 values, with the client initiating Renew at T1 and Rebind at T2 per Sections 4.2, 12.1/12.2, 14.2, and 18.2.4/18.2.5. The client’s renewal/rebind schedule is driven by those timers, and the message types are Renew and Rebind carrying IA options.  
+        - RFC 9686 instead defines an ADDR‑REG‑INFORM / ADDR‑REG‑REPLY exchange where:
+          - The server checks that the registered address is “appropriate to the link” or within a delegated prefix and then logs it and creates/updates a binding whose lifetime equals the address’s Valid Lifetime that the client reports.  
+          - The server “MUST send back an ADDR‑REG‑REPLY message to ensure the client does not retransmit,” but there are no T1/T2 fields and no Renew/Rebind messages for these registrations.  
+          - Any “periodic actions” are controlled by whatever algorithm RFC 9686 specifies for the client to re‑register before the Valid Lifetime expires, not by the core 8415bis T1/T2 state machine.
+        - Section 6.6 is clearly non‑normative prose, and it does point to RFC 9686, but the phrase “most of the lifecycle remains the same in principle: a lease is created … and the device performs periodic actions to get the lease renewed” can be read as implying that the timing model is essentially the same as with IA_NA/IA_PD leases. In reality, the timeline for registration is based on the address’s Valid Lifetime and the ADDR‑REG‑INFORM retry logic, not on T1/T2 and Renew/Rebind.
+        - For implementers skimming Section 6 before diving into RFC 9686, that phrasing blurs an important temporal distinction: ADDR‑REG‑INFORM does not participate in the Section 18 client‑initiated exchanges, nor does it use the retransmission parameters of Table 1 or the T1/T2 machinery that dominates the rest of the document.
+      KeyEvidence:
+        ExcerptPoints:
+          - “The most of the lifecycle remains the same in principle: a lease is created by the server, and the device performs periodic actions to get the lease renewed, and eventually the lease can expire.” (Section 6.6)  
+        ContextPoints:
+          - RFC 9686 Section 4.2.1: the server “SHOULD register a binding between the provided Client Identifier and IPv6 address in its database … The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client … [and] MUST send back an ADDR‑REG‑REPLY message to ensure the client does not retransmit,” with no involvement of T1/T2 or Renew/Rebind.  
+          - Core DHCPv6 lease lifecycle in Sections 12.1/12.2 and 18.2.4/18.2.5 using T1/T2, Renew, and Rebind.  
+      ImpactOnImplementations: |
+        In practice, an implementer who follows RFC 9686 carefully will implement the correct timing behavior for ADDR‑REG‑INFORM / ADDR‑REG‑REPLY, independent of T1/T2. The risk is that some readers might infer from Section 6.6’s high‑level wording that self‑generated address registration “plugs into” the existing T1/T2 Renew/Rebind machinery, and either:
+        - incorrectly try to use Renew/Rebind to refresh registered self‑generated addresses, or
+        - mis-time their ADDR‑REG‑INFORM refreshes based on assumptions about T1/T2 instead of the address’s Valid Lifetime and the 9686 rules.
+        This is unlikely to cause interoperability failure—since registration is primarily for logging and accounting—but could lead to suboptimal or inconsistent refresh timing, especially in environments that rely heavily on accurate registration logs.
+      AffectedArtifacts:
+        - "Section 6.6 (Registering Self-generated Addresses)"
+        - "RFC 9686 Sections 1 and 4.2.1 (normative registration behavior)"
+      Severity: Low
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary:  
+  Section 6 describes several DHCPv6 operational models (stateless configuration, stateful IA_NA address assignment, IA_PD prefix delegation, combined CE‑router behavior, multiple IA_NA/IA_PD instances, and registration of self‑generated addresses). The primary actors are DHCPv6 clients (including CE routers acting as clients upstream), servers, and in the registration case, devices that self‑select addresses and inform servers.
+
+- OverallAssessment: NoBug
+
+- FindingsOnRoutedIssues:
+  - (No CandidateIssues were provided by the Router; nothing to assess here.)
+
+- AdditionalActorIssues:
+  - (None)
+
+- IfNoActorIssues:
+  - Comment:  
+    The roles and directions in Section 6 are coherent and consistently assigned:
+
+    * Stateless DHCP (6.1) correctly has the client sending Information-request and the server sending Reply, with relay agents using Relay-forward and Relay-reply when present. There is no inversion of who sends what.
+
+    * Non-temporary address assignment (6.2) properly places address selection and lifetime setting on the server, with the client requesting addresses and later requesting lifetime extensions, and being obligated to stop using addresses when the valid lifetime expires. This matches the more detailed IA_NA/IA Address semantics in Sections 12.1 and 21.4/21.6, and does not misassign responsibility.
+
+    * Prefix delegation (6.3) clearly distinguishes the server that is “provisioned with prefixes” from the client that “requests prefix(es)” and then becomes responsible for sub-delegating or advertising them (e.g., via RAs). The normative constraints on advertised or configured lifetimes being no longer than the remaining IA_PD lifetimes are correctly imposed on the client acting as delegating router on its LAN side, aligning with RFC 9096 guidance, without confusing that role with the upstream server.
+
+    * The text “A client that has delegated any of the address space received through DHCP Prefix Delegation MUST NOT issue a DHCP Release on the relevant delegated prefix while any of the address space is outstanding” correctly targets the upstream PD client role, and the examples it lists (“addresses leased out by DHCPv6 (IA_NA), prefixes delegated via DHCPv6-PD (IA_PD), and addresses autoconfigured by IPv6 Router Advertisements”) are resources that same node has in turn delegated or advertised downstream. There is no contradiction with the Release behavior specified later (18.2.7); the obligations are on the right actor.
+
+    * The CE-router model (6.4) and multiple IA_NA/IA_PD usage (6.5) keep roles straight: the CE router is explicitly a DHCPv6 client towards the ISP server (for IA_NA and IA_PD) and may be a server towards LAN hosts; clients send additional IA_NA/IA_PD options in Request/Renew, and the server may or may not grant them according to policy. This matches the detailed client/server procedures in Section 18.2.1–18.2.4.
+
+    * The description of registering self-generated addresses (6.6) correctly assigns address selection to the device (client) and logging/binding behavior to the DHCPv6 server, with the message types (ADDR-REG-INFORM and ADDR-REG-REPLY) used in the expected direction per RFC 9686; the text does not misstate which side chooses the address or who maintains the registration state.
+
+    Across these models, there are no conflicting instructions about which side sends which message, who originates or echoes which fields, or which role bears each normative obligation. Roles (client, server, CE router as upstream client / downstream server) and the direction of configuration, leases, and reports are consistently and correctly expressed in this excerpt.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 6 describes several DHCPv6 operational models (stateless, IA_NA, IA_PD, CE router, multiple IA_NA/IA_PD, RFC 9686 registration) and gives some cross-cutting lifecycle constraints, especially around prefix delegation and use of delegated space downstream.
+
+- ScopeModel:
+  - Targets:
+    - DHCPv6 clients in general, on a given interface, assumed to interact with servers from a single provisioning domain (Section 6).
+    - IA_NA-based non-temporary address assignment to hosts/routers (Section 6.2, 12.1).
+    - IA_PD-based prefix delegation clients, which may or may not be routers, and may or may not further use/delegate the received prefixes (Section 6.3, 12.2).
+    - CE routers specifically, combining IA_NA + IA_PD in “single set of transactions” (Section 6.4, cross‑referencing RFC 7084).
+    - Clients using multiple IA_NA / IA_PD instances to obtain multiple addresses/prefixes (Section 6.5).
+    - Devices using RFC 9686 ADDR‑REG‑INFORM / ADDR‑REG‑REPLY to register self-generated or statically configured addresses in DHCPv6 servers (Section 6.6, RFC 9686  ).
+  - Conditions:
+    - “Single provisioning domain” assumption for a given client–interface–server set: “This document assumes that the DHCP servers and the client, communicating with the servers via a specific interface, belong to a single provisioning domain.” (Section 6).
+    - Lifetime coordination requirement applies when a PD client *uses* the delegated prefix to configure addresses on itself or on “other nodes behind it” (Section 6.3), and more specifically when it advertises the prefix in RAs for SLAAC [RFC4862] or uses PD as WAN input to a LAN‑side DHCPv6/RA environment as discussed in RFC 9096 §3.3  .
+    - The “MUST NOT Release while any address space is outstanding” rule applies only to PD clients that have themselves *delegated* any of the received address space further (downstream via IA_NA, IA_PD, or RA‑based SLAAC), not to PD clients that only use the prefix locally (Section 6.3).
+    - Multiple IA_NA/IA_PD instances are explicitly allowed, but the server’s policy on whether to honor extra instances is out of scope (Section 6.5; detailed IA semantics in Sections 12, 18.1, 18.2.1).
+    - RFC 9686 registration model applies only to self‑generated or statically configured addresses, not to addresses already assigned by DHCPv6; servers must verify the registered address is appropriate to the link or within a delegated prefix and then log/create a binding, per RFC 9686 §4.2.1  .
+  - NotedAmbiguities:
+    - The phrase “A client that has delegated any of the address space received through DHCP Prefix Delegation” (Section 6.3) could be read narrowly (only CE routers that actually sub‑delegate) or broadly (“any use” of the prefix), although the subsequent examples strongly suggest the former.
+    - The document-level wording “This document assumes … belong to a single provisioning domain” is placed in Section 6 (operational models) but might be read as a global protocol assumption, even though other parts of the spec (e.g., Section 18.2.9; RFC 7227 §12  ) acknowledge multiple servers / provisioning domains as a general issue.
+    - Section 6.6 loosely describes RFC 9686 in “lease” terminology, which could be misread as implying the server controls address assignment in the same way as for IA_NA/IA_PD, although RFC 9686 is purely about registering self‑chosen addresses  .
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: Operational-model text aligns with protocol rules; no clear scope-related inconsistency found
+    - ScopeProblemType: None
+    - Evidence:
+      - Single provisioning domain statement is explicitly framed in the context of Section 6’s “operational models” and not used to qualify the core protocol machinery elsewhere: “This section describes some of the current most common DHCP operational models… This document assumes that the DHCP servers and the client, communicating with the servers via a specific interface, belong to a single provisioning domain.” (Section 6).
+      - Prefix-delegation lifetime rule in Section 6.3 is consistent with and essentially restates the WAN/LAN lifetime-coordination principles in RFC 9096 §3.3 (for CE routers), just phrased in a slightly more general client/“nodes behind it” language  .
+      - The “MUST NOT issue a DHCP Release… while any of the address space is outstanding” rule in Section 6.3 refines client behavior for PD Release and is compatible with the more general Release procedure in Section 18.2.7, which describes how to “stop using” a prefix (e.g., advertise lifetime 0 in RAs) but does not state that this is sufficient in the presence of downstream delegations.
+      - The multiple-IA_NA/IA_PD description in Section 6.5 (“To meet the recommendations of [RFC7934], a client can explicitly request multiple addresses by sending multiple IA_NA options… In principle, DHCP allows a client to request new prefixes… by sending additional IA_PD options.”) is consistent with the formal IA definitions (Sections 12.1, 12.2) and with 18.1’s rule that servers “MUST return the same T1/T2 values for all IA options in a Reply.”
+      - Section 6.6’s description of RFC 9686 is high-level and defers protocol specifics (“…as defined in [RFC9686]”), which themselves contain the necessary per‑address and per‑link scoping (e.g., “appropriate to the link” and “within a prefix delegated to the client via DHCPv6-PD”)  .
+    - DetailedReasoning:
+      - The potentially scope-sensitive pieces in this excerpt are: (a) the “single provisioning domain” assumption, (b) the lifetime and Release rules for delegated prefixes and downstream uses, (c) multiple IA_NA/IA_PD handling, and (d) the integration of the RFC 9686 registration model into the overall picture.
+      - For (a), although the wording uses “This document assumes…”, it is placed in the introductory text of the operational models section and is not referenced in the core state machines or option definitions. The protocol machinery in Sections 14–19 is written in general terms (multiple servers, multiple IAs, generic relay behavior) and does not depend on that assumption; at most, Section 6 is signalling that the *illustrative* models ignore complex multi‑provisioning-domain setups, which is coherent with RFC 7227 §12’s statement that multiple provisioning domains are a generic DHCP issue and should not be handled per-option  .
+      - For (b), Section 6.3’s lifetime coordination rule and “MUST NOT Release while any address space is outstanding” appear at first glance to be global, but the precondition “has delegated any of the address space received through DHCP Prefix Delegation” narrows the scope to PD clients that *sub‑delegate* their prefixes (via IA_NA, IA_PD, or RA), which is exactly the CE‑router class covered by RFC 9096 WPD‑9. Plain PD clients that never re-advertise or re-delegate the prefix do not meet this condition and so are unaffected. The rule therefore complements, rather than contradicts, the generic Release procedure in Section 18.2.7, which focuses on ceasing *local* use before sending Release.
+      - For (c), Section 6.5’s description of “typical” IA_NA usage (one IA_NA per client/interface; one address per IA_NA in most deployments) is clearly non‑normative and then immediately broadens scope to cover the RFC 7934 recommendation of making multiple addresses available by using multiple IA_NA options  . This aligns with the formal IA rules (client may have multiple IAs; each IA_NA holds “one or more IPv6 addresses” in Section 12.1) and with Section 18.1’s requirement that servers behave coherently when multiple IA options appear in a single transaction.
+      - For (d), Section 6.6 deliberately treats RFC 9686 as another “stateful” service model and highlights only the distinguishing scope point — that address selection is done by the client — while deferring all detailed behavior, including where registration is valid (appropriate link / delegated prefix) and which addresses may be registered, to RFC 9686’s own normative text  . This avoids introducing conflicting or over‑broad scope in the base DHCPv6 specification.
+      - The ambiguous phrases noted above (e.g., “has delegated any of the address space…”, “This document assumes…” in Section 6) could arguably be sharpened for clarity, but they do not rise to the level of a protocol‑impacting scope bug when read in conjunction with the more detailed sections and the referenced BCPs.
+
+- ResidualUncertainties:
+  - The exact text of RFC 9096’s WPD‑9 is not included in the provided context; while Section 6.3’s Release rule appears intended to be a generalization of that CE‑router requirement, fully verifying their scopes match would require reading WPD‑9 itself.
+  - The “single provisioning domain” assumption in Section 6 may under‑represent multi‑provisioning‑domain scenarios (e.g., true multi-homing with distinct per‑ISP DHCPv6 servers on the same link), but that appears to be a deliberate simplification for the operational models, not a protocol prohibition.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. Summary
+
+Section 6.6’s use of “lease” for RFC 9686 address registration is terminologically loose relative to the earlier definition, but it does not create a concrete protocol failure. If an implementer follows 8415bis plus RFC 9686 literally, behavior is coherent and interoperable; the server still only logs and tracks self-generated addresses rather than “assigning” them in the DHCP sense.
+
+2. Causal Analysis
+
+Walk through what actually happens for self-generated address registration:
+
+- A host configures an IPv6 address via SLAAC or static config.
+- The host sends ADDR-REG-INFORM to the DHCPv6 server, which:
+  - Verifies that the address is appropriate to the link or under a delegated prefix; if not, it drops the message and (optionally) logs it  .
+  - Logs the registered address, MAY create/refresh a binding between the client DUID and that address, with a lifetime equal to the valid lifetime supplied by the client, and SHOULD mark the address as unavailable for (future) assignment to other clients  .
+  - Sends ADDR-REG-REPLY to stop client retransmissions.
+- The client periodically re-registers; if it stops doing so and the lifetime expires, the server is free to discard the binding and, if its policy allows, reassign that address via “normal” DHCPv6 later.
+
+8415bis Section 6.6 describes this from a high level:
+
+> “The major specificity of this mechanism is that the address selection is not done by the DHCP server, but by the device itself. The most of the lifecycle remains the same in principle: a lease is created by the server, and the device performs periodic actions to get the lease renewed, and eventually the lease can expire. However, this mechanism uses different message types (ADDR-REG-INFORM and ADDR-REG-REPLY) and has different source address requirements, as defined in [RFC9686].”
+
+Key points:
+
+- Section 4 defines a “lease” as “a contract by which the server grants the use of an address or delegated prefix to the client for a specified period of time.” For RFC 9686, the server is not choosing the address, but it is still recording an association and lifetime and ensuring it won’t give that address to someone else. That is functionally very close to a lease from the server’s perspective, even if it is not the allocator.
+- Section 6.6 is explicitly non-normative (“operational models”). For precise behavior, it defers to “[RFC9686]”, which contains the normative rules about logging, bindings, and lifetime handling. So an implementer that follows the document “as written” must still implement RFC 9686’s semantics, not invent new ones from the word “lease”.
+- Nothing in 8415bis redefines or overrides 9686’s mechanism. In particular:
+  - There is no rule in 8415bis that says “leases created for registered self-generated addresses may be reassigned in the same way as IA_NA leases regardless of the client’s valid lifetime.”
+  - All the detailed lifecycle machinery for IA_NA/IA_PD (T1/T2 timers, Renew/Release/Decline, IAID indexing, etc.) is tied to IA options and the classic client/server exchanges, not to ADDR‑REG‑INFORM/ADDR‑REG‑REPLY. Section 6.6 explicitly says this mechanism “uses different message types … as defined in [RFC9686]”, so there is no executable instruction to treat these registrations as part of an IA.
+- Even if a server author reuses an internal “lease” data structure for these registered addresses (which is likely what the text is hinting at), that’s actually aligned with 9686’s intent: create a binding with a lifetime, don’t hand that address to someone else while the binding is active, and expire it later.
+
+To get a real protocol failure out of the wording, you’d need a chain like:
+
+- The implementer reads 6.6, but does not implement RFC 9686 carefully, and
+- Assumes that “lease is created by the server” means the server can revoke that lease at will or reassign those addresses before the client’s valid lifetime, and
+- Builds additional behavior on that assumption (e.g., forcibly invalidating self-generated addresses) that contradicts 9686.
+
+But such an implementation would already be non‑compliant with RFC 9686 itself, not caused by 8415bis’s text. The bis document does not instruct any such revocation or early reassignment.
+
+In short: the information and state flow with RFC 9686 plus 8415bis is:
+
+- Client chooses the address.
+- Server observes, records, and reserves it.
+- Client periodically refreshes registration.
+- Server times out the binding if registration stops, just like a lease expiration.
+
+Describing that as “a lease is created” is imprecise with respect to who chooses the address, but it matches what the server is supposed to do with the address and does not change the on‑wire protocol.
+
+3. Problem Classification
+
+This is not a **Causal Inconsistency** or a **Causal Underspecification** in the sense of making the protocol unimplementable or changing the required behavior. It is a mild terminology mismatch:
+
+- The earlier strict definition of “lease” (“server grants use”) doesn’t perfectly match RFC 9686’s “server records and reserves a self-chosen address”.
+- Section 6.6 then uses “lease” colloquially to say “the server creates a time‑bounded binding” for registrations.
+
+That mismatch can be confusing for a reader, but the normative behavior is still driven by RFC 9686 and remains consistent.
+
+4. Minimal Fix Shape (Optional)
+
+If the WG wants to tighten the language, a small editorial change in 6.6 would remove the ambiguity without touching behavior, for example:
+
+- Replace “a lease is created by the server” with “a binding is created by the server (similar to a lease for tracking and lifetime purposes)” or
+- Explicitly say that “the server records the address in a binding with a lifetime equal to the address’s valid lifetime; it does not assign the address but treats it as reserved for that client while the binding is active (per RFC 9686).”
+
+5. Non-Issues
+
+- There is no place where 8415bis tells the client to treat the server as the authoritative allocator for self-generated addresses. The client still owns selection and validity; the server merely tracks them.
+- There is no interaction between this text and IA_NA/IA_PD rules (T1/T2, Release, Decline, etc.), so no state-machine conflict arises.
+- The hint that “most of the lifecycle remains the same in principle” is accurate in terms of state transitions (create binding, refresh binding, expire binding) and is implementation-friendly.
+
+Conclusion: the candidate issue is a wording/clarity nit, not a protocol bug.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 6 normatively describes DHCPv6 operational models, especially (a) non‑temporary address assignment, (b) prefix delegation and its interaction with SLAAC, DHCPv6 servers on the LAN side, and CE routers, and (c) the conditions under which a PD client may send a Release. It also references external BCPs (RFC 7084, RFC 9096, RFC 7934, RFC 9686) to align lifetime coordination and CE‑router behavior.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: Consistency of PD lifetimes, downstream use, and Release behavior
+    - Description:
+      The key normative atoms in Section 6 that could plausibly conflict are:
+      1) The lifetime coordination requirement: if a client uses a delegated prefix to configure addresses (on itself or behind it), “the preferred and valid lifetimes of those addresses MUST be no longer than the remaining preferred and valid lifetimes, respectively, for the delegated prefix at any time,” and, when that prefix (or a derived prefix) is advertised for SLAAC, “the advertised preferred and valid lifetimes MUST NOT exceed the corresponding remaining lifetimes of the delegated prefix.” This matches and is explicitly cited as the basis for RFC 9096 Section 3.3’s BCP guidance on keeping LAN‑side SLAAC and DHCPv6 lifetimes within the WAN PD lifetimes  .
+      2) The Release prohibition: “A client that has delegated any of the address space received through DHCP Prefix Delegation MUST NOT issue a DHCP Release on the relevant delegated prefix while any of the address space is outstanding. That includes addresses leased out by DHCPv6 (IA_NA), prefixes delegated via DHCPv6-PD (IA_PD), and addresses autoconfigured by IPv6 Router Advertisements. Requirement WPD-9 in [RFC9096] makes this the Best Current Practice.”  
+      
+      These requirements are consistent with, and not in tension with, the more detailed client‑behavior rules in Section 18:
+      - Section 18.2.7 already requires that, before sending a Release for a delegated prefix, the client “MUST stop using all of the leases being released” and, for a delegated prefix, that “the prefix MUST have been advertised with a Preferred Lifetime and a Valid Lifetime of 0 in a Router Advertisement message” as per RFC 4862 and RFC 7084 L‑13  . That is a concrete way to ensure that no downstream SLAAC‑derived address space is still outstanding before Release, which complements (rather than contradicts) the higher‑level “MUST NOT Release while any address space is outstanding” in Section 6.3.
+      - Section 6.3’s general requirement that addresses derived from the delegated prefix never outlive the prefix itself is fully aligned with RFC 4862’s design goals for lease‑based renumbering and with RFC 9096’s more detailed BCP text for CE routers  .
+      - The scope difference between this document (any DHCPv6 PD client) and RFC 7084/RFC 9096 (CE routers) is intentional and does not create a contradiction: this spec is allowed to adopt the same behavior as a general requirement rather than only as a CE‑router BCP.
+
+      The router’s hinted concern that Section 6.3’s “MUST NOT Release while any of the address space is outstanding” might conflict with Sections 18.2.7 or 18.2.13, or with RFC 9096, does not materialize on close reading: Section 18.2.13’s “SHOULD stop using any addresses and delegated prefixes” when restarting server discovery is about local use of configuration, not about sending a Release; and RFC 9096 explicitly cites the Section 6.3 lifetime rule as the normative base for its WAN/LAN coordination guidance  . There is thus no internal or cross‑RFC deontic inconsistency here.
+    - KeyTextSnippets:
+      - “If the client uses a delegated prefix to configure addresses on interfaces on itself or other nodes behind it, the preferred and valid lifetimes of those addresses MUST be no longer than the remaining preferred and valid lifetimes… In particular… the advertised preferred and valid lifetimes MUST NOT exceed the corresponding remaining lifetimes of the delegated prefix.”  
+      - “A client that has delegated any of the address space received through DHCP Prefix Delegation MUST NOT issue a DHCP Release on the relevant delegated prefix while any of the address space is outstanding.”  
+      - “For a delegated prefix, this means the prefix MUST have been advertised with a Preferred Lifetime and a Valid Lifetime of 0 in a Router Advertisement message…”  
+      - RFC 9096 quoting and extending the Section 6.3 rule for LAN‑side lifetimes  
+    - Impact:
+      Because the lifetime and Release requirements in Section 6.3 line up cleanly with the more detailed client state‑machine rules in Section 18 and with the external BCP in RFC 9096, they provide a coherent and implementable normative story for PD clients, including CE routers. There is no actionable deontic bug; any remaining concerns are about placement and cross‑referencing of requirements, not about conflicting or missing normative constraints.
+
+- IfNoRealIssue:
+  The potentially worrying MUST/MUST NOT statements in Section 6 about (a) limiting downstream lifetimes relative to a delegated prefix and (b) prohibiting Release while any derived address space is still in use are consistent with, and in some cases are the explicit foundation for, the lifetime‑coordination and renumbering behavior described later in the document and in RFC 9096. They do not conflict with other sections or referenced RFCs and therefore do not constitute a deontic bug.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 6 presents several DHCPv6 operational models (stateless, IA_NA address assignment, prefix delegation, CE-router behavior, multiple IA_NA/IA_PD, and RFC 9686 registration). It references external RFCs for CE-router requirements, renumbering behavior, prefix‑delegation practices, and registration of self-generated addresses. Two cross-RFC issues arise: a misattributed normative reference to RFC 9096 WPD‑9 and a potentially misleading reuse of the term “lease” for RFC 9686 registrations.
+
+- OverallCrossRFCLikelihood: High
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Misuse of RFC 9096 WPD‑9 to justify a different “no Release” rule
+    - Description: Section 6.3 states that “A client that has delegated any of the address space received through DHCP Prefix Delegation MUST NOT issue a DHCP Release on the relevant delegated prefix while any of the address space is outstanding… Requirement WPD‑9 in [RFC9096] makes this the Best Current Practice.” This creates two problems. First, RFC 9096 WPD‑9 actually says “CE routers SHOULD NOT automatically send DHCPv6‑PD RELEASE messages upon restart events”; it does not discuss the condition “while any of the address space is outstanding,” nor does it mention IA_NA leases or SLAAC‑configured addresses behind the CE. Second, the draft’s text introduces a new, broader requirement (covering any release while any downstream address/prefix is still in use, including IA_NA and SLAAC) and then incorrectly cites WPD‑9 as the source and justification for that behavior. Implementers who follow RFC 9096 only will satisfy “no automatic Release on restart” but not necessarily the much stronger “never Release while any downstream address space is still in use” rule, and conversely, implementers reading this draft could believe that that stronger rule is already codified as BCP in RFC 9096 when it is not. The desired behavior may be reasonable, but the explicit claim that WPD‑9 makes it BCP is inaccurate and misaligns the documents’ semantics.
+    - EntitiesInvolved: ["draft‑ietf‑dhc‑rfc8415bis‑12 Section 6.3", "RFC 9096 WPD‑9 and Section 3.1", "RFC 7084 CE router PD model"]
+    - CrossRefsUsed: ["RFC9096.txt (WPD‑9 text and discussion of automatic RELEASE on restart)", "RFC7084.txt (baseline CE‑router PD behavior)"]
+    - Confidence: High
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: Calling RFC 9686 registrations “leases” despite “lease” definition
+    - Description: The draft’s terminology section defines a “lease” as “a contract by which the server grants the use of an address or delegated prefix to the client for a specified period of time.” In contrast, RFC 9686’s ADDR‑REG‑INFORM/ADDR‑REG‑REPLY mechanism is explicitly for registering self-generated or statically configured addresses: the server logs the address, creates/updates a binding with a lifetime equal to the valid lifetime, and marks it unavailable for future assignment, but it does not grant the client the right to use that address (the client already chose it via SLAAC or static configuration). In Section 6.6, the draft describes this mechanism by saying “a lease is created by the server, and the device performs periodic actions to get the lease renewed, and eventually the lease can expire,” which reuses the word “lease” as if the server were assigning the address in the sense of its own definition and the main DHCPv6 stateful model. This can blur the conceptual distinction between (a) server‑granted addresses/prefixes and (b) externally assigned addresses merely being recorded by the DHCPv6 infrastructure per RFC 9686. A careful implementer might still get the protocol right from RFC 9686, but this terminology conflict between the draft’s own definition of “lease” and its summary of RFC 9686’s behavior can reasonably mislead readers into treating 9686 registrations as ordinary server‑assigned leases rather than as pure registrations/bindings.
+    - EntitiesInvolved: ["draft‑ietf‑dhc‑rfc8415bis‑12 Section 4.2 (lease definition)", "draft‑ietf‑dhc‑rfc8415bis‑12 Section 6.6", "RFC 9686 Section 1 and 4.2.1 (binding and logging semantics)"]
+    - CrossRefsUsed: ["RFC9686 excerpt in the prompt (server registers a binding, logs, and verifies ‘appropriate to the link’)", "draft’s own lease definition in Section 4.2"]
+    - Confidence: Medium
+
+- IfNoIssues:
+  - Comment: n/a
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: Misuse of “lease” terminology for RFC 9686 self‑generated address registration
+    - Evidence:
+      - ExcerptSnippets:
+        - Definition of “lease” in Section 4.2 (DHCP Terminology):  
+          “lease  A contract by which the server grants the use of an address or delegated prefix to the client for a specified period of time.”
+        - Section 6.6 (Registering Self-generated Addresses):  
+          “The major specificity of this mechanism is that the address selection is not done by the DHCP server, but by the device itself.  The most of the lifecycle remains the same in principle: a lease is created by the server, and the device performs periodic actions to get the lease renewed, and eventually the lease can expire.”
+      - ContextSnippets:
+        - RFC 9686 server processing (Section 4.2.1) as quoted in the provided context:  
+          “If the message is not discarded, the address registration server SHOULD verify that the address being registered is ‘appropriate to the link’ … If the message passes the verification, the server:  
+          * MUST log the address registration information …  
+          * SHOULD register a binding between the provided Client Identifier and IPv6 address in its database, if no binding exists. The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client. …  
+          * SHOULD mark the address as unavailable for use and not include it in future Advertise messages.  
+          * MUST send back an ADDR-REG-REPLY message…”
+        - RFC 9686, client side (from introduction and model): the addresses are “self-configured IPv6 addresses via Stateless Address Autoconfiguration (SLAAC) [RFC4862]” or statically configured, and the mechanism is for the device “to inform the DHCPv6 server that the device has a self-configured IPv6 address (or has a statically configured address)”.
+    - Reasoning:
+      - Within this draft, “lease” is normatively defined as a *contract by which the server grants the use* of an address or delegated prefix to the client for a limited time. That definition is consistently tied elsewhere in the document to IA_NA / IA_PD allocations where the server chooses the address or prefix and controls its lifetime.
+      - RFC 9686, by contrast, explicitly describes a different model: the client generates or statically configures the address (e.g., via SLAAC), then uses ADDR-REG-INFORM to **register** that address with a DHCPv6 server. The server logs it and creates/updates a **binding** with a lifetime equal to the address’s valid lifetime, and it marks the address unavailable for future assignment. It never *grants* use of the address; the client already had and used it before any DHCPv6 interaction.
+      - Section 6.6’s statement that “a lease is created by the server” for this mechanism therefore conflicts with the document’s own definition of “lease” and with RFC 9686’s semantics:
+        - Terminologically, it calls something a “lease” even though the server is not granting the address.
+        - Conceptually, it implies that RFC 9686 registrations are just another kind of server-assigned lease, which could mislead implementers into treating these addresses as if they were allocated and revocable in the same way as IA_NA/IA_PD leases.
+      - In fact, RFC 9686 text consistently talks about *address registration* and *bindings*, not leases. Its normative instruction is “SHOULD register a binding… The lifetime of the binding is equal to the Valid Lifetime of the address reported by the client”, and “SHOULD mark the address as unavailable for use”, which is observably not the same contract as assigning a new address to a client.
+      - A careful implementer of RFC 9686 will likely implement this as a special kind of binding/registration entry in the server’s database. Section 6.6’s phrase “lease is created by the server” is therefore not just loose wording: it collides with a precise, previously defined term and could cause confusion in design discussions and code (e.g., folding RFC 9686 registrations into the same “leased resource” logic used for server-assigned addresses, assuming the server “owns” the address space in the same way).
+      - Because the rest of the document is careful to distinguish “binding” (general server record) from “lease” (server-granted address/prefix), and because RFC 9686 itself explicitly uses “binding” for this mechanism, this particular use of “lease” is a real terminology inconsistency that is worth correcting, even if most implementations would still get the on‑wire behavior right.
+    - PatchSuggestion:
+      - In Section 6.6, replace the misleading use of “lease” with terminology aligned to this document’s own definitions and RFC 9686. For example:
+        - Current text:  
+          “The major specificity of this mechanism is that the address selection is not done by the DHCP server, but by the device itself.  The most of the lifecycle remains the same in principle: a lease is created by the server, and the device performs periodic actions to get the lease renewed, and eventually the lease can expire.”
+        - Suggested replacement:  
+          “The major specificity of this mechanism is that the address selection is not done by the DHCP server, but by the device itself.  Most of the lifecycle remains the same in principle: a binding is created by the server for the registered address, with an associated lifetime, and the device performs periodic actions (ADDR-REG-INFORM exchanges) to refresh that registration before it expires, after which the registration can expire.”
+      - Optionally, add one clarifying sentence, e.g.:  
+        “Note that, unlike IA_NA/IA_PD, this registration does not constitute a DHCPv6 assignment of the address; the address remains self-generated or statically configured, and the server is only recording and tracking its use.”
+
+- Notes:
+  - UsedRouterIssues: Confirmed router Candidate Issue “Misuse of ‘lease’ terminology for self-generated address registration (RFC 9686 model)” and refined it into a specific erratum-style clarification.
+  - NewIssuesFromExpert: false
+  - Limitations:
+    - Analysis relies on the provided excerpts from RFC 9686 and this draft; it assumes there is no later section in this draft that explicitly redefines “lease” to include self-registered addresses. If such a redefinition exists elsewhere (not seen in the supplied text), then the impact of this inconsistency would be reduced, but the suggested wording would still better align with RFC 9686’s own terminology.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 6 describes several operational “modes” over the same base DHCPv6 machinery: pure stateless use (Information‑request only), non‑temporary address assignment via IA_NA, prefix delegation via IA_PD including CE-router/LAN behavior and renumbering, the combined CE model, use of multiple IA_NA/IA_PD instances to get multiple addresses/prefixes, and a pointer to the ADDR‑REG‑INFORM/ADDR‑REG‑REPLY registration model from RFC 9686. The relevant state space includes preferred/valid lifetimes on addresses and prefixes, reuse of delegated space on downstream links (RA + downstream DHCPv6‑PD), and the decision of when it is safe to Release a PD lease.
+
+- OverallBoundaryBugLikelihood: Low
+
+- Findings:
+  - Finding-1:
+    - BugType: None
+    - ShortLabel: Handling of “outstanding” sub‑allocated PD space on Release
+    - BoundaryAxis: Releasing a delegated prefix while some sub‑allocations or SLAAC addresses may still exist
+    - ExcerptEvidence: Section 6.3 states that if a client uses a delegated prefix to configure addresses or sub‑delegated prefixes, the preferred/valid lifetimes of those addresses/prefixes MUST NOT exceed the remaining lifetimes of the delegated prefix, and then: “A client that has delegated any of the address space received through DHCP Prefix Delegation MUST NOT issue a DHCP Release on the relevant delegated prefix while any of the address space is outstanding…. Requirement WPD‑9 in [RFC9096] makes this the Best Current Practice.” It also points to RFC 9096 Section 3.3 for more guidance on lifetime coordination.
+    - Reasoning: The obvious corner case is: the upstream PD lifetime is nearing expiry, and the CE router has used the prefix on LANs (via RAs and/or downstream IA_NA/IA_PD) and now wants to send a Release. The spec covers two important edges: (1) on the WAN side, IA_PD lifetimes are authoritative and the CE MUST terminate use of the prefix when the IA_PD valid lifetime expires (Section 12.2 plus the lifetime text in 6.3); and (2) on the LAN side, RA and DHCPv6 lifetimes for all addresses and downstream prefixes MUST be dynamically constrained not to exceed the remaining IA_PD lifetimes, with further detailed guidance in RFC 9096 Section 3.3 and its SLAAC renumbering BCPs. Together, these rules mean that under a correctly implemented CE, there should be no “outstanding” address space, in the sense of non‑expired leases or advertised prefixes, by the time the upstream PD lease reaches the end of its valid lifetime. Section 18.2.7 already requires that the client stop using a delegated prefix (including advertising it with zero Preferred/Valid lifetimes on the LAN side) before sending Release. Section 6.3 strengthens this for CE‑routers that have further delegated or advertised the space. While the word “outstanding” is informal, it is tied to the BCP text in RFC 9096 and 7084, and, operationally, different interpretations only change whether a CE sends an early Release at all; they do not change the required behavior on expiry of the valid lifetime (when the prefix MUST NOT be used regardless). So there is no true interoperability gap here: all compliant CEs must (a) never let LAN lifetimes exceed PD lifetimes, and (b) must not Release while they themselves are still leasing out or advertising that space.
+    - ImpactAssessment: Implementations might differ slightly on how conservatively they interpret “outstanding” for deciding whether to send a Release before expiry, but upstream servers are already required to reclaim at valid‑lifetime=0 even without a Release. This is a policy/efficiency question, not a correctness or interoperability problem.
+
+  - Finding-2:
+    - BugType: None
+    - ShortLabel: Multiple IA_NA/IA_PD instances and partial satisfaction
+    - BoundaryAxis: Client requests many IA_NA/IA_PD, server only satisfies a subset or returns them in different forms over time
+    - ExcerptEvidence: Section 6.5 says a client can request multiple addresses by sending multiple IA_NA options in the initial messages or later via extra Request/Renew, and the same principle applies to IA_PD; the exact behavior of the server (granting or not) is server policy and out of scope. Section 18.2.2/18.2.4/18.2.10.1 spell out how a client processes Replies, including behavior when some IAs or bindings are missing or have NoAddrsAvail/NoPrefixAvail or NoBinding.
+    - Reasoning: The boundary case is when a client sends multiple IA_NA/IA_PD and the server either declines some of them (NoAddrsAvail/NoPrefixAvail) or simply omits some IAs in a Reply. Section 18.2.10.1 requires the client to keep any working bindings, possibly retry missing ones later, and rate‑limit retries when some IAs are not returned. Section 18.1 and the server behavior sections (18.3.2, 18.3.4, 18.3.5) impose additional constraints that all applicable IAs in a Reply must get consistent T1/T2 to allow a single renewal/rebinding transaction; when servers don’t do this, Section 18.2.4 requires clients to compute safe unified T1/T2 themselves. All these rules apply equally whether there is one IA or many, so the “multiple IA” model in 6.5 does not create a gap at empty/partial/mismatched cases; those edge behaviors are already explicitly defined.
+    - ImpactAssessment: Different servers will have different policies on how many additional IAs to grant, but the resulting behaviors at the protocol level (how clients update bindings and retry) are well specified, even in the minimal, empty, and partially satisfied cases.
+
+  - Finding-3:
+    - BugType: None
+    - ShortLabel: Self-generated address registration vs base IA/option semantics
+    - BoundaryAxis: Self-generated or static addresses registered with DHCPv6 (ADDR‑REG‑INFORM) rather than assigned via IA_NA
+    - ExcerptEvidence: Section 6.6 notes that “[RFC9686] introduces a method for devices to register their self-generated or statically configured addresses in the DHCPv6 servers”, that “the address selection is not done by the DHCP server, but by the device itself”, and that this mechanism uses different message types and source address requirements as defined in RFC 9686. Elsewhere, Section 21.6 remarks that in “this document” IA Address is specified only inside IA_NA, but also explicitly acknowledges DHCPv6 Leasequery using IA Address without IA_NA.
+    - Reasoning: A plausible concern is that the base spec’s model—addresses within IAs, server‑selected—might conflict with RFC 9686’s model of self-chosen addresses registered via top‑level IA Address options in ADDR‑REG‑INFORM. However, 6.6 clearly defers detailed semantics and message formats to RFC 9686, and 21.6 already acknowledges that other documents may use IA Address in different encapsulation contexts (Leasequery today, ADDR‑REG‑INFORM in 9686). There is no base‑spec rule that forbids additional message types or forbids IA Address at top level in messages defined by other RFCs; option placement rules in Section 16 are explicitly scoped to the message types this document defines. The registration mechanism is additive and does not alter the base requirements on clients using IA_NA‑assigned addresses, nor does it introduce ambiguity about lifetimes: RFC 9686 defines that in its own terms.
+    - ImpactAssessment: An implementation that reads only this document and not RFC 9686 might not implement ADDR‑REG‑INFORM at all, but that is simply lack of support for an extension, not a contradiction or undefined behavior in the core protocol. Where both are implemented, the interaction is well scoped by the extension RFC.
+
+- Notes:
+  - Not a bug, but a mild documentation asymmetry: Section 21.6 calls out DHCPv6 Leasequery as using IA Address outside IA_NA but does not mention RFC 9686, which also does so. This could lead some implementers to overlook that additional valid usage, but it does not create a protocol‑level inconsistency—other RFCs are allowed to define new message types and option placements.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+
+Vector Stores Used: vs_6958be89a44481918c2ddd280ca7a32c

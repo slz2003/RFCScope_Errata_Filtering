@@ -1,0 +1,189 @@
+{
+  "reports": [
+    {
+      "label": "Unregistered HHIT Entity Type Values in Examples (Codes 10, 14, 15)",
+      "bug_type": "Inconsistency",
+      "explanation": "The examples assign specific semantics to HHIT entity type values 10, 14, and 15 even though the IANA registry (Table 2) only defines values 0, 1, 5, 9, 13, and 16–27, leading to potential semantic collisions.",
+      "justification": [
+        "Appendix A shows CBOR examples using codes 10, 14, and 15 with comments such as 'Reserved (RAA Auth from DKI)' while the IANA registry only lists 0, 1, 5, 9, 13, and 16–27.",
+        "The field description in Section 5.1.2 couples the HHIT Entity Type to the IANA registry, making the use of unregistered values ambiguous."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Appendix A decoded CBOR examples:\n        - RAA auth HHIT: [ 10,  # Reserved (RAA Auth from DKI) , \"3ff8 0000\", <cert> ] (Figure 10).\n        - HDA auth HHIT: [ 14,  # Reserved (HDA Auth from DKI) , \"3ff8 000a\", <cert> ] (Figure 14).\n        - HDA issue HHIT: [ 15,  # Reserved (HDA Issue from DKI) , \"3ff8 000a\", <cert> ] (Figure 16)."
+          },
+          {
+            "id": "E2",
+            "text": "Definition of the field and its value source:\n\"HHIT Entity Type: The HHIT Entity Type field is a number with values defined in Section 6.2.2.\" (Section 5.1.2) and the IANA registry table in Section 6.2.2 specifies only the values 0, 1, 5, 9, 13, and 16–27."
+          }
+        ],
+        "summary": [
+          "(E1) Appendix A examples use codes 10, 14, and 15 with implied reserved semantics.",
+          "(E2) The normative text and IANA registry define only values 0, 1, 5, 9, 13, and 16–27 for HHIT Entity Type."
+        ]
+      },
+      "fix_direction": "Either update the IANA registry to include values 10, 14, and 15 with the intended DKI-based semantics or modify the Appendix A examples to use only the registered HHIT Entity Type values.",
+      "severity": "Medium",
+      "severity_basis": "The use of unregistered codes may cause semantic collisions in future allocations and confuse implementers regarding which numeric values are legitimately reserved.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: Issue-1",
+        "Terminology Expert: Issue-1",
+        "Boundary Expert: Finding-4"
+      ],
+      "report_id": "9886-A-1"
+    },
+    {
+      "label": "HHIT HID Abbreviation Length Mismatch (15 vs 9 Characters)",
+      "bug_type": "Inconsistency",
+      "explanation": "The HHIT RR CDDL requires the HID abbreviation to be exactly 15 characters, yet the normative prose and Appendix A examples specify and use a 9‐character format (four hex digits, a separator, then four hex digits).",
+      "justification": [
+        "The CDDL (Figure 4) defines hid-abbreviation as 'tstr .size(15)', enforcing a 15-character string.",
+        "The prose instructs that the field be filled with a default value like '000A 0014' (9 characters), and examples consistently show values such as '3ff8 0000'.",
+        "This discrepancy can lead to interoperable implementations rejecting each other’s HHIT RRs based on strict schema validation."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "The HHIT wire format CDDL defines 'hid-abbreviation' as tstr .size(15) in 'hhit-rr = [ hhit-entity-type: uint, hid-abbreviation: tstr .size(15), canonical-registration-cert: bstr ]' (Figure 4)."
+          },
+          {
+            "id": "E2",
+            "text": "The prose says, 'Absent of such a policy, this field MUST be filled with the four character hexadecimal representations of the RAA and HDA (in that order) with a separator character, such as a space, in between. For example … 000A 0014.'"
+          },
+          {
+            "id": "E3",
+            "text": "Appendix A examples use HID abbreviations such as '3ff8 0000' and '3ff8 000a', which are 9 characters long."
+          }
+        ],
+        "summary": [
+          "(E1) CDDL requires a 15-character string for hid-abbreviation.",
+          "(E2) Normative prose prescribes a default 9-character format.",
+          "(E3) Appendix A examples consistently use 9-character values."
+        ]
+      },
+      "fix_direction": "Align the CDDL with the intended default by either changing '.size(15)' to '.size(9)' (or a range like .size(1..15) with a clarified default value) or updating the prose and examples to conform to a 15-character format.",
+      "severity": "High",
+      "severity_basis": "This mismatch in string length between the schema and examples creates an immediate risk of interoperability failures, as strict validators will reject valid-looking records from other implementations.",
+      "confidence": "High",
+      "experts": [
+        "Causal Expert: 2.1",
+        "Quantitative Expert: Issue-1",
+        "Deontic Expert: Issue-1",
+        "Structural Expert: Issue-1",
+        "Boundary Expert: Finding-1"
+      ],
+      "report_id": "9886-A-2"
+    },
+    {
+      "label": "Ambiguous Temporal Scope for DET DNS Resolution",
+      "bug_type": "Inconsistency",
+      "explanation": "Section 4 imposes an unconditional MUST that DET reverse names resolve to an HHIT RRType, while Section 7.2 recommends a 'just-in-time' publication that may result in no RRTypes being published until needed, creating conflicting operational expectations.",
+      "justification": [
+        "Section 4 states that DETs MUST resolve to an HHIT RRType unconditionally (and BRID MUST be present for UAS RID).",
+        "Section 7.2 recommends withholding RRTypes until they are required by other parties, allowing for privacy-preserving non-publication before activation.",
+        "This conflict creates ambiguity in deployment, where implementations may enforce the MUST and reject zones following the privacy recommendation."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Section 4: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present…” (Section 4)."
+          },
+          {
+            "id": "E2",
+            "text": "Section 7.2: “When practical, it is RECOMMENDED that no RRTypes under a DET’s specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.” (Section 7.2)."
+          }
+        ],
+        "summary": [
+          "(E1) Section 4 enforces an unconditional MUST for DET DNS resolution.",
+          "(E2) Section 7.2 recommends delaying RRType publication for privacy, creating a temporal conflict."
+        ]
+      },
+      "fix_direction": "Clarify the scope of the MUST requirement in Section 4 by restricting it to active DETs or otherwise explicitly reconciling it with the just-in-time publication recommendation in Section 7.2.",
+      "severity": "High",
+      "severity_basis": "The contradictory requirements create operational ambiguity that can lead to inconsistent deployment and potential security/privacy issues.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: Issue-2",
+        "Deontic Expert: Issue-2"
+      ],
+      "report_id": "9886-A-3"
+    },
+    {
+      "label": "BRID Grouping Structure Mismatch for 'uas_ids' and 'auth'",
+      "bug_type": "Inconsistency",
+      "explanation": "The BRID RR CDDL specifies that 'uas_ids' and 'auth' should be arrays of groups (nested arrays), but the Appendix A examples encode these fields as flat arrays, leading to conflicting interpretations and potential parsing failures.",
+      "justification": [
+        "The CDDL defines 'uas_ids' as [+ uas-id-grp] and 'auth' as [+ auth-grp], where each group is a two-element array.",
+        "The Appendix A BRID examples show 'uas_ids' as [4, h'...'] and 'auth' as a flat array: [5, h'...1', 5, h'...2', ...], lacking the required nesting.",
+        "This discrepancy makes it impossible for decoders that strictly follow the CDDL to correctly interpret the BRID RR structure."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Decoded BRID CBOR (Figure 21):\nFor 'uas_ids': 1: [4, h'012001003FFE000A05130824699A4BC6B2']\nFor 'auth': 2: [ 5, h'...450C', 5, h'...D40B', 5, h'...4D0C', 5, h'...A701']"
+          },
+          {
+            "id": "E2",
+            "text": "CDDL for BRID (Figure 5) defines 'uas_ids' as [+ uas-id-grp] and 'auth' as [+ auth-grp], where uas-id-grp = [ id_type: &uas-id-types, uas_id: bstr .size(20) ] and auth-grp = [ a_type: &auth-types, a_data: bstr .size(1..362) ]."
+          }
+        ],
+        "summary": [
+          "(E1) The BRID examples use flat arrays for both 'uas_ids' and 'auth'.",
+          "(E2) The normative CDDL requires these fields to be encoded as arrays of two-element groups (nested arrays)."
+        ]
+      },
+      "fix_direction": "Revise either the BRID examples or the CDDL so that 'uas_ids' and 'auth' are consistently encoded as nested arrays (or adjust the CDDL to match a flat array structure) across all implementations.",
+      "severity": "High",
+      "severity_basis": "A structural mismatch in the array grouping will lead to parsing failures and undermine interoperability between systems that generate or validate BRID RRs.",
+      "confidence": "High",
+      "experts": [
+        "Quantitative Expert: Issue-2",
+        "Structural Expert: (BRID container shape mismatch)",
+        "Boundary Expert: Finding-3"
+      ],
+      "report_id": "9886-A-4"
+    },
+    {
+      "label": "BRID UAS ID Length Mismatch (20-byte Requirement vs 17-byte Example)",
+      "bug_type": "Inconsistency",
+      "explanation": "The BRID RR CDDL requires that the UAS ID be exactly 20 bytes long, but the Appendix A example specifies a UAS ID that is only 17 bytes, violating the size constraint.",
+      "justification": [
+        "According to the CDDL (Figure 5), the uas_id field in the uas-id-grp must be a byte string of exactly 20 bytes (bstr .size(20)).",
+        "The BRID CBOR example in Appendix A shows uas_ids with a UAS ID given as h'012001003FFE000A05130824699A4BC6B2', which is 34 hex digits corresponding to only 17 bytes.",
+        "This size discrepancy means that a decoder enforcing the CDDL will reject the example as malformed."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "The BRID CDDL defines uas-id-grp as [ id_type: &uas-id-types, uas_id: bstr .size(20) ] (Figure 5), so uas_id must be exactly 20 bytes."
+          },
+          {
+            "id": "E2",
+            "text": "Decoded BRID CBOR example (Figure 21): 1: [4, h'012001003FFE000A05130824699A4BC6B2'] – the hex string here has 34 hex digits, equating to 17 bytes."
+          }
+        ],
+        "summary": [
+          "(E1) The CDDL mandates a 20-byte uas_id.",
+          "(E2) The provided example contains only a 17-byte uas_id."
+        ]
+      },
+      "fix_direction": "Correct the BRID example to include a 20-byte UAS ID (e.g., by providing a hex string with 40 hex digits) or adjust the CDDL if the intended length is different.",
+      "severity": "High",
+      "severity_basis": "The incorrect byte length directly violates the schema, leading to decoding failures and incompatibility with ASTM F3411-based implementations.",
+      "confidence": "High",
+      "experts": [
+        "Quantitative Expert: Issue-3",
+        "Structural Expert: Issue-2",
+        "Boundary Expert: Finding-2"
+      ],
+      "report_id": "9886-A-5"
+    }
+  ]
+}

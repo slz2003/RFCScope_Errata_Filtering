@@ -1,0 +1,311 @@
+################################################################################
+Processing: RFC 9886, Section 1
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for RFC 9886, Section 1
+================================================================================
+Preparing RFC 9886 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1
+
+Extracting references from the references section of the RFC.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/references.json
+
+Parsing the contents of the RFC.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/corpus.json
+
+Extracting references from section 1 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/reference_extraction.log
+Focusing on section 1 and its children.
+Processing section 1. Introduction
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks:  25%|██▌       | 1/4 [04:41<14:05, 281.78s/it]Splitting content into chunks: 100%|██████████| 4/4 [08:45<00:00, 119.29s/it]Splitting content into chunks: 100%|██████████| 4/4 [08:45<00:00, 131.48s/it]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Registries are fundamental to Unmanned Aircraft System (UAS) Remote
+   Identification (RID).  Only very limited operational information can
+   be sent via Broadcast RID, but extended information is...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: TEXT
+  Reference Value (keywords/section): UAS ID, registries
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9434
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9886:
+  Search Keywords: 'UAS ID, registries'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    Registries are fundamental to Unmanned Aircraft System (UAS) Remote
+   Identification (RID).  Onl...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9434:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: DRIP Identifier Registration and Registries
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+  ***************                                        ***************
+  *    UAS1     *                                        *     UAS2    *
+  *             *                                     ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+  DAA:  Detect And Avoid
+  GPOD: General Public Observer Device
+  PSOD: Public Safety Observer Device
+  V2I:  Vehicle-to-Infrastructure
+  V2V:  Vehicle-to-Vehicle
+
+      Figure 1: Global UAS RID Usage...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   When a DRIP Entity Tag (DET) [RFC9374] is used as the UAS ID in RID,
+   extended information can be retrieved from a DRIP Identity Management
+   Entity (DIME), which manages registration of and ass...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9374
+  Reference Type: TEXT
+  Reference Value (keywords/section): DRIP Entity Tag (DET)
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9434
+  Reference Type: SECTION
+  Reference Value (keywords/section): A.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9374:
+  Search Keywords: 'DRIP Entity Tag (DET)'
+  Result: Found in Section 4.5
+  Section Title: DRIP Entity Tag (DET) Registry
+  Content Preview:    DETs are registered to HDAs.  The registration process defined in
+   [DRIP-REG ] ensures DET glob...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9434:
+  Looking for Section: 'A.2'
+  Match Type: Exact match
+  Result: Matched to Section A.2
+  Section Title: UAS Service Supplier (USS)
+---------------------------------------------------------------------------
+
+Warning: Section 1 not found. Processing all sections.
+Processing section 1.1. General Concept
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 1/3 [00:10<00:21, 10.57s/it]Splitting content into chunks:  67%|██████▋   | 2/3 [06:25<03:45, 225.07s/it]Splitting content into chunks: 100%|██████████| 3/3 [06:25<00:00, 128.59s/it]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   DRIP Entity Tags (DETs) embed a hierarchy scheme that is mapped onto
+   the Domain Name System (DNS) [STD13].  DIMEs enforce registration and
+   information access of data associated with a DET whi...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: STD13
+  Reference Type: TEXT
+  Reference Value (keywords/section): Domain Name System
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC1034
+  Reference Type: TEXT
+  Reference Value (keywords/section): Domain names - concepts and facilities
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC1035
+  Reference Type: TEXT
+  Reference Value (keywords/section): Domain names - implementation and specification
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC13:
+  Search Keywords: 'Domain Name System'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Authoritative name servers of the DNS provide the public information
+   such as the cryptographic keys, endorsements and certificates of
+   DETs, and pointers to private information resources.  Cry...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: TEXT
+  Reference Value (keywords/section): Authentication Messages
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9575:
+  Search Keywords: 'Authentication Messages'
+  Result: Found in Section 3.2
+  Section Title: ASTM Authentication Message Framing
+  Content Preview:    The Authentication Message (Message Type 0x2) is unique in the ASTM
+   [F3411] Broadcast standard...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   This document does not specify AAA mechanisms used by Private
+   Information Registries to store and protect Personally Identifiable
+   Information (PII).
+################################################################################
+Processing section 1.2. Scope
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 529.52it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The scope of this document is the DNS registration of DETs with the
+   DNS delegation of the reverse domain of the IPv6 prefix (2001:30::/28
+   for DETs) and RRsets used to handle DETs.
+################################################################################
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 1 only.
+Focusing on section 1 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/section_dependencies.json
+
+Creating prompts for section 1...
+Creating expert prompt for section 1 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/focus_section_1_prompt_expert.md
+Expert prompt token count: 32,605 tokens
+Creating router prompt for section 1...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/focus_section_1_prompt_router.md
+Router prompt token count: 16,918 tokens
+
+RFC 9886 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be4c24408191bdbddafd81dfd4e3
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for RFC 9886, Section 1
+================================================================================
+2026-01-03 02:16:43,488 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:16:43,491 - __main__ - INFO - Router prompt length: 125011 chars
+2026-01-03 02:16:43,491 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:16:43,492 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:16:43,492 - __main__ - INFO - ================================================================================
+2026-01-03 02:16:44,028 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:16:44,028 - __main__ - INFO - User prompt length: 125011 chars
+2026-01-03 02:17:05,397 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:17:05,851 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 02:17:05,851 - __main__ - INFO - Using existing vector store(s): vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:17:05,851 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:17:05,851 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:17:05,851 - __main__ - INFO - ================================================================================
+2026-01-03 02:17:05,870 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/test_analysis.md
+2026-01-03 02:17:05,873 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1/test_analysis.json
+2026-01-03 02:17:05,873 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-1
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 1 of RFC 9886 introduces the role of DETs and registries in UAS Remote ID, explains that DETs/HHITs are mapped into DNS and managed by DIMEs (often realized by USSs), and states that the document’s scope is DNS registration of DETs under the 2001:30::/28 prefix and associated RRsets.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - No procedures, timers, or state ordering are described here; it is purely architectural and scoping text.
+  - ActorDirectionality: LOW - Roles (UAS, DIME, USS, registries) are named but no normative send/receive responsibilities or flows are specified in this section.
+  - Scope: LOW - The scope statement (DNS registration of DETs and reverse-domain delegation for 2001:30::/28) is clear and consistent with RFC 9374 and the later text; no apparent ambiguity or contradiction.
+  - Causal: LOW - There are no executable algorithms or stepwise behaviors whose literal implementation could cause breakage; this section is descriptive.
+  - Quantitative: LOW - The only numeric element is the IPv6 prefix 2001:30::/28, which matches RFC 9374 and its reverse domain; no size/range math or cardinality details appear here.
+  - Deontic: LOW - Almost no RFC 2119 language is used in this section; there are no normative requirements to compare or reconcile.
+  - Structural: LOW - No ABNF, YANG, CDDL, or field diagrams are present in Section 1 itself; structural formalisms appear only in later sections.
+  - CrossRFC: LOW - References to RFC 9434 (figure reuse, USS/DIME relationship) and RFC 9374 (DETs/HHITs and prefix 2001:30::/28) are consistent with the quoted excerpts and standard DNS usage (STD13).
+  - Terminology: LOW - Use of terms such as DET, HHIT hierarchy, DIME, USS, Public/Private Registry, and DNS matches the referenced architecture documents; no conflicting or dual names for the same concept are evident here.
+  - Boundary: LOW - No edge-case behaviors, error conditions, or boundary values are discussed in this section.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No plausible inconsistencies or underspecified behaviors detected in Section 1
+    Relevant Dimensions: 
+    Sketch: Section 1 (Introduction, General Concept, Scope) is high-level and aligns with RFC 9374 and RFC 9434...
+
+Response ID: resp_0e78c30b3fd43933006958c25eeddc8194afee356bd57f72be
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958be4c24408191bdbddafd81dfd4e3
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed RFC 9886, Section 1
+################################################################################
+

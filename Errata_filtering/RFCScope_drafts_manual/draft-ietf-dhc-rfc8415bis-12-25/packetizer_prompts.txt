@@ -1,0 +1,128 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 25 of the -bis draft specifies IANA actions: updating references from RFC 8415 to this document, adding a new "Status" column to DHCPv6 registries, and marking certain option codes and a status code as Obsolete. The referenced RFC 8415 IANA section shows prior registry modifications and context for these updates.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - No sequencing, timers, or ordering of events in the IANA instructions.
+  - ActorDirectionality: LOW - Only IANA actions are described; no protocol roles or message directions involved.
+  - Scope: LOW - Scope (which registries and specific rows) is clearly enumerated; no apparent over-breadth or omission visible from this text.
+  - Causal: LOW - The registry changes (marking items Obsolete, adding a Status column, updating references) are straightforward and do not obviously break protocol behavior or interoperability.
+  - Quantitative: LOW - Only registry identifiers and port numbers are involved; ranges and numeric values align with existing usage.
+  - Deontic: LOW - This is “IANA is requested to…” guidance, not conflicting protocol-level MUST/SHOULD requirements.
+  - Structural: LOW - No ABNF/YANG/diagrams here; the tabular registry references are consistent with prior RFC 8415 text.
+  - CrossRFC: LOW - Cross-references (dhcpv6-parameters, auth-namespaces, multicast addresses, port numbers) line up with how RFC 8415 already used them; updating references from 8415 to this document is coherent.
+  - Terminology: LOW - Terms like “Obsolete”, option names, and status codes match earlier sections and the existing registries.
+  - Boundary: LOW - No edge-case behaviors or special-case algorithmic rules; this is pure registry administration.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No apparent inconsistencies or underspecification in IANA actions for DHCPv6 registries
+    Relevant Dimensions: 
+    Sketch: From the combined view of Section 25 in the -bis draft and the IANA guidance in RFC 8415, the reques...
+
+Response ID: resp_0fff5ac4e7edb445006958dd45f2748197ab3b9232dd9103ca
+
+
+Vector Stores Used: vs_6958be89a44481918c2ddd280ca7a32c
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

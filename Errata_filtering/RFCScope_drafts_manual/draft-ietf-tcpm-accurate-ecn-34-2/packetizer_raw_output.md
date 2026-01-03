@@ -1,0 +1,98 @@
+# Errata Reports
+
+Total reports: 2
+
+---
+
+## Report 1: draft-ietf-tcpm-accurate-ecn-34-2-1
+
+**Label:** Inconsistent Overview of CE Counter Scope (Excludes SYN Packets)
+
+**Bug Type:** Inconsistency
+
+**Explanation:**
+
+The informative overview in Section 2.2 describes the CE packet and byte counters as counting all CE‐marked packets and payload bytes, yet the normative text in Section 3 explicitly excludes SYN packets (and their payload) with special handshake handling. This discrepancy may mislead implementers who rely solely on the overview.
+
+**Justification:**
+
+- Section 2.2 states that the fourth counter counts the number of packets marked with a CE codepoint (including control packets without payload), implying all such packets are counted.
+- Section 3.2 explicitly mandates that the CE packet counter (r.cep) is incremented for every Acceptable packet except for CE on SYN packets (SYN=1; ACK=0), with special handling for SYN/SYN‐ACK.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  Section 2.2: “The fourth counter counts the number of packets arriving marked with a CE codepoint (including control packets without payload if they are CE-marked).”
+
+- **E2:**
+
+  Section 3.2: “The Data Receiver MUST increment the CE packet counter (r.cep), for every Acceptable packet that it receives with the CE code point in the IP ECN field, including CE marked control packets and retransmissions but excluding CE on SYN packets (SYN=1; ACK=0).”
+
+**Evidence Summary:**
+
+- (E1) Overview implies that all CE‐marked packets are counted.
+- (E2) Normative rules exclude SYN packets from being counted.
+
+**Fix Direction:**
+
+Revise Section 2.2 to explicitly mention that the counters do not include CE markings on SYN packets and to reference the special handshake handling in Section 3.2.2.
+
+**Severity:** Low
+  *Basis:* Expert analyses agree that this is an editorial inconsistency with minimal real-world risk if the normative text is followed.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Scope: Issue-1
+- Structural: Issue-1
+- Terminology: Issue-1
+- Boundary: Finding-1
+
+---
+
+## Report 2: draft-ietf-tcpm-accurate-ecn-34-2-2
+
+**Label:** Overly Broad ACE Field Overview Scope (Excludes SYN/SYN‑ACK)
+
+**Bug Type:** Inconsistency
+
+**Explanation:**
+
+Section 2.5 describes the ACE field as providing feedback for all data and control packets, yet the normative text in Section 3.2.2 restricts ACE field usage to segments with SYN=0, excluding SYN/SYN‑ACK which use a special handshake encoding. This misrepresentation may lead to conceptual confusion during implementation.
+
+**Justification:**
+
+- Section 2.5 states that the ACE field provides feedback about CE markings in the IP‑ECN field for both data and control packets, suggesting a universal mechanism.
+- Section 3.2.2 clarifies that the ACE field applies only to segments with the SYN flag cleared (SYN=0) and expressly forbids its use on segments with SYN=1.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  Section 2.5: “The ACE field provides feedback about CE markings in the IP‑ECN field of both data and control packets.”
+
+- **E2:**
+
+  Section 3.2.2: “a host with both of its half‑connections in AccECN mode MUST interpret the AE, CWR and ECE flags as the 3‑bit ACE counter on a segment with the SYN flag cleared (SYN=0)… A host MUST NOT interpret the 3 flags as a 3‑bit ACE field on any segment with SYN=1 (whether ACK is 0 or 1), or if AccECN negotiation is incomplete or has not succeeded.”
+
+**Evidence Summary:**
+
+- (E1) The overview in Section 2.5 implies that the ACE field covers all packets.
+- (E2) The normative specification limits the ACE field to segments with SYN=0.
+
+**Fix Direction:**
+
+Update Section 2.5 to clarify that the ACE field is only used on segments with SYN=0 and that SYN/SYN‑ACK packets follow a separate handshake encoding as detailed in Section 3.2.2.
+
+**Severity:** Low
+  *Basis:* The inconsistency is editorial and unlikely to cause interoperability problems when implementers follow the normative text.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Scope: Issue-2
+
+---

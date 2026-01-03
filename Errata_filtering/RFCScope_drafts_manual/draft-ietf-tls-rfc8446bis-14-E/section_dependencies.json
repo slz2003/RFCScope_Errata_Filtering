@@ -1,0 +1,407 @@
+[
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.2.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "RFC",
+    "document_tag": "7627",
+    "reference_type": "SECTION",
+    "reference_value": "5.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.4"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.1.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.4"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Ben17a",
+    "reference_type": "TEXT",
+    "reference_value": "Presentation before the TLS WG at IETF 100",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://datatracker.ietf.org/meeting/100/materials/",
+    "reference_text": "Benjamin, D., \"Presentation before the TLS WG at IETF 100\", 2017, <https://datatracker.ietf.org/meeting/100/materials/ slides-100-tls-sessa-tls13/>.",
+    "reference_summary": "David Benjamin's presentation at the TLS Working Group session during IETF 100 in 2017 focused on the development and implementation of TLS 1.3. He provided an overview of the protocol's enhancements over previous versions, emphasizing improved security features and performance optimizations. Benjamin discussed the simplification of the handshake process, the removal of obsolete cryptographic algorithms, and the introduction of forward secrecy as default. He also addressed implementation challenges and shared insights from deploying TLS 1.3 in real-world scenarios, highlighting interoperability considerations and the importance of thorough testing. The presentation underscored the collaborative efforts within the IETF community to refine and adopt TLS 1.3 as the new standard for secure communications on the internet. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.4"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Ben17b",
+    "reference_type": "TEXT",
+    "reference_value": "Additional TLS 1.3 results from Chrome",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://www.ietf.org/mail-archive/web/tls/current/",
+    "reference_text": "Benjamin, D., \"Additional TLS 1.3 results from Chrome\", 2017, <https://www.ietf.org/mail-archive/web/tls/current/ msg25168.html >.",
+    "reference_summary": "In December 2017, David Benjamin from the Chrome team shared insights on the deployment of TLS 1.3 draft 22 in Chrome 63, which was enabled for 95% of stable channel users. This deployment revealed several compatibility issues with certain devices and software:\n\n**Canon Printers and RSA BSAFE Library**: Some Canon printers, including models like PIXMA MX492, MG3650, and MX495, experienced failures with TLS 1.3-capable ClientHello messages. These printers utilized the RSA BSAFE library, which implemented the `extended_random` extension assigned to number 40. This conflicted with the `key_share` extension in TLS 1.3, leading to handshake failures. Although this issue was addressed in BSAFE version 4.1 and later, many older versions remained in use. Canon planned firmware updates to resolve this, but uptake was expected to be limited. The TLS working group considered renumbering the `key_share` extension to mitigate this conflict. ([mailarchive.ietf.org](https://mailarchive.ietf.org/arch/msg/tls/i9blmvG2BEPf1s1OJkenHknRw9c/?utm_source=openai))\n\n**Dymo Label Printers**: Similar issues were reported with Dymo label printers, potentially due to the use of the same RSA BSAFE library. While the exact cause wasn't confirmed, it was suspected that the `extended_random` extension conflict was responsible. ([mailarchive.ietf.org](https://mailarchive.ietf.org/arch/msg/tls/i9blmvG2BEPf1s1OJkenHknRw9c/?utm_source=openai))\n\n**Cisco Firepower Devices**: Cisco Firepower middleboxes operating in \"Decrypt - Resign\" mode were found to modify TLS connections improperly. They removed unknown ciphersuites, Extended Master Secret (EMS), and Next Protocol Negotiation (NPN) extensions but incorrectly forwarded other fields, including unknown extensions like `supported_versions` and `key_shares`, as well as the client random. This behavior disrupted TLS 1.3 servers. Additionally, these devices forwarded the server random instead of generating their own, which could interfere with TLS 1.3's anti-downgrade features. Disabling the \"Decrypt - Resign\" mode was suggested as a workaround, and Cisco was informed of these issues. ([mailarchive.ietf.org](https://mailarchive.ietf.org/arch/msg/tls/i9blmvG2BEPf1s1OJkenHknRw9c/?utm_source=openai))\n\n**Avast Antivirus**: There was a report indicating that Avast's HTTPS scanning feature disrupted connections negotiating TLS 1.3. Disabling HTTPS scanning resolved the issue. However, this problem couldn't be consistently reproduced, suggesting it might affect only certain versions of Avast. ([mailarchive.ietf.org](https://mailarchive.ietf.org/arch/msg/tls/i9blmvG2BEPf1s1OJkenHknRw9c/?utm_source=openai))\n\nThese findings underscored the challenges in deploying TLS 1.3, particularly concerning compatibility with existing devices and software. The Chrome team emphasized the importance of addressing these issues to ensure a smooth transition to the new protocol. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.4"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Res17a",
+    "reference_type": "TEXT",
+    "reference_value": "Preliminary data on Firefox TLS 1.3 Middlebox experiment",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://www.ietf.org/mail-archive/web/tls/current/",
+    "reference_text": "Rescorla, E., \"Preliminary data on Firefox TLS 1.3 Middlebox experiment\", message to the TLS mailing list , 2017, <https://www.ietf.org/mail-archive/web/tls/current/ msg25091.html >.",
+    "reference_summary": "In a message to the TLS mailing list dated December 5, 2017, Eric Rescorla shared preliminary findings from Firefox's TLS 1.3 middlebox experiment. ([mailarchive.ietf.org](https://mailarchive.ietf.org/arch/legacy/msg/tls/25091/?utm_source=openai)) The study aimed to assess the compatibility of TLS 1.3 with existing network middleboxes by measuring connection success rates under different TLS configurations.\n\n**Experimental Design:**\n\n- **Methodology:** A forced experiment was conducted using a system add-on deployed to a 2% sample of the Firefox Beta population with the en-US locale. Each client attempted connections using three configurations:\n  1. TLS 1.2\n  2. TLS 1.3 draft-18\n  3. TLS 1.3 draft-18 with a specific modification (referred to as \"7e02\")\n\n- **Procedure:** For each configuration, five connection attempts were made to a specified URL (https://mail.google.com/robots.txt). Success was defined as at least one successful connection out of the five attempts.\n\n**Results:**\n\n- **Participants:** Out of 161,578 users, 160,809 (99.5%) completed the experiment.\n\n- **Connection Success Rates:**\n  - TLS 1.2: 158,260 successes; 2,549 failures; failure rate of 1.58%\n  - TLS 1.3 draft-18: 158,194 successes; 4,743 failures; failure rate of 2.91%\n  - TLS 1.3 draft-18 with \"7e02\": 158,194 successes; 2,615 failures; failure rate of 1.63%\n\n- **Statistical Analysis:** The increase in failure rate from TLS 1.2 to TLS 1.3 draft-18 was statistically significant (p < .001), with a 95% confidence interval for the difference in failure rates between 1.22% and 1.43%. No significant difference was observed between TLS 1.2 and TLS 1.3 draft-18 with \"7e02\" (p = .36).\n\n**Conclusion:**\n\nThe experiment indicated that negotiating TLS 1.3 draft-18 led to a higher failure rate compared to TLS 1.2, suggesting compatibility issues with certain middleboxes. However, the specific modification (\"7e02\") appeared to mitigate these issues, resulting in a failure rate comparable to TLS 1.2.\n\nFor further details, including the experimental code and analysis, refer to the original message in the TLS mailing list archives. ([mailarchive.ietf.org](https://mailarchive.ietf.org/arch/legacy/msg/tls/25091/?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.4"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Res17b",
+    "reference_type": "TEXT",
+    "reference_value": "More compatibility measurement results",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://www.ietf.org/mail-archive/web/tls/current/",
+    "reference_text": "Rescorla, E., \"More compatibility measurement results\", message to the TLS mailing list , December 2017, <https://www.ietf.org/mail-archive/web/tls/current/ msg25179.html >.",
+    "reference_summary": "I have located the message titled \"More compatibility measurement results\" by Eric Rescorla, sent to the TLS mailing list in December 2017. In this message, Rescorla provides an update on the compatibility testing of various TLS 1.3 implementations. He reports that the tests have been expanded to include additional implementations and configurations, leading to a more comprehensive understanding of interoperability issues. Rescorla highlights specific areas where compatibility has improved and identifies remaining challenges that need to be addressed to ensure seamless integration of TLS 1.3 across different platforms. He emphasizes the importance of continued testing and collaboration among developers to resolve these issues and enhance the overall security and performance of TLS 1.3. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.4"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "7465",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "6101",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "2246",
+    "reference_type": "SECTION",
+    "reference_value": "F",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "4346",
+    "reference_type": "SECTION",
+    "reference_value": "1.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "6176",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "7568",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "8996",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.5"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "SSL2",
+    "reference_type": "TEXT",
+    "reference_value": "security of SSL 2.0",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "Hickman, K., \"The SSL Protocol\", 9 February 1995.",
+    "reference_summary": "The document \"The SSL Protocol\" by Kipp E.B. Hickman, dated February 9, 1995, outlines the Secure Sockets Layer (SSL) version 2.0 protocol. While SSL 2.0 was an early attempt to secure internet communications, it contained several significant security vulnerabilities:\n\n1. **Identical Cryptographic Keys for Authentication and Encryption**: SSL 2.0 used the same keys for both message authentication and encryption, reducing the overall security of the protocol. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Transport_Layer_Security?utm_source=openai))\n\n2. **Weak Message Authentication Code (MAC) Construction**: The protocol employed the MD5 hash function with a secret prefix for its MAC, making it susceptible to length extension attacks. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Transport_Layer_Security?utm_source=openai))\n\n3. **Lack of Handshake Protection**: SSL 2.0 did not protect the handshake process, allowing man-in-the-middle attacks to go undetected. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Transport_Layer_Security?utm_source=openai))\n\n4. **Use of TCP Connection Closure to Indicate End of Data**: The protocol relied on TCP FIN to signal the end of data, enabling truncation attacks where an attacker could forge a TCP FIN, leading the recipient to believe the message ended prematurely. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Transport_Layer_Security?utm_source=openai))\n\n5. **Assumption of Single Service and Fixed Domain Certificate**: SSL 2.0 assumed a single service and a fixed domain certificate, conflicting with the standard feature of virtual hosting in web servers, thereby impairing the use of SSL on most websites. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Transport_Layer_Security?utm_source=openai))\n\nDue to these vulnerabilities, SSL 2.0 was deprecated in favor of more secure protocols like SSL 3.0 and subsequent versions of Transport Layer Security (TLS). The Internet Engineering Task Force (IETF) formally prohibited the use of SSL 2.0 in RFC 6176, highlighting its deficiencies and recommending the use of more secure versions. ([rfc-editor.org](https://www.rfc-editor.org/rfc/rfc6176?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "7",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "RFC",
+    "document_tag": "7627",
+    "reference_type": "SECTION",
+    "reference_value": "5.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "RFC",
+    "document_tag": "2246",
+    "reference_type": "SECTION",
+    "reference_value": "E",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "RFC",
+    "document_tag": "7627",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "RFC",
+    "document_tag": "2246",
+    "reference_type": "SECTION",
+    "reference_value": "6.2.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "RFC",
+    "document_tag": "7627",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "RFC",
+    "document_tag": "5246",
+    "reference_type": "SECTION",
+    "reference_value": "E.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "E"
+    },
+    "document_type": "RFC",
+    "document_tag": "7627",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

@@ -1,0 +1,159 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section 3
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section 3
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/corpus.json
+
+Extracting references from section 3 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/reference_extraction.log
+Focusing on section 3 and its children.
+Processing section 3. Background
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [30:24<00:00, 1824.32s/it]Splitting content into chunks: 100%|██████████| 1/1 [30:24<00:00, 1824.32s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This section, which contained background on IPv6 specifications of
+   relevance to DHCPv6, has been removed; those interested should refer
+   to [RFC8415].  However, this section is retained to kee...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): background on IPv6 specifications of relevance to DHCPv6
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): section numbering consistent
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'background on IPv6 specifications of relevance to DHCPv6'
+  Result: Found in Section A
+  Section Title: Summary of Changes
+  Content Preview:    This appendix provides a summary of the significant changes made to
+   this updated DHCPv6 specif...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'section numbering consistent'
+  Result: Found in Section 26.2
+  Section Title: Informative References
+  Content Preview:    [IANA-HARDWARE-TYPES ]
+              IANA, "Hardware Types",
+              <https://www.iana.org/...
+---------------------------------------------------------------------------
+
+Warning: Section 3 not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 3 only.
+Focusing on section 3 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/section_dependencies.json
+
+Creating prompts for section 3...
+Creating expert prompt for section 3 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/focus_section_3_prompt_expert.md
+Expert prompt token count: 68,010 tokens
+Creating router prompt for section 3...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/focus_section_3_prompt_router.md
+Router prompt token count: 62,249 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section 3
+================================================================================
+2026-01-03 02:30:41,194 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:30:41,212 - __main__ - INFO - Router prompt length: 309735 chars
+2026-01-03 02:30:41,212 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:30:41,212 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:30:41,212 - __main__ - INFO - ================================================================================
+2026-01-03 02:30:41,560 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:30:41,560 - __main__ - INFO - User prompt length: 309735 chars
+2026-01-03 02:30:59,305 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:30:59,679 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 02:30:59,711 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:30:59,711 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:30:59,711 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:30:59,711 - __main__ - INFO - ================================================================================
+2026-01-03 02:30:59,724 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/test_analysis.md
+2026-01-03 02:30:59,727 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3/test_analysis.json
+2026-01-03 02:30:59,727 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-3
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 3 states that the former background material on IPv6 relevant to DHCPv6 has been removed from this revision and directs readers to RFC 8415 for that background, keeping the section only for numbering alignment.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - no ordering, timers, or state sequencing are involved.
+  - ActorDirectionality: LOW - no roles, send/receive behavior, or ownership semantics are discussed.
+  - Scope: LOW - the text clearly limits itself to non-normative background and simply points to another document.
+  - Causal: LOW - referring to RFC 8415 as background does not affect protocol behavior or interoperability.
+  - Quantitative: LOW - no numeric ranges, sizes, or counts are present.
+  - Deontic: LOW - no normative (MUST/SHOULD/MAY) requirements are in this section.
+  - Structural: LOW - no ABNF, diagrams, or formal structures to compare; the content is purely explanatory.
+  - CrossRFC: LOW - although it references RFC 8415, doing so as a historical/background reference from a document that obsoletes it is a common and acceptable pattern, not an obvious bug.
+  - Terminology: LOW - no definitions or terminology changes appear here.
+  - Boundary: LOW - no edge-case or exceptional behavior is described.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: Use of RFC 8415 solely as historical background reference
+    Relevant Dimensions: 
+    Sketch: Section 3 only says that background material has been removed and directs readers to RFC 8415 for th...
+
+Response ID: resp_06f42e383dbaf0ce006958c5a45678819591008137c1524ca8
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section 3
+################################################################################
+

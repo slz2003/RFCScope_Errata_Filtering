@@ -1,0 +1,454 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    The excerpt defines how DET-related DNS records are used (HHIT and BRID) and then adds security guidance, including optional “just-in-time” publication of those records and alternate validation paths when DNSSEC is absent. The main temporal tension is between a normative requirement that DET reverse names always resolve to HHIT (and BRID for UAS RID) and a later recommendation to deliberately withhold those very RRTypes until some future “required for use” time. There is also a timing gap around how clients should behave during windows when just-in-time publication has not yet occurred but validation is attempted.
+  OverallTemporalRisk: Medium
+  CandidateIssues:
+    - Id: T1
+      Type: Both
+      ShortLabel: "Always-present HHIT/BRID vs just-in-time DNS publication"
+      Description: |
+        Section 4 imposes a strong, apparently continuous requirement that every DET reverse name resolve to an HHIT RRType, and that for UAS RID the BRID RRType MUST be present. Later, Section 7.2 recommends a “just-in-time” mechanism in which no RRTypes under a DET’s name are published “unless and until” needed, explicitly acknowledging that this will remove the HHIT RRType from the DNS until some future time. Interpreted literally over the lifecycle of a DET, those statements cannot both hold for the same periods of time: one requires the HHIT/BRID records to exist whenever queried, the other recommends that they not exist until a triggering event. In addition, the spec does not clearly define the event ordering (e.g., at what point near a flight or session start records must be published, when they may be removed, and how clients are expected to behave during the gaps), which leaves observable temporal behavior underspecified.
+      TemporalReasoning: |
+        1. Section 4 establishes the baseline DNS behavior for DETs:
+           * “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an HHIT RRType.”  
+           * For UAS RID, “the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”
+           This reads as a steady-state requirement: whenever a client performs a DET reverse lookup, it MUST resolve to HHIT, and for UAS RID there MUST also be BRID at that name.
+        2. Section 7.2 then introduces a life-cycle advice to reduce key exposure:
+           * “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.”
+           * It further talks about the UAS or USS “signal[ing] to the DIME that a flight using a Specific Session ID will soon be underway or complete.”
+           This explicitly contemplates a timeline where, from registration time until some later “required for use” event, the DET’s reverse name returns no HHIT (and likely no BRID).
+        3. If we sketch a DET’s lifecycle:  
+           * t0: DET and keys are minted.  
+           * t1: DET is registered with the DIME and (per Section 4’s model) becomes something that “is to be under ip6.arpa” for lookups.  
+           * t2: A flight or UAS operation using that DET begins.  
+           * t3: Flight completes; DET may or may not be used again later.
+        4. Under a literal reading of Section 4, from t1 onward any reverse lookup for that DET “MUST resolve to an HHIT RRType”, and, for UAS RID use, BRID “MUST be present”. There is no temporal qualifier: the requirement is phrased as an invariant property of DET usage in DNS.
+        5. Under a literal reading of Section 7.2, between t1 and just before t2 it is RECOMMENDED that “no RRTypes under a DET's specific domain name be published,” which “would cause at least the HHIT RRType to not be in the DNS.” Thus, during those time intervals, a reverse lookup would *not* resolve to HHIT (likely NXDOMAIN or NODATA).
+        6. For a single DET, both statements cannot simultaneously hold over the same time interval: you cannot have “no RRTypes under [that] domain name” and also “MUST resolve to an HHIT RRType” during that interval. The conflict is especially clear when you consider clients that may attempt validation before the DIME has published the record via the suggested “somehow” signaling.
+        7. The interaction with non‑DNSSEC validation in Section 7.1 further depends on ordering:  
+           * When DNSSEC is not used, “clients MUST ‘walk’ the tree of certificates locating each certificate by performing DNS lookups of HHIT RRTypes for each DET verifying inclusion into the hierarchy. The collection of these certificates … is the only way without DNSSEC to prove valid registration.”  
+           This chain-walk is only possible if, at the time of validation, the HHIT RRTypes for all relevant DETs are present. The just-in-time recommendation does not specify guarantees that the entire chain will be published before or at the time clients begin validation, creating potential windows where validation is impossible even though the DET is properly registered.
+        8. The document explicitly says “The combination of this ‘just in time’ publishing mechanism and DNSSEC is out of scope for this document,” leaving the timing of record creation/removal, DNS propagation, and how clients should react to the absence of expected RRTypes (e.g., NXDOMAIN vs “not yet published”) undefined.
+      KeyEvidence:
+        ExcerptPoints:
+          - “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].” (Section 4, Public Information Registry)
+          - “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.” (Section 7.2, DET and Public Key Exposure)
+          - “Optimally this requires that the UAS somehow signal to the DIME that a flight using a Specific Session ID will soon be underway or complete.” (Section 7.2)
+          - “When DNSSEC is not in use, due to the length of the ORCHID hash selected for DETs (Section 3.5 of [RFC9374]), clients MUST ‘walk’ the tree of certificates locating each certificate by performing DNS lookups of HHIT RRTypes for each DET verifying inclusion into the hierarchy. The collection of these certificates … is the only way without DNSSEC to prove valid registration.” (Section 7.1)
+          - “The combination of this ‘just in time’ publishing mechanism and DNSSEC is out of scope for this document.” (Section 7.2)
+        ContextPoints:
+          - “DETs, being IPv6 addresses, are to be under ip6.arpa. … and MUST resolve to an HHIT RRType.” (baseline model from Section 4 reused in security discussion)
+          - Use of Broadcast Endorsements in BRID RRType to support offline and cross validation of Broadcast RID messages (Sections 4 and 5.2; plus [RFC9575] Section 4.2 and 6.4.2 references).
+      ImpactOnImplementations: |
+        Implementers face a conflicting set of temporal expectations. A DIME that strictly follows Section 4 will keep HHIT (and BRID for UAS RID) records continuously published for each registered DET, but then cannot realize the “just-in-time” exposure reduction suggested in Section 7.2. Conversely, a DIME that withholds HHIT/BRID records until just before flight (or even only while a flight is in progress) will intermittently violate the “MUST resolve” requirement and may cause clients to see NXDOMAIN or NODATA where they expect authoritative HHIT/BRID data. This ambiguity can lead to inconsistent behavior between implementations: some clients may treat absence of HHIT/BRID records as a registration or trust failure, others may retry on the assumption that records are published late. The problem is more acute when DNSSEC is not in use, because the spec states that chain-walking via HHIT RRTypes is the “only way” to prove valid registration, yet those RRTypes may legitimately be missing for some period under the just-in-time model. That can cause transient but undefined trust states and interoperability differences in how such conditions are handled.
+      AffectedArtifacts:
+        - "Section 4: Public Information Registry (paragraph defining DETs under ip6.arpa and HHIT/BRID MUSTs)"
+        - "Section 7.1: DNS Operational and Registration Considerations (non-DNSSEC chain-walk requirement)"
+        - "Section 7.2: DET and Public Key Exposure (just-in-time publishing recommendation)"
+      Severity: Medium
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 7 provides security/operational guidance around registry/registrar behavior, DNSSEC deployment, fallback validation when DNSSEC is absent, and exposure/validation of DET-related DNS records (HHIT and BRID/auth/Broadcast Endorsements). It interacts tightly with earlier normative requirements in Sections 4 and 5 on what RRTypes must exist under DET reverse names and when DNSSEC is mandatory.
+
+- ScopeModel:
+  - Targets:
+    - DET reverse DNS names under `ip6.arpa` that carry HHIT (RRType 67) and BRID (RRType 68) RRs.
+    - Entities operating as Registries/Registrars and DIMEs, including “apex entities” / “self‑signed entities” (RAA/HDA/others acting as roots of trust with self‑signed Canonical Registration Certificates).
+    - DRIP clients/Observers and other entities that query DNS for HHIT/BRID RRs and validate Broadcast Endorsements.
+  - Conditions:
+    - DNSSEC usage:
+      - Section 4: “DNSSEC MUST be used for apex entities (those which use a self-signed Canonical Registration Certificate) and is RECOMMENDED for other entities.”
+      - Section 7.1: operation SHOULD follow best common DNS practices (including “running DNSSEC”) “as appropriate except when national regulations prevent it”; “A self-signed entity … MUST use DNSSEC.”
+      - Section 7.1: “When DNSSEC is not in use, … clients MUST ‘walk’ the tree of certificates … by performing DNS lookups of HHIT RRTypes for each DET…”.
+    - Publication of DET RRs:
+      - Section 4: “DETs, being IPv6 addresses, are to be under ip6.arpa. … and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present…”.
+      - Section 7.2: “When practical, it is RECOMMENDED that no RRTypes under a DET’s specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS…”.
+    - BRID/auth validation:
+      - Section 7.1: BRID `auth` contents (Broadcast Endorsements) “are a shadow of the X.509 certificate found in the HHIT RRType. The validation of these Endorsements follow the guidelines written in Section 6.4.2 of [RFC9575] for Broadcast RID Observers and when present MUST also be validated.”
+  - NotedAmbiguities:
+    - Temporal scope of “DETs … MUST resolve to an HHIT RRType” and “BRID RRType MUST be present” vs the “just in time” recommendation to publish no RRTypes (including HHIT) under a DET name until “required for use by other parties”.
+    - Whether the “except when national regulations prevent it” qualifier in 7.1 is intended to be a general carve‑out that could override the apex/self‑signed DNSSEC MUST, or only qualifies the earlier non‑normative “SHOULD follow best common practices”.
+    - Whether the fallback “certificate walking” requirement (“When DNSSEC is not in use… clients MUST ‘walk’ the tree of certificates”) is intended to apply to all DET hierarchies including apex entities (which are supposed to always have DNSSEC) or only to non‑apex/non‑signed zones.
+    - Identity of the actor on whom “when [BRID auth] present MUST also be validated” is imposed (only Broadcast RID Observers, or any consumer of BRID RRs?).
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Conflicting scope for presence of HHIT/BRID RRs under DET names vs “just‑in‑time” non‑publication
+    - ScopeProblemType: Temporal / applicability scope for mandatory RR presence (MUST) vs conditional RECOMMENDED absence
+    - Evidence:
+      - Section 4: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”
+      - Section 7.2: “When practical, it is RECOMMENDED that no RRTypes under a DET’s specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed. The combination of this ‘just in time’ publishing mechanism and DNSSEC is out of scope for this document.”
+      - Section 7.1: “When DNSSEC is not in use … clients MUST ‘walk’ the tree of certificates locating each certificate by performing DNS lookups of HHIT RRTypes for each DET verifying inclusion into the hierarchy.”
+    - DetailedReasoning:
+      - Section 4 gives an unconditional requirement on the DNS state for DETs: any DET reverse name “MUST resolve to an HHIT RRType”, and, for the UAS RID use case, “the BRID RRType MUST be present” under the same name. No temporal qualifiers or preconditions are stated, so the natural reading is “for any registered DET, at all relevant times.”
+      - Section 7.2, conversely, recommends a “just‑in‑time” publication strategy: “no RRTypes under a DET’s specific domain name be published unless and until it is required for use by other parties,” explicitly acknowledging that “at least the HHIT RRType” may intentionally not be present in the DNS for some period. That is a RECOMMENDED behavior that directly contradicts a prior MUST on the same object (the HHIT RR under that DET name) for that time interval.
+      - The document does not restrict the HHIT‑MUST to a narrower phase (e.g., “during active RID operations” or “once the DET is registered and in service”) nor does it restrict the just‑in‑time non‑publication to some subset of DETs (e.g., only non‑RID DETs or only non‑hierarchy infrastructure). As written, both apply to all DETs within the document’s scope, creating a temporal scope conflict.
+      - This conflict is compounded by the certificate‑walking rule in 7.1: “clients MUST ‘walk’ the tree of certificates … by performing DNS lookups of HHIT RRTypes for each DET…”. That normative client behavior implicitly assumes that HHIT RRs exist for each DET in the hierarchy (RAA, HDA, UA, etc.). If operators follow 7.2 and withhold HHIT RRs for some DETs “until required for use,” clients cannot fulfill this MUST, so client and server obligations are mutually unsatisfiable in some phases.
+      - A plausible intended reconciliation is that (a) DETs that are actually being used for RID or participating in the DRIP hierarchy MUST at that time have HHIT (and BRID for RID) published, while (b) newly allocated DETs or long‑dormant DETs may omit RRs until needed. However, that narrower temporal and functional scope is never stated; 4 and 7.2 each read as global statements about DET reverse names.
+      - As an implementer, literal compliance would be impossible: if I follow Section 4, my zones must always serve HHIT (and BRID for RID) RRs for every registered DET; if I follow 7.2, I am encouraged to *not* publish *any* RRTypes for a DET until some external “required for use” condition is met, at which point only then I would add HHIT/BRID. There is no normative guidance defining that condition or the temporal boundaries of the MUST vs RECOMMENDED.
+      - This is both an inconsistency (MUST vs RECOMMENDED for the same RR presence over overlapping time) and an underspecification (missing explicit temporal / operational scope for when each requirement applies). Clarifying text is needed, e.g., by tightening the scope of the MUST (“When a DET is active for RID operations, its reverse name MUST…”) or by carving HHIT/BRID RRTypes out of the “no RRTypes” recommendation, or by making the just‑in‑time behavior explicitly optional and non‑normative.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous scope and precedence of DNSSEC requirements vs “best practices” and fallback certificate‑walking
+    - ScopeProblemType: Environment / role / phase scoping of DNSSEC MUSTs and “when DNSSEC is not in use” behavior
+    - Evidence:
+      - Section 4: “DNSSEC MUST be used for apex entities (those which use a self-signed Canonical Registration Certificate) and is RECOMMENDED for other entities. When a DIME decides to use DNSSEC, they SHOULD define a framework for cryptographic algorithms and key management [RFC6841].”
+      - Section 5.1.2: “This certificate MAY be self-signed when the entity is acting as a root of trust (i.e., an apex).”
+      - Section 7.1: “These components … thus operation SHOULD follow best common practices, specifically in security (such as running DNSSEC) as appropriate except when national regulations prevent it. [BCP237] provides suitable guidance. … A self-signed entity (i.e., an entity that self-signed its certificate as part of the HHIT RRType) MUST use DNSSEC.”
+      - Section 7.1: “When DNSSEC is not in use … clients MUST ‘walk’ the tree of certificates… The collection of these certificates … is the only way without DNSSEC to prove valid registration.”
+    - DetailedReasoning:
+      - The document clearly intends a special, stricter requirement for apex/self‑signed entities: both Section 4 and 7.1 say they “MUST use DNSSEC,” with 5.1.2 defining self‑signed entities as apex roots of trust. For non‑apex entities, DNSSEC is only RECOMMENDED, and a fallback of certificate‑walking is described for the case “when DNSSEC is not in use.”
+      - Section 7.1 layers an additional, more general recommendation: registry/registrar operations “SHOULD follow best common practices, specifically in security (such as running DNSSEC) as appropriate except when national regulations prevent it.” This “except when national regulations prevent it” carve‑out is placed in the same paragraph as the DNSSEC best‑practices example but is not explicitly scoped relative to the later apex MUST.
+      - It is unclear whether the authors intended that regulatory prohibitions on DNSSEC can *ever* exempt an apex/self‑signed entity from the DNSSEC‑MUST. If not, the text should clearly state that apex entities may simply not be deployed in jurisdictions that prohibit DNSSEC, or that some alternative trust mechanism is required. If so, the text should explicitly qualify the MUST for apex/self‑signed entities with that exception and describe the required behavior in that environment.
+      - The fallback rule “When DNSSEC is not in use … clients MUST ‘walk’ the tree of certificates” is also not scoped by entity type. Read literally, it applies to *any* DRIP client talking to *any* DRIP hierarchy where DNSSEC is absent, including the case where an apex/self‑signed entity is operating out of spec without DNSSEC. That mixes client behavior requirements for compliant and non‑compliant server deployments, without saying whether certificate‑walking is considered *sufficient* assurance for apex entities that are mandated elsewhere to be DNSSEC‑signed.
+      - From a scope standpoint, there are three distinct regimes that are not cleanly separated: (a) apex/self‑signed entities, which MUST deploy DNSSEC; (b) non‑apex entities, which SHOULD but need not deploy DNSSEC; and (c) deployments (of either type) where “national regulations prevent” DNSSEC. 7.1 does not make explicit which of these regimes the “when DNSSEC is not in use… MUST walk the tree” rule is intended to cover, nor whether it is merely a best‑effort fallback for non‑compliant or constrained environments, or an equal‑assurance alternative.
+      - An implementer of a national CAA/DIME reading 7.1 could reasonably wonder: if my regulator bans DNSSEC, am I permitted to operate an apex/self‑signed DIME without DNSSEC and rely solely on certificate‑walking? Or does that violate the MUST in 4/7.1 and therefore this deployment is not compliant with RFC 9886? The current text does not resolve that policy vs protocol tension.
+      - This is primarily an underspecification of environment and role scope: the document does not clearly state how the absolute “MUST use DNSSEC” for self‑signed entities coexists with (or is overridden by) the “except when national regulations prevent it” clause, nor under exactly what conditions the fallback certificate‑walking mechanism is the normative path vs a last‑resort mitigation for non‑compliant zones. Clarifying which entity types and deployment environments each rule applies to would avoid ambiguous or conflicting interpretations.
+
+  - Issue-3:
+    - BugType: Underspecification
+    - ShortLabel: Unscoped actor for mandatory validation of BRID `auth` Broadcast Endorsements
+    - ScopeProblemType: Missing explicit role/actor scope for a MUST requirement
+    - Evidence:
+      - Section 7.1: “The contents of the BRID RRType auth key, containing Endorsements as described in Section 4.2 of [RFC9575], are a shadow of the X.509 certificate found in the HHIT RRType. The validation of these Endorsements follow the guidelines written in Section 6.4.2 of [RFC9575] for Broadcast RID Observers and when present MUST also be validated.”
+      - RFC 9575 Section 6.4.2 (summarized here) defines UAS RID trust assessment behavior specifically for Broadcast RID Observers, including when and how they must correlate signed data with physical observations.
+    - DetailedReasoning:
+      - The quoted text mixes a role‑specific reference (“guidelines … for Broadcast RID Observers”) with a bare “when present MUST also be validated” clause, without clearly stating who is subject to that MUST.
+      - In RFC 9575, Section 6.4.2’s validation logic is explicitly framed as an Observer’s duty: “the Observer MUST perform validation of the data being received in Broadcast RID… At least once per Observation session … the Observer must use other sources of information to correlate…” etc. That behavior is well‑scoped to the Observer role.
+      - In RFC 9886, Section 7.1 speaks more generally about “DRIP DNS responses” and “DRIP entities” and then states that BRID `auth` contents “when present MUST also be validated.” It does not say “by Broadcast RID Observers” or “by any entity relying on BRID data,” so the target of this MUST is left implicit.
+      - Different DRIP roles (Observers, USS/DIME operators, registries, GCS, other consumers of DET DNS records) may have very different capabilities and trust models. For example, a registry may use BRID data for cross‑checking but not for real‑time trust in a UA’s live position; a USS may process BRID data in bulk. It is not clear whether *all* such consumers are required to perform the 9575‑style trust assessment (including physical correlation where applicable), or whether the intent was to impose that burden only on Observer devices.
+      - This lack of explicit actor scope can lead to divergent implementations. Some might interpret the MUST as binding only on Observers and ignore it elsewhere; others might attempt to implement Observer‑style validation in contexts where it is infeasible or nonsensical (e.g., a back‑end database process using BRID data only for archival linkage).
+      - Clarifying the actor scope (e.g., “Any Broadcast RID Observer retrieving BRID RRs for trust assessment MUST validate the auth field as per RFC 9575 Section 6.4.2” vs “Any DRIP entity relying on BRID auth for security decisions MUST…”) would align the requirement with the intended roles and avoid over‑ or under‑application of the validation rule.
+
+- ResidualUncertainties:
+  - The intended operational model for “just‑in‑time” publication (how close to flight time RRs must appear; whether infrastructure DETs like RAAs/HDAs are always published or also subject to withholding) is not fully described in the text; clarifying that model might change how strongly Issue‑1 is viewed.
+  - The authors’ intent about deployments in jurisdictions that forbid DNSSEC (e.g., whether such deployments are simply non‑compliant, or whether certificate‑walking is intended to be an officially supported alternative even for apex entities) is not stated and cannot be inferred from the provided excerpts alone.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following the text literally does not make the system unimplementable, but there is a real tension:  
+Section 4 imposes a hard requirement that DET reverse names “MUST resolve to an HHIT RRType” (and BRID for UAS RID), while Section 7.2 *recommends* a “just in time” publication model that explicitly contemplates that the HHIT RRType may not be in DNS for some period. This is primarily a **normative / policy tension**, not a mechanical protocol break, but if operators follow 7.2 aggressively and ignore the Section 4 MUST, they will undermine some of the intended security properties (especially offline and post‑hoc validation).
+
+---
+
+2. **Causal Analysis**
+
+### 2.1 What Section 4 requires in operational terms
+
+Section 4 establishes the basic DNS mapping behavior:
+
+- “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) **and MUST resolve to an HHIT RRType.**”  
+- “For UAS RID, the BRID RRType **MUST be present** to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”
+
+Mechanically, this means:
+
+- Once a DET is registered and used as a UAS ID in RID, a reverse DNS query for its ip6.arpa name should, at any given time it is operationally in use, return:
+  - an HHIT RR (containing the canonical registration certificate, public key, URIs, etc.), and  
+  - for UAS RID, a BRID RR (containing static BEs, etc.).
+
+This mapping is also *used* by other logic:
+
+- When DNSSEC is **not** in use, clients “MUST ‘walk’ the tree of certificates locating each certificate by performing DNS lookups of HHIT RRTypes for each DET verifying inclusion into the hierarchy. The collection of these certificates … is the only way without DNSSEC to prove valid registration.” (Section 7.1)
+
+So for non‑DNSSEC deployments, the availability of HHIT RRs for all relevant DETs, RAAs, and HDAs at the time of verification is the only way to prove registration.
+
+### 2.2 What Section 7.2 recommends (“just in time” publishing)
+
+Section 7.2 gives privacy guidance:
+
+- “When practical, it is **RECOMMENDED** that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. **Such action would cause at least the HHIT RRType to not be in the DNS**, protecting the public key in the certificate from being exposed before its needed.”
+
+And:
+
+- “Optimally this requires that the UAS somehow signal to the DIME that a flight using a Specific Session ID will soon be underway or complete. It may also be facilitated under UTM if the USS … signals when a given operation using a Session ID goes active.”
+
+So the intended behavior is:
+
+- Before a particular DET (especially a per‑flight Session ID) is needed by other parties, the DIME does *not* publish its HHIT (and likely its BRID).
+- Shortly before or when the DET becomes operationally active, the DIME publishes the HHIT/BRID so that queries succeed.
+- After the operation, it is implied (though not stated explicitly) that records could be withdrawn again, restoring privacy.
+
+They also say: “The combination of this ‘just in time’ publishing mechanism and DNSSEC is out of scope for this document.” That’s an explicit acknowledgement that the time‑dependent behavior is not normatively specified.
+
+### 2.3 Are the rules jointly executable?
+
+From a strict RFC‑2119 standpoint:
+
+- Section 4’s “MUST resolve to an HHIT RRType” is a hard requirement.
+- Section 7.2’s behavior is only **RECOMMENDED** and scoped by “when practical”.
+
+Thus, a fully compliant implementation **can always choose**:
+
+- To honor Section 4 (always provide HHIT/BRID for any DET that is registered and/or in UAS RID use), and
+- To *ignore* the 7.2 “no RRTypes until needed” recommendation for HHIT/BRID where that would conflict.
+
+In that sense, there is no **logical impossibility**: the set of behaviors consistent with all MUSTs is non‑empty.
+
+However, Section 7.2 is written as if its recommended behavior *will* suppress the HHIT RRType:
+
+> “Such action would cause at least the HHIT RRType to not be in the DNS…”
+
+If an operator takes 7.2 at face value and applies it to DETs that are already registered and in active or foreseeable UAS RID use, they will:
+
+- Withhold or remove the HHIT (and potentially BRID) from DNS at times when:
+  - Section 4 expects those RRs to exist, and
+  - Clients trying to verify DET registration (especially in non‑DNSSEC environments) will not be able to gather the necessary certificates.
+
+### 2.4 Consequences if operators follow 7.2 literally and *de facto* ignore 4’s MUST
+
+If a DIME/registry implements aggressive “just‑in‑time” publication and allows HHIT RRs to be absent for DETs that are in use or were recently in use:
+
+1. **Verification failure without DNSSEC**
+
+   - Per Section 7.1, when DNSSEC is not used, clients “MUST ‘walk’ the tree of certificates” via HHIT DNS lookups to prove valid registration.
+   - If HHIT RRs for some link in the hierarchy are absent (because the operator removed them after a flight, or has not yet published them for an imminent flight), then:
+     - The chain cannot be constructed.
+     - The client cannot prove valid registration.
+
+   This does not create a contradiction in the spec’s logic—the client can always fail validation and treat the DET as untrusted—but it means a deployment following 7.2 aggressively can systematically prevent the only defined non‑DNSSEC validation mechanism from working much of the time.
+
+2. **Degradation of offline / delayed validation**
+
+   - RFC 9575 explicitly supports Observers who may be offline at observation time and later query infrastructure to evaluate trustworthiness.
+   - If HHIT/BRID are removed shortly after each operation for privacy, an Observer that queries later (after records have been withdrawn) will not find the data needed to confirm registration or validate endorsements.
+   - Again, behavior is defined (validation fails, treat as untrusted), but the intended forensic / audit use case is weakened.
+
+3. **Interaction with DNS caching**
+
+   - If names are deliberately configured to have no RRs (NXDOMAIN/NODATA) until just before flight, and some resolvers cache those negative answers with non‑trivial TTLs, then:
+     - Even after the DIME publishes the HHIT/BRID records, some clients will continue to receive negative answers until TTL expiry.
+   - There is no guidance in the RFC about TTLs or how to avoid negative‑cache interference, so “just in time” behavior can *practically* cause short windows where active DETs cannot be resolved even though the operator believes they published them.
+
+None of these scenarios produces an unimplementable state machine or impossible message pattern, but they are concrete ways in which taking the 7.2 recommendation at face value undermines the operational and security goals sketched in 4 and 7.1.
+
+### 2.5 Why this is not a hard causal contradiction
+
+The key point is normative precedence:
+
+- Section 4’s “MUST resolve to an HHIT RRType” can be read as:  
+  for a DET that is registered and in use as a UAS RID identifier, its reverse name under ip6.arpa must, when queried for relevant QTYPEs, yield an HHIT RR (and for UAS RID, a BRID RR).
+- Section 7.2’s “RECOMMENDED that no RRTypes under a DET’s specific domain name be published unless and until it is required for use by other parties” can naturally be constrained to:
+  - Pre‑registration or pre‑use (no one cares because the DET is not yet a UAS ID in any deployed system), and
+  - Possibly post‑retirement, where the DET is no longer used.
+
+Under this interpretation, an implementation can:
+
+- Not publish anything for DETs that are not yet active, satisfying 7.2’s privacy recommendation without ever violating Section 4 (because Section 4 is effectively scoped to active, registered DETs used as UAS IDs).
+- Always publish HHIT (and BRID for UAS RID) for any DET that is in active use or that might need validation, adhering to Section 4 and preserving the certificate‑walking behavior of 7.1.
+
+The text as written does not explicitly spell out this temporal scoping, but it is consistent with both sections and avoids any unimplementable requirement set.
+
+---
+
+3. **Problem Classification**
+
+- **Primary classification**:  
+  **No hard Causal Inconsistency**: the MUST and RECOMMENDED do not force a behavior that is impossible to realize; compliant implementations can obey Section 4 and treat the 7.2 recommendation as constrained by that.
+- There is a **mild Causal Underspecification / normative tension**:
+  - Section 7.2 talks about suppressing HHIT RRs in general terms (including language that clearly conflicts with a naive reading of “MUST resolve to an HHIT RRType”), without explicitly stating that this privacy measure must never be applied in a way that violates the Section 4 MUSTs or undermines the only defined non‑DNSSEC validation path.
+  - That can encourage deployments that, while not strictly compliant, are plausible interpretations of the text and that significantly degrade DRIP’s security goals.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the WG wants to reduce the risk of harmful interpretations without redesigning anything, a localized clarification would suffice, for example:
+
+- In Section 7.2, explicitly scope the recommendation to *pre‑use* and *post‑retirement* periods, and state that:
+
+  - For any DET that is registered and in active or recent UAS RID use, its reverse name **MUST** continue to comply with Section 4 (i.e., resolve to HHIT and, for UAS RID, BRID).
+  - Just‑in‑time publishing and removal **MUST NOT** be used in a way that prevents validation procedures described in Section 7.1 during the period in which validation may be required (including a defined grace period after a flight).
+
+- Optionally, soften or rephrase “Such action would cause at least the HHIT RRType to not be in the DNS” to make clear this applies *before* first use or *after* decommissioning, not during the operational lifetime of a DET.
+
+This keeps all existing mechanisms and requirements intact while aligning 7.2 text with the Section 4 MUSTs and the 7.1 validation model.
+
+---
+
+5. **Non‑Issues**
+
+- There is no step where an entity is asked to perform an impossible action (e.g., send a message it cannot construct, or verify a MAC over undefined fields).
+- Both sides (registries and clients/observers) have well‑defined behaviors when RRs are missing: lookups simply fail, and validation is impossible, so the DET is treated as untrusted.
+- The tension between “MUST resolve to HHIT” and “RECOMMENDED not to publish HHIT until needed” is therefore mainly a **policy and clarity** issue; it does not render the protocol or its state machines unrealizable.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 7 adds operational and security guidance on how registries/registrars, DIMEs, and clients should use DNS/DNSSEC and DET-related RRTypes, including fallback behavior when DNSSEC is absent and how to handle exposure of DET-related records and Broadcast Endorsements. Earlier sections (notably Section 4) define mandatory presence of certain RRTypes (HHIT, BRID) and mandatory DNSSEC for apex/self‑signed entities. Together, these form the normative security and interoperability story for DETs in DNS.
+
+- OverallDeonticRisk: High
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Mandatory HHIT/BRID presence vs “just‑in‑time” recommendation to publish no RRTypes under DET names
+    - Description: Section 4 states that DET reverse names “MUST resolve to an HHIT RRType” and, for UAS RID, “the BRID RRType MUST be present” under those DET-based reverse names. This is an unconditional requirement, not scoped to particular phases of use. Section 7.2 then says “it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties,” explicitly noting that this “would cause at least the HHIT RRType to not be in the DNS.” Read straightforwardly, the RECOMMENDED behavior (no RRTypes, hence no HHIT or BRID) directly violates the earlier MUST requirements that those RRTypes be present and resolvable at the DET reverse name. One could try to save consistency by reading Section 4’s “MUST resolve” as conditional on the operator having decided to publish anything at all, but the text does not state such a condition, and Section 7.2 clearly contemplates DETs that are already allocated/registered but have no RRTypes published yet. In addition, Section 7.1’s non‑DNSSEC fallback requires that “clients MUST ‘walk’ the tree of certificates locating each certificate by performing DNS lookups of HHIT RRTypes for each DET,” which presupposes that those HHIT records are in DNS when a client needs to verify registration; the “no RRTypes until needed” guidance undercuts that assumption if taken literally.
+    - KeyTextSnippets:
+      - “DETs, being IPv6 addresses, are to be under ip6.arpa. … and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs)…” (Section 4)
+      - “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.” (Section 7.2)
+      - “When DNSSEC is not in use, … clients MUST ‘walk’ the tree of certificates locating each certificate by performing DNS lookups of HHIT RRTypes for each DET verifying inclusion into the hierarchy.” (Section 7.1)
+    - Impact: Different implementers (or regulators) can reasonably choose to follow either the Section 4 MUSTs (always publish HHIT/BRID) or the Section 7.2 RECOMMENDED “no RRTypes until needed,” leading to incompatible operational behaviors. Clients that assume the Section 4 semantics (every DET reverse name always resolves to HHIT/BRID) will fail when interacting with “just‑in‑time” zones, undermining both interoperability and the security model that relies on being able to look up HHIT and BRID RRs (and, in the non‑DNSSEC case, to walk the certificate tree) at any time.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - Title: Ambiguous interaction between mandatory DNSSEC for apex/self‑signed entities and “best practices” with regulatory exception
+    - Description: Section 4 mandates that “DNSSEC MUST be used for apex entities (those which use a self‑signed Canonical Registration Certificate) and is RECOMMENDED for other entities,” establishing a clear MUST for self‑signed/apex nodes. Section 7.1 then adds a more general operational rule: registry/registrar operation “SHOULD follow best common practices, specifically in security (such as running DNSSEC) as appropriate except when national regulations prevent it,” and later reiterates that “A self-signed entity … MUST use DNSSEC.” The text is ambiguous about whether the “except when national regulations prevent it” clause can override the earlier and later MUST for apex/self‑signed entities, or whether that exception only applies to the SHOULD‑level best‑practices guidance for non‑apex entities. Because both pieces of text discuss running DNSSEC in the same operational context, but at different strengths (MUST vs SHOULD with an explicit exception), implementers and regulators can reasonably come to opposite conclusions about whether an apex/self‑signed DIME is allowed to operate without DNSSEC when national policy prohibits DNSSEC. The document does not state which rule takes precedence in that case (e.g., “in jurisdictions where DNSSEC is prohibited, entities MUST NOT act as apex/self‑signed DIMEs”), leaving a normative gap at exactly the most security‑sensitive point in the hierarchy.
+    - KeyTextSnippets:
+      - “DNSSEC MUST be used for apex entities (those which use a self-signed Canonical Registration Certificate) and is RECOMMENDED for other entities.” (Section 4)
+      - “These components connect the DIME with the DNS hierarchy and thus operation SHOULD follow best common practices, specifically in security (such as running DNSSEC) as appropriate except when national regulations prevent it.” (Section 7.1)
+      - “If DNSSEC is used, a DNSSEC Practice Statement SHOULD be developed and published. … A self-signed entity (i.e., an entity that self-signed its certificate as part of the HHIT RRType) MUST use DNSSEC.” (Section 7.1)
+    - Impact: The lack of explicit priority between “MUST use DNSSEC” for apex/self‑signed entities and the “except when national regulations prevent it” escape clause can lead some deployments to disable DNSSEC even at the apex while still claiming conformance, significantly weakening the intended trust model. Conversely, other readers may conclude that apex/self‑signed DIMEs are simply not allowed in jurisdictions where DNSSEC is disallowed, which is a materially different operational conclusion. This ambiguity can cause divergent interpretations by CAAs, registries, and implementers, undermining both security assurances and interoperability expectations.
+
+- IfNoRealIssue:
+  - Not applicable; the excerpt contains real normative inconsistencies and underspecified interactions, as described above.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 7 of RFC 9886 gives DNS/DNSSEC operational guidance for DET-related zones, specifies behavior when DNSSEC is or is not used, and describes how DNS-stored Broadcast Endorsements (from RFC 9575) should be validated. It relies on earlier parts of RFC 9886 (HHIT/BRID RRTypes and certificate chains) and on external specs RFC 9374, RFC 9575, and RFC 6841.
+- OverallCrossRFCLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Conflict between “MUST publish HHIT/BRID” and “RECOMMENDED not to publish”
+    - Description: Earlier, RFC 9886 states that DETs “MUST resolve to an HHIT RRType” and, for UAS RID, “the BRID RRType MUST be present” under ip6.arpa for each DET, making these RRs appear mandatory for any DET in use (Section 4). Later, Section 7.2 “DET and Public Key Exposure” says it is RECOMMENDED that “no RRTypes under a DET’s specific domain name be published unless and until it is required for use by other parties,” explicitly noting this “would cause at least the HHIT RRType to not be in the DNS.” Taken literally, the first text requires HHIT (and BRID for UAS RID) to be continuously present for a DET, while the second text recommends *not* publishing them except just-in-time. Implementers trying to be faithful to both may be unsure whether it is protocol-legal for a DET to have no HHIT/BRID records before a flight (or between flights), which affects interoperability with any component expecting the unconditional “MUST resolve” behavior. This is primarily an internal cross-section inconsistency within RFC 9886, but it also affects how external DRIP components (e.g., those defined in RFC 9575) can rely on DNS availability of DET-related data.
+    - EntitiesInvolved: ["RFC 9886 Section 4 (DETs MUST resolve to HHIT; BRID MUST be present for UAS RID)", "RFC 9886 Section 7.2 (RECOMMENDED not to publish RRTypes under DET name until needed)", "ip6.arpa reverse DET namespace"]
+    - CrossRefsUsed: ["RFC 9886 Section 4 text on HHIT/BRID MUST presence", "RFC 9886 Section 7.2 text on just-in-time publishing of DET RRTypes"]
+    - Confidence: High
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: “Only way without DNSSEC” vs. Broadcast Endorsements as registration proof
+    - Description: RFC 9886 Section 7.1 says that when DNSSEC is not in use, “clients MUST ‘walk’ the tree of certificates… performing DNS lookups of HHIT RRTypes for each DET… [this collection] is the only way without DNSSEC to prove valid registration,” explicitly tying proof of registration in the no-DNSSEC case to X.509 certificate chains retrieved via DNS and justified by the limited 64-bit ORCHID hash length in RFC 9374 Section 3.5. However, RFC 9575 Section 4.2 defines Broadcast Endorsements (DRIP Link messages) and notes that “The Endorsement that proves a DET is registered MUST come from its immediate parent in the registration hierarchy,” and Section 6.4.2 further treats chains of DRIP Links as the mechanism providing trust in the key. Those Broadcast Endorsements can be obtained over the air, without DNS and without DNSSEC, and still prove registration according to RFC 9575. Thus, describing the certificate-chain walk via DNS as “the only way without DNSSEC to prove valid registration” is too strong when read against RFC 9575, which normatively defines an alternative registration-proof mechanism (DRIP Links). A strict reader of RFC 9886 might wrongly discount RFC 9575’s Broadcast Endorsement chains as insufficient for proving registration in non-DNSSEC environments, which could lead to inconsistent trust behavior between implementations that follow RFC 9575 literally and those that take the “only way” language at face value.
+    - EntitiesInvolved: ["RFC 9886 Section 7.1 (certificate walk is 'the only way without DNSSEC')", "RFC 9374 Section 3.5 (64-bit ORCHID hash rationale)", "RFC 9575 Section 4.2 (Broadcast Endorsements/DRIP Link prove registration)", "RFC 9575 Section 6.4.2 (chains of DRIP Links for trust)"]
+    - CrossRefsUsed: ["RFC 9886 Section 7.1 paragraph on no-DNSSEC behavior", "RFC 9374 Section 3.5 on ORCHID hash size", "RFC 9575 Section 4.2 Note on Endorsements proving registration", "RFC 9575 Section 6.4.2 on UAS RID trust assessment"]
+    - Confidence: Medium
+
+- IfNoIssues:
+  - Comment: RFC 9886’s references to RFC 6841 for DNSSEC Practice Statements and to RFC 9575 Sections 4.2 and 6.4.2 for handling Broadcast Endorsements are otherwise coherent: it uses RFC 6841 exactly in its intended sense (defining DP/DPS for signed zones), and the description of BRID auth contents as carrying Broadcast Endorsements is consistent with the DRIP Link format in RFC 9575. The router’s suspicion about “only way without DNSSEC” is partly justified (Issue-2), but the cross-reference *targets* (RFC 9374 3.5 and RFC 9575 4.2/6.4.2) themselves are correctly cited.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+
+Vector Stores Used: vs_6958be4c24408191bdbddafd81dfd4e3
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

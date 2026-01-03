@@ -1,0 +1,31 @@
+{
+  "reports": [
+    {
+      "label": "Candidate Issue 1: Incomplete Candidate Issue Entry",
+      "bug_type": "Underspecified Candidate Issue",
+      "explanation": "The analyzer output contains a candidate issue entry that lacks a descriptive label, type, and further details, making it unclear what the underlying problem is.",
+      "justification": [
+        "The candidate issue block shows an issue with Type: None, an empty Label, and a placeholder Sketch without additional context (E1)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The candidate issue section specifies one issue with no descriptive label or detailed explanation."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "All key schedule dimensions are rated LOW and the candidate issue lacks specific details, suggesting minimal overall impact.",
+      "confidence": "Low",
+      "experts": [
+        "RouterAnalysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-tls-rfc8446bis-14-7-1"
+    }
+  ]
+}

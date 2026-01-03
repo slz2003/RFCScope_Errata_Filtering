@@ -1,0 +1,694 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    The core TLS 1.3 handshake ordering (ClientHello → ServerHello → EncryptedExtensions → {CR?, Cert?, CertVerify?} → Finished, then client’s auth block) is internally consistent, and the transcript-hash description matches this sequence.
+    However, there is a global normative sentence about “Protocol messages” being sent in the order of Section 4.4.1 and the Section 2 diagrams that conflicts with the later, more flexible rules for post‑handshake messages and NewSessionTicket timing.
+  OverallTemporalRisk: Medium
+  CandidateIssues:
+    - Id: T1
+      Type: Inconsistency
+      ShortLabel: Global handshake ordering vs post‑handshake / NST timing
+      Description: |
+        The specification first states that protocol messages MUST be sent in the order defined by the main transcript in Section 4.4.1 and the message-flow diagrams in Section 2. Later sections explicitly allow post‑handshake messages (NewSessionTicket, post‑handshake CertificateRequest/Certificate/CertificateVerify/Finished, KeyUpdate) to be sent “at any time” after certain points and to be interleaved with application data.
+        Those later rules cannot be reconciled with a literal reading of the global MUST‑order sentence, because the transcript order in Section 4.4.1 does not include any of these post‑handshake messages and the diagrams only show one particular placement for NewSessionTicket, not “any time after client Finished”.
+        This creates a temporal inconsistency in the normative text: an implementer who follows the global sentence strictly would reject several legal sequences that are expressly permitted elsewhere in the document.
+      TemporalReasoning: |
+        1. Early in Section 4, the Handshake struct is defined and followed immediately by this normative sentence:
+
+           “Protocol messages MUST be sent in the order defined in Section 4.4.1 and shown in the diagrams in Section 2.  A peer which receives a handshake message in an unexpected order MUST abort the handshake with an ‘unexpected_message’ alert.”
+
+           The term “Protocol messages” is broad in TLS context (handshake, alerts, post‑handshake handshake messages, etc.), and the reference to Section 4.4.1 implies that all handshake‑type messages must follow the single linear order that is used for the transcript hash.
+
+        2. Section 4.4.1 then defines the transcript hash order as the sequence:
+
+           “ClientHello, HelloRetryRequest, ClientHello, ServerHello, EncryptedExtensions, server CertificateRequest, server Certificate, server CertificateVerify, server Finished, EndOfEarlyData, client Certificate, client CertificateVerify, and client Finished.”
+
+           Notably, this list does not include:
+           - NewSessionTicket,
+           - any post‑handshake CertificateRequest/Certificate/CertificateVerify/Finished,
+           - KeyUpdate.
+
+           It is explicitly scoped to “starting at the first ClientHello and including only those messages that were sent” in the main handshake.
+
+        3. Section 4.6.1 then says about NewSessionTicket:
+
+           “If the client's hello contained a suitable ‘psk_key_exchange_modes’ extension, at any time after the server has received the client Finished message, it MAY send a NewSessionTicket message.  … Servers MAY send multiple tickets on a single connection, either immediately after each other or after specific events…”
+
+           This is a clear temporal rule that allows:
+           - NST immediately after server Finished,
+           - NST after arbitrary application data,
+           - multiple NSTs at various later points in the connection.
+
+           None of that is captured by the single linear “order defined in Section 4.4.1” or the simple diagrams in Section 2, which only show a single NST placed just after the initial handshake in one example.
+
+        4. Section 4.6.2 (post‑handshake client authentication) similarly states:
+
+           “When the client has sent the ‘post_handshake_auth’ extension … a server MAY request certificate-based client authentication at any time after the handshake has completed by sending a CertificateRequest message.”
+
+           It adds that servers “MUST be prepared for some delay, including receiving an arbitrary number of other messages between sending the CertificateRequest and receiving a response” — meaning application data and even other post‑handshake events can interleave before the client’s Certificate/CertificateVerify/Finished response. These messages are handshake‑type and use the same content type, but their placement is explicitly not fixed by the main transcript order.
+
+        5. KeyUpdate is also defined as a post‑handshake handshake message:
+
+           “The KeyUpdate handshake message is used … This message can be sent by either peer after it has sent a Finished message.”
+
+           It is allowed to appear an arbitrary number of times over the lifetime of the connection, interleaving with application data. Only per‑record constraints are imposed (KeyUpdate itself is encrypted with the “old” key and must be processed before accepting ciphertext under the “new” key).
+
+        6. Putting these together, the protocol clearly intends the following temporal structure:
+           - The *main* handshake messages (those in 4.4.1’s list) must appear in that fixed relative order.
+           - After the main handshake completes (both sides’ Finished), additional handshake‑type messages (NewSessionTicket, post‑handshake auth, KeyUpdate) may appear at various later times, and may be interleaved with application data, so long as their more specific rules are followed.
+
+           But the global “Protocol messages MUST be sent in the order defined in Section 4.4.1 and shown in the diagrams in Section 2” can be read as prohibiting any deviations from the main handshake sequence, including legitimate post‑handshake reordering and placements that Section 4.6.* explicitly allows.
+
+      KeyEvidence:
+        ExcerptPoints:
+          - “Protocol messages MUST be sent in the order defined in Section 4.4.1 and shown in the diagrams in Section 2.  A peer which receives a handshake message in an unexpected order MUST abort the handshake with an ‘unexpected_message’ alert.”
+          - “For concreteness, the transcript hash is always taken from the following sequence of handshake messages, starting at the first ClientHello … ClientHello, HelloRetryRequest, ClientHello, ServerHello, EncryptedExtensions, server CertificateRequest, server Certificate, server CertificateVerify, server Finished, EndOfEarlyData, client Certificate, client CertificateVerify, and client Finished.”
+          - “At any time after the server has received the client Finished message, it MAY send a NewSessionTicket message. … Servers MAY send multiple tickets on a single connection, either immediately after each other or after specific events (see Appendix C.4).”
+          - “When the client has sent the ‘post_handshake_auth’ extension … a server MAY request certificate-based client authentication at any time after the handshake has completed by sending a CertificateRequest message. … servers MUST be prepared for some delay, including receiving an arbitrary number of other messages between sending the CertificateRequest and receiving a response.”
+          - “The KeyUpdate handshake message is used to indicate that the sender is updating its sending cryptographic keys.  This message can be sent by either peer after it has sent a Finished message.”
+        ContextPoints:
+          - The Section 2 message flow figures show only one placement of NewSessionTicket and do not illustrate all legal post‑handshake interleavings.
+      ImpactOnImplementations: |
+        If an implementer reads the global MUST‑order sentence strictly and treats Section 4.4.1 and the Section 2 figures as *the* complete legal ordering of all handshake‑type messages, they might:
+        - Reject a valid NewSessionTicket that arrives significantly later in the connection, or after application data, even though Section 4.6.1 expressly allows this.
+        - Reject a post‑handshake CertificateRequest or the client’s delayed Certificate/CertificateVerify/Finished response as “out-of-order”.
+        - Reject a legal KeyUpdate sequence interleaved with application data.
+        In practice, most stacks have implemented TLS 1.3 according to the more specific post‑handshake rules rather than the over‑broad global sentence, but the current text is contradictory and can lead to divergent behaviors or unnecessary “unexpected_message” failures.
+      AffectedArtifacts:
+        - Section 4, immediately after the Handshake struct (“Protocol messages MUST be sent in the order defined in Section 4.4.1 …”)
+        - Section 4.4.1 (“The Transcript Hash”) as the referenced canonical sequence
+        - Section 4.6.1 (“New Session Ticket Message”)
+        - Section 4.6.2 (“Post-Handshake Authentication”)
+        - Section 4.6.3 (“Key and Initialization Vector Update”)
+      Severity: Medium
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+  ExcerptSummary: >
+    The excerpt defines the TLS 1.3 handshake and record protocols between
+    two roles, client and server. It specifies which side sends each
+    handshake message and extension (ClientHello, ServerHello,
+    HelloRetryRequest, EncryptedExtensions, Certificate/CertificateRequest,
+    Finished, NewSessionTicket, KeyUpdate, etc.), how certain fields are
+    echoed (e.g., legacy_session_id_echo, cookie), and how extensions are
+    negotiated in a request/response pattern, including several newer
+    TLS 1.3 extensions.
+
+  OverallAssessment: "NoBug"
+
+  FindingsOnRoutedIssues: []
+
+  AdditionalActorIssues: []
+
+  IfNoActorIssues:
+    Comment: >
+      No actor/direction/role problems detected in this excerpt. The
+      division of responsibilities between client and server is consistent
+      throughout: the client always initiates with ClientHello and, when
+      applicable, sends early data and EndOfEarlyData; the server alone
+      sends ServerHello/HelloRetryRequest, EncryptedExtensions,
+      CertificateRequest, and NewSessionTicket; either side may send
+      KeyUpdate post‑handshake as specified.
+      Extension directionality is coherent with the table in Section 4.2:
+      clients originate request‑type extensions in ClientHello, servers
+      only send corresponding responses in the allowed messages
+      (ServerHello, EncryptedExtensions, HelloRetryRequest, Certificate),
+      with the single intentional exception of server‑originated cookie in
+      HelloRetryRequest and unsolicited extensions in NewSessionTicket.
+      Fields that must be echoed or derived from peer state
+      (legacy_session_id_echo, cookie, selected_identity, selected_group,
+      supported_versions, etc.) have clear origin and copying rules for
+      the correct party. Error‑handling obligations (which side aborts and
+      with what alert) are consistently assigned to the party detecting
+      the problem. Overall, the specification yields a coherent and
+      implementable actor model with no contradictory instructions about
+      who sends what, in which direction, or who is responsible for
+      echoing or validating specific values.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: The excerpt defines the TLS 1.3 handshake protocol, including PSK and certificate-based authentication, the conditions under which Certificate/CertificateRequest may appear, and points to RFC 8773 for combining external PSKs with certificates. Some sentences try to globally state “either PSK or certificate, but not both”, while other places carve out more nuanced cases (post‑handshake client auth, external‑PSK extensions).
+- ScopeModel:
+  - Targets:
+    - Server authentication method in the *main handshake*: PSK-based (resumption or external) vs certificate-based, as negotiated by PSK and/or certificate-related messages.
+    - Client authentication via Certificate/CertificateVerify, either in the main handshake (CertificateRequest) or in post‑handshake authentication (Section 4.6.2).
+    - PSK types: resumption PSK vs external PSK; and the “tls_cert_with_extern_psk” extension in RFC 8773, which allows mixing external PSK with certificate-based auth for server and client .
+    - Handshake phases: “main handshake” vs post‑handshake (CertificateRequest post‑handshake; NewSessionTicket; KeyUpdate, etc.).
+  - Conditions:
+    - If PSK is selected (ServerHello contains pre_shared_key extension), the server “is authenticating via a PSK” and in the *base* TLS 1.3 design sends no Certificate / CertificateVerify in the main handshake; this is illustrated explicitly for resumption PSK in Figure 3, followed by the sentence: “As the server is authenticating via a PSK, it does not send a Certificate or a CertificateVerify message.” 
+    - 4.1.1 text (in the bis draft) says: “In TLS 1.3 as defined by this document, either a PSK or a certificate is always used, but not both. Future documents may define how to use them together.” (applies to server authentication as described in that bullet).
+    - Certificate-based client authentication is stated at 4.4 as “not available in PSK handshake flows (including 0‑RTT)” in the context of the Authentication messages description , but 4.6.2 allows post‑handshake client authentication (CertificateRequest after the handshake) once the client has offered post_handshake_auth .
+    - Original 8446 4.3.2 (bis refines this) says: “Servers which are authenticating with a PSK MUST NOT send the CertificateRequest message in the main handshake, though they MAY send it in post‑handshake authentication …” . The bis draft further distinguishes resumption PSK vs external PSK and forbids external‑PSK + client cert unless some other spec says otherwise (citing RFC8773).
+    - Appendix F.1.3 of 8446 says: “TLS does not currently permit the server to send a certificate_request message in non‑certificate‑based handshakes (e.g., PSK)” and then: “Implementations MUST NOT combine external PSKs with certificate-based authentication of either the client or the server unless negotiated by some extension.” 
+    - RFC 8773 defines such an extension (“tls_cert_with_extern_psk”) and explicitly says it “allow[s] certificate-based authentication for both the client and the server” when an external PSK is also in use .
+  - NotedAmbiguities:
+    - The sentence “either a PSK or a certificate is always used, but not both” in 4.1.1 is global in phrasing and not explicitly scoped to “server authentication in the main handshake”, even though that seems to be the intent.
+    - 4.4’s note “certificate-based client authentication is not available in PSK handshake flows (including 0‑RTT)” is easy to read as a blanket prohibition on *any* client cert use on PSK‑based connections, whereas 4.3.2 and 4.6.2 together do allow post‑handshake client auth after a PSK resumption connection.
+    - The interplay between the base spec’s text about “future documents may define how to use them together” (4.1.1), the security text that already allows combining external PSKs with certificates when negotiated by an extension , and the explicit pointer to RFC 8773 in 4.3.2, is spread out and not clearly summarized in one place. This makes it hard to answer “under what exact conditions may PSK and certificates co‑exist?” from a single, unambiguous rule.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Underspecification
+    - ShortLabel: Unclear global scope of “either PSK or certificate, but not both” vs later allowances for PSK+certificate (post‑handshake and via extensions)
+    - ScopeProblemType: Over‑broad unqualified statement vs more nuanced per‑role/per‑phase rules about mixing PSK and certificates
+    - Evidence:
+      - 4.1.1 (bis draft) bullet: after describing certificate authentication it states that “In TLS 1.3 as defined by this document, either a PSK or a certificate is always used, but not both. Future documents may define how to use them together.” (from the user’s excerpt).
+      - Section 2.2 / Figure 3 shows a PSK resumption handshake without server certificates and then says: “As the server is authenticating via a PSK, it does not send a Certificate or a CertificateVerify message.” 
+      - Section 4.4: Certificate description ends with: “Note that certificate-based client authentication is not available in PSK handshake flows (including 0‑RTT).” 
+      - Section 4.3.2 in RFC 8446 (and tightened in the bis): “Servers which are authenticating with a PSK MUST NOT send the CertificateRequest message in the main handshake, though they MAY send it in post‑handshake authentication (see Section 4.6.2)…” 
+      - Section 4.6.2: once the client has sent post_handshake_auth, “a server MAY request client authentication at any time after the handshake has completed by sending a CertificateRequest message” and the client then sends Certificate/CertificateVerify/Finished .
+      - Appendix F.1.3: “TLS does not currently permit the server to send a certificate_request message in non-certificate-based handshakes (e.g., PSK). … Implementations MUST NOT combine external PSKs with certificate-based authentication of either the client or the server unless negotiated by some extension.” 
+      - RFC 8773: “TLS 1.3 does not permit the server to send a CertificateRequest message when a PSK is being used. This restriction is removed when the ‘tls_cert_with_extern_psk’ extension is negotiated, allowing certificate-based authentication for both the client and the server.” 
+    - DetailedReasoning:
+      1. The high‑level statement in 4.1.1 that “either a PSK or a certificate is always used, but not both” is written as a global description of TLS 1.3, with only a soft qualifier “as defined by this document” and a forward‑looking remark that “future documents may define how to use them together.” For a casual reader, it naturally sounds like a blanket rule: PSK and certificates never co‑exist on the same connection.
+      2. Elsewhere, the specification has more fine‑grained rules that *do* allow PSK and certificates together in some scopes. In particular, a connection whose server is authenticated with a resumption PSK can later perform post‑handshake client certificate authentication: 4.3.2 explicitly allows CertificateRequest only post‑handshake for PSK‑authenticated servers, and 4.6.2 defines the generic post‑handshake client auth exchange using Certificate/CertificateVerify/Finished  . This already contradicts the most literal reading of “either a PSK or a certificate … but not both” if that sentence is understood as describing *the entire connection*, not just the server’s main‑handshake authentication method.
+      3. For external PSKs, the spec is even more nuanced. Appendix F.1.3 warns that external PSKs must not be combined with certificate-based authentication for *either* endpoint unless some extension explicitly enables it . The bis draft then tightens 4.3.2 to forbid CertificateRequest when “authenticating with an external PSK” except where “some other specification to the contrary” (specifically RFC 8773) applies. RFC 8773, in turn, is that “future document” and allows exactly such combinations via a new extension, including server certificate plus external PSK and optionally client certificate plus external PSK .
+      4. When these pieces are assembled, the intended scope seems to be:
+         - For **server authentication in the main handshake without any extensions**, a connection either uses PSK (ServerHello.pre_shared_key, no server Certificate) or a certificate (Certificate/CertificateVerify, no PSK), but not both.
+         - **Client authentication in the main handshake** is forbidden when a PSK is used (no CertificateRequest in the main handshake for PSK‑auth servers), but **post‑handshake** client auth is allowed when the PSK is a resumption PSK, and, with RFC 8773, also when it is an external PSK.
+         - **Server or client authentication combined with an external PSK in the key schedule** is permitted only when an explicit extension such as RFC 8773’s tls_cert_with_extern_psk is negotiated.
+      5. None of that full picture is stated in one place. Instead, a single, broad “PSK or certificate, but not both” sentence in 4.1.1 co-exists with more detailed rules and with explicit exceptions (post‑handshake client auth; external‑PSK extensions). This makes the *effective* scope of the rule depend on careful cross‑reading, which is fragile:
+         - An implementer might take 4.1.1 at face value and think *any* presence of both pre_shared_key and Certificate/CertificateVerify on the same connection is a protocol error, and mistakenly treat post‑handshake client authentication after a PSK resumption as invalid.
+         - Conversely, someone implementing RFC 8773 could be confused as to whether they are “violating” 4.1.1 whenever both an external PSK and a Certificate are used, since 4.1.1 does not clearly confine its rule to the non‑extended base protocol or to server authentication.
+      6. The note in 4.4 that “certificate-based client authentication is not available in PSK handshake flows (including 0‑RTT)”  adds to the ambiguity: standing alone, it sounds like a global prohibition on client certificates any time PSK is in use. Only by reading 4.3.2 and 4.6.2 does it become clear that the intended scope is “in the main handshake flight; post‑handshake client auth is separate.”
+      7. From a scope‑modelling perspective, the bug is that the *normative effective behaviour* depends critically on actor (server vs client), PSK type (resumption vs external), and handshake phase (main vs post‑handshake), but the primary summary statement in 4.1.1 does not mention any of these qualifiers. Instead, those qualifiers are scattered across other sections and an appendix, which increases the risk of mis‑implementing or mis‑reviewing PSK/certificate combinations.
+      8. A relatively small wording change to 4.1.1 (for example, explicitly saying “for **server authentication in the main handshake of this base specification**, either a PSK or a certificate is used, but not both; extensions such as [RFC8773] may define combinations with external PSKs”) and clarifying that the 4.4 note about client authentication is limited to the main handshake would make the scope explicit and align the high‑level rule with the detailed rules and the RFC 8773 extension.
+
+- ResidualUncertainties:
+  - The exact bis-14 wording of 4.3.2 (resumption vs external PSK distinctions) is not in the RFC8446 text I searched, but the overall structure is clear enough from the diff‑like text given in the user’s excerpt and from RFC 8446 plus RFC 8773. The core concern remains that the top‑level “PSK or certificate, but not both” statement is under‑scoped relative to the more precise conditions spelled out elsewhere.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+There is a genuine normative tension between the two sentences in §4.2.1 about how servers handle `ClientHello.legacy_version >= 0x0304` when `supported_versions` is absent, and also with the earlier “MUST abort if legacy_version != 0x0303” in §4.1.2. However, this only affects how servers treat *non‑conformant* ClientHellos. For fully spec‑conforming TLS 1.3 clients, the problematic condition never arises, and there is no fundamental interoperability or security break in the handshake execution itself.
+
+2. **Causal Analysis**
+
+Relevant text in §4.2.1 (SupportedVersions):
+
+- “Implementations of this specification MUST send this extension in the ClientHello containing all versions of TLS which they are prepared to negotiate (for this specification, that means minimally 0x0304, but if previous versions of TLS are allowed to be negotiated, they MUST be present as well).”
+
+- “If this extension is not present, servers which are compliant with this specification and which also support TLS 1.2 MUST negotiate TLS 1.2 or prior as specified in [RFC5246], even if ClientHello.legacy_version is 0x0304 or later.  Servers MAY abort the handshake upon receiving a ClientHello with legacy_version 0x0304 or later.”
+
+And from §4.1.2 (ClientHello):
+
+- “In TLS 1.3, the client indicates its version preferences in the ‘supported_versions’ extension … and the legacy_version field MUST be set to 0x0303 … A server which receives a legacy_version value not equal to 0x0303 MUST abort the handshake with an ‘illegal_parameter’ alert.”
+
+Now consider the different concrete cases.
+
+### 2.1 Spec‑conforming TLS 1.3 client
+
+A client that implements this spec correctly will:
+
+- Set `legacy_version = 0x0303`, and
+- Always send a `supported_versions` extension with 0x0304 present.
+
+Therefore, the problematic combination:
+
+- `legacy_version >= 0x0304`, and
+- no `supported_versions` extension
+
+**never occurs** for such a client.
+
+In all spec‑conformant TLS 1.3 handshakes, the server:
+
+- Sees `legacy_version = 0x0303`, so the §4.1.2 “MUST abort” condition is not triggered, and
+- Sees `supported_versions` present, so the first sentence in §4.2.1 (“If this extension is not present…”) does not apply.
+
+Execution is clear and unambiguous; there is no state in the normal TLS 1.3 handshake where the conflicting rules fire.
+
+### 2.2 Non‑conformant client: no supported_versions, legacy_version >= 0x0304
+
+Now suppose a server receives:
+
+- ClientHello with `legacy_version = 0x0304` (or later), and
+- *No* `supported_versions` extension.
+
+This is explicitly *not* a compliant TLS 1.3 client, but §4.2.1 tries to say what TLS 1.3+1.2 servers should do for compatibility:
+
+- For servers that **also support TLS 1.2**:
+  - “MUST negotiate TLS 1.2 or prior as specified in [RFC5246], even if ClientHello.legacy_version is 0x0304 or later.”
+
+- For “Servers” in general:
+  - “MAY abort the handshake upon receiving a ClientHello with legacy_version 0x0304 or later.”
+
+If you also look at §4.1.2 in isolation (“MUST abort if legacy_version != 0x0303”), that would require abort here. §4.2.1 then adds two other, partially conflicting, instructions for this same condition.
+
+Mechanically, this gives three overlapping rules:
+
+1. §4.1.2: Any server seeing `legacy_version != 0x0303` MUST abort.
+2. §4.2.1(1): If `supported_versions` is absent and the server supports TLS 1.2, it MUST treat this as a TLS 1.2‑style negotiation, *even if* legacy_version is 0x0304 or later.
+3. §4.2.1(2): Any server MAY abort when `legacy_version >= 0x0304`.
+
+You cannot simultaneously obey (1) and (2) in this corner case, so an implementation must choose which rule “wins”:
+
+- A strictly literal reading of §4.1.2 alone => abort.
+- A “more specific / later text overrides” reading of §4.2.1 => a TLS 1.3+1.2 server *must* negotiate TLS 1.2 and *must not* abort in this case.
+- The trailing “Servers MAY abort …” sentence gives a general permission, but that permission becomes unusable for a TLS 1.3+1.2 server once you enforce the preceding MUST‑negotiate requirement.
+
+From a causal point of view:
+
+- For **TLS 1.3‑only** servers (no TLS 1.2):
+  - The “MUST negotiate TLS 1.2” clause does not apply (they do not “also support TLS 1.2”), so their only viable behavior is “MAY abort” – and practically, they *must* abort because they have no ≥1.0 version in common.
+  - This is consistent and implementable.
+
+- For **TLS 1.3 + TLS 1.2** servers:
+  - If they give precedence to §4.2.1’s more specific text, executably they:
+    - Ignore the “MUST abort on legacy_version!=0x0303” from §4.1.2 in this special case,
+    - Treat the ClientHello as a TLS 1.2 handshake, per RFC 5246, and
+    - Do *not* exercise the “MAY abort” permission in this scenario, because that would violate their “MUST negotiate TLS 1.2 or prior”.
+  - This is also implementable and interoperable, but it requires the implementer to resolve the internal conflict in favor of backwards‑compatibility.
+
+Regardless of which path an implementer takes for this **non‑conformant client** case, nothing breaks *inside* TLS 1.3’s valid handshake state machine. Either:
+
+- The handshake is aborted early with an alert; or
+- It proceeds as a TLS 1.2 handshake, with all the TLS 1.2 rules applied.
+
+### 2.3 Impact on security and interoperability
+
+- **Security invariants**: These paths do not allow an attacker to downgrade a *correct* TLS 1.3 client; a conformant client always sends `legacy_version=0x0303` plus a `supported_versions` extension. The “mutually contradictory” text only governs how you treat malformed or future‑version ClientHellos.
+- **Interoperability between conforming implementations**: Unaffected. All conforming TLS 1.3 endpoints send and expect `legacy_version=0x0303` and a `supported_versions` extension; the weird `0x0304/no-extension` case never appears on the wire between them.
+- **Interoperability with buggy or future clients**: Servers might diverge:
+  - Some TLS 1.3+1.2 servers will treat such a ClientHello as TLS 1.2 and continue.
+  - Others might abort based on the older §4.1.2 rule or the explicit “MAY abort”.
+  That’s not a “fundamental” break of the TLS 1.3 protocol, but it *does* mean this corner case behavior is not well‑standardized.
+
+3. **Problem Classification**
+
+- At the *specification* level, this is a **Causal Inconsistency / Normative Conflict**:
+  - For TLS 1.3+1.2 servers, you have:
+    - One requirement that says you MUST negotiate TLS 1.2 or earlier, and
+    - A general permission to abort on exactly that input, and
+    - An earlier section that also says you MUST abort if `legacy_version != 0x0303`.
+  - You cannot obey all three simultaneously; an implementation has to choose which rule to prioritize.
+
+- At the *protocol behavior* level, it does **not** make the TLS 1.3 handshake unexecutable or insecure for conforming endpoints. It only affects handling of out‑of‑spec (or future‑spec) ClientHellos.
+
+4. **Minimal Fix Shape (Spec Clarification)**
+
+A minimal way to repair the cause‑effect chain would be to:
+
+- Make the override and scoping explicit, e.g.:
+
+  - Amend §4.1.2’s “MUST abort if legacy_version != 0x0303” to say “except as specified in §4.2.1 when `supported_versions` is absent and the server is negotiating TLS 1.2 or earlier”.
+
+  - In §4.2.1, scope the “MAY abort” sentence to the servers that *cannot* fall back:
+
+    > “If this extension is not present, servers that are compliant with this specification and also support TLS 1.2 MUST negotiate TLS 1.2 or prior as specified in [RFC5246], even if ClientHello.legacy_version is 0x0304 or later.  
+    > Servers that do not support TLS 1.2 MAY instead abort the handshake upon receiving a ClientHello with legacy_version 0x0304 or later.”
+
+This would remove the normative conflict while preserving the intended behaviors.
+
+5. **Non‑Issues**
+
+- There is no path where a conforming TLS 1.3 client and a conforming TLS 1.3 server disagree on the protocol version or keys because of this. The conflict only arises in a scenario that is already out of spec on the client side, and the server’s choices are limited to “abort” or “fall back to 1.2”, both of which preserve cryptographic correctness and ordering invariants.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Quantitative Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary: The excerpt defines TLS 1.3’s handshake and record-layer structures, including all handshake message types, extension formats, vector bounds, length limits for records and messages, and various timers and counters. It also reprints some legacy TLS 1.2/1.3 text for context and enumerates IANA registries and external extension definitions.
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: ClientHello.extensions minimum length vs “minimally supported_versions”
+    - Description: The `ClientHello` structure constrains the `extensions` vector to a minimum length of 8 bytes, but elsewhere the spec explicitly allows a TLS 1.3 `ClientHello` with only a single `supported_versions` extension, whose encoded length is only 7 bytes. This makes the structural definition and the descriptive text mutually inconsistent for that (otherwise legal) minimal case.
+    - Evidence:
+      - Struct definition in Section 4.1.2 / B.3.1:
+
+        `Extension extensions<8..2^16-1>;` (in `ClientHello`)  
+
+      - Description in Section 4.1.2:
+
+        “TLS 1.3 ClientHello messages always contain extensions (minimally "supported_versions", otherwise, they will be interpreted as TLS 1.2 ClientHello messages).”
+
+      - `supported_versions` (client_hello) form:
+
+        `struct {
+            ProtocolVersion versions<2..254>;
+        } SupportedVersions;`  
+
+        i.e., `versions` is a vector with a 1‑byte length and at least 2 bytes of data.
+    - QuantitativeReasoning:
+      - A *minimal* TLS 1.3 `ClientHello` as described in the prose would contain only one `supported_versions` extension, with a single offered version (e.g., 0x0304):
+        - `Extension` header: `extension_type` (2 bytes) + `extension_data` length (2 bytes) = 4 bytes.
+        - `extension_data` for `supported_versions` in `client_hello`:
+          - `versions` vector: 1‑byte length (`0x02`) + 2‑byte `ProtocolVersion` (e.g., `0x03 0x04`) = 3 bytes.
+        - Total for that single extension: 4 + 3 = 7 bytes.
+      - But the `ClientHello.extensions` vector is declared as `<8..2^16‑1>`, which forbids `extensions_length = 7`. So on one hand the prose allows “minimally `supported_versions`” (7 bytes), and on the other the formal bound says the minimum is 8 bytes, so such a message is structurally illegal.
+    - Consequences:
+      - A strict implementation that enforces the `<8..>` lower bound *literally* could reject a `ClientHello` that contains only `supported_versions` with an otherwise well-formed TLS 1.3 negotiation, leading to interoperability failures.
+      - Conversely, an implementer following the prose might generate that minimal `ClientHello`, which would then contradict the formal size constraints and any code that was auto‑generated or validated against them.
+      - Even if most real TLS 1.3 handshakes will include more extensions (per Section 9.2), this inconsistency can confuse implementers and tools that rely on the numeric bounds as hard validity criteria.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: Conflicting RFC number for record_size_limit extension
+    - Description: The document cites two different RFC numbers for the `record_size_limit` extension: one place refers to RFC 8449 and another to RFC 8849. This numeric mismatch is purely in the reference, but it can misdirect implementers to the wrong specification.
+    - Evidence:
+      - In Section 5.4 (Record Padding) the text says:
+
+        “If the maximum fragment length is reduced -- as for example by the record_size_limit extension from [RFC8449] -- then the reduced limit applies…”  
+
+      - In the extension table in Section 4.2:
+
+        `| record_size_limit [RFC8849]                      |      CH, EE |`
+    - QuantitativeReasoning:
+      - The same extension name `record_size_limit` is tied to two different RFC numbers: 8449 vs 8849. Since an RFC number is a numeric identifier, they cannot both be correct; there is a one‑to‑one mapping between the extension and its defining RFC.
+    - Consequences:
+      - Implementers or reviewers using the table may look up RFC 8849 and find a different document than the intended `record_size_limit` specification (which is RFC 8449), causing confusion and possibly incorrect implementation or documentation linkage.
+      - Tools that try to cross‑index extension names and RFC numbers automatically could be inconsistent depending on which part of the text they trust.
+
+- IfNoIssues:
+  - Not applicable; at least two quantitative inconsistencies were identified.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary:  
+  The excerpt normatively defines the TLS 1.3 handshake protocol in detail: message formats and ordering, version and algorithm negotiation (especially via supported_versions, supported_groups, key_share, and pre_shared_key), PSK versus certificate-based authentication, extension negotiation rules, 0‑RTT, NewSessionTicket, post‑handshake auth, KeyUpdate, and error/alert handling. It also sets mandatory-to-implement algorithms and extensions and gives some backward‑compatibility requirements toward TLS 1.2 and earlier.
+
+- OverallDeonticRisk: None
+
+- Issues:
+
+  - Issue-1:
+    - BugType: None
+    - Title: SupportedVersions “MUST negotiate TLS 1.2 or prior” vs “MAY abort” are not a real conflict
+    - Description:  
+      Section 4.2.1 says that if the supported_versions extension is absent, “servers which are compliant with this specification and which also support TLS 1.2 MUST negotiate TLS 1.2 or prior as specified in [RFC5246], even if ClientHello.legacy_version is 0x0304 or later.” It then adds: “Servers MAY abort the handshake upon receiving a ClientHello with legacy_version 0x0304 or later.” These are superficially in tension but are not deontically inconsistent once their scopes are read carefully. The MUST constrains what version a server selects if it proceeds with a handshake in this situation: it is forbidden to negotiate TLS 1.3 or higher when supported_versions is absent. The MAY allows an orthogonal action—aborting the connection entirely—rather than continuing and selecting a version. Under RFC 2119 / 8174, it is common (elsewhere in this document too) for specifications to say “MUST do X” for a successful path while always permitting immediate aborts on policy, configuration, or security grounds. Here the normative space is: allowed behaviors are (a) abort the handshake, or (b) complete the handshake but only with TLS 1.2 or earlier; it remains forbidden to complete the handshake with TLS 1.3 in this case. That is a coherent set of constraints rather than a contradiction.
+    - KeyTextSnippets:
+      - “If this extension is not present, servers which are compliant with this specification and which also support TLS 1.2 MUST negotiate TLS 1.2 or prior as specified in [RFC5246], even if ClientHello.legacy_version is 0x0304 or later.”
+      - “Servers MAY abort the handshake upon receiving a ClientHello with legacy_version 0x0304 or later.”
+    - Impact:  
+      An implementer who reads these two sentences together can reasonably conclude they may either abort or, if they choose to continue, must negotiate TLS 1.2 or earlier. There is no deontic bug forcing them into mutually incompatible obligations, so no interoperability or security problem arises—at most, the text could be stylistically clearer about “if you continue.”
+
+  - Issue-2:
+    - BugType: None
+    - Title: PSK vs certificate authentication and RFC 8773 are consistently scoped
+    - Description:  
+      Section 4.1.1 states, “In TLS 1.3 as defined by this document, either a PSK or a certificate is always used, but not both. Future documents may define how to use them together.” Section 4.3.2 later says that when authenticating with a resumption PSK, servers MUST NOT send CertificateRequest in the main handshake (though they MAY do post‑handshake auth with the post_handshake_auth extension), and that “in the absence of some other specification to the contrary, servers which are authenticating with an external PSK MUST NOT send the CertificateRequest message … [RFC8773] provides an extension to permit this.” The router’s concern is that “either PSK or certificate, but not both” could conflict with the existence of RFC 8773 (external PSK plus certificate auth). However, both passages explicitly scope the base document’s rules: 4.1.1’s “as defined by this document” and 4.3.2’s “in the absence of some other specification to the contrary” jointly make it clear that this RFC defines pure‑PSK and pure‑certificate modes and intentionally leaves combiners like RFC 8773 as out‑of‑scope extensions that override the default “not both” rule. Within the scope of this document alone, there is no codepoint or mechanism that would allow using both; with RFC 8773, the “other specification” clause is precisely what permits that behavior without violating the base MUST‑NOTs.
+    - KeyTextSnippets:
+      - “In TLS 1.3 as defined by this document, either a PSK or a certificate is always used, but not both. Future documents may define how to use them together.”
+      - “Servers which are authenticating with a resumption PSK MUST NOT send the CertificateRequest message in the main handshake, though they MAY send it in post-handshake authentication…”
+      - “In the absence of some other specification to the contrary, servers which are authenticating with an external PSK MUST NOT send the CertificateRequest message either in the main handshake or request post-handshake authentication. [RFC8773] provides an extension to permit this…”
+    - Impact:  
+      The normative structure clearly distinguishes “this document’s TLS 1.3” from future or external extensions like RFC 8773 and provides explicit escape text for those extensions. An implementation that only follows this document will never attempt to use both PSK and certificates simultaneously; an implementation that also implements RFC 8773 operates under that other specification’s rules. There is no internal inconsistency or underspecified overlap in obligations.
+
+- IfNoRealIssue:
+  - The two apparent tensions the router flagged—version negotiation when supported_versions is absent, and the line between pure PSK vs cert authentication vs RFC 8773’s combined mode—are resolved by careful reading of the scope and conditional phrasing of the normative requirements. In both cases, the base document’s requirements are self‑consistent and leave deliberate, clearly‑signposted room for other specifications to extend or override them.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: I examined the TLS 1.3 handshake structures and related machinery in draft‑ietf‑tls‑rfc8446bis‑14 (HandshakeType, ClientHello/ServerHello, extensions, key share, PSK/early data, Certificate/CertificateVerify/Finished, alerts, record layer, and the Appendix B “protocol data structures”).
+- OverallBugLikelihood: None
+
+Issues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: "No structural or syntactic issues detected"
+    - TechnicalExplanation: |
+        I compared the normative presentation‑language structs, enums, and vector bounds in Section 4 (and its supporting sections) against the summary structures in Appendix B and the referenced base specifications. HandshakeType and AlertDescription are consistently extended in Appendix B only by adding RESERVED values for earlier TLS versions, without changing the wire format for TLS 1.3. The duplicated definitions of ClientHello, ServerHello, Extension, Certificate, NewSessionTicket, KeyUpdate, content types, and the various extension payload structs (supported_versions, cookie, signature_algorithms, supported_groups, key_share, early_data, pre_shared_key, etc.) have matching field names, types, and length ranges. Vector lower bounds (for example in ClientHello.extensions, ServerHello.extensions, PskIdentity/OfferedPsks, NamedGroupList, and the various extension_data containers) are consistent with the element sizes and the general vector rules in Section 3. The “message_hash” pseudo‑handshake type is only used in the transcript‑hash definition and is intentionally not present in the Handshake struct’s on‑the‑wire select, which matches the intended synthetic usage. The extension‑placement table in Section 4.2 matches the per‑extension struct definitions and their select(Handshake.msg_type) cases. Overall, I did not find contradictions between diagrams, prose, ABNF‑like structures, enums, or examples that would prevent unambiguous implementation.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 4 of rfc8446bis-14 defines the TLS 1.3 handshake (message types, extensions, authentication, PSK/0‑RTT, and key schedule) and also integrates a number of extensions and behaviors originally defined in separate RFCs (5246, 6066, 6960/6961, 7919, 7924, 8449, 8773, 8870, 8879, 9001, 9146, 9149, 9162, etc.).
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Wrong RFC number for record_size_limit extension
+    - Description: The extensions table in Section 4.2 lists `record_size_limit [RFC8849]` as the defining document for the `record_size_limit` TLS extension. RFC 8849, however, is “Mapping RTP Streams to Controlling Multiple Streams for Telepresence (CLUE) Media Captures” and has nothing to do with TLS extensions or record size limits  . The TLS `record_size_limit` extension is actually specified in RFC 8449 (“Record Size Limit Extension for TLS”) in the IANA “TLS ExtensionType Values” registry. This creates a concrete cross-RFC mismatch: implementers following the reference in 4.2 will be sent to an unrelated CLUE document rather than the actual TLS extension spec, and registry metadata updated “as described in Section 11” would also be keyed to the wrong RFC number. Elsewhere in the same draft (e.g., the record padding section) the text correctly refers to RFC 8449, so the same extension is associated with two different RFC numbers in different places, which is a clear internal and cross-registry inconsistency. This should be corrected by changing all occurrences of “RFC8849” in association with `record_size_limit` to “RFC8449”.
+    - EntitiesInvolved: ["TLS record_size_limit extension", "RFC 8449 (Record Size Limit Extension for TLS)", "RFC 8849 (CLUE Media Captures)", "TLS ExtensionType registry"]
+    - CrossRefsUsed: ["RFC8849 CLUE extract (shows it is not a TLS extension spec)  "]
+    - Confidence: High
+
+  - Issue-2:
+    - BugType: Both
+    - ShortLabel: PSK vs certificate text vs RFC 8773 (external PSK + cert)
+    - Description: Section 4.1.1 says that for server authentication “In TLS 1.3 as defined by this document, either a PSK or a certificate is always used, but not both. Future documents may define how to use them together.” This language is inherited from RFC 8446, where no such “future document” yet existed. However, Section 4.3.2 of rfc8446bis explicitly notes that “[RFC8773] provides an extension to permit this” when discussing certificate-based client authentication in the presence of an external PSK  . Thus the draft simultaneously states that combining certificates with PSKs is only a hypothetical future extension and that such a specific extension (RFC 8773) already exists, which is internally inconsistent and can mislead readers scanning only the overview in 4.1.1. Cross-RFC, the base TLS 1.3 text also doesn’t cleanly delimit what RFC 8773 changes for server authentication versus client authentication: 4.1.1’s blanket “PSK or certificate, but not both” statement is phrased in terms of server authentication, while 4.3.2’s carve-out only mentions client CertificateRequest behavior with an external PSK, even though RFC 8773’s title and scope are broader (“Certificate-Based Authentication with an External Pre-Shared Key”). This leaves the interaction between the base specification and RFC 8773 underspecified: it is not clear, from rfc8446bis alone, exactly where PSK+cert is now allowed and where it remains forbidden. The overview text in 4.1.1 should be updated to acknowledge RFC 8773 explicitly (rather than “future documents”) and the normative constraints in 4.1.1/4.3.2 should clearly state that PSK+certificate combinations are only permitted when and as specified by RFC 8773, distinguishing server vs client authentication behavior.
+    - EntitiesInvolved: ["draft-ietf-tls-rfc8446bis-14 Section 4.1.1", "draft-ietf-tls-rfc8446bis-14 Section 4.3.2", "RFC 8773 (TLS 1.3 Extension for Certificate-Based Authentication with an External PSK)"]
+    - CrossRefsUsed: ["RFC8773 summary extract  "]
+    - Confidence: Medium
+
+  - Issue-3:
+    - BugType: Inconsistency
+    - ShortLabel: Conflicting MUST vs MAY in SupportedVersions when extension is absent
+    - Description: In Section 4.2.1, the draft states: “If this extension is not present, servers which are compliant with this specification and which also support TLS 1.2 MUST negotiate TLS 1.2 or prior as specified in [RFC5246], even if ClientHello.legacy_version is 0x0304 or later. Servers MAY abort the handshake upon receiving a ClientHello with legacy_version 0x0304 or later.” The first sentence imposes a strict requirement on TLS 1.3–capable servers that also support TLS 1.2: in the absence of `supported_versions`, they MUST proceed with a TLS 1.2 (or older) negotiation following RFC 5246’s rules  . The immediately following “Servers MAY abort” clause, however, applies to all servers, including the ones just constrained by the MUST, and directly contradicts the requirement that such servers negotiate TLS 1.2 in this situation. Nothing in RFC 5246 grants a special prohibition on aborting, but rfc8446bis itself now contains a self-contradiction between “MUST negotiate” and “MAY abort” for the same condition on the same class of servers. This can lead different implementers to choose different interpretations (always negotiating 1.2 vs sometimes aborting), undermining the intended version-negotiation behavior and the downgrade story. The text should be clarified so that either the “MAY abort” is scoped only to servers that do not support TLS 1.2, or the normative MUST is relaxed to a SHOULD that is explicitly qualified, to avoid incompatible readings.
+    - EntitiesInvolved: ["draft-ietf-tls-rfc8446bis-14 Section 4.2.1", "RFC 5246 ServerHello / version negotiation semantics"]
+    - CrossRefsUsed: ["RFC 5246 ClientHello/ServerHello version handling  "]
+    - Confidence: Medium
+
+- IfNoIssues:
+  - Comment: Not applicable (multiple high-confidence cross-RFC / cross-section issues were identified).
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: Conflicting RFC reference for the `record_size_limit` TLS extension
+    - Evidence:
+      - ExcerptSnippets:
+        - Extension table in Section 4.2:
+
+          `| record_size_limit [RFC8849]                      |      CH, EE |`
+
+        - Later in Section 5.4:
+
+          `... as for example by the record_size_limit extension from [RFC8449] ...`
+    - ContextSnippets:
+      - None beyond the provided text are required; the contradiction is internal: the same extension name is tied to two different RFC numbers within this draft.
+    - Reasoning:
+      - The extension name `record_size_limit` is consistently used, but the associated reference is not:
+        - In the Section 4.2 table, `record_size_limit` is said to be defined in `[RFC8849]`.
+        - In Section 5.4, the same extension is said to be defined in `[RFC8449]`.
+      - Since a given extension name should have a single authoritative defining RFC, this is a clear internal inconsistency.
+      - An implementer following the table might look up the wrong RFC number and fail to find the correct definition of the `record_size_limit` extension, or be misled into reading an unrelated document. The later text pointing to `[RFC8449]` pulls in the opposite direction, creating ambiguity about which reference is intended.
+      - This is a terminology/reference-level error (the name ↔ reference mapping is inconsistent) that can impact correct implementation and interoperability guidance for this extension.
+    - PatchSuggestion:
+      - In the Section 4.2 extension table row for `record_size_limit`, replace `RFC8849` with `RFC8449` so that both mentions of the `record_size_limit` extension in this document consistently reference the same RFC:
+        - Change:
+          - `record_size_limit [RFC8849]`
+        - To:
+          - `record_size_limit [RFC8449]`
+
+  - Issue-2:
+    - BugType: None
+    - Severity: Low
+    - ShortLabel: Router’s PSK-vs-certificate “both” concern is semantic, not a terminology bug
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 4.1.1:
+
+          `In TLS 1.3 as defined by this document, either a PSK or a certificate is always used, but not both. Future documents may define how to use them together.`
+
+        - Section 4.3.2:
+
+          `In the absence of some other specification to the contrary, servers which are authenticating with an external PSK MUST NOT send the CertificateRequest message ... [RFC8773] provides an extension to permit this, but has received less analysis than this specification.`
+    - Reasoning:
+      - The router highlighted a possible ambiguity about using both PSK and certificates.
+      - From a naming/terminology perspective, the document:
+        - Uses consistent phrases like “authenticating via a certificate”, “authenticating with a resumption PSK”, and “authenticating with an external PSK”.
+        - Clearly scopes “either a PSK or a certificate is always used, but not both” to “TLS 1.3 as defined by this document”, and separately notes RFC 8773 as an external extension that changes this.
+      - There is a substantive design/semantics question (how to combine external PSKs and certificates), but the *names* and labels used for these mechanisms are consistent and not internally contradictory.
+      - Therefore, this is not a terminology/naming bug suitable for an erratum from this role’s perspective.
+    - PatchSuggestion:
+      - None.
+
+- Notes:
+  - UsedRouterIssues: Considered the router’s candidate issue about PSK vs. certificate “both” usage; concluded it is a semantic/design concern and not a terminology or naming inconsistency, so no erratum recommended for that point.
+  - NewIssuesFromExpert: true
+  - Limitations:
+    - Analysis is confined to the provided excerpt. There may be additional occurrences of `record_size_limit` or RFC references elsewhere in the full draft that we could not inspect; any fix should be applied consistently throughout the document.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  The excerpt defines the TLS 1.3 handshake protocol and related extension, certificate, PSK, early-data, and post‑handshake mechanisms. It includes precise message formats, ordering constraints, transcript hashing rules (including HelloRetryRequest and message_hash), PSK binder computation, 0‑RTT behavior, error alerts, and key update limits. The relevant state space spans: initial vs resumed handshakes, with/without HRR, with/without PSK and 0‑RTT, empty vs non‑empty lists (e.g., certificate chains, extension vectors), error alerts, and key- and sequence‑number limits.
+
+- OverallBoundaryBugLikelihood: None
+
+- Findings:
+  - Finding-1:
+    - BugType: None
+    - ShortLabel: No boundary/exceptional-case bugs detected
+    - BoundaryAxis: Multiple: empty/non‑empty vectors, mismatched parameters (no shared groups/PSK), HelloRetryRequest corner cases, 0‑RTT acceptance/rejection, PSK binder and ticket-age limits, certificate presence/absence, change_cipher_spec compatibility, key update and sequence-number/usage limits.
+    - ExcerptEvidence:
+      - No common group / PSK: server must abort with handshake_failure or insufficient_security when no overlap of supported_groups or other parameters exists  .
+      - HRR corner cases: HRR has same structure as ServerHello but is distinguished by the special Random; clients must (1) verify that HRR will cause an actual change in ClientHello, (2) abort on a second HRR, and (3) enforce cipher_suite and supported_versions consistency between HRR and the eventual ServerHello  .
+      - 0‑RTT: server behavior is constrained to three well-defined options (ignore and fall back to 1‑RTT, HRR, or accept early_data), with explicit rules for ticket age validation, parameter matching (version, cipher suite, ALPN, PSK index 0), and decryption failures (bad_record_mac)  .
+      - PSK/binder edge cases: structure ranges ensure at least one identity/binder if present; servers MUST select a PSK with a compatible Hash and MUST validate exactly one binder; clients MUST enforce selected_identity bounds, cipher suite/hash consistency, and that early_data uses identity 0  .
+      - Ticket age and wrap‑around: ticket_lifetime is explicitly bounded to ≤7 days, and obfuscated_ticket_age is defined modulo 2³² with a normative note that 32 bits suffice under this lifetime restriction  .
+      - Certificate presence/emptiness: server certificate_list MUST be non‑empty; a server that sends an empty Certificate causes the client to abort with decode_error; the client may legitimately send an empty certificate_list and the server is given a defined choice (continue unauthenticated or abort with certificate_required)  .
+      - Empty vs non‑empty extension vectors: numerous extension vectors explicitly allow 0‑length content where appropriate (e.g., CertificateRequest.extensions<0..2^16‑1> and certificate_request_context<0..2^8‑1>), and the text clarifies that certificate_request_context MUST be zero length in initial handshake and non‑zero only for post‑handshake authentication  .
+      - change_cipher_spec compatibility: both the record layer and the cookie/HRR text explicitly define that stray unencrypted CCS records (value 0x01) between ClientHello flights MUST be ignored; all other CCS usages are treated as protocol errors with unexpected_message  .
+      - KeyUpdate / sequence / usage limits: sequence numbers are 64‑bit and MUST NOT wrap; if they would, the implementation must rekey or terminate; with KeyUpdate, senders MUST NOT exceed a limit on the number of epochs (2⁴⁸‑1) and must encrypt KeyUpdate under old keys while enforcing that an update under old keys is processed before accepting records under new keys; receivers MUST NOT enforce the epoch limit (enabling future cipher‑dependent changes)  .
+      - Transcript hash and synthetic message_hash: the exact list and order of handshake messages included in the transcript is fully specified, including the replacement of ClientHello1 with a synthetic message_hash in HRR flows; post‑handshake authentications have their own clearly defined handshake context and do not include each other  .
+    - Reasoning:
+      - I went through each of the main mechanisms in Section 4 and its referenced sections and enumerated the obvious edge cases: no shared key exchange group, PSK‑only vs PSK‑DHE, multiple PSKs with binders, age wrap for tickets, presence/absence or emptiness of certificates and extension lists, HRR being sent spuriously or twice, 0‑RTT accepted vs rejected vs retried, stateless HRR plus stray change_cipher_spec, and large numbers of KeyUpdate operations and records.
+      - For negotiation failures (no overlapping supported_groups; cipher suite not offered; no acceptable PSK; inconsistent or missing mandatory extensions), there are explicit abort conditions and concrete alerts: handshake_failure/insufficient_security, illegal_parameter, missing_extension, or unsupported_extension, so the behavior is deterministic in each “no overlap” or malformed-input corner case  .
+      - For HelloRetryRequest, the spec explicitly constrains: what extensions may appear; how clients must update ClientHello (including removal of early_data, recomputation of binders, and optional cookie insertion); that HRR must lead to a real change or cause a client abort; that cipher_suite and supported_versions in HRR and the final ServerHello must match; and that a second HRR is a protocol error. This closes off the usual HRR‑loop or downgrade corner cases.
+      - For PSK and 0‑RTT, the interaction between multiple identities, binders, identity 0, and early_data is clearly nailed down: the binder computation order, the “validate exactly one binder corresponding to the selected PSK” rule, the ticket_age_add/obfuscated_ticket_age math and server‑side age window check, and the requirement that early_data can only be used when the server selects identity 0 and when version/cipher suite/ALPN match the original session. That covers the replay/freshness and misbinding boundaries explicitly  .
+      - For certificates, the spec distinguishes carefully between server vs client and initial vs post‑handshake authentication. It specifies: that server certificate_list is never empty; what happens if it is; how client emptiness is signaled and handled; constraints on chain ordering, use of SHA‑1/MD5 in certs and signatures; what happens when the chain can’t be validated (specific alerts); and the required vs optional use of extensions like signature_algorithms, certificate_authorities, and oid_filters. This eliminates ambiguity around empty lists, unsupported algorithms, and fallback chains  .
+      - Record‑layer and key‑update behavior around boundaries are similarly explicit: limits on record length and AEAD expansion, how padding is parsed and what happens if no non‑zero content type is found, the exact requirement to align critical handshake messages with record boundaries and not to span key changes, and how to handle stray pre‑1.3 change_cipher_spec. The combination of these rules closes off partial‑record/key‑change, malformed-padding, and CCS‑placement edge cases in a way that leaves no room for divergent interpretations among conformant implementations  .
+      - Finally, the transcript‑hash rules, including the synthetic message_hash for HRR, and the different handshake contexts for server auth, client auth, and post‑handshake auth, fully cover the “no‑messages yet” and “HRR happened” states. They clearly say which handshake messages are and are not included in each MAC/signature and how to treat later post‑handshake exchanges, avoiding any undefined transcript content at the edges  .
+    - ImpactAssessment:  
+      Given the above, I do not see any boundary or exceptional situation in the covered mechanisms where a conformant implementation would be left without a clear rule or where two parts of the text require contradictory behavior. Different implementations may make different policy choices (e.g., abort vs continue on SHA‑1 chains or inconclusive OCSP), but those differences are explicitly permitted. From a boundary/exceptional-case perspective, the specification appears internally consistent and sufficiently specified for interoperable and robust implementations.
+
+- Notes:
+  - Not a bug, but some rules intentionally leave room for policy (e.g., whether to abort on SHA‑1 certificate chains, whether to fall back to a non‑PSK handshake when no PSK is acceptable, or how large the acceptable ticket‑age window is). These are expressed as SHOULDs or MAYs and are not contradictions; they are degrees of freedom for deployments.
+  - The apparent redundancy between some bounds (e.g., ticket_lifetime ≤ 7 days at the server, and clients also independently limiting ticket use to 7 days) is deliberate defense-in-depth rather than inconsistency.
+
+[Used vector stores: vs_6958ce993c388191a7c9f32559e3b152]
+
+
+Vector Stores Used: vs_6958ce993c388191a7c9f32559e3b152
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

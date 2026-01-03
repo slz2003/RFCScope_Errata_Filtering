@@ -1,0 +1,200 @@
+{
+  "reports": [
+    {
+      "label": "Underspecified actor responsibility for DET reverse resolution in DNS",
+      "bug_type": "Underspecification",
+      "explanation": "The normative requirement that DET reverse names MUST resolve to an HHIT RRType is attached to the identifiers without specifying which operator is responsible, creating ambiguity over DNS record management.",
+      "justification": [
+        "The text states: DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an HHIT RRType.",
+        "The normative statement does not assign responsibility to a specific party (e.g., HDA/RAA registry, DIME, or registrar), leading to an underspecification."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an HHIT RRType."
+          },
+          {
+            "id": "E2",
+            "text": "In the surrounding text, several distinct actors are described: registrants (end users), registrars (agents), registries (zone operators) and DIMEs that “manage registration of and associated lookups from DETs”, with RAAs/HDAs mapped onto “National” and “Local” registries… the requirement is attached to the identifier rather than a specific party."
+          }
+        ],
+        "summary": [
+          "(E1) states the requirement without specifying an operator",
+          "(E2) explains that the obligation is not explicitly assigned."
+        ]
+      },
+      "fix_direction": "Clarify in the text which entity (e.g., HDA/RAA registry, DIME, or registrar) is responsible for publishing and maintaining the required HHIT RR records.",
+      "severity": "Medium",
+      "severity_basis": "Lack of explicit responsibility can lead to inconsistent implementations and operational confusion.",
+      "confidence": "High",
+      "experts": [
+        "ActorDirectionality Expert: NewIssue-1"
+      ],
+      "report_id": "9886-3-1"
+    },
+    {
+      "label": "Implicit shorthand notation for RAA/HDA prefixes lacks explicit bit-level definition",
+      "bug_type": "Underspecification",
+      "explanation": "The shorthand notations for RAAs (2001:3x:xxx0::/44) and HDAs (2001:3x:xxxy:yy00::/56) are presented without explicit bit-level details, forcing implementers to infer the intended mapping from external specifications.",
+      "justification": [
+        "The document notes: The shorthand address forms “2001:3x:xxx0::/44” (RAA) and “2001:3x:xxxy:yy00::/56” (HDA) are not formally defined in bit‑level terms here.",
+        "Residual uncertainties mention a reliance on an implicit understanding of how RAA/HDA bits interleave with the DET prefix."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "The shorthand address forms “2001:3x:xxx0::/44” (RAA) and “2001:3x:xxxy:yy00::/56” (HDA) are not formally defined in bit‑level terms here, and the meaning of the placeholder nibbles x and y has to be inferred from RFC 9374’s HID layout and DET encoding example."
+          },
+          {
+            "id": "E2",
+            "text": "ResidualUncertainties: The shorthand forms 2001:3x:xxx0::/44 and 2001:3x:xxxy:yy00::/56 rely on an implicit understanding of how RAA/HDA bits interleave with the DET prefix."
+          }
+        ],
+        "summary": [
+          "(E1) highlights lack of explicit bit-level definition for shorthand prefixes",
+          "(E2) notes the reliance on implicit understanding."
+        ]
+      },
+      "fix_direction": "Include a detailed bit-level derivation of the RAA/HDA prefixes directly in the document.",
+      "severity": "Low",
+      "severity_basis": "While this ambiguity may increase cognitive load for implementers, referencing external specifications limits the risk of interoperability issues.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: NotedAmbiguities",
+        "Scope Expert: ResidualUncertainties"
+      ],
+      "report_id": "9886-3-2"
+    },
+    {
+      "label": "Cross-RFC DNS model tension between RFC 9886 and RFC 9374",
+      "bug_type": "Causal Underspecification",
+      "explanation": "RFC 9886 mandates ip6.arpa reverse mapping and introduces a new HHIT RRType, while RFC 9374 allows for a more permissive DNS model, creating potential interoperability risks due to cross-document tension.",
+      "justification": [
+        "The causal analysis notes a cross‑RFC tension with RFC 9374’s earlier, more permissive DNS-model text.",
+        "The text explains that deployments adhering to RFC 9374’s model (e.g., using the hhit.arpa FQDN) may be non‑interoperable with RFC 9886-compliant systems."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "The main thing to be aware of is a cross‑RFC tension with RFC 9374’s earlier, more permissive DNS-model text; that’s a policy/interoperability choice rather than a mechanical bug in the Section 3 mapping itself."
+          },
+          {
+            "id": "E2",
+            "text": "A deployment that followed RFC 9374 early and chose only the hhit.arpa FQDN model, ignoring ip6.arpa, would be non‑interoperable with 9886‑compliant resolvers that expect reverse ip6.arpa zones."
+          }
+        ],
+        "summary": [
+          "(E1) notes the cross-RFC tension regarding DNS model choices",
+          "(E2) explains the potential non‑interoperability arising from legacy implementations."
+        ]
+      },
+      "fix_direction": "Include an explicit statement clarifying that the ip6.arpa reverse mapping model in RFC 9886 is the required interoperable DNS model, thereby superseding the alternative approach referenced in RFC 9374.",
+      "severity": "Medium",
+      "severity_basis": "The conflicting DNS models can lead to divergent implementations and interoperability issues across deployments.",
+      "confidence": "High",
+      "experts": [
+        "Causal Expert: Section 2.4",
+        "CrossRFC Expert: Issue-1"
+      ],
+      "report_id": "9886-3-3"
+    },
+    {
+      "label": "Misattribution of HHIT records to RFC 9374 instead of RFC 9886",
+      "bug_type": "Inconsistency",
+      "explanation": "The document incorrectly cites RFC 9374 as the source for HHIT records, even though the HHIT RRType is defined in RFC 9886, which may mislead implementers regarding the proper DNS record format.",
+      "justification": [
+        "Structural analysis notes that the text states 'They would also provision the HHIT records [RFC9374] for these IP addresses', implying that RFC 9374 defines the HHIT record format, which it does not.",
+        "CrossRFC and Terminology analyses confirm that the correct definition is in Section 5.1 of RFC 9886."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "For DRIP, blocks of IP addresses could be delegated from the 3.0.0.1.0.0.2.ip6.arpa. domain … They would also provision the HHIT records [RFC9374] for these IP addresses."
+          },
+          {
+            "id": "E2",
+            "text": "The HHIT Resource Record (HHIT, RRType 67) is a metadata record… defined in Section 5.1 of this document."
+          }
+        ],
+        "summary": [
+          "(E1) shows the misattributed reference to RFC 9374 for HHIT records",
+          "(E2) clarifies that the HHIT RRType is defined in RFC 9886."
+        ]
+      },
+      "fix_direction": "Change the reference in Section 3.1 to point to Section 5.1 of RFC 9886 for the HHIT RRType definition instead of RFC 9374.",
+      "severity": "Medium",
+      "severity_basis": "Incorrect cross-referencing may lead implementers to use the wrong specification, thus causing interoperability issues.",
+      "confidence": "High",
+      "experts": [
+        "Structural Expert: Issue-1",
+        "CrossRFC Expert: Issue-1",
+        "Terminology Expert: Issue-2"
+      ],
+      "report_id": "9886-3-4"
+    },
+    {
+      "label": "Double trailing dot in ip6.arpa reverse domain names",
+      "bug_type": "Inconsistency",
+      "explanation": "Some ip6.arpa reverse domain names are rendered with an extra trailing dot, which may be interpreted as an invalid fully qualified domain name.",
+      "justification": [
+        "Terminology analysis highlights instances such as '3.0.0.1.0.0.2.ip6.arpa..' that contain two trailing dots.",
+        "This inconsistent representation contrasts with other parts of the document that correctly use a single trailing dot."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Its corresponding domain name for reverse lookups is 3.0.0.1.0.0.2.ip6.arpa.. The IAB has administrative control of this domain name."
+          },
+          {
+            "id": "E2",
+            "text": "with respective nibble reverse domains of y.y.y.x.x.x.x.3.0.0.1.0.0.2.ip6.arpa.."
+          }
+        ],
+        "summary": [
+          "(E1) indicates an extra trailing dot in the reverse lookup domain",
+          "(E2) shows a similar extra dot in the nibble reverse domain."
+        ]
+      },
+      "fix_direction": "Replace double trailing dots with a single trailing dot (e.g., '3.0.0.1.0.0.2.ip6.arpa.') consistently throughout the document.",
+      "severity": "Medium",
+      "severity_basis": "Incorrect domain name formatting can lead to errors in DNS configurations.",
+      "confidence": "High",
+      "experts": [
+        "Terminology Expert: Issue-1"
+      ],
+      "report_id": "9886-3-5"
+    },
+    {
+      "label": "Ambiguous use of the term 'apex'",
+      "bug_type": "Ambiguity/Terminology",
+      "explanation": "The term 'apex' is used ambiguously to refer both to the DNS apex and the DET/PKI apex, which may require cross-referencing with external documents to resolve its intended meaning.",
+      "justification": [
+        "Scope analysis mentions that 'apex' is used both for the DNS apex 3.0.0.1.0.0.2.ip6.arpa. (operated by IANA/IAB) and for the DET/PKI 'Apex' entity in other DRIP documents, potentially confusing implementers."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "The term “apex” is used both for the DNS apex 3.0.0.1.0.0.2.ip6.arpa. (operated by IANA/IAB) and, in other DRIP documents, for the DET/PKI “Apex” entity; section 3 briefly mentions “Apex, RAA or HDA” DIMEs without explicitly re‑defining “apex”."
+          }
+        ],
+        "summary": [
+          "(E1) highlights the ambiguous usage of the term 'apex'."
+        ]
+      },
+      "fix_direction": "Clarify the nomenclature by defining 'DNS apex' and 'DET apex' distinctly or use alternative unambiguous terminology.",
+      "severity": "Low",
+      "severity_basis": "While primarily affecting clarity and documentation, the ambiguity may lead to minor confusion for implementers.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: NotedAmbiguities"
+      ],
+      "report_id": "9886-3-6"
+    }
+  ]
+}

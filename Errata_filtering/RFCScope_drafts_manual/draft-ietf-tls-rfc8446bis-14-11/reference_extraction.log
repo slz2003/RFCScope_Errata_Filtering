@@ -1,0 +1,537 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-11/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This document uses several registries that were originally created in
+   [RFC4346] and updated in [RFC8446] and [RFC8447].  The changes
+   between [RFC8446] and [RFC8447] this document are describe...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 11.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC4346
+  Reference Type: TEXT
+  Reference Value (keywords/section): Transport Layer Security (TLS) Protocol Version 1.1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: TEXT
+  Reference Value (keywords/section): Transport Layer Security (TLS) Protocol Version 1.3
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8447
+  Reference Type: TEXT
+  Reference Value (keywords/section): IANA Registry Updates for TLS and DTLS
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '11.1'
+  Match Type: Fuzzy match (score: 85.71428571428572)
+  Result: Matched to Section 1.1
+  Section Title: Conventions and Terminology
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4346:
+  Search Keywords: 'Transport Layer Security (TLS) Protocol Version 1.1'
+  Result: Found in Section 1.1
+  Section Title: Differences from TLS 1.0
+  Content Preview:    This document is a revision of the TLS 1.0 [TLS1.0] protocol, and
+   contains some small security...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  TLS Cipher Suites registry: values with the first byte in the
+      range 0-254 (decimal) are assigned via Specification Required
+      [RFC8126].  Values with the first byte 255 (decimal) are r...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: TEXT
+  Reference Value (keywords/section): Specification Required
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: TEXT
+  Reference Value (keywords/section): Private Use
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      IANA has added the cipher suites listed in Appendix B.4 to the
+      registry.  The "Value" and "Description" columns are taken from
+      the table.  The "DTLS-OK" and "Recommended" columns are...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: TEXT
+  Reference Value (keywords/section): Standards Action
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): B.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: 'B.4'
+  Match Type: Exact match
+  Result: Matched to Section B.4
+  Section Title: Cipher Suites
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  TLS Alerts registry: Future values are allocated via Standards
+      Action [RFC8126].  IANA [is requested to/has] populated this
+      registry with the values from Appendix B.2.  The "DTLS-OK"...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): TEXT
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: 'TEXT'
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This document also uses the TLS ExtensionType Values registry
+   originally created in [RFC4366].  IANA has updated it to reference
+   this document.  Changes to the registry follow:
+
+   *  IANA ha...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC4366
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS ExtensionType Values registry
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4366:
+  Search Keywords: 'TLS ExtensionType Values registry'
+  Result: Found in Section 2.3
+  Section Title: Hello Extensions
+  Content Preview:    The extension format for extended client hellos and extended server
+   hellos is:
+
+      struct {...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      Values with the first byte in the range 0-254 (decimal) are
+      assigned via Specification Required [RFC8126].  Values with the
+      first byte 255 (decimal) are reserved for Private Use [RFC...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: TEXT
+  Reference Value (keywords/section): Specification Required
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: TEXT
+  Reference Value (keywords/section): Private Use
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  IANA has updated this registry to include the "key_share",
+      "pre_shared_key", "psk_key_exchange_modes", "early_data",
+      "cookie", "supported_versions", "certificate_authorities",
+      ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  IANA has updated this registry to include a "TLS 1.3" column which
+      lists the messages in which the extension may appear.  This column
+      has been initially populated from the table in S...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.2
+  Section Title: Extensions
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.2
+  Section Title: Extensions
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This document updates two entries in the TLS Certificate Types
+   registry originally created in [RFC6091] and updated in [RFC8447].
+   IANA has updated the entry for value 1 to have the name
+   "O...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6091
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS Certificate Types registry
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8447
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS Certificate Types registry
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6091:
+  Search Keywords: 'TLS Certificate Types registry'
+  Result: Found in Section 3.1
+  Section Title: Client Hello
+  Content Preview:    In order to indicate the support of multiple certificate types,
+   clients MUST include an extens...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8447:
+  Search Keywords: 'TLS Certificate Types registry'
+  Result: Found in Section 14
+  Section Title: TLS Certificate Types
+  Content Preview:    Experience has shown that the IETF Consensus registry policy for TLS
+   Certificate Types is too ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This document updates an entry in the TLS Certificate Status Types
+   registry originally created in [RFC6961].  IANA has updated the entry
+   for value 2 to have the name "ocsp_multi_RESERVED" and...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6961
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS Certificate Status Types registry
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC4492
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS Supported Groups registry
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8422
+  Reference Type: TEXT
+  Reference Value (keywords/section): maintained by
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC7919
+  Reference Type: TEXT
+  Reference Value (keywords/section): updated by
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC8447
+  Reference Type: TEXT
+  Reference Value (keywords/section): updated to also refer to this document
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6961:
+  Search Keywords: 'TLS Certificate Status Types registry'
+  Result: Found in Section 3
+  Section Title: IANA Considerations
+  Content Preview: 
+
+   Section 2.1 defines the new TLS extension status_request_v2 (17)
+   enum, which has been added ...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4492:
+  Search Keywords: 'TLS Supported Groups registry'
+  Result: Found in Section 5.1
+  Section Title: Client Hello Extensions
+  Content Preview:    This section specifies two TLS extensions that can be included with
+   the ClientHello message as...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8422:
+  Search Keywords: 'maintained by'
+  Result: Found in Section 10
+  Section Title: References
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7919:
+  Search Keywords: 'updated by'
+  Result: Found in Section 10
+  Section Title: References
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8447:
+  Search Keywords: 'updated to also refer to this document'
+  Result: Found in Section 8
+  Section Title: TLS Cipher Suites Registry
+  Content Preview:    Experience has shown that the IETF Consensus registry policy for TLS
+   Cipher Suites was too str...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  TLS SignatureScheme registry: Values with the first byte in the
+      range 0-253 (decimal) are assigned via Specification Required
+      [RFC8126].  Values with the first byte 254 or 255 (decim...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: TEXT
+  Reference Value (keywords/section): Guidelines for Writing an IANA Considerations Section
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.3
+  Section Title: Signature Algorithms
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  TLS PskKeyExchangeMode registry: Values in the range 0-253
+      (decimal) are assigned via Specification Required [RFC8126].  The
+      values 254 and 255 (decimal) are reserved for Private Use...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): Specification Required
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: TEXT
+  Reference Value (keywords/section): Private Use
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): Recommended
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): Standards Action
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: 'Specification Required'
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: 'Recommended'
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: 'Standards Action'
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   IANA [shall update/has updated] all references to RFC 8446 in the
+   IANA registries with references to this document.
+
+   IANA [shall rename/has renamed] the "extended_master_secret" value in
+   t...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '6'
+  Match Type: Exact match
+  Result: Matched to Section 6
+  Section Title: Alert Protocol
+---------------------------------------------------------------------------
+

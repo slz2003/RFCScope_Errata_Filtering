@@ -1,0 +1,319 @@
+[
+  {
+    "tag": "BCP195",
+    "text": "Best Current Practice 195, <https://www.rfc-editor.org/info/bcp195>. At the time of writing, this BCP comprises the following: Moriarty, K. and S. Farrell, \"Deprecating TLS 1.0 and TLS 1.1\", BCP 195, RFC 8996, DOI 10.17487/RFC8996, March 2021, <https://www.rfc-editor.org/info/rfc8996>. Sheffer, Y., Saint-Andre, P., and T. Fossati, \"Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)\", BCP 195, RFC 9325, DOI 10.17487/RFC9325, November 2022, <https://www.rfc-editor.org/info/rfc9325>.",
+    "links": [
+      {
+        "text": "https://www.rfc-editor.org/info/bcp195",
+        "address": "https://www.rfc-editor.org/info/bcp195"
+      },
+      {
+        "text": "BCP 195",
+        "address": "./bcp195"
+      },
+      {
+        "text": "RFC 8996",
+        "address": "./rfc8996"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8996",
+        "address": "https://www.rfc-editor.org/info/rfc8996"
+      },
+      {
+        "text": "BCP 195",
+        "address": "./bcp195"
+      },
+      {
+        "text": "RFC 9325",
+        "address": "./rfc9325"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9325",
+        "address": "https://www.rfc-editor.org/info/rfc9325"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC2119",
+    "text": "Bradner, S., \"Key words for use in RFCs to Indicate Requirement Levels\", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <https://www.rfc-editor.org/info/rfc2119>.",
+    "links": [
+      {
+        "text": "BCP 14",
+        "address": "./bcp14"
+      },
+      {
+        "text": "RFC 2119",
+        "address": "./rfc2119"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc2119",
+        "address": "https://www.rfc-editor.org/info/rfc2119"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC5280",
+    "text": "Cooper, D., Santesson, S., Farrell, S., Boeyen, S., Housley, R., and W. Polk, \"Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile\", RFC 5280, DOI 10.17487/RFC5280, May 2008, <https://www.rfc-editor.org/info/rfc5280>.",
+    "links": [
+      {
+        "text": "RFC 5280",
+        "address": "./rfc5280"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5280",
+        "address": "https://www.rfc-editor.org/info/rfc5280"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC5425",
+    "text": "Miao, F., Ed., Ma, Y., Ed., and J. Salowey, Ed., \"Transport Layer Security (TLS) Transport Mapping for Syslog\", RFC 5425, DOI 10.17487/RFC5425, March 2009, <https://www.rfc-editor.org/info/rfc5425>.",
+    "links": [
+      {
+        "text": "RFC 5425",
+        "address": "./rfc5425"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5425",
+        "address": "https://www.rfc-editor.org/info/rfc5425"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC6066",
+    "text": "Eastlake 3rd, D., \"Transport Layer Security (TLS) Extensions: Extension Definitions\", RFC 6066, DOI 10.17487/RFC6066, January 2011, <https://www.rfc-editor.org/info/rfc6066>.",
+    "links": [
+      {
+        "text": "RFC 6066",
+        "address": "./rfc6066"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6066",
+        "address": "https://www.rfc-editor.org/info/rfc6066"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC7250",
+    "text": "Wouters, P., Ed., Tschofenig, H., Ed., Gilmore, J., Weiler, S., and T. Kivinen, \"Using Raw Public Keys in Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)\", RFC 7250, DOI 10.17487/RFC7250, June 2014, <https://www.rfc-editor.org/info/rfc7250>.",
+    "links": [
+      {
+        "text": "RFC 7250",
+        "address": "./rfc7250"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7250",
+        "address": "https://www.rfc-editor.org/info/rfc7250"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC7924",
+    "text": "Santesson, S. and H. Tschofenig, \"Transport Layer Security (TLS) Cached Information Extension\", RFC 7924, DOI 10.17487/RFC7924, July 2016, <https://www.rfc-editor.org/info/rfc7924>.",
+    "links": [
+      {
+        "text": "RFC 7924",
+        "address": "./rfc7924"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7924",
+        "address": "https://www.rfc-editor.org/info/rfc7924"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC8174",
+    "text": "Leiba, B., \"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words\", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <https://www.rfc-editor.org/info/rfc8174>.",
+    "links": [
+      {
+        "text": "RFC 2119",
+        "address": "./rfc2119"
+      },
+      {
+        "text": "BCP 14",
+        "address": "./bcp14"
+      },
+      {
+        "text": "RFC 8174",
+        "address": "./rfc8174"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8174",
+        "address": "https://www.rfc-editor.org/info/rfc8174"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC8446",
+    "text": "Rescorla, E., \"The Transport Layer Security (TLS) Protocol Version 1.3\", RFC 8446, DOI 10.17487/RFC8446, August 2018, <https://www.rfc-editor.org/info/rfc8446>.",
+    "links": [
+      {
+        "text": "RFC 8446",
+        "address": "./rfc8446"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8446",
+        "address": "https://www.rfc-editor.org/info/rfc8446"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC8907",
+    "text": "Dahm, T., Ota, A., Medway Gash, D.C., Carrel, D., and L. Grant, \"The Terminal Access Controller Access-Control System Plus (TACACS+) Protocol\", RFC 8907, DOI 10.17487/RFC8907, September 2020, <https://www.rfc-editor.org/info/rfc8907>.",
+    "links": [
+      {
+        "text": "RFC 8907",
+        "address": "./rfc8907"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8907",
+        "address": "https://www.rfc-editor.org/info/rfc8907"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC9525",
+    "text": "Saint-Andre, P. and R. Salz, \"Service Identity in TLS\",RFC 9525, DOI 10.17487/RFC9525, November 2023, <https://www.rfc-editor.org/info/rfc9525>.",
+    "links": [
+      {
+        "text": "RFC 9525",
+        "address": "./rfc9525"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9525",
+        "address": "https://www.rfc-editor.org/info/rfc9525"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "FIPS-140-3",
+    "text": "NIST, \"Security Requirements for Cryptographic Modules\", NIST FIPS 140-3, DOI 10.6028/NIST.FIPS.140-3, March 2019, <https://nvlpubs.nist.gov/nistpubs/FIPS/ NIST.FIPS.140-3.pdf >.",
+    "links": [
+      {
+        "text": "https://nvlpubs.nist.gov/nistpubs/FIPS/",
+        "address": "https://nvlpubs.nist.gov/nistpubs/FIPS/"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "REQ-TLS13",
+    "text": "Salz, R. and N. Aviram, \"New Protocols Using TLS Must Require TLS 1.3\", Work in Progress, Internet-Draft, draft- ietf-uta-require-tls13-12, 14 April 2025, <https://datatracker.ietf.org/doc/html/draft-ietf-uta-require-tls13-12>.",
+    "links": [
+      {
+        "text": "https://datatracker.ietf.org/doc/html/draft-ietf-uta-require-tls13-12",
+        "address": "https://datatracker.ietf.org/doc/html/draft-ietf-uta-require-tls13-12"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC3365",
+    "text": "Schiller, J., \"Strong Security Requirements for Internet Engineering Task Force Standard Protocols\", BCP 61,RFC 3365, DOI 10.17487/RFC3365, August 2002, <https://www.rfc-editor.org/info/rfc3365>.",
+    "links": [
+      {
+        "text": "BCP 61",
+        "address": "./bcp61"
+      },
+      {
+        "text": "RFC 3365",
+        "address": "./rfc3365"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3365",
+        "address": "https://www.rfc-editor.org/info/rfc3365"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6151",
+    "text": "Turner, S. and L. Chen, \"Updated Security Considerations for the MD5 Message-Digest and the HMAC-MD5 Algorithms\",RFC 6151, DOI 10.17487/RFC6151, March 2011, <https://www.rfc-editor.org/info/rfc6151>.",
+    "links": [
+      {
+        "text": "RFC 6151",
+        "address": "./rfc6151"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6151",
+        "address": "https://www.rfc-editor.org/info/rfc6151"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9190",
+    "text": "Preu\u00df Mattsson, J. and M. Sethi, \"EAP-TLS 1.3: Using the Extensible Authentication Protocol with TLS 1.3\",RFC 9190, DOI 10.17487/RFC9190, February 2022, <https://www.rfc-editor.org/info/rfc9190>.",
+    "links": [
+      {
+        "text": "RFC 9190",
+        "address": "./rfc9190"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9190",
+        "address": "https://www.rfc-editor.org/info/rfc9190"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9257",
+    "text": "Housley, R., Hoyland, J., Sethi, M., and C. A. Wood, \"Guidance for External Pre-Shared Key (PSK) Usage in TLS\",RFC 9257, DOI 10.17487/RFC9257, July 2022, <https://www.rfc-editor.org/info/rfc9257>.",
+    "links": [
+      {
+        "text": "RFC 9257",
+        "address": "./rfc9257"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9257",
+        "address": "https://www.rfc-editor.org/info/rfc9257"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9813",
+    "text": "DeKok, A., \"Operational Considerations for Using TLS Pre- Shared Keys (TLS-PSKs) with RADIUS\", BCP 243, RFC 9813, DOI 10.17487/RFC9813, July 2025, <https://www.rfc-editor.org/info/rfc9813>.",
+    "links": [
+      {
+        "text": "BCP 243",
+        "address": "./bcp243"
+      },
+      {
+        "text": "RFC 9813",
+        "address": "./rfc9813"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9813",
+        "address": "https://www.rfc-editor.org/info/rfc9813"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "TACACS-YANG ",
+    "text": "Boucadair, M. and B. Wu, \"A YANG Data Model for Terminal Access Controller Access-Control System Plus (TACACS+)\", Work in Progress, Internet-Draft, draft-ietf-opsawg- secure-tacacs-yang-13, 7 July 2025, <https://datatracker.ietf.org/doc/html/draft-ietf-opsawg-secure-tacacs-yang-13>.",
+    "links": [
+      {
+        "text": "draft-ietf-opsawg",
+        "address": "./draft-ietf-opsawg"
+      },
+      {
+        "text": "https://datatracker.ietf.org/doc/html/draft-ietf-opsawg-secure-tacacs-yang-13",
+        "address": "https://datatracker.ietf.org/doc/html/draft-ietf-opsawg-secure-tacacs-yang-13"
+      }
+    ],
+    "type": "informative"
+  }
+]

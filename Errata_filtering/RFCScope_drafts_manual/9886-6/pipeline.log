@@ -1,0 +1,646 @@
+################################################################################
+Processing: RFC 9886, Section 6
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for RFC 9886, Section 6
+================================================================================
+Preparing RFC 9886 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6
+
+Extracting references from the references section of the RFC.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/references.json
+
+Parsing the contents of the RFC.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/corpus.json
+
+Extracting references from section 6 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/reference_extraction.log
+Focusing on section 6 and its children.
+Processing section 6. IANA Considerations
+Splitting content into chunks: 0it [00:00, ?it/s]Splitting content into chunks: 0it [00:00, ?it/s]
+Warning: Section 6 not found. Processing all sections.
+Processing section 6.1. DET Prefix Delegation
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.13s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.13s/it]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The reverse domain for the DET Prefix, i.e., 3.0.0.1.0.0.2.ip6.arpa.,
+   is managed by IANA.  IANA will liaise, as needed, with the
+   International Civil Aviation Organization (ICAO) to verify the...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '6.2.1.4'
+  Match Type: Exact match
+  Result: Matched to Section 6.2.1.4
+  Section Title: ISO 3166-1 Countries Range
+---------------------------------------------------------------------------
+
+Processing section 6.2. IANA DRIP Registry
+Splitting content into chunks: 0it [00:00, ?it/s]Splitting content into chunks: 0it [00:00, ?it/s]
+Processing section 6.2.1. DRIP RAA Allocations
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 3/3 [00:07<00:00,  2.39s/it]Splitting content into chunks: 100%|██████████| 3/3 [00:07<00:00,  2.39s/it]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   IANA has created the registry for RAA Allocations under the "Drone
+   Remote ID Protocol" registry group <https://www.iana.org/assignments/
+   drip >.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   RAA Allocations:  a 14-bit value used to represent RAAs.  Future
+      additions to this registry are to be made based on the following
+      range and policy table:
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   +===========+======================+================================+
+   | RAA Range | Allocation           | Policy                         |
+   +===========+======================+===============...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.10
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.4
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.10'
+  Match Type: Exact match
+  Result: Matched to Section 4.10
+  Section Title: IESG Approval
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '6.2.1.4'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 5.2.1
+  Section Title: Managing Designated Experts in the IETF
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.4'
+  Match Type: Exact match
+  Result: Matched to Section 4.4
+  Section Title: First Come First Served
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.1
+  Section Title: Private Use
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '6.2.1.5'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 5.2.1
+  Section Title: Managing Designated Experts in the IETF
+---------------------------------------------------------------------------
+
+Processing section 6.2.1.1. RAA Allocation Fields
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:01<00:01,  1.09s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:01<00:00,  1.79it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Value:  The RAA value delegated for this entry.
+
+   Name:  Name of the delegated RAA.  For the ISO 3166-1 Countries
+      (Section 6.2.1.4), this should be the name of the country.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '6.2.1.4'
+  Match Type: Exact match
+  Result: Matched to Section 6.2.1.4
+  Section Title: ISO 3166-1 Countries Range
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Reference:  A publicly accessible link to the policy requirements for
+      prospective HDA operators to register under this RAA.  This field
+      is OPTIONAL.
+
+   Contact:  Contact details of the...
+################################################################################
+Processing section 6.2.1.2. RAA Registration Form
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:01<00:00,  1.06s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:01<00:00,  1.06s/it]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Value:
+   Name:
+   Reference:
+   Contact:
+   NS RRType Content (HDA=0):
+   NS RRType Content (HDA=4096):
+   NS RRType Content (HDA=8192):
+   NS RRType Content (HDA=12288):
+
+                   Figur...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '6.2.1.3'
+  Match Type: Exact match
+  Result: Matched to Section 6.2.1.3
+  Section Title: Handling Nibble Split
+---------------------------------------------------------------------------
+
+Processing section 6.2.1.3. Handling Nibble Split
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 368.20it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   To support DNS delegation in 3.0.0.1.0.0.2.ip6.arpa., a single RAA is
+   given 4 delegations by borrowing the upper two bits of HDA space (see
+   Figure 7 for an example).  This enables a clean nib...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+ 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 0 0 0 0 0 0 0 0 0 0
+ 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 9 8 7 6 5 4 3 2 1 0
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           0           | x ...
+################################################################################
+Processing section 6.2.1.4. ISO 3166-1 Countries Range
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:03<00:00,  1.83s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:03<00:00,  1.83s/it]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The mapping between ISO 3166-1 Numeric Nation Codes and RAAs is
+   specified and documented by IANA.  Each Nation is assigned 4 RAAs
+   that are left to the national authority for their purpose.  F...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The registration policy for this range is set to IESG Approval
+   (Section 4.10 of [RFC8126]) and IANA will liaise with the ICAO to
+   verify the authenticity of delegation requests (using Figure 6...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.10
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: TEXT
+  Reference Value (keywords/section): Guidelines for Writing an IANA Considerations Section
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.10'
+  Match Type: Exact match
+  Result: Matched to Section 4.10
+  Section Title: IESG Approval
+---------------------------------------------------------------------------
+
+Processing section 6.2.1.5. Private Range
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:01<00:01,  1.83s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:01<00:00,  1.09it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   If nibble-reversed lookup in DNS is desired, it can only be provided
+   by private DNS servers as zone delegations from the global root will
+   not be performed for this address range.  Thus the RA...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.1
+  Section Title: Private Use
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   One anticipated acceptable use of the private range is for
+   experimentation and testing prior to request allocation or assignment
+   from IANA.
+################################################################################
+Processing section 6.2.2. HHIT Entity Types
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:01<00:00,  1.24it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:01<00:00,  1.24it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   This document requests a new registry for HHIT Entity Types under the
+   "Drone Remote ID Protocol" registry group
+   <https://www.iana.org/assignments/drip >.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   HHIT Entity Type:  Numeric, field of the HHIT RRType to encode the
+      HHIT Entity Type.  All entries in this registry are under the
+      First Come First Served policy (Section 4.4 of [RFC8126]...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.4'
+  Match Type: Exact match
+  Result: Matched to Section 4.4
+  Section Title: First Come First Served
+---------------------------------------------------------------------------
+
+Processing section 6.2.2.1. HHIT Type Registry Fields
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 25.48it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Value:  HHIT Type value of the entry.
+
+   HHIT Type:  Name of the entry and an optional abbreviation.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Reference:  Public document allocating the value and any additional
+      information such as semantics.  This can be a URL pointing to an
+      Internet-Draft, IETF RFC, or web page among others.
+################################################################################
+Processing section 6.2.2.2. HHIT Type Registration Form
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 605.24it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Value:
+   HHIT Type:
+   Reference:
+
+                   Figure 8: HHIT Type Registration Form
+################################################################################
+Processing section 6.2.2.3. Initial Values
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 32.48it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The following values are defined by this document:
+
+     +=======+===========================================+===========+
+     | Value | HHIT Type                                 | Reference |
+   ...
+################################################################################
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 6 only.
+Focusing on section 6 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/section_dependencies.json
+
+Creating prompts for section 6...
+Creating expert prompt for section 6 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/focus_section_6_prompt_expert.md
+Expert prompt token count: 17,075 tokens
+Creating router prompt for section 6...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/focus_section_6_prompt_router.md
+Router prompt token count: 18,235 tokens
+
+RFC 9886 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be4c24408191bdbddafd81dfd4e3
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for RFC 9886, Section 6
+================================================================================
+2026-01-03 02:18:58,122 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:18:58,136 - __main__ - INFO - Router prompt length: 57300 chars
+2026-01-03 02:18:58,136 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:18:58,137 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:18:58,137 - __main__ - INFO - ================================================================================
+2026-01-03 02:18:58,719 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:18:58,719 - __main__ - INFO - User prompt length: 57300 chars
+2026-01-03 02:20:02,417 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:20:02,771 - __main__ - INFO - Router analysis complete. Bug likelihood: Low
+2026-01-03 02:20:02,771 - __main__ - INFO - Using existing vector store(s): vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:20:02,771 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:20:02,771 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:20:02,771 - __main__ - INFO - ================================================================================
+2026-01-03 02:20:02,772 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 02:20:02,978 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 02:20:02,978 - __main__ - INFO - User prompt length: 62457 chars
+2026-01-03 02:20:02,978 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:22:15,897 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:22:16,013 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 02:22:16,013 - __main__ - INFO - 
+Invoking expert: Quantitative (HIGH)
+2026-01-03 02:22:16,635 - __main__ - INFO - Invoking expert Quantitative with manual prompt...
+2026-01-03 02:22:16,635 - __main__ - INFO - User prompt length: 64145 chars
+2026-01-03 02:22:16,635 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:32:16,771 - openai._base_client - INFO - Retrying request to /responses in 0.496058 seconds
+2026-01-03 02:34:27,331 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:34:27,334 - __main__ - INFO - Expert Quantitative analysis complete
+2026-01-03 02:34:27,334 - __main__ - INFO - 
+Invoking expert: Deontic (HIGH)
+2026-01-03 02:34:27,850 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 02:34:27,850 - __main__ - INFO - User prompt length: 59734 chars
+2026-01-03 02:34:27,850 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:35:25,541 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:35:25,544 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 02:35:25,544 - __main__ - INFO - 
+Invoking expert: Structural (HIGH)
+2026-01-03 02:35:25,824 - __main__ - INFO - Invoking expert Structural with manual prompt...
+2026-01-03 02:35:25,824 - __main__ - INFO - User prompt length: 62246 chars
+2026-01-03 02:35:25,824 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:36:48,428 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:36:48,431 - __main__ - INFO - Expert Structural analysis complete
+2026-01-03 02:36:48,432 - __main__ - INFO - 
+Invoking expert: CrossRFC (MEDIUM)
+2026-01-03 02:36:48,809 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 02:36:48,809 - __main__ - INFO - User prompt length: 64146 chars
+2026-01-03 02:36:48,809 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:38:08,918 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:38:08,921 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 02:38:08,921 - __main__ - INFO - 
+Invoking expert: Terminology (MEDIUM)
+2026-01-03 02:38:09,312 - __main__ - INFO - Invoking expert Terminology with manual prompt...
+2026-01-03 02:38:09,312 - __main__ - INFO - User prompt length: 57938 chars
+2026-01-03 02:38:09,312 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:38:48,042 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:38:48,045 - __main__ - INFO - Expert Terminology analysis complete
+2026-01-03 02:38:48,045 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 02:38:48,367 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 02:38:48,367 - __main__ - INFO - User prompt length: 57930 chars
+2026-01-03 02:38:48,367 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:40:35,803 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:40:35,806 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 02:40:35,811 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/test_analysis.md
+2026-01-03 02:40:35,834 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/test_analysis.json
+2026-01-03 02:40:35,835 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 6 of RFC 9886 defines the IANA actions: delegation of the DET reverse-DNS prefix to CAAs/RAAs/HDAs and the creation/structure of two registries (RAA Allocations and HHIT Entity Types), including numeric ranges, registration policies, and some DNS delegation mechanics (nibble split).
+Overall Bug Likelihood: Low
+
+Dimensions:
+  - Temporal: LOW - No sequencing, timers, or state transitions; just static registry definitions and delegation rules.
+  - ActorDirectionality: LOW - Roles (IANA, ICAO, CAAs, RAAs, HDAs) are descriptive; no protocol message flow that depends on directionality.
+  - Scope: MEDIUM - Different ranges (global vs private, ISO-country vs FCFS) and delegation scopes (reverse DNS vs private DNS) need to be applied to the right subsets; worth checking for subtle scope confusion.
+  - Causal: LOW - Mostly declarative registry content; little algorithmic cause–effect beyond “if you use private range, you don’t get global delegation”.
+  - Quantitative: HIGH - Central use of 14-bit RAA values, numeric ranges, “4 RAAs per country”, and specific HDA values (0, 4096, 8192, 12288); off‑by‑one or capacity mistakes would show up here.
+  - Deontic: HIGH - Registration policies (IESG Approval, FCFS, Private Use) and normative text about IANA behavior and delegation are core; need to ensure internal and RFC 8126 consistency.
+  - Structural: HIGH - The “nibble split” bit diagram and IPv6 prefix/delegation description must align with the HHIT/DET structure in RFC 9374 and the DNS reverse-mapping model.
+  - CrossRFC: MEDIUM - References to RFC 8126 registration policies, and consistency with the DET hierarchy defined in RFC 9374 and the ip6.arpa reverse model from RFC 3596, should be verified.
+  - Terminology: MEDIUM - Consistent use of “RAA”, “HDA”, “DET Prefix”, “ISO 3166-1 Countries”, “Private Use”, and “HHIT Entity Type” matters for legibility, but likely no major bug.
+  - Boundary: MEDIUM - Edge ranges (0–3, 4–3999, 4000–8191, 8192–15359, 15360–16383) plus the special HDA values need to be checked for completeness and off‑by‑one issues.
+
+Candidate Issues: 3
+
+  Issue 1:
+    Type: Underspecification
+    Label: Possible under-specification of information required for FCFS HHIT Entity Type registrations
+    Relevant Dimensions: Deontic, Quantitative, CrossRFC, Structural
+    Sketch: Section 6.2.2 declares the HHIT Entity Types registry as First Come First Served per RFC 8126, but t...
+
+  Issue 2:
+    Type: Underspecification
+    Label: Ambiguity in RAA–country mapping for ISO 3166-1 range
+    Relevant Dimensions: Quantitative, Scope, CrossRFC
+    Sketch: Section 6.2.1.4 says the mapping between ISO 3166-1 Numeric Nation Codes and RAAs “is specified and ...
+
+  Issue 3:
+    Type: Both
+    Label: Consistency of nibble-split example and reserved HDA values with DET/HHIT bit layout
+    Relevant Dimensions: Structural, Quantitative, CrossRFC, Scope
+    Sketch: Section 6.2.1.3 and Figure 7 describe “borrowing the upper two bits of HDA space” so that each 14-bi...
+
+Response ID: resp_0bb8fbc4550be214006958c2e4f39c81908d1a3bd5cb866437
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 6 defines IANA’s responsibilities for DET reverse-DNS delegation and two DRIP-related registries: the 14‑bit RAA Allocation registry (with public vs private and ISO‑country vs FCFS ranges) and the HHIT Entity Type registry (numeric codes used in the HHIT RRType). The surrounding sections show how these registries are supposed to map onto the DET hierarchy (RAA/HDA) and the HHIT RRType, and give concrete examples.
+
+- ScopeModel:
+  - Targets:
+    - The reve...
+
+## Quantitative Expert Analysis
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary:  
+  Section 6 (with related earlier text) defines the IANA-managed DET reverse-DNS space and two registries: a 14‑bit RAA allocation registry (with explicit numeric ranges and DNS “nibble-split” delegations using specific HDA values) and a First-Come-First-Served registry for HHIT Entity Types. It also ties these to IPv6 prefix lengths (/28, /40, /44, /56), specific HDA values (0, 4096, 8192, 12288), and concrete HHIT examples.
+
+- Issues:
+  - Issue-1:
+    ...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 6 defines the IANA actions for DRIP: reverse DNS delegation for the DET prefix and the creation/structure of two registries (RAA Allocations and HHIT Entity Types), with numeric ranges and registration policies that reference RFC 8126 (IESG Approval, First Come First Served, Private Use). Most obligations are on IANA (creation and management of registries, DNS delegations) and on RAAs/HDAs (use of reserved values).
+
+- OverallDeonticRisk: Low
+
+- Issues:
+...
+
+## Structural Expert Analysis
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Examined Section 6 of RFC 9886 (IANA Considerations), focusing on the definition of the RAA Allocations registry and nibble-split delegation model, and the HHIT Entity Type registry, and cross-checking these with the DET/HHIT bit layout and example addresses in Appendix A plus RFC 8126 guidance.
+- OverallBugLikelihood: None
+
+Issues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: No structural or syntactic issues detected
+    - TechnicalExplanation: |
+      ...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 6 of RFC 9886 defines IANA-facing structure around the DET reverse-DNS space (delegation of 3.0.0.1.0.0.2.ip6.arpa. to CAAs/RAAs/HDAs via a nibble-split scheme) and creates two IANA registries under the existing “Drone Remote ID Protocol” registry group originally established by RFC 9374.  These are a structured “RAA Allocations” registry with multiple policy ranges and an “HHIT Entity Types” registry whose values populate the hhit-entity-type field in t...
+
+## Terminology Expert Analysis
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: None
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Severity: Low
+    - ShortLabel: Terminology around RAAs, HDAs, DET prefix, and HHIT Entity Types is essentially consistent
+    - Evidence:
+      - ExcerptSnippets:
+        - “RAA Allocations:  a 14-bit value used to represent RAAs.  Future additions to this registry are to be made based on the following range and policy table:” (Section 6.2.1)
+        - “IANA has created the registry for RAA Alloca...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  Section 6 defines (a) how IANA manages the reverse DNS for the DET prefix (3.0.0.1.0.0.2.ip6.arpa.), including the “nibble split” that gives each RAA four reverse-DNS delegations by borrowing HDA bits, and (b) two numerical registries: a 14‑bit RAA Allocation registry with several sub‑ranges and policies, and a HHIT Entity Type registry with FCFS policy. It also introduces a Private Use RAA range where IANA will not do public delegation and an ISO‑31...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Low
+Experts: ✓ 7 invoked
+  Dimensions: Scope, Quantitative, Deontic, Structural, CrossRFC, Terminology, Boundary
+Vector Stores: vs_6958be4c24408191bdbddafd81dfd4e3
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed RFC 9886, Section 6
+################################################################################
+

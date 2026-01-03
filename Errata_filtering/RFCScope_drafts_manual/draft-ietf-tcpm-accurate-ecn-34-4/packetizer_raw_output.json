@@ -1,0 +1,83 @@
+{
+  "reports": [
+    {
+      "label": "Ambiguous Update of RFC 3168 §6.1.1: Entire Section Claimed Updated Yet Exempting Control Packet Prohibitions",
+      "bug_type": "Inconsistency",
+      "explanation": "Section 4 contradicts itself by claiming that the whole of RFC 3168 §6.1.1 is updated while later stating that the prohibition on ECN‐capable control packets (e.g., SYN/SYN‐ACK) remains unchanged.",
+      "justification": [
+        "The first bullet in Section 4 asserts a complete update of RFC 3168 §6.1.1 by Section 3.1, implying all rules are replaced.",
+        "A later bullet in the same section excludes the control packet and retransmission prohibitions from the update, creating clear normative ambiguity for implementers."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "The whole of ‘6.1.1 TCP Initialization’ of [RFC3168] is updated by Section 3.1 of the present specification."
+          },
+          {
+            "id": "E2",
+            "text": "Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit use of ECN on TCP control packets and retransmissions. The present specification does not update that aspect of RFC3168, but it does say what feedback an AccECN Data Receiver ought to provide if it receives an ECN‑capable control packet or retransmission."
+          },
+          {
+            "id": "E3",
+            "text": "A host MUST NOT set ECT on SYN or SYN‑ACK packets."
+          }
+        ],
+        "summary": [
+          "(E1) Section 4 first bullet claims a complete update of RFC 3168 §6.1.1 by Section 3.1.",
+          "(E2) A later bullet clarifies that RFC3168 prohibitions on ECN‐capable control packets are not updated.",
+          "(E3) RFC 3168 §6.1.1 includes the prohibition ‘A host MUST NOT set ECT on SYN or SYN‑ACK packets’."
+        ]
+      },
+      "fix_direction": "Revise Section 4 to clearly specify that only the ECN negotiation and initialization parts of RFC 3168 §6.1.1 are updated (for AccECN mode) while the prohibitions on ECN‐capable control packets and retransmissions remain governed by RFC 3168 (as modified by RFC 8311).",
+      "severity": "High",
+      "severity_basis": "The ambiguity could lead to critical misinterpretations of TCP initialization behavior, potentially compromising interoperability between AccECN-enabled and Classic ECN implementations.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: Issue-1",
+        "Deontic Expert: Issue-1",
+        "Structural Expert: Issue-1",
+        "CrossRFC Expert: Issue-1"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-4-1"
+    },
+    {
+      "label": "Unqualified Update of RFC 3168 §6.1.2 Without Limiting to AccECN Mode",
+      "bug_type": "Both",
+      "explanation": "Section 4 unconditionally updates RFC 3168 §6.1.2 by removing the CWR requirement and redefining ECE ACK semantics, even though these changes should apply only to connections operating in AccECN mode.",
+      "justification": [
+        "The second bullet in Section 4 states that the responses to an ECN‑Echo (ECE) ACK packet are updated and that setting the CWR flag no longer applies, without restricting this update to AccECN-mode connections.",
+        "Elsewhere, Section 3.1.2 specifies that if a host falls back to Classic ECN, it must continue to comply with the original RFC 3168 rules, which includes the CWR behavior."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "In ‘6.1.2.  The TCP Sender’ of [RFC3168], all mentions of a congestion response to an ECN‑Echo (ECE) ACK packet are updated by Section 3.2 of the present specification to mean an increment to the sender’s count of CE‑marked packets, s.cep. And the requirements to set the CWR flag no longer apply, as specified in Section 3.1.5 of the present specification. Otherwise, the remaining requirements in ‘6.1.2.  The TCP Sender’ still stand."
+          },
+          {
+            "id": "E2",
+            "text": "When an AccECN‑capable host falls back to Classic ECN, “it MUST set both its half connections into the feedback mode shown … If the TCP Client has set itself into Classic ECN feedback mode it MUST then comply with [RFC3168].”"
+          },
+          {
+            "id": "E3",
+            "text": "RFC 3168 §6.1.2 requires that an ECN‑capable sender set CWR “on the first new data packet sent after the window reduction.”"
+          }
+        ],
+        "summary": [
+          "(E1) Section 4’s second bullet unconditionally replaces the ECN‑Echo handling and CWR flag requirement.",
+          "(E2) Section 3.1.2 mandates that Classic ECN behavior, including CWR setting, must be followed in fallback scenarios.",
+          "(E3) RFC 3168 §6.1.2 explicitly requires the setting of CWR after a window reduction."
+        ]
+      },
+      "fix_direction": "Amend Section 4’s mapping for RFC 3168 §6.1.2 to explicitly state that the update (removal of CWR and change in ECE ACK semantics) applies only to connections operating in AccECN mode, while connections in Classic ECN mode must adhere to the original RFC 3168 requirements.",
+      "severity": "High",
+      "severity_basis": "This underspecification risks improper handling of TCP sender behavior under Classic ECN, leading to potential interoperability issues between different ECN modes.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: Issue-2"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-4-2"
+    }
+  ]
+}

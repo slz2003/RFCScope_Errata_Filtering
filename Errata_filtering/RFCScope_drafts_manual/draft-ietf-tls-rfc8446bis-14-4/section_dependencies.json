@@ -1,0 +1,2792 @@
+[
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "11",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.7",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.8",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.11",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.9",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.1.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.10",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7685",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "1.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "2.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "2.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.1.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8996",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "5246",
+    "reference_type": "SECTION",
+    "reference_value": "12",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "RSA",
+    "reference_type": "TEXT",
+    "reference_value": "static RSA",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1145/359340.359342",
+    "reference_text": "Rivest, R., Shamir, A., and L. Adleman, \"A method for obtaining digital signatures and public-key cryptosystems\", Association for Computing Machinery (ACM), Communications of the ACM vol. 21, no. 2, pp. 120-126, DOI 10.1145/359340.359342, February 1978, <https://doi.org/10.1145/359340.359342>.",
+    "reference_summary": "The paper \"A Method for Obtaining Digital Signatures and Public-Key Cryptosystems\" by Rivest, Shamir, and Adleman, published in the Communications of the ACM in February 1978, introduces the RSA algorithm, a foundational public-key cryptosystem. This algorithm enables secure data transmission and digital signatures by utilizing the mathematical properties of large prime numbers and modular arithmetic.\n\nThe term \"static RSA\" is not explicitly mentioned in the original paper. In contemporary cryptographic discussions, \"static RSA\" often refers to RSA keys that remain constant over time, as opposed to \"ephemeral RSA\" keys, which are generated for temporary use in specific sessions to enhance security. The original RSA paper primarily focuses on the theoretical underpinnings and practical implementation of the RSA algorithm, without delving into the distinctions between static and ephemeral key usage. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.4"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.1.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.4"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.1.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.1.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.8",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "11",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "11.6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7919",
+    "reference_type": "SECTION",
+    "reference_value": "8.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.11",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.10",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.9",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.5",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.6",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.8",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "5764",
+    "reference_type": "SECTION",
+    "reference_value": "4.1.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6520",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7301",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6962",
+    "reference_type": "SECTION",
+    "reference_value": "3.3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7250",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7685",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7924",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8879",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8849",
+    "reference_type": "SECTION",
+    "reference_value": "9",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9345",
+    "reference_type": "SECTION",
+    "reference_value": "7",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8870",
+    "reference_type": "SECTION",
+    "reference_value": "7.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9162",
+    "reference_type": "SECTION",
+    "reference_value": "6.5",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9146",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8844",
+    "reference_type": "SECTION",
+    "reference_value": "3.2.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8844",
+    "reference_type": "SECTION",
+    "reference_value": "4.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9001",
+    "reference_type": "SECTION",
+    "reference_value": "8.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9149",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.10",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "5246",
+    "reference_type": "SECTION",
+    "reference_value": "1.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6347",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "9.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "ACM.1978",
+    "reference_type": "TEXT",
+    "reference_value": "RSA digital signatures",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "The document \"ACM.1978\" refers to the paper titled \"A Method for Obtaining Digital Signatures and Public-Key Cryptosystems\" by Ronald L. Rivest, Adi Shamir, and Leonard Adleman, published in the Communications of the ACM in February 1978. This seminal paper introduces the RSA algorithm, which is foundational in public-key cryptography.\n\nIn the paper, the authors describe the RSA algorithm, which enables secure communication over insecure channels without the need for a shared secret key. The algorithm is based on the mathematical difficulty of factoring large composite numbers, specifically the product of two large prime numbers.\n\nThe RSA algorithm involves three main steps:\n\n1. **Key Generation**: Select two large prime numbers, \\( p \\) and \\( q \\), and compute their product \\( n = pq \\). Choose an integer \\( e \\) such that \\( 1 < e < \\phi(n) \\) and \\( \\gcd(e, \\phi(n)) = 1 \\), where \\( \\phi(n) = (p-1)(q-1) \\). Compute \\( d \\) as the modular multiplicative inverse of \\( e \\) modulo \\( \\phi(n) \\). The public key is \\( (n, e) \\), and the private key is \\( d \\).\n\n2. **Encryption**: To encrypt a message \\( M \\), represent it as an integer \\( m \\) such that \\( 0 \\leq m < n \\). Compute the ciphertext \\( c \\) as \\( c = m^e \\mod n \\).\n\n3. **Decryption**: To decrypt the ciphertext \\( c \\), compute \\( m = c^d \\mod n \\), which retrieves the original message \\( m \\).\n\nThe paper also discusses the application of the RSA algorithm for digital signatures. In this context, the process is as follows:\n\n1. **Signing**: The sender computes a hash of the message and then encrypts the hash using their private key to create the digital signature.\n\n2. **Verification**: The receiver decrypts the digital signature using the sender's public key to retrieve the hash and compares it to the hash of the received message. If they match, the signature is valid, confirming the message's authenticity and integrity.\n\nThe authors highlight the security of the RSA algorithm, which relies on the computational difficulty of factoring large numbers. They also discuss potential attacks and the importance of choosing large prime numbers to ensure security.\n\nThis paper laid the groundwork for modern public-key cryptography and digital signatures, significantly impacting secure communications and data integrity in the digital age. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.2.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8017",
+    "reference_type": "SECTION",
+    "reference_value": "A.2.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "NIST FIPS 180-4",
+    "reference_type": "TEXT",
+    "reference_value": "Secure hash standard",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "The Secure Hash Standard (SHS), as defined in NIST's FIPS 180-4, specifies a suite of cryptographic hash functions designed to produce a condensed representation, known as a message digest, of electronic data. These hash functions are integral to various cryptographic applications, including digital signatures, message authentication codes, and random number generation.\n\nFIPS 180-4 encompasses the following hash algorithms:\n\n- **SHA-1**: Generates a 160-bit message digest for messages less than 2^64 bits in length.\n\n- **SHA-224**: Produces a 224-bit digest for messages under 2^64 bits.\n\n- **SHA-256**: Yields a 256-bit digest for messages less than 2^64 bits.\n\n- **SHA-384**: Creates a 384-bit digest for messages under 2^128 bits.\n\n- **SHA-512**: Outputs a 512-bit digest for messages less than 2^128 bits.\n\n- **SHA-512/224** and **SHA-512/256**: Derivatives of SHA-512, producing 224-bit and 256-bit digests, respectively, for messages under 2^128 bits.\n\nThese algorithms are deemed secure because it is computationally infeasible to find a message corresponding to a given digest or to find two different messages that produce the same digest. Any alteration to a message will, with high probability, result in a different digest, thereby ensuring data integrity.\n\nIn March 2023, NIST announced plans to revise FIPS 180-4. The proposed updates include removing the SHA-1 specification, incorporating guidance from NIST Special Publication 800-107, enhancing editorial quality, and updating references. This revision aims to strengthen the standard by phasing out SHA-1 due to its known vulnerabilities and aligning the document with current cryptographic practices. ([nist.gov](https://www.nist.gov/news-events/news/2023/03/decision-revise-fips-180-4-secure-hash-standard-shs?utm_source=openai))\n\nFor detailed specifications and guidance on implementing these hash functions, refer to the full FIPS 180-4 document. ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/fips/nist.fips.180-4.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "4492",
+    "reference_type": "SECTION",
+    "reference_value": "7",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "SHS",
+    "reference_type": "TEXT",
+    "reference_value": "Secure hash standard",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.fips.180-4",
+    "reference_text": "\"Secure hash standard\", National Institute of Standards and Technology (U.S.), DOI 10.6028/nist.fips.180-4, 2015, <https://doi.org/10.6028/nist.fips.180-4>.",
+    "reference_summary": "The Secure Hash Standard (SHS), as defined in FIPS PUB 180-4 by the National Institute of Standards and Technology (NIST), specifies a suite of cryptographic hash algorithms designed to produce a condensed representation, or digest, of electronic data. These algorithms are integral to various cryptographic applications, including digital signatures, message authentication codes, and the generation of random numbers.\n\nThe standard encompasses the following hash algorithms:\n\n- **SHA-1**: Produces a 160-bit message digest.\n- **SHA-224**: Produces a 224-bit message digest.\n- **SHA-256**: Produces a 256-bit message digest.\n- **SHA-384**: Produces a 384-bit message digest.\n- **SHA-512**: Produces a 512-bit message digest.\n- **SHA-512/224**: Produces a 224-bit message digest using a truncated version of SHA-512.\n- **SHA-512/256**: Produces a 256-bit message digest using a truncated version of SHA-512.\n\nThese algorithms are deemed secure because it is computationally infeasible to:\n\n1. Find a message that corresponds to a given message digest.\n2. Find two different messages that produce the same message digest.\n\nAny alteration to a message will, with a very high probability, result in a different message digest, thereby ensuring data integrity.\n\nIt's important to note that while SHA-1 is included in the standard, its use has been deprecated due to identified vulnerabilities. NIST has initiated a process to revise FIPS 180-4 to remove the SHA-1 specification and incorporate guidance from NIST Special Publication 800-107, aiming to enhance the standard's editorial quality and update its references. ([nist.gov](https://www.nist.gov/news-events/news/2023/03/decision-revise-fips-180-4-secure-hash-standard-shs?utm_source=openai))\n\nFor the most current information and guidance on the use of these hash algorithms, refer to the official NIST publications and announcements. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "X690",
+    "reference_type": "TEXT",
+    "reference_value": "Information technology - ASN.1 encoding Rules",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://www.itu.int/rec/T-REC-X.690-202102-I/en",
+    "reference_text": "ITU-T, \"Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)\", ITU-T X.690 , February 2021, <https://www.itu.int/rec/T-REC-X.690-202102-I/en >.",
+    "reference_summary": "The ITU-T Recommendation X.690, titled \"Information technology \u2013 ASN.1 encoding rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER),\" provides standardized encoding rules for data structures defined using Abstract Syntax Notation One (ASN.1). This document specifies three primary encoding rules:\n\n1. **Basic Encoding Rules (BER):** These are the original rules for encoding ASN.1 data structures into a binary format. BER provides flexibility by allowing multiple encoding options for certain data types, which can lead to variations in the encoded output for the same data.\n\n2. **Canonical Encoding Rules (CER):** CER is a restricted subset of BER that eliminates encoding options to ensure a unique encoding for each ASN.1 data structure. It is particularly useful in scenarios where a consistent encoding is necessary, such as in cryptographic applications.\n\n3. **Distinguished Encoding Rules (DER):** Similar to CER, DER is another restricted subset of BER that ensures a unique encoding. The primary difference between CER and DER lies in their handling of length encoding and string encoding forms. DER is commonly used in digital certificates and cryptographic protocols.\n\nThese encoding rules are essential for the consistent and interoperable representation of data across different systems and applications. The X.690 standard is part of a series of ITU-T Recommendations that define ASN.1 and its encoding rules, ensuring reliable data communication in various technological domains. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "DSS",
+    "reference_type": "TEXT",
+    "reference_value": "Digital Signature Standard (DSS)",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.fips.186-5",
+    "reference_text": "\"Digital Signature Standard (DSS)\", National Institute of Standards and Technology (U.S.), DOI 10.6028/nist.fips.186-5, February 2023, <https://doi.org/10.6028/nist.fips.186-5>.",
+    "reference_summary": "The Digital Signature Standard (DSS), as specified in FIPS 186-5, defines a suite of algorithms for generating and verifying digital signatures. These signatures are essential for ensuring data integrity, authenticating the identity of the signatory, and providing non-repudiation, meaning the signatory cannot deny the authenticity of the signature at a later time. ([nist.gov](https://www.nist.gov/publications/digital-signature-standard-dss-3?utm_source=openai))\n\nFIPS 186-5 specifies three approved digital signature algorithms:\n\n1. **Rivest-Shamir-Adleman (RSA) Algorithm**: A widely used public-key cryptosystem that enables secure data transmission.\n\n2. **Elliptic Curve Digital Signature Algorithm (ECDSA)**: An algorithm that utilizes elliptic curve cryptography to generate digital signatures, offering security equivalent to RSA but with smaller key sizes.\n\n3. **Edwards Curve Digital Signature Algorithm (EdDSA)**: An algorithm based on Edwards curves, known for its performance, side-channel resistance, and simpler implementation compared to traditional curves. ([nist.gov](https://www.nist.gov/news-events/news/2023/02/nist-revises-digital-signature-standard-dss-and-publishes-guideline?utm_source=openai))\n\nNotably, the Digital Signature Algorithm (DSA), included in previous versions of the standard, is retained in FIPS 186-5 solely for the purpose of verifying existing signatures and is not approved for generating new digital signatures. ([nist.gov](https://www.nist.gov/news-events/news/2023/02/nist-revises-digital-signature-standard-dss-and-publishes-guideline?utm_source=openai))\n\nThe standard also emphasizes the use of approved hash functions, such as those specified in FIPS 180 (Secure Hash Standard) and FIPS 202 (SHA-3 Standard), in conjunction with the digital signature algorithms to ensure the security and integrity of the digital signatures. ([nist.gov](https://www.nist.gov/publications/digital-signature-standard-dss-3?utm_source=openai))\n\nFor detailed information and technical specifications, you can refer to the full document available at: ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "ECDP",
+    "reference_type": "TEXT",
+    "reference_value": "Recommendations for Discrete Logarithm-based Cryptography:: Elliptic Curve Domain Parameters",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.sp.800-186",
+    "reference_text": "Chen, L., Moody, D., Regenscheid, A., Robinson, A., and K. Randall, \"Recommendations for Discrete Logarithm-based Cryptography:: Elliptic Curve Domain Parameters\", National Institute of Standards and Technology, DOI 10.6028/nist.sp.800-186, February 2023, <https://doi.org/10.6028/nist.sp.800-186>.",
+    "reference_summary": "The National Institute of Standards and Technology (NIST) Special Publication 800-186, titled \"Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters,\" provides comprehensive guidelines on elliptic curve domain parameters for discrete logarithm-based cryptographic applications. ([nist.gov](https://www.nist.gov/publications/recommendations-discrete-logarithm-based-cryptography-elliptic-curve-domain-parameters?utm_source=openai))\n\n**Key Highlights:**\n\n- **Recommended Elliptic Curves:** The publication specifies elliptic curves suitable for U.S. Government use, including traditional Weierstrass curves over prime and binary fields, as well as two newly specified Edwards curves. These Edwards curves offer enhanced performance, improved resistance to side-channel attacks, and simpler implementation compared to traditional curves. ([nist.gov](https://www.nist.gov/publications/recommendations-discrete-logarithm-based-cryptography-elliptic-curve-domain-parameters?utm_source=openai))\n\n- **Deprecation of Binary Field Curves:** While the document includes specifications for elliptic curves over binary fields, it deprecates their use due to limited industry adoption. The use of curves over prime fields is strongly recommended. ([csrc.nist.gov](https://csrc.nist.gov/News/2023/nist-releases-fips-186-5-and-sp-800-186?utm_source=openai))\n\n- **Interoperability:** The newly specified Edwards curves are designed to be interoperable with those specified by the Crypto Forum Research Group (CFRG) of the Internet Engineering Task Force (IETF). ([nist.gov](https://www.nist.gov/publications/recommendations-discrete-logarithm-based-cryptography-elliptic-curve-domain-parameters?utm_source=openai))\n\n- **Security Considerations:** The recommended elliptic curves are not expected to provide resistance against attacks from large-scale quantum computers. NIST plans to specify quantum-resistant digital signature algorithms in future publications. ([csrc.nist.gov](https://csrc.nist.gov/News/2023/nist-releases-fips-186-5-and-sp-800-186?utm_source=openai))\n\nFor detailed information, including the mathematical specifications of the recommended curves and their domain parameters, please refer to the full document available at: ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-186.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8017",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "C.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "SHS",
+    "reference_type": "TEXT",
+    "reference_value": "hash algorithm",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.fips.180-4",
+    "reference_text": "\"Secure hash standard\", National Institute of Standards and Technology (U.S.), DOI 10.6028/nist.fips.180-4, 2015, <https://doi.org/10.6028/nist.fips.180-4>.",
+    "reference_summary": "The \"Secure Hash Standard\" (FIPS PUB 180-4), published by the National Institute of Standards and Technology (NIST) in August 2015, specifies several secure hash algorithms (SHAs) used to generate message digests. These digests help detect any changes to messages since their creation. The standard includes the following hash algorithms:\n\n- **SHA-1**: Produces a 160-bit message digest.\n- **SHA-224**: Produces a 224-bit message digest.\n- **SHA-256**: Produces a 256-bit message digest.\n- **SHA-384**: Produces a 384-bit message digest.\n- **SHA-512**: Produces a 512-bit message digest.\n- **SHA-512/224**: Produces a 224-bit message digest.\n- **SHA-512/256**: Produces a 256-bit message digest.\n\nThese algorithms are designed to be computationally infeasible to reverse-engineer a message from its digest or to find two different messages that produce the same digest. They are commonly used in conjunction with other cryptographic methods, such as digital signatures and keyed-hash message authentication codes, and in random number generation. ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf?utm_source=openai))\n\nIn March 2023, NIST announced plans to revise FIPS 180-4. The proposed revisions include removing the SHA-1 specification, incorporating guidance from NIST Special Publication 800-107, enhancing editorial quality, and updating references. This decision reflects the ongoing evolution of cryptographic standards to address emerging security challenges. ([nist.gov](https://www.nist.gov/news-events/news/2023/03/decision-revise-fips-180-4-secure-hash-standard-shs?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8032",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "5756",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "NIST.FIPS.180-4",
+    "reference_type": "TEXT",
+    "reference_value": "Secure hash standard",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "The Secure Hash Standard (SHS), as defined in NIST FIPS 180-4, specifies a set of cryptographic hash functions designed to produce a condensed representation, known as a message digest, of electronic data. These hash functions are integral to various cryptographic applications, including digital signatures, message authentication codes, and random number generation.\n\nFIPS 180-4 outlines the following hash algorithms:\n\n- **SHA-1**: Generates a 160-bit message digest for messages less than 2^64 bits in length.\n\n- **SHA-224**: Produces a 224-bit digest for messages under 2^64 bits.\n\n- **SHA-256**: Yields a 256-bit digest for messages under 2^64 bits.\n\n- **SHA-384**: Creates a 384-bit digest for messages less than 2^128 bits.\n\n- **SHA-512**: Delivers a 512-bit digest for messages under 2^128 bits.\n\n- **SHA-512/224** and **SHA-512/256**: These variants generate 224-bit and 256-bit digests, respectively, for messages less than 2^128 bits.\n\nEach algorithm processes input data to produce a fixed-size output, ensuring that any alteration in the input results in a significantly different digest. This property is crucial for verifying data integrity and authenticity.\n\nIn March 2023, NIST announced plans to revise FIPS 180-4. The proposed updates include:\n\n1. Removing the SHA-1 specification due to its diminished security.\n\n2. Incorporating guidance from NIST Special Publication 800-107, which provides recommendations for using approved hash algorithms.\n\n3. Enhancing the standard's editorial quality.\n\n4. Updating references to reflect current standards and practices.\n\nThese revisions aim to strengthen the security and applicability of the Secure Hash Standard in modern cryptographic systems. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "ACM.21.2",
+    "reference_type": "TEXT",
+    "reference_value": "digital signatures and public-key cryptosystems",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "The document you're referring to is \"A Method for Obtaining Digital Signatures and Public-Key Cryptosystems\" by Rivest, Shamir, and Adleman, published in the February 1978 issue of Communications of the ACM (Volume 21, Issue 2, pages 120\u2013126). ([cacm.acm.org](https://cacm.acm.org/research/a-method-for-obtaining-digital-signatures-and-public-key-cryptosystems-2/?utm_source=openai))\n\nIn this seminal paper, the authors introduce an encryption method with the novel property that publicly revealing an encryption key does not reveal the corresponding decryption key. This innovation eliminates the need for secure key transmission channels, as messages can be encrypted using a publicly disclosed key and decrypted only by the intended recipient who possesses the private key. Additionally, the paper presents a mechanism for digital signatures, where a message can be \"signed\" using a privately held decryption key. Anyone can verify this signature using the corresponding publicly revealed encryption key, ensuring that signatures cannot be forged and that a signer cannot later deny the validity of their signature. These concepts have profound applications in electronic mail and electronic funds transfer systems. ([cacm.acm.org](https://cacm.acm.org/research/a-method-for-obtaining-digital-signatures-and-public-key-cryptosystems-2/?utm_source=openai))\n\nThe encryption process involves representing a message as a number \\( M \\), raising \\( M \\) to a publicly specified power \\( e \\), and then taking the remainder when the result is divided by the publicly specified product \\( n \\) of two large secret prime numbers \\( p \\) and \\( q \\). Decryption is performed using a different, secret power \\( d \\), where \\( e \\times d \\equiv 1 \\mod ((p - 1) \\times (q - 1)) \\). The security of the system relies in part on the difficulty of factoring the published divisor \\( n \\). ([cacm.acm.org](https://cacm.acm.org/research/a-method-for-obtaining-digital-signatures-and-public-key-cryptosystems-2/?utm_source=openai))\n\nThis work laid the foundation for the RSA algorithm, which remains a cornerstone of modern cryptographic systems. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "3.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "3.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "5246",
+    "reference_type": "SECTION",
+    "reference_value": "1.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "SLOTH",
+    "reference_type": "TEXT",
+    "reference_value": "Transcript Collision Attacks",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.14722/ndss.2016.23418",
+    "reference_text": "Bhargavan, K. and G. Leurent, \"Transcript Collision Attacks: Breaking Authentication in TLS, IKE, and SSH\", Internet Society, Proceedings 2016 Network and Distributed System Security Symposium, DOI 10.14722/ndss.2016.23418, 2016, <https://doi.org/10.14722/ndss.2016.23418>.",
+    "reference_summary": "The paper \"Transcript Collision Attacks: Breaking Authentication in TLS, IKE, and SSH\" by Karthikeyan Bhargavan and Ga\u00ebtan Leurent introduces a class of attacks termed **transcript collision attacks**. These attacks exploit the vulnerabilities of weak hash functions, such as MD5 and SHA-1, within cryptographic protocols.\n\n**Key Points:**\n\n- **Transcript Collision Attacks:** These attacks leverage the ability to find hash collisions efficiently, allowing adversaries to manipulate protocol transcripts. This manipulation can lead to credential forwarding, impersonation, and downgrade attacks.\n\n- **Affected Protocols:** The study demonstrates practical attacks on TLS 1.2 client authentication, TLS 1.3 server authentication, and TLS channel bindings. Additionally, it describes near-practical impersonation and downgrade attacks in TLS 1.1, IKEv2, and SSH-2.\n\n- **Implications:** The findings challenge the assumption that weak hash functions are secure in certain protocol contexts. The authors advocate for the immediate discontinuation of MD5 and SHA-1 in all protocol applications.\n\n- **Responsible Disclosure:** The vulnerabilities, collectively referred to as SLOTH, were responsibly disclosed, leading to security updates in several TLS libraries.\n\nThe paper underscores the critical need to eliminate weak hash functions from cryptographic protocols to prevent potential security breaches. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "ACM.359340.359342",
+    "reference_type": "TEXT",
+    "reference_value": "RSASSA-PSS",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "I couldn't locate a document with the identifier \"ACM.359340.359342\" in the available sources. However, I can provide information on RSASSA-PSS (RSA Probabilistic Signature Scheme) from other reputable sources.\n\n**Overview of RSASSA-PSS:**\n\nRSASSA-PSS is a digital signature algorithm that enhances the security of the traditional RSA signature scheme by incorporating a probabilistic element. This approach offers a tighter security proof compared to deterministic methods like RSASSA-PKCS1-v1_5. ([ietf.org](https://www.ietf.org/rfc/rfc3447.txt.pdf?utm_source=openai))\n\n**Key Features:**\n\n- **Probabilistic Padding:** RSASSA-PSS introduces randomness in the padding process, making each signature unique even if the same message is signed multiple times. This randomness enhances security by preventing certain types of attacks.\n\n- **Mask Generation Function (MGF):** The scheme employs a mask generation function, typically MGF1, which uses a hash function to generate a mask of a desired length. This function is crucial for the padding process and contributes to the scheme's security. ([ietf.org](https://www.ietf.org/rfc/rfc3447.txt.pdf?utm_source=openai))\n\n- **Salt Value:** A random salt is used in the signature generation process, adding an additional layer of randomness and security. The length of the salt can be varied, but it is often recommended to match the length of the hash function's output. ([ietf.org](https://www.ietf.org/rfc/rfc3447.txt.pdf?utm_source=openai))\n\n**Algorithm Identifiers and Parameters:**\n\nIn the context of Cryptographic Message Syntax (CMS), the algorithm identifier for RSASSA-PSS signatures is defined as:\n\n```\nid-RSASSA-PSS OBJECT IDENTIFIER ::= {pkcs-1 10}\n```\n\nWhen this identifier is used for a signature, the `AlgorithmIdentifier` parameters field must contain `RSASSA-PSS-params`, which specify the hash algorithm, mask generation function, salt length, and trailer field. ([rfc-editor.org](https://www.rfc-editor.org/rfc/rfc4056?utm_source=openai))\n\n**Security Considerations:**\n\nImplementations must protect the RSA private key, as its compromise could allow attackers to forge signatures. Additionally, the generation of RSA private keys relies on random numbers; using inadequate pseudo-random number generators can result in weak keys. It's also recommended not to use the same key for both RSASSA-PSS and other signature schemes to prevent potential vulnerabilities. ([rfc-editor.org](https://www.rfc-editor.org/rfc/rfc4056?utm_source=openai))\n\nFor a comprehensive understanding of RSASSA-PSS, including its mathematical foundations and implementation details, refer to RFC 3447, which provides the full specifications of the RSA Cryptography Standard. ([ietf.org](https://www.ietf.org/rfc/rfc3447.txt.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.4"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "X690",
+    "reference_type": "TEXT",
+    "reference_value": "ASN.1 encoding Rules",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://www.itu.int/rec/T-REC-X.690-202102-I/en",
+    "reference_text": "ITU-T, \"Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)\", ITU-T X.690 , February 2021, <https://www.itu.int/rec/T-REC-X.690-202102-I/en >.",
+    "reference_summary": "The ITU-T Recommendation X.690, titled \"Information technology \u2013 ASN.1 encoding rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER),\" defines encoding rules for Abstract Syntax Notation One (ASN.1) data structures. These rules specify how to encode ASN.1-defined data types into a binary format suitable for transmission and storage.\n\n**Basic Encoding Rules (BER):**\nBER provides a flexible set of encoding rules that can be applied to values of types defined using ASN.1 notation. It allows multiple encoding options for certain data types, offering flexibility but potentially leading to variations in encoding the same data. ([itu.int](https://www.itu.int/rec/T-REC-X.690-202102-I/en?utm_source=openai))\n\n**Canonical Encoding Rules (CER):**\nCER imposes additional constraints on BER to ensure a unique encoding for each ASN.1 value. It uses the indefinite length form for encoding, making it more suitable for encoding large values. ([itu.int](https://www.itu.int/rec/T-REC-X.690-202102-I/en?utm_source=openai))\n\n**Distinguished Encoding Rules (DER):**\nDER also imposes constraints on BER to achieve a unique encoding but uses the definite length form. This makes DER more suitable for encoding smaller values and is commonly used in applications like digital certificates and cryptographic protocols. ([itu.int](https://www.itu.int/rec/T-REC-X.690-202102-I/en?utm_source=openai))\n\nThe key difference between CER and DER lies in their handling of length encoding: CER uses indefinite length encoding, while DER uses definite length encoding. Both CER and DER ensure that each ASN.1 value has a single, unambiguous encoding, which is essential for applications requiring consistent data representation. ([itu.int](https://www.itu.int/rec/T-REC-X.690-202102-I/en?utm_source=openai))\n\nFor a comprehensive understanding of these encoding rules, including detailed specifications and examples, refer to the full text of ITU-T Recommendation X.690. ([itu.int](https://www.itu.int/rec/T-REC-X.690-202102-I/en?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.4"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "X501",
+    "reference_type": "TEXT",
+    "reference_value": "Open Systems Interconnection - The Directory: Models",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "ITU-T, \"Information Technology - Open Systems Interconnection - The Directory: Models\", ISO/IEC 9594-2:2020 , October 2019.",
+    "reference_summary": "ISO/IEC 9594-2:2020, also known as ITU-T Recommendation X.501, is part of the X.500 series of standards that define the Directory, a global, distributed database for managing information about objects such as people, organizations, and resources. This standard provides a conceptual and terminological framework for the Directory, detailing various models that support its structure and operation.\n\n**Key Models Defined in the Standard:**\n\n1. **Functional Model:** Describes the Directory as a set of one or more components, each being a Directory System Agent (DSA). This model outlines how the Directory's services are provided, emphasizing that the service is somewhat independent of the physical distribution of the Directory Information Base (DIB). ([iso.org](https://www.iso.org/standard/80314.html?utm_source=openai))\n\n2. **Administrative Authority Model:** Defines how the Directory can be distributed administratively, specifying the principles according to which DIB entries and entry-copies may be distributed among DSAs. ([iso.org](https://www.iso.org/standard/80314.html?utm_source=openai))\n\n3. **Generic Directory Information Models:** Describe the logical structure of the DIB from the perspectives of Directory and Administrative Users. In these models, the distribution of the Directory is transparent to users, presenting a unified view of the information. ([iso.org](https://www.iso.org/standard/80314.html?utm_source=openai))\n\n4. **DSA Information Model:** Details the structure of user and operational information held within a DSA, supporting the distributed nature of the Directory. ([iso.org](https://www.iso.org/standard/80314.html?utm_source=openai))\n\n5. **Operational Framework:** Provides the means by which specific forms of cooperation between DSAs are structured to achieve particular objectives, such as replication to improve overall Directory performance. ([iso.org](https://www.iso.org/standard/80314.html?utm_source=openai))\n\n6. **Security Model:** Establishes a framework for access control mechanisms, including identifying access control schemes within portions of the Directory Information Tree (DIT) and defining flexible access control schemes suitable for various applications. It also provides a framework for protecting the confidentiality and integrity of directory operations using mechanisms like encryption and digital signatures. ([iso.org](https://www.iso.org/standard/80314.html?utm_source=openai))\n\nThese models collectively support the distributed and secure operation of the Directory, ensuring it can effectively manage and provide access to information across diverse systems and administrative domains. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.5"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "X690",
+    "reference_type": "TEXT",
+    "reference_value": "DER-encoded",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://www.itu.int/rec/T-REC-X.690-202102-I/en",
+    "reference_text": "ITU-T, \"Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)\", ITU-T X.690 , February 2021, <https://www.itu.int/rec/T-REC-X.690-202102-I/en >.",
+    "reference_summary": "The Distinguished Encoding Rules (DER) are a subset of the Basic Encoding Rules (BER) defined in ITU-T Recommendation X.690. DER provides a unique encoding for each ASN.1 data value by imposing additional constraints on BER to ensure unambiguous serialization. This is particularly important in applications like digital signatures, where consistent encoding is essential.\n\nKey characteristics of DER include:\n\n- **Definite Length Encoding**: DER mandates the use of definite length encoding, specifying the exact number of bytes for the content. This contrasts with BER, which allows both definite and indefinite length encodings.\n\n- **Primitive Encoding for Strings**: For string types such as `BIT STRING`, `OCTET STRING`, and restricted character strings, DER requires the use of primitive encoding forms, disallowing the constructed form permitted in BER.\n\n- **Ordered Set Components**: In DER, the components of a `SET` are encoded in ascending order based on their tag values, ensuring a consistent and predictable encoding order.\n\nThese constraints ensure that each ASN.1 data value has a single, unambiguous DER encoding, which is crucial for cryptographic applications and data integrity verification. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.6"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.6.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.7"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.7"
+    },
+    "document_type": "RFC",
+    "document_tag": "7919",
+    "reference_type": "SECTION",
+    "reference_value": "8.3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.7"
+    },
+    "document_type": "RFC",
+    "document_tag": "8422",
+    "reference_type": "SECTION",
+    "reference_value": "10.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.7"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.7"
+    },
+    "document_type": "RFC",
+    "document_tag": "8126",
+    "reference_type": "SECTION",
+    "reference_value": "1.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.7"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "ECDP",
+    "reference_type": "TEXT",
+    "reference_value": "NIST SP 800-186",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.sp.800-186",
+    "reference_text": "Chen, L., Moody, D., Regenscheid, A., Robinson, A., and K. Randall, \"Recommendations for Discrete Logarithm-based Cryptography:: Elliptic Curve Domain Parameters\", National Institute of Standards and Technology, DOI 10.6028/nist.sp.800-186, February 2023, <https://doi.org/10.6028/nist.sp.800-186>.",
+    "reference_summary": "NIST Special Publication 800-186 (SP 800-186), titled \"Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters,\" was published in February 2023. ([nist.gov](https://www.nist.gov/publications/recommendations-discrete-logarithm-based-cryptography-elliptic-curve-domain-parameters?utm_source=openai)) This document specifies the set of elliptic curves recommended for U.S. Government use. It includes the previously recommended Weierstrass curves defined over prime and binary fields and introduces two new Edwards curves. These Edwards curves offer increased performance, enhanced side-channel resistance, and simpler implementation compared to traditional curves. The publication also provides alternative representations for these new curves to allow for greater implementation flexibility. Notably, the new curves are interoperable with those specified by the Crypto Forum Research Group (CFRG) of the Internet Engineering Task Force (IETF). ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-186.pdf?utm_source=openai))\n\nAdditionally, SP 800-186 addresses the deprecation of elliptic curves over binary fields due to their limited use in the industry, strongly recommending the use of curves over prime fields instead. It's important to note that the algorithms specified in this standard are not expected to provide resistance against attacks from large-scale quantum computers. NIST plans to specify digital signature algorithms that offer security against quantum computing threats in future publications. ([nist.gov](https://www.nist.gov/news-events/news/2023/02/nist-revises-digital-signature-standard-dss-and-publishes-guideline?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.7"
+    },
+    "document_type": "RFC",
+    "document_tag": "7919",
+    "reference_type": "SECTION",
+    "reference_value": "A.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.1.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.8.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.8.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "IEEE.DH76",
+    "reference_type": "TEXT",
+    "reference_value": "New directions in cryptography",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "\"New Directions in Cryptography\" is a seminal paper authored by Whitfield Diffie and Martin E. Hellman, published in 1976 in the IEEE Transactions on Information Theory (Volume 22, Issue 6). This paper introduced the revolutionary concept of public-key cryptography, fundamentally transforming the field of cryptography.\n\nPrior to this work, cryptographic systems relied on symmetric-key algorithms, where both the sender and receiver shared a secret key. Diffie and Hellman proposed a system where each user has a pair of keys: a public key, which can be shared openly, and a private key, which is kept secret. This innovation allows secure communication over insecure channels without the need for a shared secret key.\n\nThe paper also introduced the Diffie-Hellman key exchange protocol, enabling two parties to establish a shared secret key over an insecure channel. This protocol laid the groundwork for many modern cryptographic systems and is widely used in securing internet communications today.\n\nThe introduction of public-key cryptography addressed significant challenges in key distribution and digital signatures, leading to the development of various cryptographic protocols and standards that underpin modern secure communication. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "7919",
+    "reference_type": "SECTION",
+    "reference_value": "6.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "DH76",
+    "reference_type": "TEXT",
+    "reference_value": "Diffie-Hellman parameters",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1109/tit.1976.1055638",
+    "reference_text": "Diffie, W. and M. Hellman, \"New directions in cryptography\", Institute of Electrical and Electronics Engineers (IEEE), IEEE Transactions on Information Theory vol. 22, no. 6, pp. 644-654, DOI 10.1109/tit.1976.1055638, November 1976, <https://doi.org/10.1109/tit.1976.1055638>.",
+    "reference_summary": "In their seminal 1976 paper, \"New Directions in Cryptography,\" Whitfield Diffie and Martin Hellman introduced the concept of public-key cryptography and the Diffie-Hellman key exchange protocol. This protocol allows two parties to securely establish a shared secret over an insecure communication channel.\n\nThe Diffie-Hellman key exchange operates as follows:\n\n1. **Parameter Selection**: A large prime number \\( p \\) and a primitive root modulo \\( p \\), denoted as \\( g \\), are chosen. These values are publicly known.\n\n2. **Private Key Selection**: Each party selects a private key.\n\n3. **Public Key Computation**: Each party computes their public key by raising \\( g \\) to the power of their private key, modulo \\( p \\).\n\n4. **Exchange and Shared Secret Computation**: The parties exchange their public keys and compute the shared secret by raising the received public key to the power of their private key, modulo \\( p \\).\n\nThe security of the Diffie-Hellman protocol relies on the computational difficulty of the discrete logarithm problem in finite fields. The choice of a large prime \\( p \\) and a suitable primitive root \\( g \\) is crucial to ensure the protocol's security.\n\nFor a detailed explanation and mathematical formulation, refer to the original paper:\n\nDiffie, W., & Hellman, M. (1976). New directions in cryptography. *IEEE Transactions on Information Theory*, 22(6), 644-654.\n\nAvailable at:\n\nhttps://doi.org/10.1109/TIT.1976.1055638 "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "3.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.2.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "KEYAGREEMENT",
+    "reference_type": "TEXT",
+    "reference_value": "Recommendation for pair-wise key-establishment schemes using discrete logarithm cryptography",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.sp.800-56ar3",
+    "reference_text": "Barker, E., Chen, L., Roginsky, A., Vassilev, A., and R. Davis, \"Recommendation for pair-wise key-establishment schemes using discrete logarithm cryptography\", National Institute of Standards and Technology, DOI 10.6028/nist.sp.800-56ar3, April 2018, <https://doi.org/10.6028/nist.sp.800-56ar3>.",
+    "reference_summary": "The \"Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography\" (NIST Special Publication 800-56A Revision 3) provides guidelines for establishing shared secret keys between two parties using discrete logarithm cryptography. This includes methods based on the Diffie-Hellman (DH) and Menezes-Qu-Vanstone (MQV) algorithms over finite fields and elliptic curves. ([nist.gov](https://www.nist.gov/publications/recommendation-pair-wise-key-establishment-schemes-using-discrete-logarithm-1?utm_source=openai))\n\nThe document specifies approved key-agreement schemes that rely on the intractability of the discrete logarithm problem, ensuring secure key establishment. It also discusses the selection and generation of domain parameters, emphasizing the use of specific safe-prime groups and commonly used elliptic curves to enhance security. ([csrc.nist.gov](https://csrc.nist.gov/pubs/sp/800/56/a/r3/final?utm_source=openai))\n\nAdditionally, the publication addresses key confirmation methods to assure both parties that they share the same keying material, and outlines security properties associated with each scheme. It also provides practical recommendations for implementers, such as securely destroying sensitive data after its use to prevent unauthorized access. ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar3.pdf?utm_source=openai))\n\nFor a comprehensive understanding of these recommendations, you can access the full document here: ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar3.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "ECDP",
+    "reference_type": "TEXT",
+    "reference_value": "Recommendations for Discrete Logarithm-based Cryptography:: Elliptic Curve Domain Parameters",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.sp.800-186",
+    "reference_text": "Chen, L., Moody, D., Regenscheid, A., Robinson, A., and K. Randall, \"Recommendations for Discrete Logarithm-based Cryptography:: Elliptic Curve Domain Parameters\", National Institute of Standards and Technology, DOI 10.6028/nist.sp.800-186, February 2023, <https://doi.org/10.6028/nist.sp.800-186>.",
+    "reference_summary": "The National Institute of Standards and Technology (NIST) Special Publication 800-186, titled \"Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters,\" provides comprehensive guidelines on elliptic curve domain parameters for discrete logarithm-based cryptographic applications. ([nist.gov](https://www.nist.gov/publications/recommendations-discrete-logarithm-based-cryptography-elliptic-curve-domain-parameters?utm_source=openai))\n\n**Key Highlights:**\n\n- **Recommended Elliptic Curves:** The publication specifies elliptic curves suitable for U.S. Government use, including traditional Weierstrass curves over prime and binary fields, as well as two newly specified Edwards curves. These Edwards curves offer enhanced performance, improved resistance to side-channel attacks, and simpler implementation compared to traditional curves. ([nist.gov](https://www.nist.gov/publications/recommendations-discrete-logarithm-based-cryptography-elliptic-curve-domain-parameters?utm_source=openai))\n\n- **Deprecation of Binary Field Curves:** While the document includes specifications for elliptic curves over binary fields, it deprecates their use due to limited industry adoption. The use of curves over prime fields is strongly recommended. ([csrc.nist.gov](https://csrc.nist.gov/News/2023/nist-releases-fips-186-5-and-sp-800-186?utm_source=openai))\n\n- **Interoperability:** The newly specified Edwards curves are designed to be interoperable with those specified by the Crypto Forum Research Group (CFRG) of the Internet Engineering Task Force (IETF). ([nist.gov](https://www.nist.gov/publications/recommendations-discrete-logarithm-based-cryptography-elliptic-curve-domain-parameters?utm_source=openai))\n\n- **Security Considerations:** The recommended elliptic curves are not expected to provide resistance against attacks from large-scale quantum computers. NIST plans to specify quantum-resistant digital signature algorithms in future publications. ([csrc.nist.gov](https://csrc.nist.gov/News/2023/nist-releases-fips-186-5-and-sp-800-186?utm_source=openai))\n\nFor detailed information, including the mathematical specifications of the recommended curves and their domain parameters, please refer to the full document available at: ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-186.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.8.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.9"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.8",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.10"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.6.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.10"
+    },
+    "document_type": "RFC",
+    "document_tag": "7301",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.10"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "8",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.10"
+    },
+    "document_type": "RFC",
+    "document_tag": "7301",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.10"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "5.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.11.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.10",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.10",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.6.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.6.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.11.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "8.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.6.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.2.11.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "7.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.3.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.3.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.6.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.3.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.3.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.6",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.3.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8773",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.3.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "11.6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6962",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7250",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6091",
+    "reference_type": "SECTION",
+    "reference_value": "3.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "1.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "1.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "6960",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "6961",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "6962",
+    "reference_type": "SECTION",
+    "reference_value": "3.3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "3.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7250",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.5",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "6.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "6.1.3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.2.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "ACM.359340.359342",
+    "reference_type": "TEXT",
+    "reference_value": "RSA",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "The document identified by DOI 10.1145/359340.359342 is the seminal paper titled \"A Method for Obtaining Digital Signatures and Public-Key Cryptosystems,\" authored by Ronald L. Rivest, Adi Shamir, and Leonard Adleman, published in the February 1978 issue of *Communications of the ACM*. ([colab.ws](https://colab.ws/articles/10.1145%2F359340.359342?utm_source=openai))\n\nIn this paper, the authors introduce the RSA algorithm, a groundbreaking public-key cryptosystem that enables secure communication over insecure channels. The RSA algorithm is based on the mathematical challenge of factoring large composite numbers, which underpins its security. The paper details the algorithm's design, including key generation, encryption, and decryption processes, and discusses its potential applications in digital signatures and secure data transmission.\n\nThe RSA algorithm has since become a cornerstone of modern cryptography, widely used for securing sensitive data across various platforms and applications. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "ACM.359340.359342",
+    "reference_type": "TEXT",
+    "reference_value": "RSA signatures",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "The document identified by ACM reference number 359340.359342 is titled \"A Method for Obtaining Digital Signatures and Public-Key Cryptosystems,\" authored by Ronald L. Rivest, Adi Shamir, and Leonard M. Adleman. Published in the February 1978 issue of *Communications of the ACM*, this seminal paper introduces the RSA algorithm, a foundational public-key cryptosystem that facilitates both secure data encryption and digital signatures. ([colab.ws](https://colab.ws/articles/10.1145%2F359340.359342?utm_source=openai))\n\nIn the context of digital signatures, the RSA algorithm enables a user to generate a signature by encrypting a message digest (a fixed-size hash of the message) with their private key. This signature can then be verified by others using the corresponding public key, ensuring the authenticity and integrity of the message. The security of RSA signatures relies on the computational difficulty of factoring large composite numbers, a problem that remains intractable with current classical computing methods.\n\nThe paper details the mathematical underpinnings of the RSA algorithm, including key generation, encryption, decryption, and signature processes. It also discusses the theoretical foundations that contribute to the algorithm's security, such as number theory and the challenges associated with integer factorization. This work has had a profound impact on the field of cryptography, establishing a framework for secure digital communication that is still widely used today. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.10",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "7.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "2104",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.4.4"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "7.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "7",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.11",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8305",
+    "reference_type": "SECTION",
+    "reference_value": "9.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "B.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.10",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.6",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "7.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4.6.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "5.5",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "5246",
+    "reference_type": "SECTION",
+    "reference_value": "7.4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "5246",
+    "reference_type": "SECTION",
+    "reference_value": "7.2.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "4"
+    },
+    "document_type": "RFC",
+    "document_tag": "2119",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

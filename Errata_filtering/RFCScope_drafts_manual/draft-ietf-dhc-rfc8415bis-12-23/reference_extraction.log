@@ -1,0 +1,341 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-23/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This section discusses security considerations that are not related
+   to privacy.  See Section 24 for a discussion dedicated to privacy.
+
+   The threat to DHCP is inherently an insider threat (ass...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 24
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 24
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '24'
+  Match Type: Exact match
+  Result: Matched to Section 24
+  Section Title: Privacy Considerations
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '24'
+  Match Type: Exact match
+  Result: Matched to Section 24
+  Section Title: IANA Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP lacks end-to-end encryption between clients and servers; thus,
+   hijacking, tampering, and eavesdropping attacks are all possible as a
+   result.  Some network environments (discussed below) ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The threat common to both the client and the server is the "resource-
+   exhaustion" DoS attack.  These attacks typically involve the
+   exhaustion of available assigned addresses or delegatable pr...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   One attack specific to a DHCP client is the establishment of a
+   malicious server with the intent of providing incorrect configuration
+   information to the client.  The motivation for doing so ma...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A malicious DHCP server might cause a client to set its SOL_MAX_RT
+   and INF_MAX_RT parameters to an unreasonably high value with the
+   SOL_MAX_RT (see Section 21.24) and INF_MAX_RT (see Section ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.24
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.25
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.24'
+  Match Type: Exact match
+  Result: Matched to Section 21.24
+  Section Title: SOL_MAX_RT Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.25'
+  Match Type: Exact match
+  Result: Matched to Section 21.25
+  Section Title: INF_MAX_RT Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Another threat to DHCP clients originates from mistakenly or
+   accidentally configured DHCP servers that answer DHCP client requests
+   with unintentionally incorrect configuration parameters.
+
+  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 23.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '23.3'
+  Match Type: Exact match
+  Result: Matched to Section 23.3
+  Section Title: Reconfigure Security Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The threat specific to a DHCP server is an invalid client
+   masquerading as a valid client.  The motivation for this may be for
+   theft of service, or to circumvent auditing for any number of
+   ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The messages exchanged between relay agents and servers may be used
+   to mount a man-in-the-middle or DoS attack.  Communication between a
+   server and a relay agent, and communication between re...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8213
+  Reference Type: TEXT
+  Reference Value (keywords/section): IPsec, authentication and encryption
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8213:
+  Search Keywords: 'IPsec, authentication and encryption'
+  Result: Found in Section 3
+  Section Title: Security of Messages Exchanged between Servers and Relay Agents
+  Content Preview:    For DHCPv6 [RFC3315], this specification REQUIRES relay and server
+   implementations to support ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   However, the use of manually configured pre-shared keys for IPsec
+   between relay agents and servers does not defend against replayed
+   DHCP messages.  Replayed messages can represent a DoS attac...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 23.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '23.3'
+  Match Type: Exact match
+  Result: Matched to Section 23.3
+  Section Title: Reconfigure Security Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RKAP, described in Section 20.4, provides protection against the use
+   of a Reconfigure message by a malicious DHCP server to mount a DoS or
+   man-in-the-middle attack on a client.  This protocol...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 20.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '20.4'
+  Match Type: Exact match
+  Result: Matched to Section 20.4
+  Section Title: Reconfiguration Key Authentication Protocol (RKAP)
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DHCP client may also be subject to attack through the receipt of a
+   Reconfigure message from a malicious server that causes the client to
+   obtain incorrect configuration information from that...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Various network environments also offer levels of security if
+   deployed as described below.
+
+   *  In enterprise and factory networks, use of authentication per
+      [IEEE-802.1x ] can prevent u...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IEEE.802.1x
+  Reference Type: TEXT
+  Reference Value (keywords/section): Port-Based Network Access Control
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  For wired networks where clients typically are connected to a
+      switch port, snooping DHCP multicast (or unicast) traffic becomes
+      difficult, as the switches limit the traffic delivered...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  In public networks (such as a Wi-Fi network in a coffee shop or
+      airport), it is possible for others within radio range to snoop
+      DHCP and other traffic.  But in these environments, th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 24
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7513
+  Reference Type: TEXT
+  Reference Value (keywords/section): Source Address Validation Improvement (SAVI) Solution for DHCP
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7610
+  Reference Type: TEXT
+  Reference Value (keywords/section): DHCPv6-Shield: Protecting against Rogue DHCPv6 Servers
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '24'
+  Match Type: Exact match
+  Result: Matched to Section 24
+  Section Title: Privacy Considerations
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7513:
+  Search Keywords: 'Source Address Validation Improvement (SAVI) Solution for DHCP'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    This document describes a fine-grained source address validation
+   mechanism for IPv4 and IPv6 p...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7610:
+  Search Keywords: 'DHCPv6-Shield: Protecting against Rogue DHCPv6 Servers'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    This document specifies DHCPv6-Shield, a mechanism for protecting
+   hosts connected to a switche...
+---------------------------------------------------------------------------
+

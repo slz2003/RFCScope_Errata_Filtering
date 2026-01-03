@@ -1,0 +1,450 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-11/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each DHCP client and server has a DUID.  DHCP servers use DUIDs to
+   identify clients for the selection of configuration parameters and in
+   the association of IAs with clients.  DHCP clients use...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC6939
+  Reference Type: TEXT
+  Reference Value (keywords/section): Client Link-Layer Address option
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC7844
+  Reference Type: TEXT
+  Reference Value (keywords/section): Anonymity Profiles for DHCP Clients
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6939:
+  Search Keywords: 'Client Link-Layer Address option'
+  Result: Found in Section 4
+  Section Title: DHCPv6 Client Link-Layer Address Option
+  Content Preview:    The format of the DHCPv6 Client Link-Layer Address option is shown
+   below.
+
+      0            ...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7844:
+  Search Keywords: 'Anonymity Profiles for DHCP Clients'
+  Result: Found in Section 5
+  Section Title: Operational Considerations
+  Content Preview:    The anonymity profiles have the effect of hiding the client identity
+   from the DHCP server.  Th...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The DUID is carried in an option because it may be variable in length
+   and because it is not required in all DHCP messages.  The DUID is
+   designed to be unique across all DHCP clients and serve...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): DUID
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7844
+  Reference Type: TEXT
+  Reference Value (keywords/section): change its DUID
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-dhc-rfc8415bis-12:
+  Search Keywords: 'DUID'
+  Result: Found in Section 11.1
+  Section Title: DUID Contents
+  Content Preview:    A DUID consists of a 2-octet type code represented in network byte
+   order, followed by a variab...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7844:
+  Search Keywords: 'change its DUID'
+  Result: Found in Section 3.9
+  Section Title: UUID/GUID-Based Client Machine Identifier Option
+  Content Preview:    The UUID/GUID-based (where "UUID" means "Universally Unique
+   Identifier" and "GUID" means "Glob...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The motivation for having more than one type of DUID is that the DUID
+   must be globally unique and must also be easy to generate.  The sort
+   of globally unique identifier that is easy to genera...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DUID consists of a 2-octet type code represented in network byte
+   order, followed by a variable number of octets that make up the
+   actual identifier.  The length of the DUID (not including th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6355
+  Reference Type: TEXT
+  Reference Value (keywords/section): Universally Unique Identifier (UUID)
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6355:
+  Search Keywords: 'Universally Unique Identifier (UUID)'
+  Result: Found in Section 3
+  Section Title: UUID Considerations
+  Content Preview:    Although many UUIDs are in use today, not all UUIDs meet DHCP's
+   requirements (see Section 9 of...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Formats for the variable field of the DUID for the first three of the
+   above types are shown below.  The fourth type, DUID-UUID [RFC6355],
+   can be used in situations where there is a UUID store...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6355
+  Reference Type: TEXT
+  Reference Value (keywords/section): DUID-UUID
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6355:
+  Search Keywords: 'DUID-UUID'
+  Result: Found in Section 4
+  Section Title: DUID-UUID Format
+  Content Preview:    The DUID-UUID is carried within Client Identifier or Server
+   Identifier options.  It has the fo...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This type of DUID consists of a 2-octet type field containing the
+   value 1, a 2-octet hardware type code, and 4 octets containing a time
+   value, followed by the link-layer address of any one ne...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-HARDWARE-TYPES
+  Reference Type: TEXT
+  Reference Value (keywords/section): Hardware Types
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC2464
+  Reference Type: TEXT
+  Reference Value (keywords/section): Transmission of IPv6 Packets over Ethernet Networks
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC2464:
+  Search Keywords: 'Transmission of IPv6 Packets over Ethernet Networks'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    This document specifies the frame format for transmission of IPv6
+   packets and the method of fo...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+                         Figure 4: DUID-LLT Format 
+   The choice of network interface can be completely arbitrary, as long
+   as that interface provides a globally unique link-layer address for
+   th...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients and servers using this type of DUID MUST store the DUID-LLT
+   in stable storage and MUST continue to use this DUID-LLT even if the
+   network interface used to generate the DUID-LLT is rem...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients and servers that use this DUID SHOULD attempt to configure
+   the time prior to generating the DUID, if that is possible, and MUST
+   use some sort of time source (for example, a real-time ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This method of DUID generation is recommended for all general-purpose
+   computing devices such as desktop computers and laptop computers, and
+   also for devices such as printers, routers, and so ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   It is possible that this algorithm for generating a DUID could result
+   in a client identifier collision.  A DHCP client that generates a
+   DUID-LLT using this mechanism MUST provide an administr...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The vendor assigns this form of DUID to the device.  This DUID
+   consists of the 4-octet vendor's registered Private Enterprise Number
+   as maintained by IANA [IANA-PEN ] followed by a unique ide...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-PEN
+  Reference Type: TEXT
+  Reference Value (keywords/section): Private Enterprise Numbers
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The source of the identifier is left up to the vendor defining it,
+   but each identifier part of each DUID-EN MUST be unique to the device
+   that is using it, and MUST be assigned to the device n...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-PEN
+  Reference Type: TEXT
+  Reference Value (keywords/section): Private Enterprise Numbers
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+      +---+---+---+---+---+---+---+---+
+      | 0 | 2 | 0 | 0 |126|217| 12|192|
+      +---+---+---+---+---+---+---+---+
+      |132|211| 3 | 0 | 9 | 18|
+      +---+---+---+---+---+---+
+
+               ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This example includes the 2-octet type of 2 and the Enterprise Number
+   (32473) (from [RFC5612]), followed by 8 octets of identifier data
+   (0x0CC084D303000912).
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5612
+  Reference Type: TEXT
+  Reference Value (keywords/section): Enterprise Number
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5612:
+  Search Keywords: 'Enterprise Number'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview: 
+
+   RFC 1065 [RFC1065] (later superceded by [RFC1155] and [RFC2578])
+   created a subtree (arc) of ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This type of DUID consists of 2 octets containing a DUID type of 3
+   and a 2-octet network hardware type code, followed by the link-layer
+   address of any one network interface that is permanentl...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-HARDWARE-TYPES
+  Reference Type: TEXT
+  Reference Value (keywords/section): Hardware Types
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC2464
+  Reference Type: TEXT
+  Reference Value (keywords/section): Transmission of IPv6 Packets over Ethernet Networks
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The choice of network interface can be completely arbitrary, as long
+   as that interface provides a unique link-layer address and is
+   permanently attached to the device on which the DUID-LL is b...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DUID-LL is recommended for devices that have a permanently
+   connected network interface with a link-layer address and do not have
+   nonvolatile, writable stable storage.  A DUID-LL SHOULD NOT ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This type of DUID consists of 16 octets containing a 128-bit UUID.
+   [RFC6355] details when to use this type and how to pick an
+   appropriate source of the UUID.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6355
+  Reference Type: TEXT
+  Reference Value (keywords/section): when to use this type and how to pick an appropriate source of the UUID
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6355:
+  Search Keywords: 'when to use this type and how to pick an appropriate source of the UUID'
+  Result: Found in Section 3
+  Section Title: UUID Considerations
+  Content Preview:    Although many UUIDs are in use today, not all UUIDs meet DHCP's
+   requirements (see Section 9 of...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################

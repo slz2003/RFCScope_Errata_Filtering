@@ -1,0 +1,418 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-A/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This appendix is informative, not normative.  It gives example
+   algorithms that would satisfy the normative requirements of the
+   AccECN protocol.  However, implementers are free to choose other...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The example algorithms below show how a Data Receiver in AccECN mode
+   could encode its CE byte counter r.ceb into the ECEB field within an
+   AccECN TCP Option, and how a Data Sender in AccECN mo...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   It is assumed that each local byte counter is an unsigned integer
+   greater than 24b (probably 32b), and that the following constant has
+   been assigned:
+
+      DIVOPT = 2^24
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Every time a CE marked data segment arrives, the Data Receiver
+   increments its local value of r.ceb by the size of the TCP Data.
+   Whenever it sends an ACK with an AccECN Option, the value it wr...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   On the arrival of an AccECN Option, the Data Sender first makes sure
+   the ACK has not been superseded in order to avoid winding the s.ceb
+   counter backwards.  It uses the TCP acknowledgement nu...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC2018
+  Reference Type: TEXT
+  Reference Value (keywords/section): TCP Selective Acknowledgment Options
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7323
+  Reference Type: TEXT
+  Reference Value (keywords/section): TCP Extensions for High Performance
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC2018:
+  Search Keywords: 'TCP Selective Acknowledgment Options'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    Multiple packet losses from a window of data can have a catastrophic
+   effect on TCP throughput....
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      if ((newlyAckedB > 0) || (newlyAckedT > 0)) {
+          d.ceb = (ECEB + DIVOPT - (s.ceb % DIVOPT)) % DIVOPT
+          s.ceb += d.ceb
+      }
+
+   For example, if s.ceb is 33,554,433 and ECEB is 1...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      s.ceb % DIVOPT = 1
+      d.ceb = (1461 + 2^24 - 1) % 2^24
+            = 1460
+      s.ceb = 33,554,433 + 1460
+            = 33,555,893
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   In practice an implementation might use heuristics to guess the
+   feedback in missing ACKs, then when it subsequently receives feedback
+   it might find that it needs to correct its earlier heuris...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The example algorithms below show how a Data Receiver in AccECN mode
+   could encode its CE packet counter r.cep into the ACE field, and how
+   the Data Sender in AccECN mode could decode the ACE f...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.5
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.5
+  Section Title: Safety against Ambiguity of the ACE Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3.2
+  Section Title: Path Traversal of the AccECN Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   It is assumed that each local packet counter is a sufficiently sized
+   unsigned integer (probably 32b) and that the following constant has
+   been assigned:
+
+      DIVACE = 2^3
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Every time an Acceptable CE marked packet arrives (Section 3.2.2.2),
+   the Data Receiver increments its local value of r.cep by 1.  It
+   repeats the same value of ACE in every subsequent ACK unti...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.2
+  Section Title: Encoding and Decoding Feedback in the ACE Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2.2.2'
+  Match Type: Fuzzy match (score: 71.42857142857143)
+  Result: Matched to Section 9.2.1.2
+  Section Title: ECN Tunnel Security Association Attribute
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If the Data Sender received an earlier value of the counter that had
+   been delayed due to ACK reordering, it might incorrectly calculate
+   that the ACE field had wrapped.  Therefore, on the arri...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      if ((newlyAckedB > 0) || (newlyAckedT > 0))
+          d.cep = (ACE + DIVACE - (s.cep % DIVACE)) % DIVACE Section 3.2.2.5 expects the Data Sender to assume that the ACE field
+   cycled if it is t...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.5
+  Section Title: Safety against Ambiguity of the ACE Field
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   For example, imagine an ACK acknowledges newlyAckedPkt=9 more full-
+   size segments than any previous ACK, and that ACE increments by a
+   minimum of 2 CE marks (d.cep=2).  The above formula works...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Note that checks would need to be added to the above pseudocode for
+   (d.cep > newlyAckedPkt), which could occur if newlyAckedPkt had been
+   wrongly estimated using an inappropriate packet size.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   ACKs that acknowledge a large stretch of packets might be common in
+   data centres to achieve a high packet rate or might be due to ACK
+   thinning by a middlebox.  In these cases, cycling of the ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Implementers could build in more heuristics to estimate prevailing
+   average segment size and prevailing ECN marking.  For instance,
+   newlyAckedPkt in the above formula could be replaced with
+  ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If missing acknowledgement numbers arrive later (due to reordering),Section 3.2.2.5 says "the Data Sender MAY attempt to neutralize the
+   effect of any action it took based on a conservative assum...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.5
+  Section Title: Safety against Ambiguity of the ACE Field
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   When AccECN Options are available on the ACKs before and after the
+   possible sequence of ACK losses, if the Data Sender only needs CE-
+   marked bytes, it will have sufficient information in AccE...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      SAFETY_FACTOR = 2
+      if (dSafer.cep > d.cep) {
+          if (d.ceb <= MSS * d.cep) {  % Same as (s <= MSS), but no DBZ
+             sSafer = d.ceb/dSafer.cep
+             if (sSafer < MSS/SAF...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The chart below shows when the above algorithm will consider d.cep
+   can replace dSafer.cep as a safe enough estimate of the number of CE-
+   marked packets:
+                    ^
+              sS...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      Therefore even though the average size of 8 data segments is
+      unlikely to have been as small as MSS/8, d.cep cannot have been
+      correct, because it would imply an average segment size g...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      Therefore d.cep is safe enough, because the average data segment
+      size is more likely to have been just less than one MSS, rather
+      than below MSS/2.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If pure ACKs were allowed to be ECN-capable, missing ACKs would be
+   far less likely.  However, because [RFC3168] currently precludes
+   this, the above algorithm assumes that pure ACKs are not EC...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): pure ACKs ECN-capable
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3168:
+  Search Keywords: 'pure ACKs ECN-capable'
+  Result: Found in Section 5.2
+  Section Title: Dropped or Corrupted Packets
+  Content Preview:    For the proposed use for ECN in this document (that is, for a
+   transport protocol such as TCP f...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If AccECN Options are not available, the Data Sender can only decode
+   CE-marking from the ACE field in packets.  Every time an ACK arrives,
+   to convert this into an estimate of CE-marked bytes,...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The implementation could keep a record of the byte numbers of all the
+   boundaries between packets in flight (including control packets), and
+   recalculate s_ave on every ACK.  However it would b...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   where flightsize is the variable that TCP already maintains for the
+   number of bytes in flight and '~=' means 'approximately equal to'.
+   To avoid floating point arithmetic, it could right-bit-s...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   where a is the decay constant for the EWMA.  However, then it is
+   necessary to choose a good value for this constant, which ought to
+   depend on the number of packets in flight.  Also the decay ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A Data Sender in AccECN mode can infer the amount of TCP payload data
+   arriving at the receiver marked Not-ECT from the difference between
+   the amount of newly ACKed data and the sum of the byt...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   For this approach to be precise, it has to be assumed that spurious
+   (unnecessary) retransmissions do not lead to double counting.  This
+   assumption is currently correct, given that RFC 3168 re...
+################################################################################

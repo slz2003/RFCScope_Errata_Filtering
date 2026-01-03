@@ -1,0 +1,86 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-2/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as d...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC2119
+  Reference Type: TEXT
+  Reference Value (keywords/section): MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, OPTIONAL
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8174
+  Reference Type: TEXT
+  Reference Value (keywords/section): MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, OPTIONAL
+================================================================================
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   This document makes use of the terms and abbreviations from previous
+   DRIP documents.  Below are subsets, grouped by original document, of
+   terms used this document.  Please see those documents...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9153
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9434
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC9374
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9153:
+  Looking for Section: '2.2'
+  Match Type: Exact match
+  Result: Matched to Section 2.2
+  Section Title: Definitions
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9434:
+  Looking for Section: '2'
+  Match Type: Exact match
+  Result: Matched to Section 2
+  Section Title: Terms and Definitions
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9374:
+  Looking for Section: '2'
+  Match Type: Exact match
+  Result: Matched to Section 2
+  Section Title: Terms and Definitions
+---------------------------------------------------------------------------
+

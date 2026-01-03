@@ -1,0 +1,283 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-5/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients and servers exchange DHCP messages using UDP (see [RFC0768]
+   and [BCP145]).  The client uses a link-local source address or
+   addresses determined through other mechanisms for transmitti...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC0768
+  Reference Type: TEXT
+  Reference Value (keywords/section): User Datagram Protocol
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: BCP145
+  Reference Type: TEXT
+  Reference Value (keywords/section): UDP Usage Guidelines
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC145:
+  Search Keywords: 'UDP Usage Guidelines'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DHCP client sends all messages using a reserved, link-scoped
+   multicast destination address (All_DHCP_Relay_Agents_and_Servers -
+   ff02::1:2) so that the client need not be configured with the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   When a DHCP client does not need to have a DHCP server assign IP
+   addresses or delegated prefixes to it, the client can obtain other
+   configuration information such as a list of available DNS s...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3646
+  Reference Type: TEXT
+  Reference Value (keywords/section): DNS servers
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5908
+  Reference Type: TEXT
+  Reference Value (keywords/section): NTP servers
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3646:
+  Search Keywords: 'DNS servers'
+  Result: Found in Section 3
+  Section Title: DNS Recursive Name Server option
+  Content Preview:    The DNS Recursive Name Server option provides a list of one or more
+   IPv6 addresses of DNS recu...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5908:
+  Search Keywords: 'NTP servers'
+  Result: Found in Section 3
+  Section Title: Related Work and Usage Model
+  Content Preview:    The NTP service is publicly offered on the Internet by a number of
+   organizations.  Those serve...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client may also request the server to expedite address assignment
+   and/or prefix delegation by using a two-message exchange instead of
+   the normal four-message exchange as discussed in the ne...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.3.1
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.14
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '18.3.1'
+  Match Type: Exact match
+  Result: Matched to Section 18.3.1
+  Section Title: Receipt of Solicit Messages
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.14'
+  Match Type: Exact match
+  Result: Matched to Section 21.14
+  Section Title: Rapid Commit Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   To request the expedited two-message exchange, the client sends a
+   Solicit message to the All_DHCP_Relay_Agents_and_Servers multicast
+   address requesting the assignment of addresses and/or dele...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.14
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.14'
+  Match Type: Exact match
+  Result: Matched to Section 21.14
+  Section Title: Rapid Commit Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each address or delegated prefix assigned to the client has
+   associated preferred and valid lifetimes specified by the server.  To
+   request an extension of the lifetimes assigned to an address ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 0
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '0'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 10
+  Section Title: Representation and Use of Domain Names
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '18'
+  Match Type: Exact match
+  Result: Matched to Section 18
+  Section Title: DHCP Configuration Exchanges
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   To request the assignment of one or more addresses and/or delegated
+   prefixes, a client first locates a DHCP server and then requests the
+   assignment of addresses and/or delegated prefixes and ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   As described in the previous section, the client can request an
+   extension of the lifetimes assigned to addresses or delegated
+   prefixes (this is a two-message exchange).
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A server that has previously communicated with a client and
+   negotiated for the client to listen for Reconfigure messages may send
+   the client a Reconfigure message to initiate the client to up...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 20.4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC6879
+  Reference Type: TEXT
+  Reference Value (keywords/section): IPv6 Enterprise Network Renumbering Scenarios, Considerations, and Methods
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC9096
+  Reference Type: TEXT
+  Reference Value (keywords/section): Improving the Reaction of Customer Edge Routers to IPv6 Renumbering Events
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '20.4'
+  Match Type: Exact match
+  Result: Matched to Section 20.4
+  Section Title: Reconfiguration Key Authentication Protocol (RKAP)
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6879:
+  Search Keywords: 'IPv6 Enterprise Network Renumbering Scenarios, Considerations, and Methods'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    Site renumbering is difficult.  Network managers frequently attempt
+   to avoid future renumberin...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9096:
+  Search Keywords: 'Improving the Reaction of Customer Edge Routers to IPv6 Renumbering Events'
+  Result: Found in Section 7.2
+  Section Title: Informative References
+  Content Preview:    [6MAN-SLAAC-RENUM ]
+              Gont, F., Zorz, J., and R. Patterson, "Improving the
+          ...
+---------------------------------------------------------------------------
+

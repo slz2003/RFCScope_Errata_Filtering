@@ -1,0 +1,1229 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-3/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   TACACS+ over TLS takes the protocol defined in [RFC8907], removes the
+   option for obfuscation, and specifies that TLS 1.3 be used for
+   transport (Section 3.1 elaborates on TLS version support)....
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8907
+  Reference Type: TEXT
+  Reference Value (keywords/section): TACACS+ Protocol
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '3.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1
+  Section Title: Separating TLS Connections
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8907:
+  Search Keywords: 'TACACS+ Protocol'
+  Result: Found in Section 4
+  Section Title: TACACS+ Packets and Sessions
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   1.  Confidentiality and Integrity: The MD5 algorithm underlying the
+       obfuscation mechanism specified in [RFC8907] has been shown to be
+       insecure [RFC6151] when used for encryption.  Thi...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8907
+  Reference Type: TEXT
+  Reference Value (keywords/section): obfuscation mechanism
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC6151
+  Reference Type: TEXT
+  Reference Value (keywords/section): MD5 algorithm
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: FIPS-140-3
+  Reference Type: TEXT
+  Reference Value (keywords/section): Security Requirements for Cryptographic Modules
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6151:
+  Search Keywords: 'MD5 algorithm'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    MD5 [MD5] is a message digest algorithm that takes as input a message
+   of arbitrary length and ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   2.  Peer authentication: The authentication capabilities of TLS
+       replace the shared secrets of obfuscation for mutual
+       authentication.
+
+   This document adheres to the recommendations i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-uta-require-tls13-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): recommendations
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-uta-require-tls13-12:
+  Search Keywords: 'recommendations'
+  Result: Found in Section 8
+  Section Title: References
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Peers implementing the TACACS+ protocol variant defined in this
+   document MUST apply mutual authentication and encrypt all data
+   exchanged between them.  Therefore, when a TCP connection is
+   ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Well-Known TCP/IP Port Number
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   To ensure clear separation between TACACS+ traffic using TLS and that
+   which does not (see Section 5.3), servers supporting TACACS+ over TLS
+   MUST listen on a TCP/IP port distinct from that use...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Well-Known TCP/IP Port Number
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.1.1
+  Section Title: TLS Use
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Given the prevalence of default port usage in existing TACACS+ client
+   implementations, this specification assigns the well-known TCP port
+   number 300 for TACACS+ over TLS (see Section 7).
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '7'
+  Match Type: Exact match
+  Result: Matched to Section 7
+  Section Title: IANA Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   While the use of the designated port number is strongly encouraged,
+   deployments with specific requirements MAY use alternative TCP port
+   numbers.  In such cases, operators must carefully consi...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Well-Known TCP/IP Port Number
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   A TACACS+ client initiates a TLS connection by making a TCP
+   connection to a configured TLS TACACS+ server on the TACACS+ TLS port
+   number.  Once the TCP connection is established, the client M...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   A minimum of TLS 1.3 [RFC8446] MUST be used for transport.  It is
+   expected that TACACS+, as described in this document, will work with
+   future versions of TLS.  Earlier versions of TLS MUST NO...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: TEXT
+  Reference Value (keywords/section): TACACS+
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS 1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9887:
+  Search Keywords: 'TACACS+'
+  Result: Found in Section 3.2
+  Section Title: TLS Connection
+  Content Preview:    A TACACS+ client initiates a TLS connection by making a TCP
+   connection to a configured TLS TAC...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Once the TLS connection has been successfully established, the
+   exchange of TACACS+ data MUST proceed in accordance with the
+   procedures defined in [RFC8907].  However, all TACACS+ messages SHA...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8907
+  Reference Type: TEXT
+  Reference Value (keywords/section): TACACS+ obfuscation mechanism
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: Obsolescence of TACACS+ Obfuscation
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8907:
+  Search Keywords: 'TACACS+ obfuscation mechanism'
+  Result: Found in Section 10.1
+  Section Title: General Security of the Protocol
+  Content Preview:    The TACACS+ protocol does not include a security mechanism that would
+   meet modern-day requirem...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   TLS TACACS+ connections are generally not long-lived.  The connection
+   will be closed by either a peer if it encounters an error or an
+   inactivity timeout.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   For connections not operating in Single Connection Mode (as defined
+   in Section 4.3 of [RFC8907]), the TCP session SHALL be closed upon
+   completion of the associated TACACS+ session.  Connectio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8907
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8907
+  Reference Type: TEXT
+  Reference Value (keywords/section): TACACS+ session
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8907:
+  Looking for Section: '4.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.3
+  Section Title: Single Connection Mode
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8907:
+  Search Keywords: 'TACACS+ session'
+  Result: Found in Section 4
+  Section Title: TACACS+ Packets and Sessions
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Why a connection is closed has no bearing on TLS resumption, unless
+   closed by a TLS error, in which case it is possible that the ticket
+   has been invalidated.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   TACACS+ clients and servers widely support IPv6 configuration in
+   addition to IPv4.  This document makes no changes to recommendations
+   in this area.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Implementations MUST support certificate-based mutual authentication,
+   to provide a core option for interoperability between deployments.
+   This authentication option is specified in Section 3.4...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '3.4'
+  Match Type: Exact match
+  Result: Matched to Section 3.4
+  Section Title: TLS Certificate-Based Authentication
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '3.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.5
+  Section Title: TLS PSK Authentication
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   *  Raw Public Keys (RPKs).  The details of RPKs are considered out of
+      scope for this document.  Refer to [RFC7250] and Section 4.4.2 of
+      [RFC8446] for implementation, deployment, and sec...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7250
+  Reference Type: TEXT
+  Reference Value (keywords/section): Raw Public Keys
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7250:
+  Search Keywords: 'Raw Public Keys'
+  Result: Found in Section 6
+  Section Title: Security Considerations
+  Content Preview:    The transmission of raw public keys, as described in this document,
+   provides benefits by lower...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.4.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.4.2
+  Section Title: Certificate
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   TLS certificate authentication is the primary authentication option
+   for TACACS+ over TLS.  This section covers certificate-based
+   authentication only.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Deploying TLS certificate-based authentication correctly will
+   considerably improve the security of TACACS+ deployments.  It is
+   essential for implementers and operators to understand the
+   im...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.4.1
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: BCP195
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS certificate-based authentication
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '3.4.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.4.1
+  Section Title: TLS Certificate Path Verification
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC195:
+  Search Keywords: 'TLS certificate-based authentication'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   If the verification succeeds, the authentication is successful and
+   the connection is permitted.  Policy may impose further constraints
+   upon the peer, allowing or denying the connection based ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   The implementation of certificate-based mutual authentication MUST
+   support certificate path validation as described in Section 6 of
+   [RFC5280].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5280
+  Reference Type: TEXT
+  Reference Value (keywords/section): certificate path validation
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '6'
+  Match Type: Exact match
+  Result: Matched to Section 6
+  Section Title: Operational Considerations
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5280:
+  Search Keywords: 'certificate path validation'
+  Result: Found in Section 6.1
+  Section Title: Basic Path Validation
+  Content Preview:    This text describes an algorithm for X.509 path processing.  A
+   conforming implementation MUST ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   In some deployments, a peer may be isolated from a remote peer's CA.
+   Implementations for these deployments MUST support certificate chains
+   (aka bundles or chains of trust), where the entire c...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   TLS Cached Information Extension [RFC7924] SHOULD be implemented.
+   This MAY be augmented with RPKs [RFC7250], though revocation must be
+   handled as it is not part of that specification.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7924
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS Cached Information Extension
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7250
+  Reference Type: TEXT
+  Reference Value (keywords/section): RPKs
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7250:
+  Search Keywords: 'RPKs'
+  Result: Found in Section 6
+  Section Title: Security Considerations
+  Content Preview:    The transmission of raw public keys, as described in this document,
+   provides benefits by lower...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Other approaches may be used for loading the intermediate
+   certificates onto the client, but they MUST include support for
+   revocation checking.  For example, [RFC5280] details the Authority
+  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5280
+  Reference Type: SECTION
+  Reference Value (keywords/section): Authority Information Access
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5280
+  Reference Type: TEXT
+  Reference Value (keywords/section): Online Certificate Status Protocol
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC5280:
+  Looking for Section: 'Authority Information Access'
+  Match Type: Fuzzy match (score: 6.896551724137934)
+  Result: Matched to Section A
+  Section Title: Pseudo-ASN.1 Structures and OIDs
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5280:
+  Search Keywords: 'Online Certificate Status Protocol'
+  Result: Found in Section 3.4
+  Section Title: Operational Protocols
+  Content Preview:    Operational protocols are required to deliver certificates and CRLs
+   (or status information) to...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   For the client-side validation of presented TLS TACACS+ server
+   identities, implementations MUST follow the validation techniques
+   defined in [RFC9525].  Identifier types DNS-ID, IP-ID, or SRV-...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: TEXT
+  Reference Value (keywords/section): client-side validation of presented TLS TACACS+ server identities
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9525
+  Reference Type: TEXT
+  Reference Value (keywords/section): validation techniques
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9887:
+  Search Keywords: 'client-side validation of presented TLS TACACS+ server identities'
+  Result: Found in Section 3.4.2
+  Section Title: TLS Certificate Identification
+  Content Preview:    For the client-side validation of presented TLS TACACS+ server
+   identities, implementations MUS...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9525:
+  Search Keywords: 'validation techniques'
+  Result: Found in Section 1.1
+  Section Title: Motivation
+  Content Preview:    The visible face of the Internet largely consists of services that
+   employ a client-server arch...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Wildcards in TLS TACACS+ server identities simplify certificate
+   management by allowing a single certificate to secure multiple
+   servers in a deployment.  However, this introduces security risk...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9525
+  Reference Type: TEXT
+  Reference Value (keywords/section): Service Identity in TLS
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '6.3'
+  Match Type: Exact match
+  Result: Matched to Section 6.3
+  Section Title: YANG Model for TACACS+ Clients
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   For the TLS TACACS+ server-side validation of client identities,
+   implementations MUST support the ability to configure which fields of
+   a certificate are used for client identification to veri...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5425
+  Reference Type: TEXT
+  Reference Value (keywords/section): Network-address-based validation methods
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: TACACS+ Configuration
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5425:
+  Search Keywords: 'Network-address-based validation methods'
+  Result: Found in Section 5.2
+  Section Title: Subject Name Authorization
+  Content Preview:    Implementations MUST support certification path validation [RFC5280].
+   In addition, they MUST s...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   *  Client Identity validation of a shared identity in the certificate
+      subjectAltName.  This is applicable in deployments where the
+      client securely supports an identity which is shared w...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5280
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.1.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC5280:
+  Looking for Section: '4.2.1.6'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.1.6
+  Section Title: Subject Alternative Name
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Implementations MUST support the TLS Server Name Indication (SNI)
+   extension (Section 3 of [RFC6066]).  TLS TACACS+ clients MUST support
+   the ability to configure the TLS TACACS+ server's domai...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6066
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC6066:
+  Looking for Section: '3'
+  Match Type: Exact match
+  Result: Matched to Section 3
+  Section Title: Server Name Indication
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 5.1.5
+  Section Title: TLS Server Name Indicator (SNI)
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Implementations MUST support the TLS 1.3 mandatory cipher suites
+   (Section 9.1 of [RFC8446]).  Readers should refer to [BCP195].  The
+   cipher suites offered or accepted SHOULD be configurable s...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 9.1
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: BCP195
+  Reference Type: TEXT
+  Reference Value (keywords/section): Best Current Practice 195
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS Protocol Version 1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '9.1'
+  Match Type: Exact match
+  Result: Matched to Section 9.1
+  Section Title: Normative References
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC195:
+  Search Keywords: 'Best Current Practice 195'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   As an alternative to certificate-based authentication,
+   implementations MAY support PSKs, also known as external PSKs in TLS
+   1.3 [RFC8446].  These should not be confused with resumption PSKs.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: TEXT
+  Reference Value (keywords/section): certificate-based authentication
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '1.3'
+  Match Type: Fuzzy match (score: 75.0)
+  Result: Matched to Section 5.1.3
+  Section Title: TLS Options
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8446:
+  Search Keywords: 'certificate-based authentication'
+  Result: Found in Section C.2
+  Section Title: Certificates and Authentication
+  Content Preview:    Implementations are responsible for verifying the integrity of
+   certificates and should general...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   The use of external PSKs is less well established than certificate-
+   based authentication.  It is RECOMMENDED that systems follow the
+   directions of [RFC9257] and Section 4 of [RFC8446].
+
+   Wh...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9257
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: Handshake Protocol
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9257:
+  Looking for Section: '6.1'
+  Match Type: Exact match
+  Result: Matched to Section 6.1
+  Section Title: Stack Interfaces
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Although this document removes the option of obfuscation (Section 4),
+   it is still possible that the TLS and non-TLS versions of TACACS+
+   exist in an organization, for example, during migration...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: Obsolescence of TACACS+ Obfuscation
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '6.1'
+  Match Type: Exact match
+  Result: Matched to Section 6.1
+  Section Title: Migration
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   TLS Resumption [RFC8446] can minimize the number of round trips
+   required during the handshake process.  If a TLS client holds a
+   ticket previously extracted from a NewSessionTicket message fro...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS Resumption
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: TEXT
+  Reference Value (keywords/section): NewSessionTicket message
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9887:
+  Search Keywords: 'TLS Resumption'
+  Result: Found in Section 3.6
+  Section Title: TLS Resumption
+  Content Preview:    TLS Resumption [RFC8446] can minimize the number of round trips
+   required during the handshake ...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8446:
+  Search Keywords: 'NewSessionTicket message'
+  Result: Found in Section 4.6.1
+  Section Title: New Session Ticket Message
+  Content Preview:    At any time after the server has received the client Finished
+   message, it MAY send a NewSessio...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   The client SHOULD use resumption when it holds a valid unused ticket
+   from the TLS TACACS+ server, as each ticket is intended for a single
+   use only and will be refreshed during resumption.  Th...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   When a TLS TACACS+ server is presented with a resumption request from
+   the TLS client, it MAY still choose to require a full handshake.  In
+   this case, the negotiation proceeds as if the sessio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): C.4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): C.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: 'C.4'
+  Match Type: Exact match
+  Result: Matched to Section C.4
+  Section Title: Client Tracking Prevention
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: 'C.4'
+  Match Type: Exact match
+  Result: Matched to Section C.4
+  Section Title: Client Tracking Prevention
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   When processing TLS resumption, certificates must be verified to
+   check for revocation during the period since the last
+   NewSessionTicket Message.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   The resumption ticket_lifetime SHOULD be configurable, including a
+   zero seconds lifetime.  Refer to Section 4.6.1 of [RFC8446] for
+   guidance on ticket lifetime.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.6.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: TEXT
+  Reference Value (keywords/section): ticket lifetime
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.6.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.6.1
+  Section Title: New Session Ticket Message
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8446:
+  Search Keywords: 'ticket lifetime'
+  Result: Found in Section 4.6.1
+  Section Title: New Session Ticket Message
+  Content Preview:    At any time after the server has received the client Finished
+   message, it MAY send a NewSessio...
+---------------------------------------------------------------------------
+

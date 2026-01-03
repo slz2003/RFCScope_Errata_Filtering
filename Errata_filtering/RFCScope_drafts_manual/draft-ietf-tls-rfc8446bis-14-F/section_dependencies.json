@@ -1,0 +1,842 @@
+[
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "3552",
+    "reference_type": "SECTION",
+    "reference_value": "3.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "CK01",
+    "reference_type": "TEXT",
+    "reference_value": "Analysis of Key-Exchange Protocols and Their Use for Building Secure Channels",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1007/3-540-44987-6_28",
+    "reference_text": "Canetti, R. and H. Krawczyk, \"Analysis of Key-Exchange Protocols and Their Use for Building Secure Channels\", Springer Berlin Heidelberg, Lecture Notes in Computer Science pp. 453-474, DOI 10.1007/3-540-44987-6_28, ISBN [\"9783540420705\", \"9783540449874\"], 2001, <https://doi.org/10.1007/3-540-44987-6_28>.",
+    "reference_summary": "In their 2001 paper, \"Analysis of Key-Exchange Protocols and Their Use for Building Secure Channels,\" Ran Canetti and Hugo Krawczyk introduce a formal framework for evaluating key-exchange protocols. This framework integrates previous definitional approaches to establish a security definition with notable analytical advantages:\n\n1. **Composition with Symmetric Functions**: Protocols meeting this security definition can be combined with symmetric encryption and authentication functions to create provably secure communication channels.\n\n2. **Modular Security Proofs**: The definition facilitates modular proofs of security. Designers can prove the security of key-exchange protocols in an idealized model with perfectly authenticated communication links and then adapt these proofs to real-world scenarios where adversaries control the links.\n\nThe authors demonstrate the practicality of their framework by applying it to two classes of key-exchange protocols:\n\n- **Diffie-Hellman Protocols**: These protocols are authenticated using symmetric or asymmetric techniques.\n\n- **Key-Transport Protocols**: Similarly, these are authenticated through symmetric or asymmetric methods.\n\nThis work provides a condensed overview of their results; for a comprehensive treatment, the authors refer readers to a more detailed version of their study. ([link.springer.com](https://link.springer.com/chapter/10.1007/3-540-44987-6_28?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "BBFGKZ16",
+    "reference_type": "TEXT",
+    "reference_value": "Downgrade Resilience in Key-Exchange Protocols",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1109/sp.2016.37",
+    "reference_text": "Bhargavan, K., Brzuska, C., Fournet, C., Green, M., Kohlweiss, M., and S. Zanella-Beguelin, \"Downgrade Resilience in Key-Exchange Protocols\", IEEE, 2016 IEEE Symposium on Security and Privacy (SP), DOI 10.1109/sp.2016.37, May 2016, <https://doi.org/10.1109/sp.2016.37>.",
+    "reference_summary": "The paper \"Downgrade Resilience in Key-Exchange Protocols\" by Bhargavan et al. (2016) addresses the security vulnerabilities in key-exchange protocols, particularly focusing on downgrade attacks. These attacks occur when an adversary forces a communication protocol to fall back to a less secure version or cipher suite, compromising the overall security.\n\nThe authors analyze existing key-exchange protocols, such as TLS, and identify potential weaknesses that could be exploited in downgrade attacks. They propose a formal framework to assess the downgrade resilience of these protocols, providing a systematic method to evaluate their security against such threats.\n\nTo enhance security, the paper introduces a set of design principles aimed at improving the downgrade resilience of key-exchange protocols. These principles include strict version negotiation, cryptographic agility, and robust fallback mechanisms. By adhering to these guidelines, protocol designers can develop systems that are more resistant to downgrade attacks.\n\nThe study also presents a case study on the Transport Layer Security (TLS) protocol, demonstrating how the proposed framework and design principles can be applied to analyze and strengthen real-world protocols. The authors highlight specific vulnerabilities in TLS and suggest modifications to mitigate potential downgrade attacks.\n\nIn conclusion, the paper emphasizes the importance of considering downgrade resilience in the design and analysis of key-exchange protocols. By adopting the proposed framework and design principles, protocol developers can enhance the security of their systems against downgrade attacks. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "DOW92",
+    "reference_type": "TEXT",
+    "reference_value": "Authentication and authenticated key exchanges",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1007/bf00124891",
+    "reference_text": "Diffie, W., Van Oorschot, P., and M. Wiener, \"Authentication and authenticated key exchanges\", Springer Science and Business Media LLC, Designs, Codes and Cryptography vol. 2, no. 2, pp. 107-125, DOI 10.1007/bf00124891, June 1992, <https://doi.org/10.1007/bf00124891>.",
+    "reference_summary": "In their 1992 paper, \"Authentication and Authenticated Key Exchanges,\" Diffie, van Oorschot, and Wiener explore protocols for two-party mutual authentication that also facilitate authenticated key exchange, with a particular emphasis on asymmetric cryptographic techniques. They introduce the Station-to-Station (STS) protocol, designed to be both simple and efficient, and provide a detailed examination of its operation and security properties. \n\nThe STS protocol enhances the classic Diffie-Hellman key exchange by incorporating digital signatures and public-key certificates, thereby mitigating vulnerabilities such as man-in-the-middle attacks. This integration ensures that both parties can authenticate each other's identities while establishing a shared secret key over an insecure channel. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Station-to-Station_protocol?utm_source=openai))\n\nThe authors also discuss the criteria for defining a secure authentication protocol and outline desirable characteristics, including resistance to various attacks and efficiency in computation and communication. They compare the STS protocol to existing methods, highlighting its advantages in providing mutual authentication and key exchange simultaneously. \n\nOverall, the paper contributes to the field by presenting a robust protocol that addresses key challenges in secure communications, particularly in scenarios where parties must establish trust and confidentiality without prior shared secrets. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "HGFS15",
+    "reference_type": "TEXT",
+    "reference_value": "KCI attacks against TLS",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "Hlauschek, C., Gruber, M., Fankhauser, F., and C. Schanes, \"Prying Open Pandora's Box: KCI Attacks against TLS\", Proceedings of USENIX Workshop on Offensive Technologies , 2015.",
+    "reference_summary": "In their 2015 paper, \"Prying Open Pandora's Box: KCI Attacks against TLS,\" Hlauschek et al. examine the vulnerability of the Transport Layer Security (TLS) protocol to Key Compromise Impersonation (KCI) attacks. ([usenix.org](https://www.usenix.org/system/files/conference/woot15/woot15-paper-hlauschek.pdf?utm_source=openai))\n\n**Key Compromise Impersonation (KCI) Attacks:**\nKCI attacks exploit scenarios where an adversary gains access to a client's private key. Unlike traditional attacks where the compromised party is impersonated, KCI allows the attacker to impersonate any server to the compromised client. This enables the adversary to perform man-in-the-middle (MitM) attacks, intercepting and potentially altering communications between the client and legitimate servers.\n\n**TLS Vulnerabilities to KCI:**\nThe authors identify that certain TLS key exchange and authentication methods are susceptible to KCI attacks, specifically:\n\n- **Non-Ephemeral Diffie-Hellman Key Exchange with Fixed Diffie-Hellman Client Authentication:** This includes both classical integer groups modulo a prime and elliptic curve groups.\n\nIn these methods, the session key is derived from static Diffie-Hellman values, making them vulnerable to KCI attacks. TLS clients supporting these handshakes can be exploited, leading to full MitM attacks.\n\n**Practical Implications:**\nThe paper presents an evaluation of the TLS software landscape concerning KCI vulnerabilities. Notably, the authors successfully executed a MitM attack against the Safari web browser on Mac OS X, demonstrating the practical risk posed by these vulnerabilities.\n\n**Recommendations:**\nTo mitigate the risks associated with KCI attacks, the authors recommend:\n\n- **Disabling Insecure TLS Options:** Clients should immediately disable support for non-ephemeral Diffie-Hellman handshakes with fixed client authentication.\n\n- **Protocol and Implementation Updates:** Future versions and implementations of the TLS protocol should remove these insecure key agreement options, as their utility is minimal, and their presence increases the attack surface against secure internet communications.\n\nBy addressing these vulnerabilities, the security of TLS can be significantly enhanced, reducing the risk of KCI-based MitM attacks. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "SIGMA",
+    "reference_type": "TEXT",
+    "reference_value": "design and analysis of key exchange protocol",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1007/978-3-540-45146-4_24",
+    "reference_text": "Krawczyk, H., \"SIGMA: The \u2018SIGn-and-MAc\u2019 Approach to Authenticated Diffie-Hellman and Its Use in the IKE Protocols\", Springer Berlin Heidelberg, Lecture Notes in Computer Science pp. 400-425, DOI 10.1007/978-3-540-45146-4_24, ISBN [\"9783540406747\", \"9783540451464\"], 2003, <https://doi.org/10.1007/978-3-540-45146-4_24>.",
+    "reference_summary": "The SIGMA (SIGn-and-MAc) protocol, introduced by Hugo Krawczyk in 2003, is a family of key-exchange protocols designed to provide secure and authenticated Diffie-Hellman exchanges. The primary goal of SIGMA is to achieve perfect forward secrecy while ensuring robust authentication through digital signatures. This design is particularly tailored to meet practical requirements such as optional identity protection and minimizing the number of protocol rounds, making it well-suited for real-world applications and standardization efforts. \n\nA notable application of the SIGMA protocol is its integration into the Internet Key Exchange (IKE) protocols, specifically in their signature-based modes. This incorporation underscores SIGMA's adaptability and effectiveness in standardized key exchange mechanisms. \n\nThe design rationale behind SIGMA emphasizes addressing the complexities inherent in secure key-exchange protocols, with a particular focus on identity protection. By comparing SIGMA to other protocols, such as the Station-to-Station (STS) protocol and its variants, Krawczyk highlights how SIGMA overcomes certain security shortcomings found in previous designs. \n\nIn summary, the SIGMA protocol offers a robust framework for authenticated Diffie-Hellman key exchanges, balancing security requirements with practical considerations, and has been influential in the development of secure communication protocols like IKE. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "7624",
+    "reference_type": "SECTION",
+    "reference_value": "3.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8773",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Kraw16",
+    "reference_type": "TEXT",
+    "reference_value": "unilateral-to-mutual authentication compiler",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2016/711",
+    "reference_text": "Krawczyk, H., \"A Unilateral-to-Mutual Authentication Compiler for Key Exchange (with Applications to Client Authentication in TLS 1.3\", Proceedings of ACM CCS 2016 , October 2016, <https://eprint.iacr.org/2016/711>.",
+    "reference_summary": "In his 2016 paper, \"A Unilateral-to-Mutual Authentication Compiler for Key Exchange (with Applications to Client Authentication in TLS 1.3),\" Hugo Krawczyk addresses the challenge of transforming unilaterally authenticated (UA) key exchange protocols\u2014where only one party authenticates\u2014into mutually authenticated (MA) protocols, where both parties authenticate each other. This transformation is particularly relevant in protocols like TLS, which traditionally focus on server-only authentication but may require client authentication as well.\n\nKrawczyk introduces a straightforward and efficient compiler designed to upgrade UA protocols to MA protocols. The compiler is applicable to a broad class of UA protocols, enhancing their security by enabling mutual authentication. This work is especially pertinent to the development of TLS 1.3, as it provides a modular approach to analyzing and implementing client authentication mechanisms, including the complex scenario of post-handshake authentication.\n\nA key contribution of the paper is the introduction of the \"functional security\" concept, which generalizes key exchange models. This concept aids in the systematic analysis and design of authentication mechanisms, ensuring that the transition from unilateral to mutual authentication maintains robust security properties.\n\nFor a comprehensive understanding of the compiler and its applications, you can refer to the full paper available at:\n\n([eprint.iacr.org](https://eprint.iacr.org/2016/711.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "PSK-FINISHED",
+    "reference_type": "TEXT",
+    "reference_value": "attack client authentication PSK",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://www.ietf.org/mail-archive/web/tls/current/",
+    "reference_text": "Cremers, C., Horvat, M., van der Merwe, T., and S. Scott, \"Revision 10: possible attack if client authentication is allowed during PSK\", message to the TLS mailing list, , 2015, <https://www.ietf.org/mail-archive/web/tls/current/ msg18215.html >.",
+    "reference_summary": "In the message titled \"Revision 10: possible attack if client authentication is allowed during PSK,\" Sam Scott and colleagues discuss a vulnerability in TLS 1.3 draft revision 10 when client authentication is combined with Pre-Shared Key (PSK) resumption. ([mailarchive.ietf.org](https://mailarchive.ietf.org/arch/msg/tls/TugB5ddJu3nYg7chcyeIyUqWSbA/?utm_source=openai))\n\nThe attack scenario involves an adversary exploiting the client authentication process during a PSK resumption handshake. Specifically, the client signature, which is intended to authenticate the client, is computed over the handshake hash. This hash includes nonces and other easily replicable information but omits the server's certificate (since it's not presented in PSK mode) and the server's Finished message. As a result, an attacker can relay the client's signature from one session to another, effectively impersonating the client.\n\nTo mitigate this vulnerability, the authors reference a proposed modification in pull request #316, which redefines the client signature to be based on a new \"Handshake Context\" value that includes the server's Finished message. This adjustment aims to prevent the attack by ensuring that the client signature is bound to the specific session, making it infeasible for an attacker to reuse the signature across different sessions.\n\nThis analysis underscores the importance of carefully designing authentication mechanisms in protocols that support PSK resumption to prevent potential impersonation attacks. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.1.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "5869",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Kraw10",
+    "reference_type": "TEXT",
+    "reference_value": "rationale for HKDF construction",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2010/264",
+    "reference_text": "Krawczyk, H., \"Cryptographic Extraction and Key Derivation: The HKDF Scheme\", Proceedings of CRYPTO 2010 , 2010, <https://eprint.iacr.org/2010/264>.",
+    "reference_summary": "In \"Cryptographic Extraction and Key Derivation: The HKDF Scheme,\" Hugo Krawczyk introduces the HMAC-based Key Derivation Function (HKDF) to address the need for a standardized, secure, and efficient key derivation function (KDF) suitable for diverse cryptographic applications. ([eprint.iacr.org](https://eprint.iacr.org/2010/264?utm_source=openai))\n\nThe rationale behind HKDF's construction is grounded in the \"extract-then-expand\" paradigm, which consists of two distinct stages:\n\n1. **Extract Stage**: This initial phase processes the input keying material (IKM), which may possess varying degrees of entropy, to produce a fixed-length pseudorandom key. This step ensures that the output is a high-entropy key, regardless of the quality of the IKM.\n\n2. **Expand Stage**: In this subsequent phase, the pseudorandom key generated in the extract stage is expanded into multiple keys of desired lengths. This expansion is achieved using HMAC, leveraging its pseudorandomness properties to produce cryptographic keys suitable for various applications.\n\nKrawczyk emphasizes that this two-step approach offers several advantages:\n\n- **Modularity**: By separating the extraction and expansion processes, HKDF can handle input materials with varying entropy levels and still produce secure keys.\n\n- **Security**: The use of HMAC in both stages leverages its well-established security properties, ensuring that the derived keys are pseudorandom and suitable for cryptographic use.\n\n- **Efficiency**: HKDF is designed to be computationally efficient, making it practical for a wide range of applications without imposing significant performance overhead.\n\nThe paper also provides a rigorous analysis of HKDF's security, demonstrating that under suitable assumptions about the underlying hash function, HKDF can securely support a variety of KDF applications. This analysis aims to bridge the gap between theoretical models and practical implementations, offering a KDF design that is both theoretically sound and practically viable.\n\nIn summary, the construction of HKDF is motivated by the need for a versatile, secure, and efficient KDF that can be standardized for use across multiple cryptographic applications. The extract-then-expand design, combined with the use of HMAC, ensures that HKDF meets these requirements effectively. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "KW16",
+    "reference_type": "TEXT",
+    "reference_value": "rationale for HKDF in TLS 1.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2015/978",
+    "reference_text": "Krawczyk, H. and H. Wee, \"The OPTLS Protocol and TLS 1.3\", Proceedings of Euro S&P 2016 , 2016, <https://eprint.iacr.org/2015/978>.",
+    "reference_summary": "In \"The OPTLS Protocol and TLS 1.3,\" Krawczyk and Wee introduce the OPTLS key-exchange protocol, which has significantly influenced the design of TLS 1.3. A key aspect of this design is the adoption of the HMAC-based Extract-and-Expand Key Derivation Function (HKDF) for key derivation. The rationale for integrating HKDF into TLS 1.3 includes:\n\n1. **Uniform and Modular Design**: HKDF provides a consistent and modular approach to key derivation, simplifying the protocol's specification, analysis, and future maintenance.\n\n2. **Support for 0-RTT Requirement**: TLS 1.3 introduces a \"zero round trip time\" (0-RTT) feature, allowing clients with a previously retrieved or cached public key of the server to send protected data in the first flow of the protocol. HKDF facilitates this by efficiently deriving keys from initial shared secrets.\n\n3. **Mandatory Forward Secrecy**: Forward secrecy (PFS) is a mandatory requirement in TLS 1.3. HKDF aids in achieving PFS by securely deriving session keys that do not compromise past communications if long-term keys are compromised.\n\n4. **Transition to Elliptic Curve Cryptography**: TLS 1.3 emphasizes the use of elliptic curves for performance and security reasons. HKDF complements this transition by providing a robust key derivation mechanism suitable for elliptic curve-based key exchanges.\n\nBy incorporating HKDF, TLS 1.3 benefits from a streamlined and secure key derivation process that aligns with its goals of enhanced security, performance, and simplicity. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "CHHSV17",
+    "reference_type": "TEXT",
+    "reference_value": "client/server view on client authentication",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://www.ietf.org/mail-",
+    "reference_text": "Cremers, C., Horvat, M., Hoyland, J., van der Merwe, T., and S. Scott, \"Awkward Handshake: Possible mismatch of client/server view on client authentication in post- handshake mode in Revision 18\", message to the TLS mailing list , February 2017, <https://www.ietf.org/mail- archive/web/tls/current/msg22382.html >.",
+    "reference_summary": "The document titled \"Awkward Handshake: Possible mismatch of client/server view on client authentication in post-handshake mode in Revision 18\" by Cremers et al. discusses potential discrepancies between client and server perspectives regarding client authentication during the post-handshake phase in TLS 1.3, as specified in draft-ietf-tls-tls13-18.\n\nIn TLS 1.3, client authentication can occur either during the initial handshake or after the handshake has completed (post-handshake authentication). The authors identify a scenario where the client and server might have differing views on the client's authentication status during post-handshake authentication. Specifically, the server may consider the client authenticated after a successful post-handshake authentication, while the client might not recognize this authentication state. This mismatch can lead to security vulnerabilities, such as unauthorized access or privilege escalation.\n\nThe authors recommend clarifying the TLS 1.3 specification to ensure both parties have a consistent understanding of the authentication state, thereby mitigating potential security risks associated with this mismatch. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Kraw16",
+    "reference_type": "TEXT",
+    "reference_value": "unilateral-to-mutual authentication compiler for key exchange",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2016/711",
+    "reference_text": "Krawczyk, H., \"A Unilateral-to-Mutual Authentication Compiler for Key Exchange (with Applications to Client Authentication in TLS 1.3\", Proceedings of ACM CCS 2016 , October 2016, <https://eprint.iacr.org/2016/711>.",
+    "reference_summary": "In his 2016 paper, \"A Unilateral-to-Mutual Authentication Compiler for Key Exchange (with Applications to Client Authentication in TLS 1.3),\" Hugo Krawczyk addresses the challenge of transforming unilaterally authenticated (UA) key exchange protocols\u2014where only one party authenticates\u2014into mutually authenticated (MA) protocols, where both parties authenticate each other. This transformation is particularly relevant in protocols like TLS, which traditionally focus on server-only authentication but may require client authentication as well.\n\nKrawczyk introduces a straightforward and efficient compiler designed to upgrade UA protocols to MA protocols. The compiler is applicable to a broad class of UA protocols, making it versatile for various implementations. A key innovation in this work is the concept of \"functional security,\" a generalization of key exchange models that facilitates modular analysis of authentication mechanisms. This concept is especially pertinent to the development of TLS 1.3, aiding in the design and analysis of client authentication methods, including the complex scenario of post-handshake authentication.\n\nBy providing a systematic approach to achieving mutual authentication from unilateral authentication, Krawczyk's compiler offers a valuable tool for enhancing the security and functionality of key exchange protocols. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "8",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.5"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "CCG16",
+    "reference_type": "TEXT",
+    "reference_value": "post-compromise security",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1109/csf.2016.19",
+    "reference_text": "Cohn-Gordon, K., Cremers, C., and L. Garratt, \"On Post- compromise Security\", IEEE, 2016 IEEE 29th Computer Security Foundations Symposium (CSF) pp. 164-178, DOI 10.1109/csf.2016.19, June 2016, <https://doi.org/10.1109/csf.2016.19>.",
+    "reference_summary": "The paper \"On Post-Compromise Security\" by Cohn-Gordon, Cremers, and Garratt, presented at the 2016 IEEE 29th Computer Security Foundations Symposium, introduces and formalizes the concept of post-compromise security (PCS) within cryptographic protocols. PCS refers to a protocol's ability to recover and maintain security even after an adversary has compromised a participant's secret keys.\n\nThe authors provide a rigorous definition of PCS and analyze its implications for various cryptographic protocols. They demonstrate that achieving PCS requires protocols to incorporate mechanisms for key updates and state re-randomization, ensuring that any compromised state does not indefinitely affect future communications. The paper also presents a framework for evaluating PCS in existing protocols and proposes design principles for developing new protocols that can effectively recover from compromises.\n\nThis work is significant in the field of cryptography, as it addresses the challenges posed by key compromise scenarios and offers strategies to enhance the resilience of secure communication protocols. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.6"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "BBK17",
+    "reference_type": "TEXT",
+    "reference_value": "Verified Models and Reference Implementations for the TLS 1.3 Standard Candidate",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1109/sp.2017.26",
+    "reference_text": "Bhargavan, K., Blanchet, B., and N. Kobeissi, \"Verified Models and Reference Implementations for the TLS 1.3 Standard Candidate\", IEEE, 2017 IEEE Symposium on Security and Privacy (SP) pp. 483-502, DOI 10.1109/sp.2017.26, May 2017, <https://doi.org/10.1109/sp.2017.26>.",
+    "reference_summary": "The paper titled \"Verified Models and Reference Implementations for the TLS 1.3 Standard Candidate\" by Bhargavan, Blanchet, and Kobeissi, presented at the 2017 IEEE Symposium on Security and Privacy, focuses on the formal verification of the TLS 1.3 protocol. The authors developed verified models and reference implementations to ensure the security and correctness of the TLS 1.3 standard candidate. Their work involves creating formal models that can be mathematically analyzed and verified, as well as developing reference implementations that serve as benchmarks for evaluating other implementations of the protocol. This approach aims to identify and address potential vulnerabilities in the protocol before its widespread adoption. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.6"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "CHSV16",
+    "reference_type": "TEXT",
+    "reference_value": "Automated Analysis and Verification of TLS 1.3: 0-RTT, Resumption and Delayed Authentication",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1109/sp.2016.35",
+    "reference_text": "Cremers, C., Horvat, M., Scott, S., and T. van der Merwe, \"Automated Analysis and Verification of TLS 1.3: 0-RTT, Resumption and Delayed Authentication\", IEEE, 2016 IEEE Symposium on Security and Privacy (SP) pp. 470-485, DOI 10.1109/sp.2016.35, May 2016, <https://doi.org/10.1109/sp.2016.35>.",
+    "reference_summary": "The paper titled \"Automated Analysis and Verification of TLS 1.3: 0-RTT, Resumption and Delayed Authentication\" by Cas Cremers, Marko Horvat, Sam Scott, and Thyla van der Merwe, presented at the 2016 IEEE Symposium on Security and Privacy, focuses on the formal analysis of the Transport Layer Security (TLS) 1.3 protocol, particularly its 0-RTT (Zero Round-Trip Time) mode, session resumption, and delayed authentication features.\n\nThe authors employ automated verification techniques to assess the security properties of these protocol components. Their analysis identifies potential vulnerabilities and provides insights into the design choices of TLS 1.3. The study contributes to the understanding of the protocol's security guarantees and informs the development of more robust cryptographic protocols.\n\nFor a comprehensive understanding of their findings and methodologies, you can access the full paper through the provided DOI link: https://doi.org/10.1109/sp.2016.35. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.6"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "FG17",
+    "reference_type": "TEXT",
+    "reference_value": "Replay Attacks on Zero Round-Trip Time: The Case of the TLS 1.3 Handshake Candidates",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2017/082",
+    "reference_text": "Fischlin, M. and F. Guenther, \"Replay Attacks on Zero Round-Trip Time: The Case of the TLS 1.3 Handshake Candidates\", Proceedings of Euro S&P 2017 , 2017, <https://eprint.iacr.org/2017/082>.",
+    "reference_summary": "The paper \"Replay Attacks on Zero Round-Trip Time: The Case of the TLS 1.3 Handshake Candidates\" by Marc Fischlin and Felix G\u00fcnther examines the security implications of zero round-trip time (0-RTT) key exchange protocols, particularly focusing on their susceptibility to replay attacks. ([eprint.iacr.org](https://eprint.iacr.org/2017/082?utm_source=openai))\n\nIn 0-RTT protocols, a client can establish a provisional key and send early application data to the server without waiting for a response, based solely on cryptographic material from previous connections. This approach is utilized in protocols like Google's QUIC and the drafts of TLS 1.3.\n\nThe authors analyze how the absence of server contribution in the initial handshake phase makes 0-RTT protocols vulnerable to replay attacks. They specifically assess the key secrecy in two TLS 1.3 draft versions:\n\n- **Draft-14**: Utilizes a preshared-key-based 0-RTT handshake.\n\n- **Draft-12**: Employs a Diffie-Hellman-based 0-RTT handshake.\n\nTo address these vulnerabilities, the paper extends existing security models to better capture the nuances of 0-RTT security in the context of replay attacks. This work highlights the limitations and potential options for enhancing the security of 0-RTT protocols against such attacks. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.6"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "FGSW16",
+    "reference_type": "TEXT",
+    "reference_value": "Key Confirmation in Key Exchange: A Formal Treatment and Implications for TLS 1.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "http://ieeexplore.ieee.org/document/7546517/",
+    "reference_text": "Fischlin, M., Guenther, F., Schmidt, B., and B. Warinschi, \"Key Confirmation in Key Exchange: A Formal Treatment and Implications for TLS 1.3\", Proceedings of IEEE Symposium on Security and Privacy (Oakland) 2016 , 2016, <http://ieeexplore.ieee.org/document/7546517/>.",
+    "reference_summary": "The paper \"Key Confirmation in Key Exchange: A Formal Treatment and Implications for TLS 1.3\" by Fischlin, Guenther, Schmidt, and Warinschi, presented at the IEEE Symposium on Security and Privacy in 2016, provides a comprehensive analysis of key confirmation within key exchange protocols, with a particular focus on its application in TLS 1.3.\n\nKey confirmation is a critical process in key exchange protocols, ensuring that both parties have derived the same session key and that the key is known exclusively to them. This step is vital for maintaining the integrity and confidentiality of communications.\n\nIn their work, the authors offer a formal treatment of key confirmation, establishing precise definitions and security models to evaluate its effectiveness. They explore various methods of implementing key confirmation and assess their security properties.\n\nThe paper also examines the implications of key confirmation for TLS 1.3, the then-upcoming version of the Transport Layer Security protocol. The authors analyze how different approaches to key confirmation can impact the security and performance of TLS 1.3, providing insights that are valuable for the protocol's design and implementation.\n\nFor a detailed understanding of the authors' findings and their implications for TLS 1.3, it is recommended to consult the full paper available at the provided IEEE Xplore link. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.6"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Kraw16",
+    "reference_type": "TEXT",
+    "reference_value": "A Unilateral-to-Mutual Authentication Compiler for Key Exchange (with Applications to Client Authentication in TLS 1.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2016/711",
+    "reference_text": "Krawczyk, H., \"A Unilateral-to-Mutual Authentication Compiler for Key Exchange (with Applications to Client Authentication in TLS 1.3\", Proceedings of ACM CCS 2016 , October 2016, <https://eprint.iacr.org/2016/711>.",
+    "reference_summary": "Hugo Krawczyk's paper, \"A Unilateral-to-Mutual Authentication Compiler for Key Exchange (with Applications to Client Authentication in TLS 1.3),\" addresses the challenge of transforming unilaterally authenticated (UA) key-exchange protocols into mutually authenticated (MA) ones. This transformation is particularly relevant for protocols like TLS, which traditionally focus on server-only authentication with optional client authentication.\n\nThe paper introduces a straightforward and efficient compiler that upgrades a broad class of UA protocols to the MA model. It characterizes the types of UA protocols suitable for this enhancement, encompassing many widely used protocols. A key contribution is the introduction of the \"functional security\" concept, a generalization of key exchange models that facilitates modular analysis of authentication mechanisms.\n\nA significant motivation for this work is the development of TLS 1.3, especially concerning client authentication mechanisms, including post-handshake authentication. The proposed compiler offers a modular approach to analyze and implement these mechanisms, ensuring robust mutual authentication in key-exchange protocols. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.6"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "KW16",
+    "reference_type": "TEXT",
+    "reference_value": "The OPTLS Protocol and TLS 1.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2015/978",
+    "reference_text": "Krawczyk, H. and H. Wee, \"The OPTLS Protocol and TLS 1.3\", Proceedings of Euro S&P 2016 , 2016, <https://eprint.iacr.org/2015/978>.",
+    "reference_summary": "The paper \"The OPTLS Protocol and TLS 1.3\" by Hugo Krawczyk and Hoeteck Wee introduces the OPTLS key-exchange protocol, designed to address the evolving security and functional requirements of the TLS 1.3 protocol. The authors highlight several key motivations for this design:\n\n1. **0-RTT Requirement**: OPTLS aims to support \"zero round trip time\" (0-RTT) communication, enabling clients with a previously retrieved or cached public key of the server to send protected data in the initial protocol flow.\n\n2. **Forward Secrecy (PFS)**: The protocol mandates perfect forward secrecy, ensuring that session keys remain secure even if long-term private keys are compromised in the future.\n\n3. **Elliptic Curve Cryptography**: OPTLS emphasizes the use of elliptic curves as the primary cryptographic foundation, chosen for their performance benefits and enhanced security properties.\n\nTo accommodate these requirements, OPTLS transitions away from the traditional RSA-centric design of previous TLS versions, adopting a Diffie-Hellman-based approach. This shift provides a uniform and modular framework that simplifies specification, analysis, performance optimization, and future maintenance of the protocol.\n\nThe paper also notes that the draft specification of TLS 1.3 builds upon the OPTLS framework, adapting its various modes and HKDF-based key derivation to fit the TLS 1.3 context. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.1.6"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "LXZFH16",
+    "reference_type": "TEXT",
+    "reference_value": "Multiple Handshakes Security of TLS 1.3 Candidates",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1109/sp.2016.36",
+    "reference_text": "Li, X., Xu, J., Zhang, Z., Feng, D., and H. Hu, \"Multiple Handshakes Security of TLS 1.3 Candidates\", IEEE, 2016 IEEE Symposium on Security and Privacy (SP) pp. 486-505, DOI 10.1109/sp.2016.36, May 2016, <https://doi.org/10.1109/sp.2016.36>.",
+    "reference_summary": "The paper titled \"Multiple Handshakes Security of TLS 1.3 Candidates\" by Li, X., Xu, J., Zhang, Z., Feng, D., and Hu, H., presented at the 2016 IEEE Symposium on Security and Privacy, examines the security of multiple handshake scenarios in the context of TLS 1.3 candidates. The authors analyze potential vulnerabilities that arise when multiple handshakes are performed and propose solutions to enhance the security of these interactions. Their findings contribute to the development of more robust protocols for secure communication over the internet. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "5.5",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.6.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "5.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "5116",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "BT16",
+    "reference_type": "TEXT",
+    "reference_value": "Multi-User Security of Authenticated Encryption",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2016/564",
+    "reference_text": "Bellare, M. and B. Tackmann, \"The Multi-User Security of Authenticated Encryption: AES-GCM in TLS 1.3\", Proceedings of CRYPTO 2016 , July 2016, <https://eprint.iacr.org/2016/564>.",
+    "reference_summary": "In their paper, \"The Multi-User Security of Authenticated Encryption: AES-GCM in TLS 1.3,\" Bellare and Tackmann introduce the concept of multi-user (mu) security for authenticated encryption (AE) schemes, focusing on AES-GCM within the context of TLS 1.3. They define mu ind (indistinguishability) and mu kr (key recovery) security for AE, aiming to address concerns about mass surveillance by enhancing mu security through nonce randomization. The authors propose a new AE scheme, RGCM, and analyze its mu security compared to GCM, demonstrating that RGCM offers superior mu security in many practical scenarios. Additionally, they introduce XGCM, an alternative AE scheme that matches RGCM's efficiency while providing better mu security and a more straightforward, modular design. ([eprint.iacr.org](https://eprint.iacr.org/2016/564?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "7.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "REKEY",
+    "reference_type": "TEXT",
+    "reference_value": "Increasing the Lifetime of a Key",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1007/3-540-44448-3_42",
+    "reference_text": "Abdalla, M. and M. Bellare, \"Increasing the Lifetime of a Key: A Comparative Analysis of the Security of Re-keying Techniques\", Springer Berlin Heidelberg, Lecture Notes in Computer Science pp. 546-559, DOI 10.1007/3-540-44448-3_42, ISBN [\"9783540414049\", \"9783540444480\"], 2000, <https://doi.org/10.1007/3-540-44448-3_42>.",
+    "reference_summary": "The paper \"Increasing the Lifetime of a Key: A Comparative Analysis of the Security of Re-keying Techniques\" by Michel Abdalla and Mihir Bellare examines the security implications of re-keying mechanisms in cryptographic systems. Re-keying involves using a master key to derive subkeys, which are then employed for actual cryptographic operations like encryption or authentication. This approach aims to enhance security by effectively extending the master key's lifetime.\n\nThe authors provide concrete security analyses of various re-keying methods, demonstrating that re-keying can indeed bolster security. They quantify the security benefits of different re-keying processes based on the security of the underlying cryptographic primitives. This quantification enables users to make informed choices among re-keying techniques, considering the specific constraints and requirements of their applications.\n\nIn summary, the study concludes that implementing re-keying strategies can significantly improve security, effectively prolonging the master key's usability and offering substantial, provable security advantages in practical scenarios. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "BMMRT15",
+    "reference_type": "TEXT",
+    "reference_value": "TLS record layer",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2015/394",
+    "reference_text": "Badertscher, C., Matt, C., Maurer, U., Rogaway, P., and B. Tackmann, \"Augmented Secure Channels and the Goal of the TLS 1.3 Record Layer\", ProvSec 2015 , September 2015, <https://eprint.iacr.org/2015/394>.",
+    "reference_summary": "In the paper \"Augmented Secure Channels and the Goal of the TLS 1.3 Record Layer\" by Badertscher et al., the authors analyze the security objectives of the TLS 1.3 record layer. They propose a new channel abstraction, termed SECTLS, to formalize these objectives. This abstraction models a secure channel where each packet includes a payload and a non-private type flag, ensuring that while the entire packet is authenticated, only the payload remains confidential. The authors demonstrate that the TLS 1.3 record layer can be considered secure if it constructs this SECTLS channel. They further present a protocol that constructs SECTLS from an augmented secure channel (ASC), highlighting that SECTLS is a more restricted yet simpler-to-use channel compared to ASC. ([eprint.iacr.org](https://eprint.iacr.org/2015/394.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "BT16",
+    "reference_type": "TEXT",
+    "reference_value": "TLS record layer",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2016/564",
+    "reference_text": "Bellare, M. and B. Tackmann, \"The Multi-User Security of Authenticated Encryption: AES-GCM in TLS 1.3\", Proceedings of CRYPTO 2016 , July 2016, <https://eprint.iacr.org/2016/564>.",
+    "reference_summary": "The paper \"The Multi-User Security of Authenticated Encryption: AES-GCM in TLS 1.3\" by Bellare and Tackmann examines the security of AES-GCM within the context of TLS 1.3, focusing on its application in the TLS record layer. The authors analyze the multi-user security of AES-GCM, considering scenarios where multiple users share the same encryption algorithm but with different keys. They assess the implications of nonce reuse and the potential for cross-user attacks, providing insights into the robustness of AES-GCM when deployed in the TLS record layer. The study offers recommendations to enhance the security of authenticated encryption in TLS 1.3, emphasizing the importance of proper nonce management and the need for careful protocol design to prevent vulnerabilities in the record layer. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "BDFKPPRSZZ16",
+    "reference_type": "TEXT",
+    "reference_value": "TLS record layer",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2016/1178",
+    "reference_text": "Bhargavan, K., Delignat-Lavaud, A., Fournet, C., Kohlweiss, M., Pan, J., Protzenko, J., Rastogi, A., Swamy, N., Zanella-Beguelin, S., and J. Zinzindohoue, \"Implementing and Proving the TLS 1.3 Record Layer\", Proceedings of IEEE Symposium on Security and Privacy (San Jose) 2017 , December 2016, <https://eprint.iacr.org/2016/1178>.",
+    "reference_summary": "The paper \"Implementing and Proving the TLS 1.3 Record Layer\" by Bhargavan et al. provides an in-depth analysis and formal verification of the Transport Layer Security (TLS) 1.3 record layer. The record layer serves as the primary interface between TLS applications and internal sub-protocols, handling the fragmentation, multiplexing, and encryption of message streams for handshake, alert, and application data sub-protocols. It also manages optional padding to obscure message lengths and processes fresh keys or stream termination signals from sub-protocols.\n\nIn TLS 1.3, the record layer has undergone significant changes compared to previous versions. Obsolete schemes have been replaced with a unified construction for Authenticated Encryption with Associated Data (AEAD), utilizing algorithms like AES-GCM and ChaCha20-Poly1305. Notable differences from TLS 1.2 include the use of padding, associated data, and nonces, as well as the encryption of the content-type used for sub-protocol multiplexing. Additionally, new features such as early application data (0-RTT and 0.5-RTT) and late handshake messages necessitate additional keys and a more comprehensive model of stateful encryption.\n\nThe authors have developed and verified a reference implementation of the TLS record layer and its cryptographic algorithms using F\u22c6, a dependently typed language that allows for specifying security and functional guarantees as pre- and post-conditions. They reduce the high-level security of the record layer to cryptographic assumptions about its ciphers, with each reduction step verified by typing an F\u22c6 module. When a step incurs a security loss, the corresponding module precisely captures the related game-based security assumption.\n\nThe verification process includes:\n\n- Functional correctness and injectivity properties of one-time MAC algorithms (Poly1305 and GHASH), along with a generic proof of their security based on these properties.\n\n- Security proofs for AEAD schemes given any secure one-time MAC and PRF.\n\n- Extensions of AEAD to stream encryption and length-hiding, multiplexed encryption.\n\n- A security model of the record layer against adversaries controlling the TLS sub-protocols.\n\nThe authors compute concrete security bounds for the AES-GCM and ChaCha20-Poly1305 cipher suites, deriving recommended limits on data transmission before re-keying. By combining functional correctness and security results, they achieve the first verified implementations of the main TLS 1.3 record ciphers. Integrating their implementation into an existing TLS library, they confirm interoperability with browsers like Chrome and Firefox, demonstrating that the new TLS record layer, as described in RFCs and cryptographic standards, is provably secure.\n\nFor a comprehensive understanding of the TLS 1.3 record layer and its formal verification, you can refer to the full paper available at:\n\n([eprint.iacr.org](https://eprint.iacr.org/2016/1178.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "BBK17",
+    "reference_type": "TEXT",
+    "reference_value": "TLS record layer",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1109/sp.2017.26",
+    "reference_text": "Bhargavan, K., Blanchet, B., and N. Kobeissi, \"Verified Models and Reference Implementations for the TLS 1.3 Standard Candidate\", IEEE, 2017 IEEE Symposium on Security and Privacy (SP) pp. 483-502, DOI 10.1109/sp.2017.26, May 2017, <https://doi.org/10.1109/sp.2017.26>.",
+    "reference_summary": "The paper \"Verified Models and Reference Implementations for the TLS 1.3 Standard Candidate\" by Bhargavan, Blanchet, and Kobeissi, presented at the 2017 IEEE Symposium on Security and Privacy, focuses on the formal verification of the Transport Layer Security (TLS) 1.3 protocol. The authors developed verified models and reference implementations to ensure the security and correctness of TLS 1.3.\n\nIn their work, the authors provide a comprehensive analysis of the TLS 1.3 protocol, including its various components such as the handshake and record layers. They employ formal methods to model these components and verify their security properties. The paper also discusses the development of reference implementations that adhere to the verified models, ensuring that the implementations are both correct and secure.\n\nThe authors' approach involves using formal verification tools to create models of the TLS 1.3 protocol. These models are then analyzed to prove the security properties of the protocol. The reference implementations are developed based on these verified models, providing a high level of assurance in their correctness and security.\n\nOverall, the paper contributes to the field by providing a rigorous analysis of the TLS 1.3 protocol and offering verified models and implementations that can serve as a foundation for secure communication over the internet. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.2.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "PS18",
+    "reference_type": "TEXT",
+    "reference_value": "TLS record layer",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2018/634",
+    "reference_text": "Patton, C. and T. Shrimpton, \"Partially specified channels: The TLS 1.3 record layer without elision\", 2018, <https://eprint.iacr.org/2018/634>.",
+    "reference_summary": "The paper \"Partially Specified Channels: The TLS 1.3 Record Layer Without Elision\" by Patton and Shrimpton (2018) provides a formal analysis of the TLS 1.3 record layer, focusing on its security properties and the implications of its design choices. The authors introduce the concept of a \"partially specified channel\" to model the record layer, allowing them to encapsulate various implementations permitted by the TLS 1.3 standard.\n\nIn their analysis, Patton and Shrimpton confirm the privacy and integrity of the TLS 1.3 record layer under a strong adversarial model. However, they highlight that the standard leaves certain details unspecified, which can significantly impact security outcomes. For instance, the extent to which the record layer conceals the length, content, or type of input streams depends on these unspecified details. The authors provide guidance on developing implementations that achieve specific security goals, emphasizing the importance of the stream multiplexer used to construct the channel.\n\nAdditionally, the paper points out that draft 23 of the TLS 1.3 record layer does not achieve security in the sense of ciphertext-stream integrity. The authors suggest a simple modification to the standard to address this issue, which was adopted in the final version. Their partial specification of the record layer aims to offer a simple and flexible framework that can aid in the standard-writing process, providing principled guidance in protocol development.\n\nOverall, the work underscores the importance of formal modeling in understanding and ensuring the security properties of cryptographic protocols like TLS 1.3. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "CLINIC",
+    "reference_type": "TEXT",
+    "reference_value": "traffic analysis",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1007/978-3-319-08506-7_8",
+    "reference_text": "Miller, B., Huang, L., Joseph, A., and J. Tygar, \"I Know Why You Went to the Clinic: Risks and Realization of HTTPS Traffic Analysis\", Springer International Publishing, Lecture Notes in Computer Science pp. 143-163, DOI 10.1007/978-3-319-08506-7_8, ISBN [\"9783319085050\", \"9783319085067\"], 2014, <https://doi.org/10.1007/978-3-319-08506-7_8>.",
+    "reference_summary": "The paper \"I Know Why You Went to the Clinic: Risks and Realization of HTTPS Traffic Analysis\" by Miller et al. investigates the vulnerabilities of HTTPS traffic to analysis attacks that can compromise user privacy. The authors conducted a traffic analysis attack on over 6,000 webpages across 10 prominent websites in sectors such as healthcare, finance, legal services, and streaming video. Their findings revealed that individual pages within the same website could be identified with 90% accuracy, potentially exposing sensitive personal information, including medical conditions, financial transactions, legal matters, and sexual orientation. \n\nThe study also highlights the impact of certain assumptions on the accuracy of traffic analysis, noting variations up to 17% due to factors like caching and cookies. To mitigate these risks, the authors propose a novel defense mechanism that reduces attack accuracy to 25% with a 9% increase in traffic. They further demonstrate the enhanced effectiveness of existing defenses when evaluated in contexts that account for enabled caching, user-specific cookies, and intra-site page navigation. \n\nThis research underscores the need for robust defenses against traffic analysis attacks to protect user privacy in HTTPS communications. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "HCJC16",
+    "reference_type": "TEXT",
+    "reference_value": "traffic analysis and client identification",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1186/s13635-016-0030-7",
+    "reference_text": "Hus\u00e1k, M., \u010cerm\u00e1k, M., Jirs\u00edk, T., and P. \u010celeda, \"HTTPS traffic analysis and client identification using passive SSL/TLS fingerprinting\", Springer Science and Business Media LLC, EURASIP Journal on Information Security vol. 2016, no. 1, DOI 10.1186/s13635-016-0030-7, February 2016, <https://doi.org/10.1186/s13635-016-0030-7>.",
+    "reference_summary": "The paper \"HTTPS Traffic Analysis and Client Identification Using Passive SSL/TLS Fingerprinting\" by Hus\u00e1k et al. addresses the challenges posed by encrypted network traffic to legitimate monitoring and analysis. The authors propose a method for real-time, lightweight identification of HTTPS clients through passive monitoring of SSL/TLS handshakes.\n\n**Traffic Analysis:**\n\nThe study focuses on the initial SSL/TLS handshake, particularly the ClientHello message, which includes unencrypted information such as the protocol version and a list of supported cipher suites. These elements vary among different clients and versions, providing a basis for client identification without decrypting the payload. By analyzing these handshake parameters, the researchers aim to classify HTTPS traffic and identify client types.\n\n**Client Identification:**\n\nTo correlate SSL/TLS handshake parameters with client identities, the authors build a dictionary linking observed cipher suite lists to HTTP User-Agent strings. They employ two methods to construct this dictionary:\n\n1. **Host-Based Method:** This involves server-side monitoring where both the SSL/TLS handshake and the HTTP header are accessible, allowing direct pairing of cipher suite lists with User-Agent strings.\n\n2. **Flow-Based Method:** This network-based approach monitors both HTTP and HTTPS traffic, identifying clients that communicate over both protocols within a short time frame. By matching the source IP addresses and closely timed connections, the method pairs cipher suite lists from HTTPS connections with User-Agent strings from HTTP connections.\n\nApplying the constructed dictionary to live network traffic, the researchers successfully identified client types in 95.4% of HTTPS connections. They also discuss the applicability of SSL/TLS fingerprinting in network security monitoring and intrusion detection, highlighting its potential for detecting malicious clients and unusual network behavior.\n\nThis approach enhances network forensics by enabling client identification in encrypted communications without compromising privacy, as it relies solely on unencrypted handshake information. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.5"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Mac17",
+    "reference_type": "TEXT",
+    "reference_value": "further description of these attacks",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://github.com/tlswg/tls13-spec/issues/1001",
+    "reference_text": "MacCarthaigh, C., \"Security Review of TLS1.3 0-RTT\", March 2017, <https://github.com/tlswg/tls13-spec/issues/1001>.",
+    "reference_summary": "Colm MacCarthaigh's \"Security Review of TLS1.3 0-RTT\" identifies several significant security vulnerabilities associated with the 0-RTT feature in TLS 1.3. The primary concerns include the lack of forward secrecy for 0-RTT data and its susceptibility to replay attacks.\n\n**1. Lack of Forward Secrecy:**\n0-RTT data in TLS 1.3 is protected using session tickets encrypted by Session Ticket Encryption Keys (STEKs). If a STEK is compromised, all data encrypted with it becomes vulnerable, undermining forward secrecy. This is particularly concerning because STEKs are often shared across numerous servers, increasing the risk of exposure. To mitigate this, MacCarthaigh suggests using single-use session caches instead of STEKs, ensuring that each session's parameters are stored temporarily and discarded after use, thereby enhancing forward secrecy.\n\n**2. Replay Attacks:**\n0-RTT data can be replayed by attackers, leading to several practical attacks:\n\n- **HTTP Non-Idempotency:** Many HTTP requests are not designed to be replayed. Replaying such requests can cause unintended actions, such as multiple financial transactions.\n\n- **Exhausting Tolerances:** Repeated replays can exploit application tolerances, leading to denial-of-service conditions or other unintended behaviors.\n\n- **Compromising Secrecy:** Replays can be used to infer information about encrypted content through side-channel analysis, such as cache timing attacks.\n\n- **Exhausting Throttles:** Applications often implement rate limiting. Replays can bypass these limits, leading to service degradation or outages.\n\n- **Traffic Analysis:** Repeated replays can aid in traffic analysis, allowing attackers to deduce patterns or content of encrypted communications.\n\nTo address replay attacks, MacCarthaigh recommends that TLS implementations must provide mechanisms to prevent the reuse of session tickets for 0-RTT data. This can be achieved through strike registers, single-use caches, or other methods that ensure each 0-RTT session is unique and cannot be replayed.\n\nIn conclusion, while TLS 1.3's 0-RTT feature offers performance benefits, it introduces significant security risks. Implementing the suggested mitigations is crucial to ensure the security and integrity of communications using 0-RTT. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.5"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "8",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.5"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "8.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.5"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "8.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.8"
+    },
+    "document_type": "RFC",
+    "document_tag": "9257",
+    "reference_type": "SECTION",
+    "reference_value": "7",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.8"
+    },
+    "document_type": "RFC",
+    "document_tag": "9258",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.8"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Selfie",
+    "reference_type": "TEXT",
+    "reference_value": "malicious non-member can reroute handshakes",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://eprint.iacr.org/2019/347.pdf",
+    "reference_text": "Drucker, N. and S. Gueron, \"Selfie: reflections on TLS 1.3 with PSK\", 2019, <https://eprint.iacr.org/2019/347.pdf >.",
+    "reference_summary": "In the paper \"Selfie: reflections on TLS 1.3 with PSK\" by Nir Drucker and Shay Gueron, the authors identify a security vulnerability in TLS 1.3 when using Pre-Shared Keys (PSKs). They introduce the \"Selfie\" attack, a reflection attack that compromises mutual authentication by exploiting the absence of explicit authentication for both server and client in every message. This attack allows an adversary to reroute handshakes, leading to potential security breaches. The authors demonstrate the Selfie attack on OpenSSL's TLS implementation and propose appropriate mitigations. They also discuss gaps in existing TLS security proofs and provide an enhanced Multi-Stage Key Exchange (MSKE) model to address these issues. ([eprint.iacr.org](https://eprint.iacr.org/2019/347?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.9"
+    },
+    "document_type": "RFC",
+    "document_tag": "5763",
+    "reference_type": "SECTION",
+    "reference_value": "6.10",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.9"
+    },
+    "document_type": "RFC",
+    "document_tag": "7250",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.9"
+    },
+    "document_type": "RFC",
+    "document_tag": "8844",
+    "reference_type": "SECTION",
+    "reference_value": "3.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.10"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "1.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.10"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "Blei98",
+    "reference_type": "TEXT",
+    "reference_value": "Chosen Ciphertext Attacks against Protocols Based on RSA Encryption Standard PKCS #1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "Bleichenbacher, D., \"Chosen Ciphertext Attacks against Protocols Based on RSA Encryption Standard PKCS #1\", Proceedings of CRYPTO '98 , 1998.",
+    "reference_summary": "Daniel Bleichenbacher's 1998 paper, \"Chosen Ciphertext Attacks Against Protocols Based on the RSA Encryption Standard PKCS #1,\" introduces an adaptive chosen-ciphertext attack targeting RSA implementations that use PKCS #1 v1.5 padding. This attack, often referred to as the \"million message attack,\" exploits the manner in which systems handle error messages during decryption.\n\n**Attack Overview:**\n\n1. **Oracle Access:** The attacker requires access to an oracle that, upon receiving a ciphertext, indicates whether the decrypted message conforms to the PKCS #1 v1.5 padding scheme. This is typically inferred from the system's error messages.\n\n2. **Adaptive Queries:** By systematically modifying a target ciphertext and submitting these variants to the oracle, the attacker observes the oracle's responses.\n\n3. **Information Extraction:** The responses allow the attacker to iteratively narrow down the possible plaintexts corresponding to the original ciphertext.\n\n4. **Plaintext Recovery:** Through numerous queries\u2014potentially up to a million\u2014the attacker can eventually deduce the exact plaintext without possessing the private decryption key.\n\n**Impact on Protocols:**\n\nBleichenbacher demonstrated the attack's effectiveness against SSL/TLS protocols, particularly SSL v3.0. The vulnerability arises because these protocols, when using RSA with PKCS #1 v1.5 padding, may return distinct error messages based on padding validity. This behavior enables attackers to exploit the system as a decryption oracle.\n\n**Countermeasures:**\n\nTo mitigate such attacks, several strategies have been recommended:\n\n- **Consistent Error Handling:** Ensure that systems return uniform error messages regardless of the decryption outcome, thereby preventing attackers from gaining insights based on error differentiation.\n\n- **Enhanced Padding Schemes:** Adopt padding schemes with built-in integrity checks, such as Optimal Asymmetric Encryption Padding (OAEP), which are designed to be more resistant to chosen-ciphertext attacks.\n\n- **Protocol Updates:** Transition to updated versions of protocols that address these vulnerabilities. For instance, later versions of SSL/TLS have incorporated measures to counteract such attacks.\n\nBleichenbacher's findings underscored the critical importance of considering adaptive chosen-ciphertext attacks in the design and implementation of cryptographic protocols. His work has had a lasting impact on the field, prompting revisions to standards and the development of more secure encryption practices. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.10"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "JSS15",
+    "reference_type": "TEXT",
+    "reference_value": "On the Security of TLS 1.3 and QUIC Against Weaknesses in PKCS#1 v1.5 Encryption",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1145/2810103.2813657",
+    "reference_text": "Jager, T., Schwenk, J., and J. Somorovsky, \"On the Security of TLS 1.3 and QUIC Against Weaknesses in PKCS#1 v1.5 Encryption\", ACM, Proceedings of the 22nd ACM SIGSAC Conference on Computer and Communications Security pp. 1185-1196, DOI 10.1145/2810103.2813657, October 2015, <https://doi.org/10.1145/2810103.2813657>.",
+    "reference_summary": "The paper titled \"On the Security of TLS 1.3 and QUIC Against Weaknesses in PKCS#1 v1.5 Encryption\" by Jager, Schwenk, and Somorovsky, presented at the 22nd ACM SIGSAC Conference on Computer and Communications Security in October 2015, examines the security of TLS 1.3 and QUIC protocols in the context of vulnerabilities associated with PKCS#1 v1.5 encryption.\n\nThe authors analyze how these protocols address the well-known weaknesses in PKCS#1 v1.5, particularly focusing on their resistance to adaptive chosen ciphertext attacks, such as the Bleichenbacher attack. They provide a formal security analysis, demonstrating that both TLS 1.3 and QUIC have been designed to mitigate these vulnerabilities effectively. The study concludes that the updated protocols offer improved security guarantees against attacks exploiting PKCS#1 v1.5 weaknesses, thereby enhancing the overall robustness of secure communications. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F.10"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "RSA",
+    "reference_type": "TEXT",
+    "reference_value": "digital signatures and public-key cryptosystems",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://doi.org/10.1145/359340.359342",
+    "reference_text": "Rivest, R., Shamir, A., and L. Adleman, \"A method for obtaining digital signatures and public-key cryptosystems\", Association for Computing Machinery (ACM), Communications of the ACM vol. 21, no. 2, pp. 120-126, DOI 10.1145/359340.359342, February 1978, <https://doi.org/10.1145/359340.359342>.",
+    "reference_summary": "The paper \"A Method for Obtaining Digital Signatures and Public-Key Cryptosystems\" by Rivest, Shamir, and Adleman, published in the Communications of the ACM in February 1978, introduces the RSA algorithm, a foundational public-key cryptosystem. This algorithm enables secure communication over insecure channels and facilitates digital signatures, ensuring message authenticity and integrity.\n\nIn the RSA system, each user generates a pair of keys: a public key for encryption and a private key for decryption. The security of RSA relies on the computational difficulty of factoring large composite numbers, specifically the product of two large prime numbers. The authors detail the key generation process, encryption and decryption procedures, and the mathematical underpinnings that ensure the system's security.\n\nThe paper also discusses the application of RSA for digital signatures. By encrypting a message digest with their private key, a sender can create a digital signature that the recipient can verify using the sender's public key. This mechanism provides authentication and non-repudiation, as only the sender possesses the private key necessary to generate the signature.\n\nOverall, the document lays the groundwork for modern cryptographic practices, emphasizing the importance of public-key infrastructure in secure digital communication. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F"
+    },
+    "document_type": "RFC",
+    "document_tag": "3552",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "F"
+    },
+    "document_type": "RFC",
+    "document_tag": "5116",
+    "reference_type": "SECTION",
+    "reference_value": "2.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

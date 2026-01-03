@@ -1,0 +1,128 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 10 instructs that any domain name (or list of domain names) carried in DHCPv6 messages must use the DNS label encoding from RFC 1035 §3.1, and explicitly forbids use of the DNS message compression scheme from RFC 1035 §4.1.4.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - No sequencing, timers, or state transitions are involved; this is a pure encoding rule.
+  - ActorDirectionality: LOW - The text doesn’t distinguish behaviors by role (client/server/relay); it defines a common on-the-wire format.
+  - Scope: LOW - The rule clearly applies to “a domain name or a list of domain names” in DHCPv6 messages; no obvious ambiguity about where it applies.
+  - Causal: LOW - Using RFC 1035 label encoding without compression is well-defined and widely implemented; nothing here blocks implementability or interoperability.
+  - Quantitative: LOW - The only implicit numeric constraint (max 255 octets from RFC 1035 §3.1) is inherited and standard; no apparent inconsistency or range issue.
+  - Deontic: LOW - The single normative statement (“MUST NOT” use compression) is clear and not in tension with other text.
+  - Structural: LOW - The section delegates the wire format to RFC 1035; no internal ABNF/diagram here to cross-check.
+  - CrossRFC: LOW - References to RFC 1035 §3.1 and §4.1.4 are correct and consistent with long-standing DHCP(DHCPv4/v6) practice of using DNS label encoding without compression.
+  - Terminology: LOW - Terminology (“domain name”, “message compression scheme”) matches DNS/RFC 1035 usage and prior DHCP specs.
+  - Boundary: LOW - Edge cases like maximum name length and label constraints are handled by RFC 1035; nothing new or conflicting is introduced here.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: 
+    Relevant Dimensions: 
+    Sketch: ...
+
+Response ID: resp_02bdbc95f4b9f20f006958c9ef1aa081909cb7ffc03000052b
+
+
+Vector Stores Used: vs_6958be89a44481918c2ddd280ca7a32c
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "reports": [
+    {
+      "label": "Candidate Issue: Underspecified Details in Issue 1",
+      "bug_type": "Underspecification",
+      "explanation": "The analyzer output lists one candidate issue that lacks a specified type, label, or detailed description, making it unclear what the precise problem is.",
+      "justification": [
+        "The candidate issue is listed with 'Type: None' and an empty label in the analysis.",
+        "The 'Sketch: ...' note indicates that additional details were expected but not provided."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The candidate issue section shows a single issue with missing type, label, and details."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "Overall assessments are low-risk and the lack of detail suggests an underspecification rather than a concrete fault.",
+      "confidence": "Medium",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-1-1"
+    }
+  ]
+}

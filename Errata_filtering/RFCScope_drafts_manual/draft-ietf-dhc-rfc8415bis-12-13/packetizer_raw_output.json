@@ -1,0 +1,31 @@
+{
+  "reports": [
+    {
+      "label": "Candidate Issue with Unspecified Details in DHCPv6 Address/Prefix Selection",
+      "bug_type": "Underspecification",
+      "explanation": "The analysis mentions a candidate issue without providing specific details, leaving its nature ambiguous.",
+      "justification": [
+        "The candidate issue is recorded under 'Candidate Issues: 1' with 'Issue 1' showing Type: None, an empty Label, and a placeholder Sketch, indicating an underspecified erratum (E1)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The candidate issue block showing 'Issue 1' with no type, label, or detailed sketch."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "All evaluation dimensions are rated LOW and the candidate issue lacks detailed justification or clear impact, suggesting minimal severity.",
+      "confidence": "Low",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-13-1"
+    }
+  ]
+}

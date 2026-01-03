@@ -1,0 +1,378 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section 8
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section 8
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/corpus.json
+
+Extracting references from section 8 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/reference_extraction.log
+Focusing on section 8 and its children.
+Processing section 8. 0-RTT and Anti-Replay
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks:  25%|██▌       | 1/4 [00:35<01:45, 35.31s/it]Splitting content into chunks: 100%|██████████| 4/4 [00:35<00:00,  8.83s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   As noted in Section 2.3 and Appendix F.5, TLS does not provide
+   inherent replay protections for 0-RTT data.  There are two potential
+   threats to be concerned with:
+
+   *  Network attackers who ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '2.3'
+  Match Type: Exact match
+  Result: Matched to Section 2.3
+  Section Title: 0-RTT Data
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '2.3'
+  Match Type: Exact match
+  Result: Matched to Section 2.3
+  Section Title: 0-RTT Data
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Network attackers who take advantage of client retry behavior to
+      arrange for the server to receive multiple copies of an
+      application message.  This threat already exists to some exte...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In addition to the direct effects of replays, there is a class of
+   attacks where even operations normally considered idempotent could be
+   exploited by a large number of replays (timing attacks,...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The second class of attack cannot be prevented at the TLS layer and
+   MUST be dealt with by any application.  Note that any application
+   whose clients implement any kind of retry behavior alread...
+################################################################################
+Warning: Section 8 not found. Processing all sections.
+Processing section 8.1. Single-Use Tickets
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 448.52it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The simplest form of anti-replay defense is for the server to only
+   allow each session ticket to be used once.  For instance, the server
+   can maintain a database of all outstanding valid ticket...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If the tickets are not self-contained but rather are database keys,
+   and the corresponding PSKs are deleted upon use, then connections
+   established using PSKs enjoy not only anti-replay protect...
+################################################################################
+Processing section 8.2. Client Hello Recording
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 2/6 [00:02<00:04,  1.18s/it]Splitting content into chunks:  50%|█████     | 3/6 [00:03<00:03,  1.30s/it]Splitting content into chunks: 100%|██████████| 6/6 [00:05<00:00,  1.22it/s]Splitting content into chunks: 100%|██████████| 6/6 [00:05<00:00,  1.09it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   An alternative form of anti-replay is to record a unique value
+   derived from the ClientHello (generally either the random value or
+   the PSK binder) and reject duplicates.  Recording all ClientH...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   To implement this, when a ClientHello is received, the server first
+   verifies the PSK binder as described in Section 4.2.11.  It then
+   computes the expected_arrival_time as described in the nex...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.11'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.11
+  Section Title: Pre-Shared Key Extension
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If the expected_arrival_time is in the window, then the server checks
+   to see if it has recorded a matching ClientHello.  If one is found,
+   it either aborts the handshake with an "illegal_param...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2.11'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.11
+  Section Title: Pre-Shared Key Extension
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Because this mechanism does not require storing all outstanding
+   tickets, it may be easier to implement in distributed systems with
+   high rates of resumption and 0-RTT, at the cost of potential...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   When implementations are freshly started, they SHOULD reject 0-RTT as
+   long as any portion of their recording window overlaps the startup
+   time.  Otherwise, they run the risk of accepting repla...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Note: If the client's clock is running much faster than the server's,
+   then a ClientHello may be received that is outside the window in the
+   future, in which case it might be accepted for 1-RTT...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '8'
+  Match Type: Exact match
+  Result: Matched to Section 8
+  Section Title: 0-RTT and Anti-Replay
+---------------------------------------------------------------------------
+
+Processing section 8.3. Freshness Checks
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks:  20%|██        | 1/5 [00:01<00:07,  1.84s/it]Splitting content into chunks: 100%|██████████| 5/5 [00:01<00:00,  2.70it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Because the ClientHello indicates the time at which the client sent
+   it, it is possible to efficiently determine whether a ClientHello was
+   likely sent reasonably recently and only accept 0-RTT...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '8.2'
+  Match Type: Exact match
+  Result: Matched to Section 8.2
+  Section Title: Client Hello Recording
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   To implement this mechanism, a server needs to store the time that
+   the server generated the session ticket, offset by an estimate of the
+   round-trip time between client and server.  I.e.,
+
+   ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This value can be encoded in the ticket, thus avoiding the need to
+   keep state for each outstanding ticket.  The server can determine the
+   client's view of the age of the ticket by subtracting ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   When a new ClientHello is received, the expected_arrival_time is then
+   compared against the current server wall clock time and if they
+   differ by more than a certain amount, 0-RTT is rejected, ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   There are several potential sources of error that might cause
+   mismatches between the expected_arrival_time and the measured time.
+   Variations in client and server clock rates are likely to be ...
+################################################################################
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 8 only.
+Focusing on section 8 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/section_dependencies.json
+
+Creating prompts for section 8...
+Creating expert prompt for section 8 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/focus_section_8_prompt_expert.md
+Expert prompt token count: 68,237 tokens
+Creating router prompt for section 8...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/focus_section_8_prompt_router.md
+Router prompt token count: 67,522 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958ce993c388191a7c9f32559e3b152
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section 8
+================================================================================
+2026-01-03 03:34:31,477 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:34:31,487 - __main__ - INFO - Router prompt length: 307220 chars
+2026-01-03 03:34:31,487 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:34:31,487 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:34:31,487 - __main__ - INFO - ================================================================================
+2026-01-03 03:34:31,608 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:34:31,608 - __main__ - INFO - User prompt length: 307220 chars
+2026-01-03 03:35:39,074 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:35:39,220 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 03:35:39,220 - __main__ - INFO - Using existing vector store(s): vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:35:39,220 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:35:39,220 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:35:39,220 - __main__ - INFO - ================================================================================
+2026-01-03 03:35:39,228 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/test_analysis.md
+2026-01-03 03:35:39,235 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8/test_analysis.json
+2026-01-03 03:35:39,235 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-8
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 8 describes the security model for 0‑RTT data in TLS 1.3, the replay threats it poses, and three server-side mitigation strategies (single-use tickets, ClientHello recording with a replay cache, and freshness checks based on ticket age). It also sets client-side requirements about when 0‑RTT may be sent.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - The section talks about windows and ticket lifetimes but does not define a concrete protocol state machine or ordering that appears inconsistent.
+  - ActorDirectionality: LOW - Roles (client vs server, “server instance”, zones) are used consistently and align with the rest of the draft.
+  - Scope: LOW - The text clearly scopes the anti-replay mechanisms as server-side choices and explains that clients cannot assume any particular mechanism; no obvious scope contradiction.
+  - Causal: LOW - The causal chains (what happens if tickets or ClientHellos are replayed, or if state is or isn’t shared) are coherent and tie into earlier 0‑RTT text without introducing contradictions.
+  - Quantitative: LOW - Ticket lifetimes, windows, and sequence-count style limits are described qualitatively; there are no hard numeric constraints here that conflict with other sections.
+  - Deontic: LOW - The mix of MUST/SHOULD about per-instance acceptance, binder validation, and replay mitigation is internally consistent and compatible with related requirements in Sections 4.2.10 and 4.2.11.
+  - Structural: LOW - No ABNF/YANG/field layouts are defined here; the prose references earlier-defined structures correctly.
+  - CrossRFC: LOW - References to other sections of this draft (e.g., 2.3, 4.2.10, 4.2.11, 4.6.1, Appendix F.5/F.6) and to prior concepts (tickets, binders, ticket_age_add) appear correct and aligned.
+  - Terminology: LOW - Terms like “0‑RTT data”, “ticket”, “ClientHello”, “PSK binder”, and “server instance” are used consistently with the rest of the document; “instance” is intentionally informal but not contradictory.
+  - Boundary: LOW - Edge cases like freshly started servers, false positives in replay caches, and multi-zone deployments are explicitly discussed and handled at a high level; behavior is intentionally left flexible rather than undefined.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: 
+    Relevant Dimensions: 
+    Sketch: ...
+
+Response ID: resp_0a53699d71db92da006958d498786c819484c9af7d27b27f9c
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958ce993c388191a7c9f32559e3b152
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section 8
+################################################################################
+

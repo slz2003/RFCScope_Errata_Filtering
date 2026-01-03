@@ -1,0 +1,702 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section 7
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section 7
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/corpus.json
+
+Extracting references from section 7 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/reference_extraction.log
+Focusing on section 7 and its children.
+Processing section 7. DHCP Constants
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 528.12it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This section describes various program and networking constants used
+   by DHCP.
+################################################################################
+Warning: Section 7 not found. Processing all sections.
+Processing section 7.1. Multicast Addresses
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 433.01it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The following multicast addresses are used by DHCPv6:
+
+   All_DHCP_Relay_Agents_and_Servers (ff02::1:2)
+      A link-scoped multicast address used by a client to communicate
+      with neighboring ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   All_DHCP_Servers (ff05::1:3)
+      A site-scoped multicast address used by a relay agent to
+      communicate with servers, either because the relay agent wants to
+      send messages to all server...
+################################################################################
+Processing section 7.2. UDP Ports
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:12<00:12, 12.87s/it]Splitting content into chunks: 100%|██████████| 2/2 [10:42<00:00, 375.60s/it]Splitting content into chunks: 100%|██████████| 2/2 [10:42<00:00, 321.20s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST listen for DHCP messages on UDP port 546.  Servers and
+   relay agents MUST listen for DHCP messages on UDP port 547. 
+   Therefore, clients MUST send DHCP messages to UDP destination ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 547
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 547
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '547'
+  Match Type: Fuzzy match (score: 50.0)
+  Result: Matched to Section 4
+  Section Title: Terminology
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '547'
+  Match Type: Fuzzy match (score: 50.0)
+  Result: Matched to Section 4
+  Section Title: Terminology
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   It is RECOMMENDED for clients to send messages from UDP source port
+   546, and servers and relay agents from UDP source port 547.  However,
+   clients, servers, and relay agents MAY send DHCP mess...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): UDP source port
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8357
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-dhc-rfc8415bis-12:
+  Search Keywords: 'UDP source port'
+  Result: Found in Section 7.2
+  Section Title: UDP Ports
+  Content Preview:    Clients MUST listen for DHCP messages on UDP port 546.  Servers and
+   relay agents MUST listen f...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8357:
+  Looking for Section: '1'
+  Match Type: Exact match
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+Processing section 7.3. DHCP Message Types
+Splitting content into chunks:   0%|          | 0/12 [00:00<?, ?it/s]Splitting content into chunks:   8%|▊         | 1/12 [00:05<01:02,  5.68s/it]Splitting content into chunks: 100%|██████████| 12/12 [00:05<00:00,  2.09it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP defines the following message types.  The formats of these
+   messages are provided in Sections 8 and 9.  Additional message types
+   have been defined and may be defined in the future; see
+  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 9
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '8'
+  Match Type: Exact match
+  Result: Matched to Section 8
+  Section Title: Client/Server Message Formats
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '9'
+  Match Type: Exact match
+  Result: Matched to Section 9
+  Section Title: Relay Agent/Server Message Formats
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   ADVERTISE (2)             A server sends an Advertise message to
+                             indicate that it is available for DHCP
+                             service, in response to a Solicit m...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   REQUEST (3)               A client sends a Request message to request
+                             configuration parameters, including
+                             addresses and/or delegated prefix...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   CONFIRM (4)               A client sends a Confirm message to any
+                             available server to determine whether the
+                             addresses it was assigned are s...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RENEW (5)                 A client sends a Renew message to the
+                             server that originally provided the
+                             client's leases and configuration
+     ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   REPLY (7)                 A server sends a Reply message containing
+                             assigned leases and configuration
+                             parameters in response to a Solicit,
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RELEASE (8)               A client sends a Release message to the
+                             server that assigned leases to the client
+                             to indicate that the client wil...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DECLINE (9)               A client sends a Decline message to a
+                             server to indicate that the client has
+                             determined that one or more addresse...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RECONFIGURE (10)          A server sends a Reconfigure message to a
+                             client to inform the client that the server
+                             has new or updated configur...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   INFORMATION-REQUEST (11)  A client sends an Information-request
+                             message to a server to request
+                             configuration parameters without the
+       ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RELAY-REPL (13)           A server sends a Relay-reply message to a
+                             relay agent containing a message that the
+                             relay agent delivers to a cli...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+                             The server encapsulates the client message
+                             as an option in the Relay-reply message,
+                             which the relay agent extract...
+################################################################################
+Processing section 7.4. DHCP Option Codes
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [02:35<00:00, 155.92s/it]Splitting content into chunks: 100%|██████████| 1/1 [02:35<00:00, 155.93s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP makes extensive use of options in messages; some of these are
+   defined later, in Section 21.  Additional options are defined in
+   other documents or may be defined in the future (see [RFC72...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7227
+  Reference Type: TEXT
+  Reference Value (keywords/section): guidance on new option definitions
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21'
+  Match Type: Exact match
+  Result: Matched to Section 21
+  Section Title: DHCP Options
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7227:
+  Search Keywords: 'guidance on new option definitions'
+  Result: Found in Section 14
+  Section Title: Considerations for Creating New Formats
+  Content Preview:    When defining new options, one specific consideration to evaluate is
+   whether or not options of...
+---------------------------------------------------------------------------
+
+Processing section 7.5. Status Codes
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:02<00:02,  2.60s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:05<00:00,  2.54s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:05<00:00,  2.56s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP uses status codes to communicate the success or failure of
+   operations requested in messages from clients and servers and to
+   provide additional information about the specific cause of the...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the Status Code option (see Section 21.13) does not appear in a
+   message in which the option could appear, the status of the message
+   is assumed to be Success.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+Processing section 7.6. Transmission and Retransmission Parameters
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:04<00:00,  4.87s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:04<00:00,  4.87s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The table of values (Table 1) is used to describe the message
+   transmission behavior of clients and servers.  Some of the values are
+   adjusted by a randomization factor and backoffs (see Sectio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 15
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 14.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '15'
+  Match Type: Exact match
+  Result: Matched to Section 15
+  Section Title: Reliability of Client-Initiated Message Exchanges
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '14.1'
+  Match Type: Exact match
+  Result: Matched to Section 14.1
+  Section Title: Rate Limiting
+---------------------------------------------------------------------------
+
+Processing section 7.7. Representation of Time Values and "Infinity" as a Time Value
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 1/3 [03:58<07:56, 238.29s/it]Splitting content into chunks: 100%|██████████| 3/3 [03:58<00:00, 79.43s/it] 
+Failed to parse JSON from response: Expecting ',' delimiter: line 12 column 3 (char 1223)
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   All time values for lifetimes, T1, and T2 are unsigned 32-bit
+   integers and are expressed in units of seconds.  The value 0xffffffff
+   is taken to mean "infinity" when used as a lifetime (as in ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC4861
+  Reference Type: TEXT
+  Reference Value (keywords/section): infinity lifetime
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4861:
+  Search Keywords: 'infinity lifetime'
+  Result: Found in Section 12
+  Section Title: Renumbering Considerations
+  Content Preview:    The Neighbor Discovery protocol together with IPv6 Address
+   Autoconfiguration [ADDRCONF ] provi...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Setting the valid lifetime of an address or a delegated prefix to
+   0xffffffff ("infinity") amounts to a permanent assignment of an
+   address or delegation to a client and should only be used in ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Care should be taken in setting T1 or T2 to 0xffffffff ("infinity").
+   A client will never attempt to extend the lifetimes of any addresses
+   in an IA with T1 set to 0xffffffff.  A client will ne...
+################################################################################
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 7 only.
+Focusing on section 7 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/section_dependencies.json
+
+Creating prompts for section 7...
+Creating expert prompt for section 7 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/focus_section_7_prompt_expert.md
+Expert prompt token count: 66,340 tokens
+Creating router prompt for section 7...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/focus_section_7_prompt_router.md
+Router prompt token count: 64,861 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section 7
+================================================================================
+2026-01-03 02:51:40,620 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:51:40,621 - __main__ - INFO - Router prompt length: 312209 chars
+2026-01-03 02:51:40,621 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:51:40,621 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:51:40,622 - __main__ - INFO - ================================================================================
+2026-01-03 02:51:40,776 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:51:40,776 - __main__ - INFO - User prompt length: 312209 chars
+2026-01-03 02:52:28,393 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:52:28,674 - __main__ - INFO - Router analysis complete. Bug likelihood: Low
+2026-01-03 02:52:28,674 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:52:28,674 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:52:28,674 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:52:28,674 - __main__ - INFO - ================================================================================
+2026-01-03 02:52:28,675 - __main__ - INFO - 
+Invoking expert: Temporal (MEDIUM)
+2026-01-03 02:52:28,899 - __main__ - INFO - Invoking expert Temporal with manual prompt...
+2026-01-03 02:52:28,899 - __main__ - INFO - User prompt length: 312956 chars
+2026-01-03 02:52:28,899 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:53:46,179 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:53:46,208 - __main__ - INFO - Expert Temporal analysis complete
+2026-01-03 02:53:46,209 - __main__ - INFO - 
+Invoking expert: ActorDirectionality (MEDIUM)
+2026-01-03 02:53:46,428 - __main__ - INFO - Invoking expert ActorDirectionality with manual prompt...
+2026-01-03 02:53:46,428 - __main__ - INFO - User prompt length: 316040 chars
+2026-01-03 02:53:46,428 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:54:41,970 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:54:41,973 - __main__ - INFO - Expert ActorDirectionality analysis complete
+2026-01-03 02:54:41,973 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 02:54:42,292 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 02:54:42,293 - __main__ - INFO - User prompt length: 312960 chars
+2026-01-03 02:54:42,293 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:56:16,808 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:56:16,814 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 02:56:16,815 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 02:56:17,140 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 02:56:17,140 - __main__ - INFO - User prompt length: 316059 chars
+2026-01-03 02:56:17,140 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:57:11,344 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:57:11,347 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 02:57:11,347 - __main__ - INFO - 
+Invoking expert: Quantitative (HIGH)
+2026-01-03 02:57:11,508 - __main__ - INFO - Invoking expert Quantitative with manual prompt...
+2026-01-03 02:57:11,508 - __main__ - INFO - User prompt length: 312941 chars
+2026-01-03 02:57:11,508 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:59:38,945 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:59:38,948 - __main__ - INFO - Expert Quantitative analysis complete
+2026-01-03 02:59:38,948 - __main__ - INFO - 
+Invoking expert: Deontic (HIGH)
+2026-01-03 02:59:39,233 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 02:59:39,233 - __main__ - INFO - User prompt length: 316040 chars
+2026-01-03 02:59:39,233 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:00:18,593 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:00:18,596 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 03:00:18,596 - __main__ - INFO - 
+Invoking expert: CrossRFC (HIGH)
+2026-01-03 03:00:18,737 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 03:00:18,737 - __main__ - INFO - User prompt length: 316070 chars
+2026-01-03 03:00:18,737 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:01:07,526 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:01:07,529 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 03:01:07,529 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 03:01:07,651 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 03:01:07,652 - __main__ - INFO - User prompt length: 312911 chars
+2026-01-03 03:01:07,652 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:02:56,088 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:02:56,097 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 03:02:56,111 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/test_analysis.md
+2026-01-03 03:02:56,120 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7/test_analysis.json
+2026-01-03 03:02:56,120 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-7
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 7 defines the core “constants” for DHCPv6: multicast addresses, UDP ports and port usage, message types, option codes, status codes, retransmission timers, and representation of time values (including “infinity”). The surrounding context shows how these constants are intended to be used in client, server, and relay behavior, and notes interactions with RFC 8357 and other RFCs.
+Overall Bug Likelihood: Low
+
+Dimensions:
+  - Temporal: MEDIUM - Several retransmission and lifetime-related constants (T1/T2, *_TIMEOUT, *_MAX_RT, IRT_*) are defined here and used later; any subtle temporal bug would depend on these.
+  - ActorDirectionality: MEDIUM - Section 7.2 assigns specific sending/listening ports per role (client/server/relay), and 7.3 classifies message types by sender/receiver.
+  - Scope: MEDIUM - Port rules and constants must apply at the right granularity (e.g., base behavior vs. when RFC 8357 is in use, top-level vs. encapsulated options, per-interface parameters).
+  - Causal: MEDIUM - Misinterpreting port rules or timers can directly break communication or cause message storms; this depends on how these constants drive behavior elsewhere.
+  - Quantitative: HIGH - The excerpt defines many numeric ranges and values (timeouts, hop count limits, 32‑bit time, 0xffffffff “infinity”), so number/limit consistency is central.
+  - Deontic: HIGH - There are many MUST/SHOULD/MAYs around ports and timers; consistency of these requirements with each other and with referenced RFCs is key.
+  - Structural: LOW - There is a table of constants but no formal grammar/YANG/ASN.1; structure-vs-prose mismatches are less likely here.
+  - CrossRFC: HIGH - Section 7.2 explicitly references RFC 8357; status codes and multicast addresses are tied to IANA registries and prior RFCs; correctness depends on alignment with those.
+  - Terminology: LOW - Terms like “Relay-forward”, “Relay-reply”, “client messages”, and “status codes” are used consistently with earlier definitions; no obvious naming drift in this section.
+  - Boundary: MEDIUM - Edge-case semantics around 0xffffffff (“infinity”), maximum hop count, and maximum retransmission intervals could be subtle.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: Underspecification
+    Label: Ambiguous interaction between UDP destination-port rules in Section 7.2 and RFC 8357 Relay Source Port behavior
+    Relevant Dimensions: CrossRFC, Deontic, ActorDirectionality, Causal
+    Sketch: Section 7.2 states normatively that “Servers MUST send Relay-reply messages to UDP destination port ...
+
+Response ID: resp_04d008de30bc0057006958ca8dac0c81959669be88ee851cb6
+
+## Temporal Expert Analysis
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    The excerpt’s “constants” (multicast addresses, UDP ports, message types, timers, and time encodings) are largely consistent with the later behavioral sections: retransmission algorithms, T1/T2 handling, and client/server exchanges line up coherently in time. The main temporal concern is the interaction of the fixed-port rules in Section 7.2 with the Relay Source Port behavior from RFC 8357, which requires servers and relays to remember and reuse non‑s...
+
+## ActorDirectionality Expert Analysis
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: >
+    Section 7.2 assigns per‑role UDP listen and destination ports for DHCPv6:
+    clients listen on 546 and send to 547; servers and relays listen on 547, send to 546 for
+    client messages, and (per this text) send/receive Relay‑forward/Relay‑reply on 547.
+    A brief note says RFC 8357’s Relay Source Port Option “changes some of these rules” but does not spell out how.
+
+- OverallAssessment: StrongEvidenceOfBug
+
+- FindingsOnRoutedIssues:
+  - Issue...
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 7 defines global protocol “constants” for DHCPv6: multicast group membership, UDP ports and port usage, message type codes, option and status code handling, retransmission parameters, and time-value encoding (including infinity). These are then referenced throughout the client, server, and relay behavior sections, and must coexist with extensions like RFC 8357.
+- ScopeModel:
+  - Targets:
+    - Multicast addresses: ff02::1:2 for *clients → servers/relays* ...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following Section 7.2 literally, without RFC 8357, is fully executable and interoperable. When RFC 8357 is also implemented, the combination is still mechanically well defined, because 7.2 explicitly defers to RFC 8357. There is no fundamental break; at most this is a clarity / cross‑reference issue, not a causal inconsistency.
+
+---
+
+2. **Causal Analysis**
+
+**Baseline per 7.2 (no RFC 8357):**
+
+- Clients:
+  - MUST listen on UDP port 546.
+  - MUST send DHCP messages to UDP destinat...
+
+## Quantitative Expert Analysis
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary:  
+  The excerpt defines DHCPv6 “constants” and related structures: multicast addresses, UDP ports and port usage, message type numbers, option layouts and lengths, retransmission timers and backoff bounds, and 32‑bit time value semantics including the use of 0xffffffff to represent “infinity”. These constants are then referenced throughout the client, server, and relay algorithms, and are summarized again in Appendix B’s option/message‑type tables.
+
+- Issu...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 7 defines fixed “constants” for DHCPv6, including multicast addresses, UDP ports and their usage, status-code defaults, retransmission timers, and the representation of “infinity” for time values. The rest of the document then normatively relies on these constants for client, server, and relay behavior. The only serious normative tension in this excerpt is around the UDP port rules versus RFC 8357 generalized relay source ports.
+
+- OverallDeonticRisk: M...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 7 defines fixed UDP ports and their usage for DHCPv6 and then adds a brief note that the Relay Source Port Option from RFC 8357 “changes some of these rules”. Other parts of the draft and prior RFCs (RFC 3315 / 8415, RFC 8357) and the IANA registries define the baseline ports and the generalized source-port behavior for relays and servers.
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Ambiguous and conflic...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 7 defines the fixed “constants” that parameterize DHCPv6: multicast addresses, well-known UDP ports and their usage, the core message-type codepoints, general rules for status codes, a table of retransmission and timing parameters (including hop-count and various per-message IRT/MRT/MRC/MRD defaults), and the representation of time values including the special 0xffffffff “infinity” value. These constants are then referenced throughout the client/...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Low
+Experts: ✓ 8 invoked
+  Dimensions: Temporal, ActorDirectionality, Scope, Causal, Quantitative, Deontic, CrossRFC, Boundary
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section 7
+################################################################################
+

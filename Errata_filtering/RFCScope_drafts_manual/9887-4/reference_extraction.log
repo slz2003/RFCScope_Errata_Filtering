@@ -1,0 +1,110 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-4/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   The obfuscation mechanism documented in Section 4.5 of [RFC8907] is
+   weak.
+
+   The introduction of TLS authentication and encryption to TACACS+
+   replaces this former mechanism, so obfuscation i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.5
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8907
+  Reference Type: TEXT
+  Reference Value (keywords/section): obfuscation mechanism
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '4.5'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 3.5
+  Section Title: TLS PSK Authentication
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8907:
+  Search Keywords: 'obfuscation mechanism'
+  Result: Found in Section 4.5
+  Section Title: Data Obfuscation
+  Content Preview:    The body of packets may be obfuscated.  The following sections
+   describe the obfuscation method...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   A TACACS+ client initiating a TACACS+ TLS connection MUST set the
+   TAC_PLUS_UNENCRYPTED_FLAG bit, thereby asserting that obfuscation is
+   not used for the session.  All subsequent packets MUST h...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   A TLS TACACS+ server that receives a packet with the
+   TAC_PLUS_UNENCRYPTED_FLAG bit not set to 1 over a TLS connection MUST
+   return an error of TAC_PLUS_AUTHEN_STATUS_ERROR,
+   TAC_PLUS_AUTHOR_...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.5
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8907
+  Reference Type: TEXT
+  Reference Value (keywords/section): data obfuscation for TAC_PLUS_UNENCRYPTED_FLAG or key mismatches
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '4.5'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 3.5
+  Section Title: TLS PSK Authentication
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8907:
+  Search Keywords: 'data obfuscation for TAC_PLUS_UNENCRYPTED_FLAG or key mismatches'
+  Result: Found in Section 4.5
+  Section Title: Data Obfuscation
+  Content Preview:    The body of packets may be obfuscated.  The following sections
+   describe the obfuscation method...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   A TACACS+ client that receives a packet with the
+   TAC_PLUS_UNENCRYPTED_FLAG bit not set to 1 MUST terminate the
+   session, and SHOULD log this error.
+################################################################################

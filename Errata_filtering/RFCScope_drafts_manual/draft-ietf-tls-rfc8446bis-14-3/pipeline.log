@@ -1,0 +1,449 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section 3
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section 3
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/corpus.json
+
+Extracting references from section 3 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/reference_extraction.log
+Focusing on section 3 and its children.
+Processing section 3. Presentation Language
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 106.05it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This document deals with the formatting of data in an external
+   representation.  The following very basic and somewhat casually
+   defined presentation syntax will be used.
+
+   In the definitions...
+################################################################################
+Warning: Section 3 not found. Processing all sections.
+Processing section 3.1. Basic Block Size
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 228.31it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The representation of all data items is explicitly specified.  The
+   basic data block size is one byte (i.e., 8 bits).  Multiple-byte data
+   items are concatenations of bytes, from left to right,...
+################################################################################
+Processing section 3.2. Miscellaneous
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 526.66it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Comments begin with "/*" and end with "*/".
+
+   Single-byte entities containing uninterpreted data are of type
+   opaque.
+
+   A type alias T' for an existing type T is defined by:
+      T T';
+################################################################################
+Processing section 3.3. Numbers
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 1/3 [00:02<00:05,  2.56s/it]Splitting content into chunks: 100%|██████████| 3/3 [00:02<00:00,  1.17it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The basic numeric data type is an unsigned byte (uint8).  All larger
+   numeric data types are constructed from a fixed-length series of
+   bytes concatenated as described in Section 3.1 and are al...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '3.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1
+  Section Title: Basic Block Size
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      uint8 uint16[2];
+      uint8 uint24[3];
+      uint8 uint32[4];
+      uint8 uint64[8];
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   All values, here and elsewhere in the specification, are transmitted
+   in network byte (big-endian) order; the uint32 represented by the hex
+   bytes 01 02 03 04 is equivalent to the decimal value...
+################################################################################
+Processing section 3.4. Vectors
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  83%|████████▎ | 5/6 [00:02<00:00,  2.21it/s]Splitting content into chunks: 100%|██████████| 6/6 [00:02<00:00,  2.65it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A vector (single-dimensioned array) is a stream of homogeneous data
+   elements.  For presentation purposes, this specification refers to
+   vectors as lists.  The size of the vector may be specifi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Here, T' occupies n bytes in the data stream, where n is a multiple
+   of the size of T.  The length of the vector is not included in the
+   encoded stream.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In the following example, Datum is defined to be three consecutive
+   bytes that the protocol does not interpret, while Data is three
+   consecutive Datum, consuming a total of nine bytes.
+
+      o...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Variable-length vectors are defined by specifying a subrange of legal
+   lengths, inclusively, using the notation <floor..ceiling>.  When
+   these are encoded, the actual length precedes the vector...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In the following example, "mandatory" is a vector that must contain
+   between 300 and 400 bytes of type opaque.  It can never be empty.
+   The actual length field consumes two bytes, a uint16, whi...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '3.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.3
+  Section Title: Numbers
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      opaque mandatory<300..400>;
+            /* length field is two bytes, cannot be empty */
+      uint16 longer<0..800>;
+            /* zero to 400 16-bit unsigned integers */
+################################################################################
+Processing section 3.5. Enumerateds
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 6/6 [00:00<00:00, 447.32it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   An additional sparse data type, called "enum" or "enumerated", is
+   available.  Each definition is a different type.  Only enumerateds of
+   the same type may be assigned or compared.  Every eleme...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Future extensions or additions to the protocol may define new values.
+   Implementations need to be able to parse and ignore unknown values
+   unless the definition of the field states otherwise.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   An enumerated occupies as much space in the byte stream as would its
+   maximal defined ordinal value.  The following definition would cause
+   one byte to be used to carry fields of type Color.
+
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In the following example, Taste will consume two bytes in the data
+   stream but can only assume the values 1, 2, or 4 in the current
+   version of the protocol.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      enum { sweet(1), sour(2), bitter(4), (32000) } Taste;
+   The names of the elements of an enumeration are scoped within the
+   defined type.  In the first example, a fully qualified reference to
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The names assigned to enumerateds do not need to be unique.  The
+   numerical value can describe a range over which the same name
+   applies.  The value includes the minimum and maximum inclusive v...
+################################################################################
+Processing section 3.6. Constructed Types
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks:  75%|███████▌  | 3/4 [00:02<00:00,  1.10it/s]Splitting content into chunks: 100%|██████████| 4/4 [00:02<00:00,  1.46it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Structure types may be constructed from primitive types for
+   convenience.  Each specification declares a new, unique type.  The
+   syntax used for definitions is much like that of C.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          T1 f1;
+          T2 f2;
+          ...
+          Tn fn;
+      } T;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Fixed- and variable-length list (vector) fields are allowed using the
+   standard list syntax.  Structures V1 and V2 in the variants example
+   (Section 3.8) demonstrate this.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.8
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '3.8'
+  Match Type: Exact match
+  Result: Matched to Section 3.8
+  Section Title: Variants
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The fields within a structure may be qualified using the type's name,
+   with a syntax much like that available for enumerateds.  For example,
+   T.f2 refers to the second field of the previous dec...
+################################################################################
+Processing section 3.7. Constants
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 457.34it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Fields and variables may be assigned a fixed value using "=", as in:
+
+      struct {
+          T1 f1 = 8;  /* T.f1 must always be 8 */
+          T2 f2;
+      } T;
+################################################################################
+Processing section 3.8. Variants
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 5/5 [00:00<00:00, 485.38it/s]
+Failed to upload RFC 5764: Error code: 404 - {'error': {'message': "No file found with id 'file-RyWvwxaqK3wzVHmXpPEhyj' in vector store 'vs_6958ccec1b3481918223c1d4ac77afe0'.", 'type': 'invalid_request_error', 'param': None, 'code': None}}
+Failed to upload draft draft-10: Error code: 404 - {'error': {'message': "No file found with id 'file-DadwCU8sQoogoZbGZigJ8w' in vector store 'vs_6958ccec1b3481918223c1d4ac77afe0'.", 'type': 'invalid_request_error', 'param': None, 'code': None}}
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Defined structures may have variants based on some knowledge that is
+   available within the environment.  The selector must be an enumerated
+   type that defines the possible variants the structur...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          T1 f1;
+          T2 f2;
+          ....
+          Tn fn;
+          select (E) {
+              case e1: Te1 [[fe1]];
+              case e2: Te2 [[fe2]];
+              ....
+     ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          uint16 number;
+          opaque string<0..10>; /* variable length */
+      } V1;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          uint32 number;
+          opaque string[10];    /* fixed length */
+      } V2;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          VariantTag type;
+          select (VariantRecord.type) {
+              case apple:  V1;
+              case orange: V2;
+          };
+      } VariantRecord;
+################################################################################
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 3 only.
+Focusing on section 3 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/section_dependencies.json
+
+Creating prompts for section 3...
+Creating expert prompt for section 3 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/focus_section_3_prompt_expert.md
+Expert prompt token count: 65,159 tokens
+Creating router prompt for section 3...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/focus_section_3_prompt_router.md
+Router prompt token count: 66,924 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958ccec1b3481918223c1d4ac77afe0
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section 3
+================================================================================
+2026-01-03 03:14:13,789 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:14:13,790 - __main__ - INFO - Router prompt length: 293431 chars
+2026-01-03 03:14:13,790 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:14:13,790 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:14:13,790 - __main__ - INFO - ================================================================================
+2026-01-03 03:14:13,862 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:14:13,863 - __main__ - INFO - User prompt length: 293431 chars
+2026-01-03 03:14:53,503 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:14:53,644 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 03:14:53,644 - __main__ - INFO - Using existing vector store(s): vs_6958ccec1b3481918223c1d4ac77afe0
+2026-01-03 03:14:53,644 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:14:53,644 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:14:53,644 - __main__ - INFO - ================================================================================
+2026-01-03 03:14:53,647 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/test_analysis.md
+2026-01-03 03:14:53,649 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/test_analysis.json
+2026-01-03 03:14:53,649 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 3 defines the TLS presentation language: byte ordering, numeric types, vectors, enums, structs, constants, and variant (select/case) constructs used to describe wire-format structures elsewhere in the spec.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - Purely syntactic/formatting rules; no sequencing, timers, or state transitions described.
+  - ActorDirectionality: LOW - No client/server roles or sender/receiver behavior defined here.
+  - Scope: LOW - Rules apply globally to the abstract syntax; they don’t distinguish contexts or roles, and there’s no obvious scope confusion.
+  - Causal: LOW - This is descriptive notation; following it as written yields a coherent encoding model and does not appear to break later mechanisms.
+  - Quantitative: LOW - Sizes, ranges, and examples (e.g., vector lengths, enum widths, uint16/24/32) are internally consistent and align with long-standing TLS practice.
+  - Deontic: LOW - Few or no RFC 2119 keywords; this section is mostly definitional rather than normative requirements about behavior.
+  - Structural: LOW - The presentation language is self-consistent and matches the structures later restated in Appendix B; no ABNF/YANG/diagram mismatches here.
+  - CrossRFC: LOW - Only generic references (e.g., to big-endian/network byte order) and the inherited TLS presentation syntax; no obvious mis-citations or registry mismatches.
+  - Terminology: LOW - Terms like “vector”, “opaque”, “enum”, and “struct” are defined and then used consistently; old TLS terminology is preserved intentionally.
+  - Boundary: LOW - Edge cases (e.g., empty vectors, enum width determination, padding with ranges) are covered at the level of abstraction intended for this notation.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No substantive inconsistencies or underspecification in TLS presentation language found
+    Relevant Dimensions: 
+    Sketch: The section is the standard TLS presentation-language boilerplate carried forward from earlier TLS R...
+
+Response ID: resp_08afd3d45258b7b7006958cfd672248190a77df696aac38145
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958ccec1b3481918223c1d4ac77afe0
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section 3
+################################################################################
+

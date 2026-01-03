@@ -1,0 +1,688 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section E
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section E
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/corpus.json
+
+Extracting references from section E only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/reference_extraction.log
+Focusing on section E and its children.
+Processing section E. Backward Compatibility
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 4/4 [01:17<00:00, 19.45s/it]Splitting content into chunks: 100%|██████████| 4/4 [01:17<00:00, 19.45s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The TLS protocol provides a built-in mechanism for version
+   negotiation between endpoints potentially supporting different
+   versions of TLS.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   TLS 1.x and SSL 3.0 use compatible ClientHello messages.  Servers can
+   also handle clients trying to use future versions of TLS as long as
+   the ClientHello format remains compatible and there i...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Prior versions of TLS used the record layer version number
+   (TLSPlaintext.legacy_record_version and
+   TLSCiphertext.legacy_record_version) for various purposes.  As of TLS
+   1.3, this field is ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   For maximum compatibility with previously non-standard behavior and
+   misconfigured deployments, all implementations SHOULD support
+   validation of certification paths based on the expectations i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4.2.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7627
+  Reference Type: TEXT
+  Reference Value (keywords/section): Extended Main Secret
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.4.2.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.4.2.2
+  Section Title: Certificate Selection
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7627:
+  Search Keywords: 'Extended Main Secret'
+  Result: Found in Section 5.1
+  Section Title: Extension Definition
+  Content Preview:    This document defines a new TLS extension, "extended_master_secret"
+   (with extension type 0x001...
+---------------------------------------------------------------------------
+
+Warning: Section E not found. Processing all sections.
+Processing section E.1. Negotiating with an Older Server
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 3/3 [00:00<00:00, 394.18it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A TLS 1.3 client who wishes to negotiate with servers that do not
+   support TLS 1.3 will send a normal TLS 1.3 ClientHello containing
+   0x0303 (TLS 1.2) in ClientHello.legacy_version but with the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If the version chosen by the server is not supported by the client
+   (or is not acceptable), the client MUST abort the handshake with a
+   "protocol_version" alert.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Some legacy server implementations are known to not implement the TLS
+   specification properly and might abort connections upon encountering
+   TLS extensions or versions which they are not aware ...
+################################################################################
+Processing section E.2. Negotiating with an Older Client
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:03<00:03,  3.84s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:03<00:00,  1.92s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A TLS server can also receive a ClientHello indicating a version
+   number smaller than its highest supported version.  If the
+   "supported_versions" extension is present, the server MUST negotiat...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.1
+  Section Title: Supported Versions
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.1
+  Section Title: Supported Versions
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Note that earlier versions of TLS did not clearly specify the record
+   layer version number value in all cases
+   (TLSPlaintext.legacy_record_version).  Servers will receive various
+   TLS 1.x ver...
+################################################################################
+Processing section E.3. 0-RTT Backward Compatibility
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 3/3 [00:00<00:00, 471.94it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   0-RTT data is not compatible with older servers.  An older server
+   will respond to the ClientHello with an older ServerHello, but it
+   will not correctly skip the 0-RTT data and will fail to com...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A client that attempts to send 0-RTT data MUST fail a connection if
+   it receives a ServerHello with TLS 1.2 or older.  It can then retry
+   the connection with 0-RTT disabled.  To avoid a downgra...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   To avoid this error condition, multi-server deployments SHOULD ensure
+   a uniform and stable deployment of TLS 1.3 without 0-RTT prior to
+   enabling 0-RTT.
+################################################################################
+Processing section E.4. Middlebox Compatibility Mode
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 1/3 [00:06<00:12,  6.31s/it]Splitting content into chunks:  67%|██████▋   | 2/3 [00:08<00:03,  3.87s/it]Splitting content into chunks: 100%|██████████| 3/3 [00:08<00:00,  2.83s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Field measurements [Ben17a ] [Ben17b ] [Res17a ] [Res17b ] have found
+   that a significant number of middleboxes misbehave when a TLS client/
+   server pair negotiates TLS 1.3.  Implementations ca...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1.2
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: Ben17a
+  Reference Type: TEXT
+  Reference Value (keywords/section): Presentation before the TLS WG at IETF 100
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: Ben17b
+  Reference Type: TEXT
+  Reference Value (keywords/section): Additional TLS 1.3 results from Chrome
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: Res17a
+  Reference Type: TEXT
+  Reference Value (keywords/section): Preliminary data on Firefox TLS 1.3 Middlebox experiment
+
+Reference 5:
+  Document Type: EXTERNAL
+  Document Tag: Res17b
+  Reference Type: TEXT
+  Reference Value (keywords/section): More compatibility measurement results
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.1.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.1.2
+  Section Title: Client Hello
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  If not offering early data, the client sends a dummy
+      change_cipher_spec record (see the third paragraph of Section 5)
+      immediately before its second flight.  This may either be before...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '5'
+  Match Type: Exact match
+  Result: Matched to Section 5
+  Section Title: Record Protocol
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   When put together, these changes make the TLS 1.3 handshake resemble
+   TLS 1.2 session resumption, which improves the chance of successfully
+   connecting through middleboxes.  This "compatibility...
+################################################################################
+Processing section E.5. Security Restrictions Related to Backward Compatibility
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  17%|█▋        | 1/6 [00:17<01:28, 17.76s/it]Splitting content into chunks:  50%|█████     | 3/6 [10:30<11:34, 231.43s/it]Splitting content into chunks: 100%|██████████| 6/6 [11:17<00:00, 99.07s/it] Splitting content into chunks: 100%|██████████| 6/6 [11:17<00:00, 112.88s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Implementations negotiating the use of older versions of TLS SHOULD
+   prefer forward secret and AEAD cipher suites, when available.
+
+   The security of RC4 cipher suites is considered insufficient...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7465
+  Reference Type: TEXT
+  Reference Value (keywords/section): security of RC4 cipher suites
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7465:
+  Search Keywords: 'security of RC4 cipher suites'
+  Result: Found in Section 4.2
+  Section Title: Informative References
+  Content Preview:    [ALF ]      AlFardan, N., Bernstein, D., Paterson, K., Poettering, B.,
+              and J. Schul...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Old versions of TLS permitted the use of very low strength ciphers.
+   Ciphers with a strength less than 112 bits MUST NOT be offered or
+   negotiated for any version of TLS for any reason.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The security of SSL 2.0 [SSL2], SSL 3.0 [RFC6101], TLS 1.0 [RFC2246],
+   and TLS 1.1 [RFC4346] are considered insufficient for the reasons
+   enumerated in [RFC6176], [RFC7568], and [RFC8996] and t...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: SSL2
+  Reference Type: TEXT
+  Reference Value (keywords/section): security of SSL 2.0
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC6101
+  Reference Type: TEXT
+  Reference Value (keywords/section): security of SSL 3.0
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC2246
+  Reference Type: TEXT
+  Reference Value (keywords/section): security of TLS 1.0
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC4346
+  Reference Type: TEXT
+  Reference Value (keywords/section): security of TLS 1.1
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC6176
+  Reference Type: TEXT
+  Reference Value (keywords/section): reasons enumerated
+
+Reference 6:
+  Document Type: RFC
+  Document Tag: RFC7568
+  Reference Type: TEXT
+  Reference Value (keywords/section): reasons enumerated
+
+Reference 7:
+  Document Type: RFC
+  Document Tag: RFC8996
+  Reference Type: TEXT
+  Reference Value (keywords/section): reasons enumerated
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6101:
+  Search Keywords: 'security of SSL 3.0'
+  Result: Found in Section 2
+  Section Title: Goals
+  Content Preview:    The goals of SSL protocol version 3.0, in order of their priority,
+   are:
+
+   1.  Cryptographic ...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC2246:
+  Search Keywords: 'security of TLS 1.0'
+  Result: Found in Section F
+  Section Title: Security analysis
+  Content Preview:    The TLS protocol is designed to establish a secure connection between
+   a client and a server co...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4346:
+  Search Keywords: 'security of TLS 1.1'
+  Result: Found in Section 1.1
+  Section Title: Differences from TLS 1.0
+  Content Preview:    This document is a revision of the TLS 1.0 [TLS1.0] protocol, and
+   contains some small security...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6176:
+  Search Keywords: 'reasons enumerated'
+  Result: Found in Section 4
+  Section Title: Security Considerations
+  Content Preview:    This entire document is about security considerations.
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7568:
+  Search Keywords: 'reasons enumerated'
+  Result: Found in Section 6
+  Section Title: Security Considerations
+  Content Preview:    This entire document aims to improve security by prohibiting the use
+   of a protocol that is not...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8996:
+  Search Keywords: 'reasons enumerated'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    Transport Layer Security (TLS) versions 1.0 [RFC2246] and 1.1
+   [RFC4346] were superseded by TLS...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Implementations MUST NOT send an SSL version 2.0 compatible CLIENT-
+   HELLO.  Implementations MUST NOT negotiate TLS 1.3 or later using an
+   SSL version 2.0 compatible CLIENT-HELLO.  Implementati...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Implementations MUST NOT send a ClientHello.legacy_version or
+   ServerHello.legacy_version set to 0x0300 or less.  Any endpoint
+   receiving a Hello message with ClientHello.legacy_version or
+   S...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Implementations MUST NOT send any records with a version less than
+   0x0300.  Implementations SHOULD NOT accept any records with a version
+   less than 0x0300 (but may inadvertently do so if the r...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6066
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC6066
+  Reference Type: TEXT
+  Reference Value (keywords/section): Truncated HMAC extension
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC6066:
+  Looking for Section: '7'
+  Match Type: Exact match
+  Result: Matched to Section 7
+  Section Title: Truncated HMAC
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6066:
+  Search Keywords: 'Truncated HMAC extension'
+  Result: Found in Section 7
+  Section Title: Truncated HMAC
+  Content Preview:    Currently defined TLS cipher suites use the MAC construction HMAC
+   [RFC2104] to authenticate re...
+---------------------------------------------------------------------------
+
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section E only.
+Focusing on section E and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/section_dependencies.json
+
+Creating prompts for section E...
+Creating expert prompt for section E with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/focus_section_E_prompt_expert.md
+Expert prompt token count: 90,175 tokens
+Creating router prompt for section E...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/focus_section_E_prompt_router.md
+Router prompt token count: 67,141 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958ce993c388191a7c9f32559e3b152
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section E
+================================================================================
+2026-01-03 04:07:39,634 - __main__ - INFO - Loading router user prompt...
+2026-01-03 04:07:39,636 - __main__ - INFO - Router prompt length: 409091 chars
+2026-01-03 04:07:39,636 - __main__ - INFO - 
+================================================================================
+2026-01-03 04:07:39,636 - __main__ - INFO - TESTING ROUTER
+2026-01-03 04:07:39,636 - __main__ - INFO - ================================================================================
+2026-01-03 04:07:39,747 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 04:07:39,747 - __main__ - INFO - User prompt length: 409091 chars
+2026-01-03 04:08:39,304 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 04:08:39,451 - __main__ - INFO - Router analysis complete. Bug likelihood: Medium
+2026-01-03 04:08:39,452 - __main__ - INFO - Using existing vector store(s): vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 04:08:39,452 - __main__ - INFO - 
+================================================================================
+2026-01-03 04:08:39,452 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 04:08:39,452 - __main__ - INFO - ================================================================================
+2026-01-03 04:08:39,453 - __main__ - INFO - 
+Invoking expert: Temporal (MEDIUM)
+2026-01-03 04:08:39,572 - __main__ - INFO - Invoking expert Temporal with manual prompt...
+2026-01-03 04:08:39,572 - __main__ - INFO - User prompt length: 412911 chars
+2026-01-03 04:08:39,572 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 04:09:42,384 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 04:09:42,411 - __main__ - INFO - Expert Temporal analysis complete
+2026-01-03 04:09:42,412 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 04:09:42,545 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 04:09:42,545 - __main__ - INFO - User prompt length: 412927 chars
+2026-01-03 04:09:42,545 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 04:10:52,792 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 04:10:52,795 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 04:10:52,796 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 04:10:52,913 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 04:10:52,913 - __main__ - INFO - User prompt length: 412972 chars
+2026-01-03 04:10:52,913 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 04:12:13,517 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 04:12:13,520 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 04:12:13,521 - __main__ - INFO - 
+Invoking expert: Deontic (HIGH)
+2026-01-03 04:12:13,622 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 04:12:13,622 - __main__ - INFO - User prompt length: 412941 chars
+2026-01-03 04:12:13,622 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 04:12:45,252 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 04:12:45,253 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 04:12:45,253 - __main__ - INFO - 
+Invoking expert: CrossRFC (HIGH)
+2026-01-03 04:12:45,333 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 04:12:45,333 - __main__ - INFO - User prompt length: 412906 chars
+2026-01-03 04:12:45,333 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 04:13:23,603 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 04:13:23,605 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 04:13:23,608 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/test_analysis.md
+2026-01-03 04:13:23,612 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E/test_analysis.json
+2026-01-03 04:13:23,612 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-E
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section E describes TLS 1.3 backward-compatibility behavior with older TLS/SSL versions, including version negotiation, 0‑RTT with older servers, middlebox compatibility mode, and security restrictions, and cross-references a number of earlier TLS/SSL RFCs.
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: MEDIUM - Resumption behavior depends on the version used in an earlier handshake and on later attempts; ordering of events across connections matters.
+  - ActorDirectionality: LOW - Roles (client/server) are clear; no obvious confusion about who does what.
+  - Scope: MEDIUM - Some rules are meant to apply only when negotiating pre‑1.3 versions; interaction with global prohibitions (e.g., on TLS 1.0/1.1) depends on correct scoping.
+  - Causal: MEDIUM - Following the guidance literally (e.g., about which version to use on resumption) could lead to using versions that are elsewhere forbidden, or to non‑interoperable behavior when combined with RFC 8996.
+  - Quantitative: LOW - No critical numeric bounds or sizes in this part beyond version numbers.
+  - Deontic: HIGH - Core issue is interaction of MUST/MUST NOT/SHOULD between this text and other parts of the same draft and RFC 8996 (e.g., negotiation of TLS 1.0/1.1 vs resumption guidance).
+  - Structural: LOW - No ABNF/YANG/etc. here; mainly prose requirements.
+  - CrossRFC: HIGH - Section E is explicitly about compatibility with earlier TLS/SSL RFCs; also references RFC 8996 and inherits its deprecation requirements.
+  - Terminology: LOW - Terminology seems consistent (legacy_version, legacy_record_version) and matches earlier sections.
+  - Boundary: LOW - There is an edge case around resuming sessions negotiated with now‑forbidden protocol versions, but it’s tightly tied to the deontic/cross‑RFC conflict rather than to generic boundary behavior.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Resumption version recommendation vs ban on TLS 1.0/1.1
+    Relevant Dimensions: Deontic, CrossRFC, Temporal, Causal, Scope
+    Sketch: In Section E.1, the draft states that “A client using a ticket for resumption SHOULD initiate the co...
+
+Response ID: resp_0638f6d6f450d085006958dc5cabe081959c1d18acc149100d
+
+## Temporal Expert Analysis
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    Appendix E’s guidance on which version to use when resuming a session was written in a world where TLS 1.0 and 1.1 were still legal, and it now co‑exists with new text that outright forbids negotiating those versions. Over time this creates a mismatch: historical tickets from TLS 1.0/1.1 sessions and the “resume with the same version” recommendation now collide with “MUST NOT negotiate” requirements. The draft never explicitly spells out what a conform...
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Appendix E describes backward compatibility of TLS 1.3 with older TLS/SSL versions, including how clients negotiate down to earlier versions and how they use tickets for resumption. The bis draft additionally forbids negotiating TLS 1.0 and 1.1, aligning TLS 1.3 with RFC 8996.
+
+- ScopeModel:
+  - Targets:
+    - TLS 1.3 clients that:
+      - Connect to servers not supporting TLS 1.3, and
+      - Possess resumption tickets from prior connections (potentially at TLS ...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following the bis-14 text literally does not make the protocol unimplementable or force insecure behavior. The “SHOULD initiate using the previously negotiated version” guidance in Appendix E.1 is now implicitly constrained by stronger “MUST NOT negotiate TLS 1.0/1.1” requirements, so a compliant implementation will simply ignore that SHOULD for obsolete versions; at worst this is a minor, low‑impact underspecification about how to treat legacy 1.0/1.1 resumption tickets.
+
+---
+
+2...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: The draft tightens TLS 1.3 requirements, explicitly forbids negotiating TLS 1.0 and 1.1 in line with RFC 8996, but Appendix E still describes version negotiation and resumption behavior with “older versions” including a recommendation about which protocol version to use when resuming via tickets.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Resumption-version “SHOULD” conflicts with “MUST NOT negotiate TLS 1.0...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section E discusses how TLS 1.3 negotiates with older TLS/SSL versions, including advice for resumption and version choice when connecting to legacy servers, while the bis draft elsewhere incorporates the deprecation of TLS 1.0 and 1.1 per RFC 8996.
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Resumption version advice vs TLS 1.0/1.1 deprecation
+    - Description: Section E.1 repeats the RFC 8446 text that “A cli...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Medium
+Experts: ✓ 5 invoked
+  Dimensions: Temporal, Scope, Causal, Deontic, CrossRFC
+Vector Stores: vs_6958ce993c388191a7c9f32559e3b152
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section E
+################################################################################
+

@@ -1,0 +1,66 @@
+{
+  "routing_summary": {
+    "excerpt_summary": "Section 22 is an RFC 7942-style “Implementation Status” section listing known DHCPv6 implementations and explicitly marked for removal by the RFC Editor before publication.",
+    "overall_bug_likelihood": "None",
+    "dimensions": {
+      "Temporal": {
+        "relevance": "LOW",
+        "explanation": "No protocol timing or sequencing rules are defined here; it’s purely descriptive text."
+      },
+      "ActorDirectionality": {
+        "relevance": "LOW",
+        "explanation": "Mentions of vendors/implementations are informational only, not normative about who sends what."
+      },
+      "Scope": {
+        "relevance": "LOW",
+        "explanation": "The scope is meta (IESG evaluation / running code) and not protocol behavior; no scoping rules to validate."
+      },
+      "Causal": {
+        "relevance": "LOW",
+        "explanation": "Nothing here drives protocol behavior or algorithms; errors would not affect interoperability."
+      },
+      "Quantitative": {
+        "relevance": "LOW",
+        "explanation": "Some dates and deployment sizes are mentioned, but minor numeric inaccuracies would be non-normative and the whole section is to be removed."
+      },
+      "Deontic": {
+        "relevance": "LOW",
+        "explanation": "Only process-oriented “should” language (re RFC 7942) appears; no DHCPv6 MUST/SHOULD semantics are defined."
+      },
+      "Structural": {
+        "relevance": "LOW",
+        "explanation": "No ABNF/YANG/packet formats; just narrative text and bullet lists."
+      },
+      "CrossRFC": {
+        "relevance": "LOW",
+        "explanation": "References to RFC 7942 and various products are correct in kind and only support the meta “running code” discussion."
+      },
+      "Terminology": {
+        "relevance": "LOW",
+        "explanation": "Any terminology is informal (product names, “client/server/relay”) and not used to define protocol concepts."
+      },
+      "Boundary": {
+        "relevance": "LOW",
+        "explanation": "No edge-case protocol behavior; the section is outside the protocol specification."
+      }
+    },
+    "candidate_issues": [
+      {
+        "bug_type": "None",
+        "short_label": "Implementation-status section is purely informational and marked for removal; no protocol errata implied",
+        "relevant_dimensions": [],
+        "sketch_for_experts": "Section 22 conforms to the RFC 7942 pattern: it explains the purpose of the implementation status, gives boilerplate text, and clearly instructs the RFC Editor to remove the section before publication. It does not alter or clarify any normative DHCPv6 behavior. Any minor factual inaccuracies (e.g., specific deployment descriptions or URLs) would not affect protocol interoperability and will not appear in the final RFC, so they do not warrant technical errata."
+      }
+    ]
+  },
+  "expert_analyses": {},
+  "vector_store_ids": [
+    "vs_6958be89a44481918c2ddd280ca7a32c"
+  ],
+  "metadata": {
+    "model": "gpt-5.1",
+    "router_reasoning_effort": "medium",
+    "expert_reasoning_effort": "medium",
+    "test_mode": "manual"
+  }
+}

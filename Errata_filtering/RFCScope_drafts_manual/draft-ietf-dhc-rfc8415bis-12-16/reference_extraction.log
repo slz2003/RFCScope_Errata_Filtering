@@ -1,0 +1,670 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This section describes which options are valid in which kinds of
+   message types and explains what to do when a client or server
+   receives a message that contains known options that are invalid ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients and servers MAY choose to either (1) extract information from
+   such a message if the information is of use to the recipient or
+   (2) ignore such a message completely and just discard it.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If a server receives a message that it considers invalid, it MAY send
+   a Reply message (or Advertise message, as appropriate) with a Server
+   Identifier option (see Section 21.3), a Client Ident...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients, relay agents, and servers MUST NOT discard messages that
+   contain unknown options (or instances of vendor options with unknown
+   enterprise-number values).  These options should be igno...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Servers SHOULD NOT accept unicast traffic from clients.  The Server
+   Unicast option (see Section 21.12) and UseMulticast status code (see Section 21.13) have been obsoleted and hence clients shou...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.12
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.12'
+  Match Type: Exact match
+  Result: Matched to Section 21.12
+  Section Title: Server Unicast Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Note: The multicast/unicast rules mentioned above apply to the DHCP
+   messages within this document.  Messages defined in other and future
+   documents may have different rules.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The "transaction-id" field holds a value used by clients and servers
+   to synchronize server responses to client messages.  A client SHOULD
+   generate a random number that cannot easily be guesse...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Solicit messages.
+
+   Servers MUST discard any Solicit messages that do not include a
+   Client Identifier option or that do include a Server Identifier
+   option.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Advertise message that meets any of
+   the following conditions:
+
+   *  the message does not include a Server Identifier option (see Section 21.3).
+
+   *  the mess...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  the "transaction-id" field value does not match the value the
+      client used in its Solicit message. 
+   Servers and relay agents MUST discard any received Advertise
+   messages.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Request messages.
+
+   Servers MUST discard any received Request message that meets any of
+   the following conditions:
+
+   *  the message does not include a Server...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Confirm messages.
+
+   Servers MUST discard any received Confirm messages that do not
+   include a Client Identifier option (see Section 21.2) or that do
+   include...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Renew messages.
+
+   Servers MUST discard any received Renew message that meets any of the
+   following conditions:
+
+   *  the message does not include a Server Ide...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Rebind messages. 
+   Servers MUST discard any received Rebind messages that do not include
+   a Client Identifier option (see Section 21.2) or that do include a
+  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Decline messages.
+
+   Servers MUST discard any received Decline message that meets any of
+   the following conditions:
+
+   *  the message does not include a Server...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Release messages.
+
+   Servers MUST discard any received Release message that meets any of
+   the following conditions:
+
+   *  the message does not include a Server...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Reply message that meets any of the
+   following conditions:
+
+   *  the message does not include a Server Identifier option (see Section 21.3).
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  the "transaction-id" field in the message does not match the value
+      used in the original message. 
+   If the client included a Client Identifier option (see Section 21.2)
+   in the original...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Servers and relay agents MUST discard any received Reconfigure
+   messages.
+
+   Clients MUST discard any Reconfigure message that meets any of the
+   following conditions:
+
+   *  the message was no...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.19
+
+Reference 4:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 20.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.19'
+  Match Type: Exact match
+  Result: Matched to Section 21.19
+  Section Title: Reconfigure Message Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '20.4'
+  Match Type: Exact match
+  Result: Matched to Section 20.4
+  Section Title: Reconfiguration Key Authentication Protocol (RKAP)
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Information-request messages.
+
+   Servers MUST discard any received Information-request message that
+   meets any of the following conditions:
+
+   *  the message i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Relay-forward messages.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients and servers MUST discard any received Relay-reply messages.
+################################################################################

@@ -1,0 +1,31 @@
+{
+  "reports": [
+    {
+      "label": "Underspecified Candidate Issue with No Descriptive Details",
+      "bug_type": "Candidate Issue (Underspecified)",
+      "explanation": "The analysis output flags a candidate issue in the Candidate Issues section, but no explicit label, type, or relevant dimensions are provided, leaving the issue entirely underspecified.",
+      "justification": [
+        "The Candidate Issues section lists 'Issue 1' with 'Type: None', an empty Label, no Relevant Dimensions, and an incomplete Sketch, indicating a potential erratum that has not been detailed."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The Candidate Issues section includes an entry for Issue 1 that lacks a descriptive label or detailed information."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "All assessed dimensions in the analysis are marked as LOW and the candidate issue lacks any substantive detail; thus, any potential issue is of low severity.",
+      "confidence": "Low",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-tls-rfc8446bis-14-B-1"
+    }
+  ]
+}

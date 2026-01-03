@@ -1,0 +1,337 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This section clarifies which parts of RFC3168 are updated and maps
+   them to the sections of the present AccECN specification that update
+   them:
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): updated
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  The whole of "6.1.1 TCP Initialization" of [RFC3168] is updated by Section 3.1 of the present specification. 
+   *  In "6.1.2.  The TCP Sender" of [RFC3168], all mentions of a
+      congestion r...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.1'
+  Match Type: Fuzzy match (score: 85.71428571428572)
+  Result: Matched to Section 23.1
+  Section Title: IPv4 TOS Byte and IPv6 Traffic Class Octet
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2'
+  Match Type: Fuzzy match (score: 85.71428571428572)
+  Result: Matched to Section 23.2
+  Section Title: TCP Header Flags
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.1.5'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 6.1.5
+  Section Title: Retransmitted TCP packets
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      It will be noted that RFC 8311 already updates, or potentially
+      updates, a number of the requirements in "6.1.2.  The TCP Sender". Section 6.1.2 of RFC 3168 extended standard TCP congestion...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5681
+  Reference Type: TEXT
+  Reference Value (keywords/section): TCP Congestion Control
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): details
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.2'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.2
+  Section Title: The TCP Sender
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  The whole of "6.1.3.  The TCP Receiver" of [RFC3168] is updated by Section 3.2 of the present specification, with the exception of
+      the last paragraph (about congestion response to drop and...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.3'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.3
+  Section Title: The TCP Receiver
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2
+  Section Title: AccECN Feedback
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+         "the TCP data receiver SHOULD ignore the ECN field on arriving
+         data packets that are outside of the receiver's current
+         window."
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      is updated by more stringent acceptability tests for any packet
+      (not just data packets) in the present specification.
+      Specifically, in the normative specification of AccECN (Section ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC5961
+  Reference Type: TEXT
+  Reference Value (keywords/section): acceptability tests
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC9293
+  Reference Type: TEXT
+  Reference Value (keywords/section): acceptability tests
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3'
+  Match Type: Exact match
+  Result: Matched to Section 3
+  Section Title: AccECN Protocol Specification
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '1.3'
+  Match Type: Exact match
+  Result: Matched to Section 1.3
+  Section Title: Terminology
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit
+      use of ECN on TCP control packets and retransmissions.  The
+      present specification does not update that aspect of RFC...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.4
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.5
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.6
+
+Reference 6:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.3
+
+Reference 7:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-generalized-ecn
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN++: Adding Explicit Congestion Notification (ECN) to TCP Control Packets
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: Dropped or Corrupted Packets
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.1
+  Section Title: TCP Initialization
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.4'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.4
+  Section Title: Congestion on the ACK-path
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.5
+  Section Title: Retransmitted TCP packets
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.6'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.6
+  Section Title: TCP Window Probes.
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8311:
+  Looking for Section: '4.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.3
+  Section Title: TCP Control Packets and Retransmissions
+---------------------------------------------------------------------------
+

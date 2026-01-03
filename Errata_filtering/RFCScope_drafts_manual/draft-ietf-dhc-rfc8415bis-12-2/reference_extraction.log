@@ -1,0 +1,48 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as d...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC2119
+  Reference Type: TEXT
+  Reference Value (keywords/section): key words interpretation
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8174
+  Reference Type: TEXT
+  Reference Value (keywords/section): uppercase lowercase ambiguity
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8174:
+  Search Keywords: 'uppercase lowercase ambiguity'
+  Result: Found in Section 2
+  Section Title: Clarifying Capitalization of Key Words
+  Content Preview:    The following change is made to [RFC2119]:
+
+   === OLD ===
+   In many standards track documents s...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This document also makes use of internal conceptual variables to
+   describe protocol behavior and external variables that an
+   implementation must allow system administrators to change.  The
+   s...
+################################################################################

@@ -1,0 +1,631 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-4/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This section defines terminology specific to IPv6 and DHCP used in
+   this document.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IPv6 terminology from [RFC8200], [RFC4291], and [RFC4862] relevant to
+   this specification is included below.
+
+   address                   An IP-layer identifier for an interface or
+             ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8200
+  Reference Type: TEXT
+  Reference Value (keywords/section): IPv6 terminology
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC4291
+  Reference Type: TEXT
+  Reference Value (keywords/section): Global unicast address
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC4862
+  Reference Type: TEXT
+  Reference Value (keywords/section): IPv6 Stateless Address Autoconfiguration
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8200:
+  Search Keywords: 'IPv6 terminology'
+  Result: Found in Section 2
+  Section Title: Terminology
+  Content Preview:    node         a device that implements IPv6.
+
+   router       a node that forwards IPv6 packets no...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4291:
+  Search Keywords: 'Global unicast address'
+  Result: Found in Section 2.5.4
+  Section Title: Global Unicast Addresses
+  Content Preview:    The general format for IPv6 Global Unicast addresses is as follows:
+
+   |         n bits         ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IP                        Internet Protocol Version 6 (IPv6).  The
+                             terms "IPv4" and "IPv6" are used only in
+                             contexts where it is necessary ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   link                      A communication facility or medium over
+                             which nodes can communicate at the link
+                             layer, i.e., the layer immediatel...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   link-layer identifier     A link-layer identifier for an interface --
+                             for example, IEEE 802 addresses for
+                             Ethernet or Token Ring network in...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   link-local address        An IPv6 address having a link-only scope,
+                             indicated by having the prefix (fe80::/10),
+                             that can be used to reach n...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   multicast address         An identifier for a set of interfaces 
+                             (typically belonging to different nodes).
+                             A packet sent to a multicast add...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   prefix                    The initial bits of an address, or a set
+                             of IP addresses that share the same
+                             initial bits.
+
+   prefix length     ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC4193
+  Reference Type: TEXT
+  Reference Value (keywords/section): Unique local address
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4193:
+  Search Keywords: 'Unique local address'
+  Result: Found in Section 3.2.2
+  Section Title: Sample Code for Pseudo-Random Global ID Algorithm
+  Content Preview:    The algorithm described below is intended to be used for locally
+   assigned Global IDs.  In each...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   unicast address           An identifier for a single interface.  A
+                             packet sent to a unicast address is
+                             delivered to the interface identifie...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Terminology specific to DHCP can be found below.
+
+   appropriate to the link   An address is "appropriate to the link"
+                             when the address is consistent with the
+         ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   binding                   A binding (or client binding) is a group of
+                             server data records containing the
+                             information the server has about t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   configuration parameter   An element of the configuration information
+                             set on the server and delivered to the
+                             client using DHCP.  Such param...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   container option          An option that encapsulates other options
+                             (for example, the IA_NA option (see Section 21.4) may contain IA Address
+                           ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.4'
+  Match Type: Exact match
+  Result: Matched to Section 21.4
+  Section Title: Identity Association for Non-temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.6'
+  Match Type: Exact match
+  Result: Matched to Section 21.6
+  Section Title: IA Address Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP                      Dynamic Host Configuration Protocol for
+                             IPv6.  The terms "DHCPv4" and "DHCPv6" are
+                             used only in contexts where it...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP client               Also referred to as "client".  A node that
+                             initiates requests on a link to obtain
+                             configuration parameters from o...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP relay agent          Also referred to as "relay agent".  A node
+                             that acts as an intermediary to deliver
+                             DHCP messages between clients ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP server               This document condenses this term to
+                             "server".  A node that responds to requests
+                             from clients.  It may or may not...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '11'
+  Match Type: Exact match
+  Result: Matched to Section 11
+  Section Title: DHCP Unique Identifier (DUID)
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   encapsulated option       A DHCP option that is usually only
+                             contained in another option.  For example,
+                             the IA Address option is contained ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.5
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 9
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7227
+  Reference Type: TEXT
+  Reference Value (keywords/section): Guidelines for Creating New DHCPv6 Options
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.5'
+  Match Type: Exact match
+  Result: Matched to Section 21.5
+  Section Title: Identity Association for Temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '9'
+  Match Type: Exact match
+  Result: Matched to Section 9
+  Section Title: Relay Agent/Server Message Formats
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7227:
+  Search Keywords: 'Guidelines for Creating New DHCPv6 Options'
+  Result: Found in Section 4
+  Section Title: General Principles
+  Content Preview:    The primary guiding principle to follow in order to enhance an
+   option's adoptability is reuse....
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IA                        Identity Association: a collection of
+                             leases assigned to a client.  Each IA has
+                             an associated IAID (see below).  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8947
+  Reference Type: TEXT
+  Reference Value (keywords/section): IA_LL
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8947:
+  Search Keywords: 'IA_LL'
+  Result: Found in Section 11.1
+  Section Title: Identity Association for Link-Layer Addresses Option
+  Content Preview:    The Identity Association for Link-Layer Addresses option (the IA_LL
+   option) is used to carry a...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IA option(s)              In this document, one or more IA_NA, IA_TA
+                             (obsoleted), and/or IA_PD.  Another IA type
+                             (IA_LL) was defined in [RF...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8947
+  Reference Type: TEXT
+  Reference Value (keywords/section): IA_LL
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IAID                      Identity Association Identifier: an
+                             identifier for an IA, chosen by the client.
+                             Each IA has an IAID, which is cho...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IA_NA                     Identity Association for Non-temporary
+                             Addresses: an IA that carries assigned
+                             addresses.  See Section 21.4 for de...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.4'
+  Match Type: Exact match
+  Result: Matched to Section 21.4
+  Section Title: Identity Association for Non-temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IA_PD                     Identity Association for Prefix Delegation:
+                             an IA that carries delegated prefixes.  See Section 21.21 for details on the IA_PD
+               ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.21
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.21'
+  Match Type: Exact match
+  Result: Matched to Section 21.21
+  Section Title: Identity Association for Prefix Delegation Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IA_TA                     Identity Association for Temporary
+                             Addresses: an IA that carries temporary
+                             addresses (see [RFC8981]).  This optio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8981
+  Reference Type: TEXT
+  Reference Value (keywords/section): temporary addresses
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): details
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8981:
+  Search Keywords: 'temporary addresses'
+  Result: Found in Section 3.5
+  Section Title: Expiration of Temporary Addresses
+  Content Preview:    When a temporary address becomes deprecated, a new one MUST be
+   generated.  This is done by rep...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'details'
+  Result: Found in Section 26
+  Section Title: References
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   lease                     A contract by which the server grants the
+                             use of an address or delegated prefix to
+                             the client for a specified per...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   message                   A unit of data carried as the payload of a
+                             UDP datagram, exchanged among DHCP servers,
+                             relay agents, and clients.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Reconfigure key           A key supplied to a client by a server.
+                             Used to provide security for Reconfigure
+                             messages (see Section 7.3 for th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '7.3'
+  Match Type: Exact match
+  Result: Matched to Section 7.3
+  Section Title: DHCP Message Types
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   retransmission            Another attempt to send the same DHCP
+                             message by a client or server, as a result
+                             of not receiving a valid respons...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 20.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '20.4'
+  Match Type: Exact match
+  Result: Matched to Section 20.4
+  Section Title: Reconfiguration Key Authentication Protocol (RKAP)
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   singleton option          An option that is allowed to appear only
+                             once as a top-level option or at any
+                             encapsulation level.  Most options ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   T1                        The time interval after which the client is
+                             expected to contact the server that did the
+                             assignment to extend (ren...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   T2                        The time interval after which the client is
+                             expected to contact any available server to
+                             extend (rebind) the lifet...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   top-level option          An option conveyed in a DHCP message
+                             directly, i.e., not encapsulated in any
+                             other option, as described in Sectio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 9
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7227
+  Reference Type: TEXT
+  Reference Value (keywords/section): Guidelines for Creating New DHCPv6 Options
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '9'
+  Match Type: Exact match
+  Result: Matched to Section 9
+  Section Title: Relay Agent/Server Message Formats
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   transaction ID            An opaque value used to match responses
+                             with replies initiated by either a client
+                             or a server.
+################################################################################

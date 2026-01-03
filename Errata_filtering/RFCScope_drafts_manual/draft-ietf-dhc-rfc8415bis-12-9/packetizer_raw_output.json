@@ -1,0 +1,31 @@
+{
+  "reports": [
+    {
+      "label": "Underspecified Candidate Issue in Router Analysis Candidate Issues Block",
+      "bug_type": "Candidate Issue",
+      "explanation": "The analyzer output lists a candidate issue with an entry that lacks specific details—the type is marked as None and the label is empty—making it ambiguous and underspecified.",
+      "justification": [
+        "The candidate issues section shows 'Issue 1:' with 'Type: None', an empty 'Label', no listed 'Relevant Dimensions', and a 'Sketch: ...', indicating a lack of detail (E1)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The candidate issues block shows one candidate issue with Type: None, an empty Label, and an incomplete Sketch, indicating it is underspecified."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "The overall router analysis assigns low likelihood and the candidate issue presents no clear operational impact, suggesting a low severity rating.",
+      "confidence": "Low",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-9-1"
+    }
+  ]
+}

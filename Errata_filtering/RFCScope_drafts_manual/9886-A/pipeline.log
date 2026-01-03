@@ -1,0 +1,435 @@
+################################################################################
+Processing: RFC 9886, Section A
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for RFC 9886, Section A
+================================================================================
+Preparing RFC 9886 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A
+
+Extracting references from the references section of the RFC.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/references.json
+
+Parsing the contents of the RFC.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/corpus.json
+
+Extracting references from section A only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/reference_extraction.log
+Focusing on section A and its children.
+Processing section A. Example Zone Files and RRType Contents
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 376.58it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   An example zone file ip6.arpa., run by IANA, is not shown.  It would
+   contain NS RRTypes to delegate to a respective RAA.  To avoid any
+   future collisions with production deployments an apex of...
+################################################################################
+Warning: Section A not found. Processing all sections.
+Processing section A.1. Example RAA
+Splitting content into chunks: 0it [00:00, ?it/s]Splitting content into chunks: 0it [00:00, ?it/s]
+Processing section A.1.1. Authentication HHIT
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 3/3 [00:00<00:00, 186.73it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   $ORIGIN 5.0.0.0.0.0.e.f.f.3.0.0.1.0.0.2.ip6.example.com.
+   7.b.0.a.1.9.e.1.7.5.1.a.0.6.e.5. IN HHIT (
+       gwppM2ZmOCAwMDAwWQFGMIIBQjCB9aAD
+       AgECAgE1MAUGAytlcDArMSkwJwYDVQQD
+       DCAyMDA...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   [
+       10,  # Reserved (RAA Auth from DKI)
+       "3ff8 0000",
+       h'308201423081F5A00302010202013530
+       0506032B6570302B312930270603550403
+       0C20323030313030336666653030303030
+      ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Certificate:
+       Data:
+           Version: 3 (0x2)
+           Serial Number: 53 (0x35)
+           Signature Algorithm: ED25519
+           Issuer: CN = 2001003ffe0000055e60a1571e91a0b7
+          ...
+################################################################################
+Processing section A.1.2. Delegation of HDA
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 555.68it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   $ORIGIN c.d.f.f.3.0.0.1.0.0.2.ip6.example.com.
+   a.0.0. IN NS ns1.hda-10.example.com
+
+                     Figure 12: HDA Delegation Example
+################################################################################
+Processing section A.2. Example HDA
+Splitting content into chunks: 0it [00:00, ?it/s]Splitting content into chunks: 0it [00:00, ?it/s]
+Processing section A.2.1. Authentication and Issue HHITs
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 5/5 [00:00<00:00, 70.18it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   $ORIGIN 5.0.a.0.0.0.e.f.f.3.0.0.1.0.0.2.ip6.example.com.
+   0.a.9.0.7.2.4.d.5.4.e.e.5.1.6.6.5.0. IN HHIT (
+       gw5pM2ZmOCAwMDBhWQFHMIIBQzCB9qAD
+       AgECAgFfMAUGAytlcDArMSkwJwYDVQQD
+       DCA...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   [
+       14,  # Reserved (HDA Auth from DKI)
+       "3ff8 000a",
+       h'308201433081F6A00302010202015F30
+       0506032B6570302B312930270603550403
+       0C20323030313030336666653030303030
+      ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Certificate:
+       Data:
+           Version: 3 (0x2)
+           Serial Number: 95 (0x5f)
+           Signature Algorithm: ED25519
+           Issuer: CN = 2001003ffe0000055e60a1571e91a0b7
+          ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   [
+       15,  # Reserved (HDA Issue from DKI)
+       "3ff8 000a",
+       h'308201433081F6A00302010202015830
+       0506032B6570302B312930270603550403
+       0C20323030313030336666653030306130
+     ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Certificate:
+       Data:
+           Version: 3 (0x2)
+           Serial Number: 88 (0x58)
+           Signature Algorithm: ED25519
+           Issuer: CN = 2001003ffe000a056615ee45d42709a0
+          ...
+################################################################################
+Processing section A.2.2. Registrant HHIT and BRID
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 5/5 [00:00<00:00, 117.51it/s]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   $ORIGIN 5.0.a.0.0.0.e.f.f.3.0.0.1.0.0.2.ip6.example.com.
+   2.b.6.c.b.4.a.9.9.6.4.2.8.0.3.1. IN HHIT (
+       gxJpM2ZmOCAwMDBhWQEYMIIBFDCBx6AD
+       AgECAgFUMAUGAytlcDArMSkwJwYDVQQD
+       DCAyMDA...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   [
+       18,  # Uncrewed Aircraft System (UAS)
+       "3ff8 000a",
+       h'308201143081C7A00302010202015430
+       0506032B6570302B312930270603550403
+       0C20323030313030336666653030306130
+    ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Certificate:
+       Data:
+           Version: 3 (0x2)
+           Serial Number: 84 (0x54)
+           Signature Algorithm: ED25519
+           Issuer: CN = 2001003ffe000a05260ed4376b256e28
+          ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   {
+       0: 0,
+       1: [4, h'012001003FFE000A05130824699A4BC6B2'],
+       2: [
+           5,
+           h'01FADEF6670AEDF6672001003FFE0000
+           055E60A1571E91A0B79990D5B04B72A180
+          ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+        Figure 21: 2001:3f:fe00:a05:1308:2469:9a4b:c6b2 Decoded BRID
+                                RRType CBOR
+
+################################################################################
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section A only.
+Focusing on section A and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/section_dependencies.json
+
+Creating prompts for section A...
+Creating expert prompt for section A with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/focus_section_A_prompt_expert.md
+Expert prompt token count: 18,933 tokens
+Creating router prompt for section A...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/focus_section_A_prompt_router.md
+Router prompt token count: 23,027 tokens
+
+RFC 9886 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be4c24408191bdbddafd81dfd4e3
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for RFC 9886, Section A
+================================================================================
+2026-01-03 02:41:38,898 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:41:38,905 - __main__ - INFO - Router prompt length: 63360 chars
+2026-01-03 02:41:38,905 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:41:38,905 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:41:38,905 - __main__ - INFO - ================================================================================
+2026-01-03 02:41:39,183 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:41:39,183 - __main__ - INFO - User prompt length: 63360 chars
+2026-01-03 02:43:01,146 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:43:01,726 - __main__ - INFO - Router analysis complete. Bug likelihood: High
+2026-01-03 02:43:01,726 - __main__ - INFO - Using existing vector store(s): vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:43:01,726 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:43:01,726 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:43:01,726 - __main__ - INFO - ================================================================================
+2026-01-03 02:43:01,727 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 02:43:02,081 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 02:43:02,081 - __main__ - INFO - User prompt length: 66340 chars
+2026-01-03 02:43:02,082 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:43:55,990 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:43:56,063 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 02:43:56,064 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 02:43:56,512 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 02:43:56,512 - __main__ - INFO - User prompt length: 64116 chars
+2026-01-03 02:43:56,512 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:45:12,276 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:45:12,279 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 02:45:12,280 - __main__ - INFO - 
+Invoking expert: Quantitative (HIGH)
+2026-01-03 02:45:12,544 - __main__ - INFO - Invoking expert Quantitative with manual prompt...
+2026-01-03 02:45:12,544 - __main__ - INFO - User prompt length: 69990 chars
+2026-01-03 02:45:12,544 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:47:06,694 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:47:06,696 - __main__ - INFO - Expert Quantitative analysis complete
+2026-01-03 02:47:06,697 - __main__ - INFO - 
+Invoking expert: Deontic (MEDIUM)
+2026-01-03 02:47:06,886 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 02:47:06,887 - __main__ - INFO - User prompt length: 66220 chars
+2026-01-03 02:47:06,887 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:47:59,149 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:47:59,152 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 02:47:59,152 - __main__ - INFO - 
+Invoking expert: Structural (HIGH)
+2026-01-03 02:47:59,437 - __main__ - INFO - Invoking expert Structural with manual prompt...
+2026-01-03 02:47:59,437 - __main__ - INFO - User prompt length: 69959 chars
+2026-01-03 02:47:59,437 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:49:25,025 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:49:25,029 - __main__ - INFO - Expert Structural analysis complete
+2026-01-03 02:49:25,029 - __main__ - INFO - 
+Invoking expert: Terminology (MEDIUM)
+2026-01-03 02:49:25,171 - __main__ - INFO - Invoking expert Terminology with manual prompt...
+2026-01-03 02:49:25,171 - __main__ - INFO - User prompt length: 66304 chars
+2026-01-03 02:49:25,172 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:50:30,909 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:50:30,912 - __main__ - INFO - Expert Terminology analysis complete
+2026-01-03 02:50:30,913 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 02:50:31,159 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 02:50:31,159 - __main__ - INFO - User prompt length: 64061 chars
+2026-01-03 02:50:31,160 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:51:48,385 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:51:48,388 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 02:51:48,392 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/test_analysis.md
+2026-01-03 02:51:48,419 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A/test_analysis.json
+2026-01-03 02:51:48,419 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-A
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Appendix A provides concrete example DNS zone snippets and decoded HHIT and BRID RR contents for one RAA, one HDA, and a registrant, including CBOR and DER X.509 decodings, illustrating how the DET hierarchy and new RRTypes are used. The examples are meant to be consistent with the CDDL definitions in Sections 5.1/5.2 and with the IANA registries in Section 6.
+Overall Bug Likelihood: High
+
+Dimensions:
+  - Temporal: LOW - No sequencing, timers, or state transitions are specified in these examples.
+  - ActorDirectionality: LOW - Roles (RAA, HDA, registrant) are present but not in a way that creates directionality/protocol obligations needing checking here.
+  - Scope: MEDIUM - There is some subtlety about what is “example only” vs. normative (e.g., use of particular HHIT Entity Type values and HID abbreviations), so scope of requirements vs. examples may need review.
+  - Causal: MEDIUM - If implementers follow the CDDL strictly vs. follow the examples, they will encode different structures/lengths, which may cause interop failures; worth checking the causal impact of those discrepancies.
+  - Quantitative: HIGH - Several fields have explicit size constraints in CDDL (e.g., .size(15), .size(20)) that appear to be violated by the examples; numeric field sizes are central here.
+  - Deontic: MEDIUM - There is at least one apparent conflict between a MUST in the prose and the CDDL size constraint; the normative force of each should be clarified.
+  - Structural: HIGH - The CDDL schemas vs. the CBOR diagnostic examples (and BRID field grouping) need careful structural comparison; this is a core issue.
+  - CrossRFC: LOW - Cross-RFC content is mostly contextual; the likely issues are internal to RFC 9886’s definitions and examples rather than mis-citing other RFCs.
+  - Terminology: MEDIUM - The use of HHIT Entity Type values 10, 14, 15 as “Reserved (… from DKI)” vs. the IANA initial registry contents may represent a naming/registration mismatch.
+  - Boundary: MEDIUM - Size bounds (e.g., .size(15), .size(20), ranges) and “reserved” values touch edge cases where behavior or encoding constraints could become unclear.
+
+Candidate Issues: 4
+
+  Issue 1:
+    Type: Inconsistency
+    Label: HID Abbreviation length: CDDL .size(15) vs. normative text and examples (~9 characters)
+    Relevant Dimensions: Quantitative, Structural, Deontic
+    Sketch: In Section 5.1.2, `hid-abbreviation` is defined in CDDL (Figure 4) as `tstr .size(15)`. The text imm...
+
+  Issue 2:
+    Type: Inconsistency
+    Label: BRID CDDL structure (arrays of groups) vs. decoded CBOR examples in Appendix A
+    Relevant Dimensions: Structural, Quantitative
+    Sketch: The BRID CDDL in Figure 5 defines `uas_ids => [+ uas-id-grp]` and `auth => [+ auth-grp]`, where each...
+
+  Issue 3:
+    Type: Inconsistency
+    Label: BRID UAS ID length: CDDL `.size(20)` vs. 17‑byte example
+    Relevant Dimensions: Quantitative, Structural
+    Sketch: The CDDL defines `uas-id-grp` as `[ id_type: &uas-id-types, uas_id: bstr .size(20) ]`, so `uas_id` i...
+
+  Issue 4:
+    Type: Underspecification
+    Label: Use of unregistered HHIT Entity Type values (10, 14, 15) in examples without corresponding IANA entries
+    Relevant Dimensions: Terminology, Scope, CrossRFC
+    Sketch: The examples in Appendix A use HHIT Entity Type values 10, 14, and 15 with comments like “# Reserved...
+
+Response ID: resp_02ce7fb27a690e88006958c835a84081968be63a4e62ab1d89
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Appendix A gives concrete DNS examples (zone snippets and decoded CBOR / X.509) for RAA, HDA, and a registrant, intended to be consistent with the normative CDDL (Sections 5.1/5.2) and the IANA registries (Section 6). Elsewhere, the RFC defines the HHIT RRType structure, the HHIT Entity Type IANA registry, and global rules about DET reverse names and DNS publication.
+
+- ScopeModel:
+  - Targets:
+    - HHIT RRType instances (wire format and semantics) for various r...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Appendix A’s CBOR examples for both HHIT and BRID RRs do not match the CDDL structures and size constraints given in Sections 5.1/5.2. If one implementer follows the CDDL literally and another copies the Appendix A encodings, they will produce *incompatible wire formats* and fail to parse each other’s HHIT/BRID RDATA. This is a **causal underspecification / inconsistency** between the normative model and the examples, not a purely stylistic issue.
+
+---
+
+2. **Causal Analysis**
+
+##...
+
+## Quantitative Expert Analysis
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary: The excerpt defines how DRIP Entity Tags (DETs) are mapped into DNS, specifies two CBOR-encoded RRTypes (HHIT and BRID) using CDDL, and then gives fully worked DNS zone examples in Appendix A, including CBOR and DER decodings. The key quantitative aspects are the CDDL field sizes and structures and the consistency of the examples with those definitions.
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: HID Abbreviation length mismatch...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary:  
+  The RFC defines how DET-related DNS RRs (HHIT and BRID) are structured, encoded, and deployed, including CDDL-based CBOR formats, DNS placement, DNSSEC usage, and operational/privacy guidance. Appendix A gives concrete example zone files and decoded contents that are intended to match those normative definitions and IANA registries.
+
+- OverallDeonticRisk: High
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: HID Abbreviation length: CDDL `...
+
+## Structural Expert Analysis
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: I examined the CDDL definitions for the HHIT and BRID RRTypes, their prose field descriptions, and the concrete CBOR diagnostic examples in Appendix A of RFC 9886, plus the related IANA registry text.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: HID Abbreviation length mismatch between CDDL and examples/prose
+    - LocationHint: Section 5.1.2, Figure 4 (HHIT CDDL) and Appendix A HHIT examples (Figures 10, 14,...
+
+## Terminology Expert Analysis
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: Examples use HHIT Entity Type codes (10, 14, 15) with implied semantics that are not defined in this RFC’s HHIT Entity Type registry
+    - Evidence:
+      - ExcerptSnippets:
+        - Definition of the field and its value source:
+
+          - “HHIT Entity Type:  The HHIT Entity Type field is a number with values defined in Section 6.2.2.” (Section 5.1.2...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  The excerpt defines how DETs are represented in DNS using two new RRTypes: HHIT (RRType 67) and BRID (RRType 68), with their CBOR wire formats specified via CDDL in Sections 5.1/5.2 and allocation rules in the IANA registries in Section 6. Appendix A then gives concrete zone file snippets and CBOR/X.509 decodings for an example RAA, HDA, and registrant, and explicitly claims these examples are consistent with the CDDL and IANA sections. The key domai...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: High
+Experts: ✓ 7 invoked
+  Dimensions: Scope, Causal, Quantitative, Deontic, Structural, Terminology, Boundary
+Vector Stores: vs_6958be4c24408191bdbddafd81dfd4e3
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed RFC 9886, Section A
+################################################################################
+

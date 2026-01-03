@@ -1,0 +1,118 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section 10
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section 10
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/corpus.json
+
+Extracting references from section 10 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/reference_extraction.log
+Focusing on section 10 and its children.
+Processing section 10. Security Considerations
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 391.55it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Security issues are discussed throughout this memo, especially in Appendix C , Appendix E , and Appendix F .
+################################################################################
+Warning: Section 10 not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 10 only.
+Focusing on section 10 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/section_dependencies.json
+
+Creating prompts for section 10...
+Creating expert prompt for section 10 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/focus_section_10_prompt_expert.md
+Expert prompt token count: 73,185 tokens
+Creating router prompt for section 10...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/focus_section_10_prompt_router.md
+Router prompt token count: 64,975 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958ce993c388191a7c9f32559e3b152
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section 10
+================================================================================
+2026-01-03 03:37:12,264 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:37:12,269 - __main__ - INFO - Router prompt length: 329623 chars
+2026-01-03 03:37:12,270 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:37:12,270 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:37:12,270 - __main__ - INFO - ================================================================================
+2026-01-03 03:37:12,397 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:37:12,397 - __main__ - INFO - User prompt length: 329623 chars
+2026-01-03 03:37:26,994 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:37:27,138 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 03:37:27,138 - __main__ - INFO - Using existing vector store(s): vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:37:27,139 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:37:27,139 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:37:27,139 - __main__ - INFO - ================================================================================
+2026-01-03 03:37:27,157 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/test_analysis.md
+2026-01-03 03:37:27,160 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10/test_analysis.json
+2026-01-03 03:37:27,160 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-10
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 10 is the standard boilerplate “Security Considerations” section, pointing the reader to detailed security discussion in Appendices C, E, and F; the user also provided the referenced material from RFC 8446 for context.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - No sequencing, timers, or state-machine logic in Section 10 itself.
+  - ActorDirectionality: LOW - No client/server role behavior or directionality rules here.
+  - Scope: LOW - Only high-level references to appendices; no scoped requirements or per-object rules.
+  - Causal: LOW - No operational algorithm or behavior being specified in Section 10.
+  - Quantitative: LOW - No sizes, limits, counters, or numeric ranges in the section.
+  - Deontic: LOW - No new MUST/SHOULD/etc. in Section 10 beyond generic “security issues are discussed”; nothing to reconcile.
+  - Structural: LOW - Only cross-references to appendices; no ABNF/YANG/bitfields here.
+  - CrossRFC: LOW - The only external reference is to RFC 3552, which is correct for security considerations guidance; no registry IDs or section-number details to validate here.
+  - Terminology: LOW - No new or reused technical terms being defined; just generic “security issues”.
+  - Boundary: LOW - No edge-case behavior or limits described here.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No substantive logic or constraints in Section 10 to analyze for errors or underspecification.
+    Relevant Dimensions: 
+    Sketch: ...
+
+Response ID: resp_0aab22bc44eea238006958d539bfa88195911a0905ffa0dc9a
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958ce993c388191a7c9f32559e3b152
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section 10
+################################################################################
+

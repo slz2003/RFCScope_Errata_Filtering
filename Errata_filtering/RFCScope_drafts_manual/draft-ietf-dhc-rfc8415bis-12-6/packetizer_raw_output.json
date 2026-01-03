@@ -1,0 +1,165 @@
+{
+  "reports": [
+    {
+      "label": "Timing and state for adding extra IA_NA/IA_PD via Request/Renew is underspecified",
+      "bug_type": "Underspecification",
+      "explanation": "Section 6.5 permits clients to add extra IA_NA/IA_PD options via an extra Request or by including them in a Renew, but it does not clearly specify the timing and state‐machine interactions for merging new IAs with existing ones.",
+      "justification": [
+        "Section 6.5 advises that a client may send an extra Request with additional IA_NA options but omits a detailed timeline for how these new IAs integrate with the existing T1/T2 timers.",
+        "References to Sections 18.2.2 and 18.1 imply requirements (e.g. all IA options must share the same T1/T2) without clarifying how late Requests affect renewal scheduling."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Alternatively, it can send an extra Request message with additional new IA_NA options (or include them in a Renew message). (Section 6.5)"
+          },
+          {
+            "id": "E2",
+            "text": "Section 18.1 requires servers to return the same T1/T2 values for all IA options in a Reply, to simplify renewal scheduling."
+          },
+          {
+            "id": "E3",
+            "text": "Section 18.2.2 describes Request as the message used to “populate IAs with leases and obtain other configuration information” during the normal four‑message Solicit/Advertise/Request/Reply exchange."
+          }
+        ],
+        "summary": [
+          "(E1) shows the option for an extra Request or Renew to add new IA options, (E2) mandates uniform T1/T2 across IA options, and (E3) defines the role of the Request message, leaving the timing integration underspecified."
+        ]
+      },
+      "fix_direction": "Specify explicit timing rules and client state‐machine adjustments when extra IA options are added via Request or Renew messages.",
+      "severity": "Low",
+      "severity_basis": "Although the underspecification could lead to divergent implementations in timing behavior, it does not undermine core protocol interoperability.",
+      "confidence": "High",
+      "experts": [
+        "Temporal: T1"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-6-1"
+    },
+    {
+      "label": "Ambiguous lifecycle timing for self‐generated address registration",
+      "bug_type": "Underspecification",
+      "explanation": "Section 6.6’s description of self‐generated address registration implies that the lifecycle behaves like a typical DHCP lease with T1/T2-based renewal, which can mislead implementers since RFC 9686 uses a separate timing model.",
+      "justification": [
+        "The text states that ‘a lease is created by the server’ and that the device performs periodic renewals, which may lead readers to incorrectly assume that T1/T2 timers apply.",
+        "In reality, RFC 9686 mandates a registration mechanism based on the address’s Valid Lifetime and its own retry logic, distinct from the IA_NA/IA_PD timing model."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "The most of the lifecycle remains the same in principle: a lease is created by the server, and the device performs periodic actions to get the lease renewed, and eventually the lease can expire. (Section 6.6)"
+          }
+        ],
+        "summary": [
+          "(E1) illustrates the phrasing that can be read as implying that self‐generated address registration follows the same T1/T2 renewal mechanism as server‐assigned leases."
+        ]
+      },
+      "fix_direction": "Clarify the text in Section 6.6 to indicate that self‐generated address registration follows the RFC 9686 retry mechanism based on the Valid Lifetime, not the T1/T2 renewal schedule.",
+      "severity": "Low",
+      "severity_basis": "The ambiguous description may confuse implementers about the timing model without compromising protocol functionality.",
+      "confidence": "High",
+      "experts": [
+        "Temporal: T2"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-6-2"
+    },
+    {
+      "label": "Misattributed normative reference for DHCP Release behavior in PD",
+      "bug_type": "Inconsistency",
+      "explanation": "Section 6.3 cites RFC 9096 WPD‑9 to justify a strict prohibition on sending DHCP Release when any delegated address space is outstanding, but RFC 9096 actually only advises against automatic release on restart events.",
+      "justification": [
+        "The draft states that a client MUST NOT issue a DHCP Release while any delegated address space (including IA_NA, IA_PD, and SLAAC‑derived addresses) is outstanding, citing RFC 9096 WPD‑9 as Best Current Practice.",
+        "However, RFC 9096 WPD‑9 merely advises that CE routers SHOULD NOT automatically send DHCPv6‑PD RELEASE messages upon restart events, not a comprehensive prohibition on releasing when any addresses are in use."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "A client that has delegated any of the address space received through DHCP Prefix Delegation MUST NOT issue a DHCP Release on the relevant delegated prefix while any of the address space is outstanding. Requirement WPD‑9 in [RFC9096] makes this the Best Current Practice."
+          },
+          {
+            "id": "E2",
+            "text": "RFC 9096 WPD‑9 actually says “CE routers SHOULD NOT automatically send DHCPv6‑PD RELEASE messages upon restart events” and does not include a blanket prohibition."
+          }
+        ],
+        "summary": [
+          "(E1) documents the draft’s strict no‐Release requirement citing WPD‑9, while (E2) contrasts this by showing the actual, more limited guidance in RFC 9096."
+        ]
+      },
+      "fix_direction": "Revise Section 6.3 to accurately reflect RFC 9096 by limiting the no‐Release rule to what is stated in WPD‑9 and avoiding an overbroad prohibition.",
+      "severity": "High",
+      "severity_basis": "Misattributing normative requirements can lead to divergent implementations and misinterpretation of best practices.",
+      "confidence": "High",
+      "experts": [
+        "CrossRFC: Issue-1"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-6-3"
+    },
+    {
+      "label": "Inconsistent use of 'lease' for self‐generated address registration",
+      "bug_type": "Inconsistency",
+      "explanation": "Section 6.6 refers to the creation of a ‘lease’ for self‐generated address registration, which conflicts with the document’s definition of 'lease' and with RFC 9686, where the mechanism is a registration of a self-selected address rather than a server‐granted contract.",
+      "justification": [
+        "The document’s definition in Section 4.2 describes a lease as a contract by which the server grants the use of an address; this does not apply to self‐generated addresses.",
+        "Using ‘lease’ in Section 6.6 conflates the concept of server-assigned addresses with client-registered ones, potentially leading to design and implementation confusion."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "lease  A contract by which the server grants the use of an address or delegated prefix to the client for a specified period of time. (Section 4.2)"
+          },
+          {
+            "id": "E2",
+            "text": "The most of the lifecycle remains the same in principle: a lease is created by the server, and the device performs periodic actions to get the lease renewed, and eventually the lease can expire. (Section 6.6)"
+          }
+        ],
+        "summary": [
+          "(E1) lays out the formal definition of 'lease', while (E2) shows its inconsistent usage in the context of self‐generated address registration."
+        ]
+      },
+      "fix_direction": "Replace the term 'lease' with a term such as 'binding' in Section 6.6 to accurately describe the RFC 9686 registration mechanism.",
+      "severity": "Medium",
+      "severity_basis": "Terminology inconsistencies may lead to confusion in system design even though the on-wire protocol remains unaffected.",
+      "confidence": "High",
+      "experts": [
+        "CrossRFC: Issue-2",
+        "Terminology: Issue-1"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-6-4"
+    },
+    {
+      "label": "Ambiguous scope terms in operational model descriptions",
+      "bug_type": "Ambiguity",
+      "explanation": "Section 6 uses phrases such as 'a client that has delegated any of the address space received through DHCP Prefix Delegation' and assumes a 'single provisioning domain', both of which can be interpreted more broadly than intended.",
+      "justification": [
+        "The phrase regarding delegated address space might be read narrowly to indicate only clients that sub-delegate addresses or broadly to include any client that uses the delegated prefix.",
+        "Similarly, the statement about a single provisioning domain could be misinterpreted as a global protocol assumption rather than an operational model simplification."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "A client that has delegated any of the address space received through DHCP Prefix Delegation (Section 6.3)"
+          },
+          {
+            "id": "E2",
+            "text": "This document assumes that the DHCP servers and the client, communicating with the servers via a specific interface, belong to a single provisioning domain. (Section 6)"
+          }
+        ],
+        "summary": [
+          "(E1) and (E2) highlight the ambiguous language which might cause readers to adopt broader interpretations of delegated address space and provisioning domain assumptions."
+        ]
+      },
+      "fix_direction": "Clarify in Section 6 that the delegated address space term applies only to clients that further sub-delegate addresses, and note that the single provisioning domain assumption is an illustrative operational model rather than a strict protocol requirement.",
+      "severity": "Low",
+      "severity_basis": "While ambiguous wording may lead to misinterpretation, it does not affect the protocol’s core functionality.",
+      "confidence": "High",
+      "experts": [
+        "Scope: NotedAmbiguity"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-6-5"
+    }
+  ]
+}

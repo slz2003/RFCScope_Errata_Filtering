@@ -1,0 +1,32 @@
+[
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "10"
+    },
+    "document_type": "RFC",
+    "document_tag": "1035",
+    "reference_type": "SECTION",
+    "reference_value": "3.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "10"
+    },
+    "document_type": "RFC",
+    "document_tag": "1035",
+    "reference_type": "SECTION",
+    "reference_value": "4.1.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

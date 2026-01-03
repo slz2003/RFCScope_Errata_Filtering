@@ -1,0 +1,1144 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-F/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A complete security analysis of TLS is outside the scope of this
+   document.  In this appendix, we provide an informal description of
+   the desired properties as well as references to more detail...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The TLS handshake is an Authenticated Key Exchange (AKE) protocol
+   which is intended to provide both one-way authenticated (server-only)
+   and mutually authenticated (client and server) function...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  A set of "session keys" (the various secrets derived from the main
+      secret) from which can be derived a set of working keys.  Note
+      that when early data is in use, secrets are also der...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   We assume the attacker to be an active network attacker, which means
+   it has complete control over the network used to communicate between
+   the parties [RFC3552].  Even under these conditions, ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3552
+  Reference Type: TEXT
+  Reference Value (keywords/section): active network attacker
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3552:
+  Search Keywords: 'active network attacker'
+  Result: Found in Section 3.3
+  Section Title: Active Attacks
+  Content Preview:    When an attack involves writing data to the network, we refer to this
+   as an ACTIVE ATTACK.  Wh...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Establishing the same session keys:  The handshake needs to output
+      the same set of session keys on both sides of the handshake,
+      provided that it completes successfully on each endpoint ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: CK01
+  Reference Type: TEXT
+  Reference Value (keywords/section): Analysis of Key-Exchange Protocols and Their Use for Building Secure Channels
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Secrecy of the session keys:  The shared session keys should be known 
+      only to the communicating parties and not to the attacker (see
+      [CK01]; Definition 1, part 2).  Note that in a unil...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: CK01
+  Reference Type: TEXT
+  Reference Value (keywords/section): Analysis of Key-Exchange Protocols and Their Use for Building Secure Channels
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Peer Authentication:  The client's view of the peer identity should
+      reflect the server's identity.  If the client is authenticated,
+      the server's view of the peer identity should match t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Uniqueness of the session keys:  Any two distinct handshakes should
+      produce distinct, unrelated session keys.  Individual session keys
+      produced by a handshake should also be distinct an...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Downgrade Protection:  The cryptographic parameters should be the
+      same on both sides and should be the same as if the peers had been
+      communicating in the absence of an attack (see [BBFG...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: BBFGKZ16
+  Reference Type: TEXT
+  Reference Value (keywords/section): Downgrade Resilience in Key-Exchange Protocols
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: TEXT
+  Reference Value (keywords/section): Definitions 8 and 9
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-tls-rfc8446bis-14:
+  Search Keywords: 'Definitions 8 and 9'
+  Result: Found in Section 3
+  Section Title: Presentation Language
+  Content Preview:    This document deals with the formatting of data in an external
+   representation.  The following ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Forward secret with respect to long-term keys:  If the long-term
+      keying material (in this case the signature keys in certificate-
+      based authentication modes or the external/resumption P...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: DOW92
+  Reference Type: TEXT
+  Reference Value (keywords/section): Authentication and authenticated key exchanges
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Key Compromise Impersonation (KCI) resistance:  In a mutually
+      authenticated connection with certificates, compromising the long-
+      term secret of one actor should not break that actor’s
+ ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: HGFS15
+  Reference Type: TEXT
+  Reference Value (keywords/section): KCI attacks against TLS
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Protection of endpoint identities:  The server's identity 
+      (certificate) should be protected against passive attackers.  The
+      client's identity (certificate) should be protected against ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Informally, the signature-based modes of TLS 1.3 provide for the
+   establishment of a unique, secret, shared key established by an
+   (EC)DHE key exchange and authenticated by the server's signatu...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: SIGMA
+  Reference Type: TEXT
+  Reference Value (keywords/section): design and analysis of key exchange protocol
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The external PSK and resumption PSK bootstrap from a long-term shared
+   secret into a unique per-connection set of short-term session keys.
+   This secret may have been established in a previous h...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7624
+  Reference Type: TEXT
+  Reference Value (keywords/section): forward secrecy
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7624:
+  Search Keywords: 'forward secrecy'
+  Result: Found in Section 3.1
+  Section Title: Information Subject to Direct Observation
+  Content Preview:    Protocols that do not encrypt their payload make the entire content
+   of the communication avail...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The PSK binder value forms a binding between a PSK and the current
+   handshake, as well as between the session where the PSK was
+   established and the current session.  This binding transitively
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Note: This specification does not currently permit the server to send
+   a certificate_request message in non-certificate-based handshakes
+   (e.g., PSK).  If this restriction were to be relaxed in...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: Kraw16
+  Reference Type: TEXT
+  Reference Value (keywords/section): unilateral-to-mutual authentication compiler
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: PSK-FINISHED
+  Reference Type: TEXT
+  Reference Value (keywords/section): attack client authentication PSK
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8773
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS 1.3 Extension Certificate-Based Authentication External Pre-Shared Key
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8773:
+  Search Keywords: 'TLS 1.3 Extension Certificate-Based Authentication External Pre-Shared Key'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    The TLS 1.3 [RFC8446] handshake protocol provides two mutually
+   exclusive forms of server authe...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   For all handshake modes, the Finished MAC (and, where present, the
+   signature) prevents downgrade attacks.  In addition, the use of
+   certain bytes in the random nonces as described in Section 4...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1.3
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: BBFGKZ16
+  Reference Type: TEXT
+  Reference Value (keywords/section): Downgrade Resilience in Key-Exchange Protocols
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.1.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.1.3
+  Section Title: Server Hello
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   As soon as the client and the server have exchanged enough
+   information to establish shared keys, the remainder of the handshake
+   is encrypted, thus providing protection against passive attacke...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Key derivation in TLS 1.3 uses HKDF as defined in [RFC5869] and its
+   two components, HKDF-Extract and HKDF-Expand.  The full rationale for
+   the HKDF construction can be found in [Kraw10] and th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5869
+  Reference Type: TEXT
+  Reference Value (keywords/section): HKDF as defined
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: Kraw10
+  Reference Type: TEXT
+  Reference Value (keywords/section): rationale for HKDF construction
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: KW16
+  Reference Type: TEXT
+  Reference Value (keywords/section): rationale for HKDF in TLS 1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5869:
+  Search Keywords: 'HKDF as defined'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    A key derivation function (KDF) is a basic and essential component of
+   cryptographic systems.  ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A client that has sent certificate-based authentication data to a
+   server, either during the handshake or in post-handshake
+   authentication, cannot be sure whether the server afterwards
+   cons...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: CHHSV17
+  Reference Type: TEXT
+  Reference Value (keywords/section): client/server view on client authentication
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: Kraw16
+  Reference Type: TEXT
+  Reference Value (keywords/section): unilateral-to-mutual authentication compiler for key exchange
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The 0-RTT mode of operation generally provides security properties
+   similar to those of 1-RTT data, with the two exceptions that the
+   0-RTT encryption keys do not provide full forward secrecy a...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '8'
+  Match Type: Exact match
+  Result: Matched to Section 8
+  Section Title: 0-RTT and Anti-Replay
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The exporter_secret and early_exporter_secret are derived to be
+   independent of the traffic keys and therefore do not represent a
+   threat to the security of traffic encrypted with those keys.
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   TLS does not provide security for handshakes which take place after
+   the peer's long-term secret (signature key or external PSK) is
+   compromised.  It therefore does not provide post-compromise ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: CCG16
+  Reference Type: TEXT
+  Reference Value (keywords/section): post-compromise security
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The reader should refer to the following references for analysis of
+   the TLS handshake: [DFGS15], [CHSV16], [DFGS16], [KW16], [Kraw16],
+   [FGSW16], [LXZFH16], [FG17], and [BBK17].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: BBK17
+  Reference Type: TEXT
+  Reference Value (keywords/section): Verified Models and Reference Implementations for the TLS 1.3 Standard Candidate
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: CHSV16
+  Reference Type: TEXT
+  Reference Value (keywords/section): Automated Analysis and Verification of TLS 1.3: 0-RTT, Resumption and Delayed Authentication
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: DFGS15
+  Reference Type: TEXT
+  Reference Value (keywords/section): A Cryptographic Analysis of the TLS 1.3 draft-10 Full and Pre-shared Key Handshake Protocol
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: DFGS16
+  Reference Type: TEXT
+  Reference Value (keywords/section): A Cryptographic Analysis of the TLS 1.3 draft-10 Full and Pre-shared Key Handshake Protocol
+
+Reference 5:
+  Document Type: EXTERNAL
+  Document Tag: FG17
+  Reference Type: TEXT
+  Reference Value (keywords/section): Replay Attacks on Zero Round-Trip Time: The Case of the TLS 1.3 Handshake Candidates
+
+Reference 6:
+  Document Type: EXTERNAL
+  Document Tag: FGSW16
+  Reference Type: TEXT
+  Reference Value (keywords/section): Key Confirmation in Key Exchange: A Formal Treatment and Implications for TLS 1.3
+
+Reference 7:
+  Document Type: EXTERNAL
+  Document Tag: Kraw16
+  Reference Type: TEXT
+  Reference Value (keywords/section): A Unilateral-to-Mutual Authentication Compiler for Key Exchange (with Applications to Client Authentication in TLS 1.3
+
+Reference 8:
+  Document Type: EXTERNAL
+  Document Tag: KW16
+  Reference Type: TEXT
+  Reference Value (keywords/section): The OPTLS Protocol and TLS 1.3
+
+Reference 9:
+  Document Type: EXTERNAL
+  Document Tag: LXZFH16
+  Reference Type: TEXT
+  Reference Value (keywords/section): Multiple Handshakes Security of TLS 1.3 Candidates
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-10:
+  Search Keywords: 'A Cryptographic Analysis of the TLS 1.3 draft-10 Full and Pre-shared Key Handshake Protocol'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The record layer depends on the handshake producing strong traffic
+   secrets which can be used to derive bidirectional encryption keys and
+   nonces.  Assuming that is true, and the keys are used ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '5.5'
+  Match Type: Exact match
+  Result: Matched to Section 5.5
+  Section Title: Limits on Key Usage
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Integrity:  An attacker should not be able to craft a new record
+      which is different from an existing record which will be accepted
+      by the receiver.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Order protection/non-replayability:  An attacker should not be able
+      to cause the receiver to accept a record which it has already
+      accepted or cause the receiver to accept record N+1 wit...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Length concealment:  Given a record with a given external length, the
+      attacker should not be able to determine the amount of the record
+      that is content versus padding.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Forward secrecy after key change:  If the traffic key update
+      mechanism described in Section 4.6.3 has been used and the
+      previous generation key is deleted, an attacker who compromises
+ ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.6.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC5116
+  Reference Type: TEXT
+  Reference Value (keywords/section): Authenticated Encryption
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: BT16
+  Reference Type: TEXT
+  Reference Value (keywords/section): Multi-User Security of Authenticated Encryption
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.6.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.6.3
+  Section Title: Key and Initialization Vector Update
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Per-Record Nonce
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The rekeying technique in TLS 1.3 (see Section 7.2) follows the
+   construction of the serial generator as discussed in [REKEY ], which
+   shows that rekeying can allow keys to be used for a larger...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.2
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: REKEY
+  Reference Type: TEXT
+  Reference Value (keywords/section): Increasing the Lifetime of a Key
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '7.2'
+  Match Type: Exact match
+  Result: Matched to Section 7.2
+  Section Title: Updating Traffic Secrets
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   TLS does not provide security for data which is communicated on a
+   connection after a traffic secret of that connection is compromised.
+   That is, TLS does not provide post-compromise security/f...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The reader should refer to the following references for analysis of
+   the TLS record layer: [BMMRT15], [BT16], [BDFKPPRSZZ16], [BBK17], and
+   [PS18].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: BMMRT15
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS record layer
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: BT16
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS record layer
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: BDFKPPRSZZ16
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS record layer
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: BBK17
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS record layer
+
+Reference 5:
+  Document Type: EXTERNAL
+  Document Tag: PS18
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS record layer
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   TLS is susceptible to a variety of traffic analysis attacks based on
+   observing the length and timing of encrypted packets [CLINIC ]
+   [HCJC16].  This is particularly easy when there is a small ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: CLINIC
+  Reference Type: TEXT
+  Reference Value (keywords/section): traffic analysis
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: HCJC16
+  Reference Type: TEXT
+  Reference Value (keywords/section): traffic analysis and client identification
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Note: Robust traffic analysis defenses will likely lead to inferior
+   performance due to delays in transmitting packets and increased
+   traffic volume.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In general, TLS does not have specific defenses against side-channel
+   attacks (i.e., those which attack the communications via secondary
+   channels such as timing), leaving those to the implemen...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Unlike previous versions of TLS which used a composite MAC-then-
+      encrypt structure, TLS 1.3 only uses AEAD algorithms, allowing
+      implementations to use self-contained constant-time
+  ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  TLS uses a uniform "bad_record_mac" alert for all decryption
+      errors, which is intended to prevent an attacker from gaining
+      piecewise insight into portions of the message.  Additional...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Replayable 0-RTT data presents a number of security threats to TLS-
+   using applications, unless those applications are specifically
+   engineered to be safe under replay (minimally, this means id...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Duplication of actions which cause side effects (e.g., purchasing
+      an item or transferring money) to be duplicated, thus harming the
+      site or the user.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Attackers can store and replay 0-RTT messages to reorder them with
+      respect to other messages (e.g., moving a delete to after a
+      create).
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Amplifying existing information leaks caused by side effects like
+      caching.  An attacker could learn information about the content of
+      a 0-RTT message by replaying it to some cache nod...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If data can be replayed a large number of times, additional attacks
+   become possible, such as making repeated measurements of the speed of
+   cryptographic operations.  In addition, they may be a...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: Mac17
+  Reference Type: TEXT
+  Reference Value (keywords/section): further description of these attacks
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Ultimately, servers have the responsibility to protect themselves
+   against attacks employing 0-RTT data replication.  The mechanisms
+   described in Section 8 are intended to prevent replay at th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '8'
+  Match Type: Exact match
+  Result: Matched to Section 8
+  Section Title: 0-RTT and Anti-Replay
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '8.1'
+  Match Type: Exact match
+  Result: Matched to Section 8.1
+  Section Title: Single-Use Tickets
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If implemented correctly, the mechanisms described in Section 8.1 and Section 8.2 prevent a replayed ClientHello and its associated 0-RTT
+   data from being accepted multiple times by any cluster w...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8.1
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '8.1'
+  Match Type: Exact match
+  Result: Matched to Section 8.1
+  Section Title: Single-Use Tickets
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '8.2'
+  Match Type: Exact match
+  Result: Matched to Section 8.2
+  Section Title: Client Hello Recording
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Application protocols MUST NOT use 0-RTT data without a profile that
+   defines its use.  That profile needs to identify which messages or
+   interactions are safe to use with 0-RTT and how to hand...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In addition, to avoid accidental misuse, TLS implementations MUST NOT
+   enable 0-RTT (either sending or accepting) unless specifically
+   requested by the application and MUST NOT automatically re...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Replays of the ClientHello produce the same early exporter, thus
+   requiring additional care by applications which use these exporters.
+   In particular, if these exporters are used as an authenti...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Because implementations respond to an invalid PSK binder by aborting
+   the handshake, it may be possible for an attacker to verify whether a
+   given PSK identity is valid.  Specifically, if a ser...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   TLS 1.3 takes a conservative approach to PSKs by binding them to a
+   specific KDF.  By contrast, TLS 1.2 allows PSKs to be used with any
+   hash function and the TLS 1.2 PRF.  Thus, any PSK which ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   External PSKs in TLS are designed to be known to exactly one client
+   and one server.  However, as noted in [RFC9257], there are use cases
+   where PSKs are shared between more than two entities. ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9257
+  Reference Type: TEXT
+  Reference Value (keywords/section): external PSK usage
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9258
+  Reference Type: TEXT
+  Reference Value (keywords/section): external PSK importers
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: Selfie
+  Reference Type: TEXT
+  Reference Value (keywords/section): malicious non-member can reroute handshakes
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9257:
+  Search Keywords: 'external PSK usage'
+  Result: Found in Section 7
+  Section Title: Privacy Considerations
+  Content Preview:    PSK privacy properties are orthogonal to security properties
+   described in Section 4.  TLS does...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9258:
+  Search Keywords: 'external PSK importers'
+  Result: Found in Section 5
+  Section Title: PSK Importer
+  Content Preview:    This section describes the PSK importer interface and its underlying
+   diversification mechanism...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   When TLS 1.3 is used with self-signed certificates without useful
+   identities (as in DTLS-SRTP [RFC5763]) or raw public keys [RFC7250]
+   for peer authentication, it may be vulnerable to misbindi...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: TEXT
+  Reference Value (keywords/section): self-signed certificates without useful identities
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5763
+  Reference Type: TEXT
+  Reference Value (keywords/section): DTLS-SRTP
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7250
+  Reference Type: TEXT
+  Reference Value (keywords/section): raw public keys
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8844
+  Reference Type: TEXT
+  Reference Value (keywords/section): external_id_hash extension
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-tls-rfc8446bis-14:
+  Search Keywords: 'self-signed certificates without useful identities'
+  Result: Found in Section F.9
+  Section Title: Misbinding when using Self-Signed Certificates or Raw Public Keys
+  Content Preview:    When TLS 1.3 is used with self-signed certificates without useful
+   identities (as in DTLS-SRTP ...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5763:
+  Search Keywords: 'DTLS-SRTP'
+  Result: Found in Section 6.10
+  Section Title: Media over SRTP
+  Content Preview:    Because DTLS's data transfer protocol is generic, it is less highly
+   optimized for use with RTP...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8844:
+  Search Keywords: 'external_id_hash extension'
+  Result: Found in Section 3.2
+  Section Title: The "external_id_hash" TLS Extension
+  Content Preview:    The "external_id_hash" TLS extension carries a hash of the identity
+   assertion that the endpoin...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Although TLS 1.3 does not use RSA key transport and so is not
+   directly susceptible to Bleichenbacher-type attacks [Blei98] if TLS
+   1.3 servers also support static RSA in the context of previou...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1.3
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: Blei98
+  Reference Type: TEXT
+  Reference Value (keywords/section): Chosen Ciphertext Attacks against Protocols Based on RSA Encryption Standard PKCS #1
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: JSS15
+  Reference Type: TEXT
+  Reference Value (keywords/section): On the Security of TLS 1.3 and QUIC Against Weaknesses in PKCS#1 v1.5 Encryption
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: RSA
+  Reference Type: TEXT
+  Reference Value (keywords/section): digital signatures and public-key cryptosystems
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '1.3'
+  Match Type: Exact match
+  Result: Matched to Section 1.3
+  Section Title: Major Differences from TLS 1.2
+---------------------------------------------------------------------------
+

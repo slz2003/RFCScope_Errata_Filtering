@@ -1,0 +1,919 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section 16
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section 16
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/corpus.json
+
+Extracting references from section 16 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/reference_extraction.log
+Focusing on section 16 and its children.
+Processing section 16. Message Validation
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 3/6 [00:07<00:07,  2.57s/it]Splitting content into chunks:  83%|████████▎ | 5/6 [00:11<00:02,  2.25s/it]Splitting content into chunks: 100%|██████████| 6/6 [00:11<00:00,  1.92s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This section describes which options are valid in which kinds of
+   message types and explains what to do when a client or server
+   receives a message that contains known options that are invalid ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients and servers MAY choose to either (1) extract information from
+   such a message if the information is of use to the recipient or
+   (2) ignore such a message completely and just discard it.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If a server receives a message that it considers invalid, it MAY send
+   a Reply message (or Advertise message, as appropriate) with a Server
+   Identifier option (see Section 21.3), a Client Ident...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients, relay agents, and servers MUST NOT discard messages that
+   contain unknown options (or instances of vendor options with unknown
+   enterprise-number values).  These options should be igno...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Servers SHOULD NOT accept unicast traffic from clients.  The Server
+   Unicast option (see Section 21.12) and UseMulticast status code (see Section 21.13) have been obsoleted and hence clients shou...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.12
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.12'
+  Match Type: Exact match
+  Result: Matched to Section 21.12
+  Section Title: Server Unicast Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Note: The multicast/unicast rules mentioned above apply to the DHCP
+   messages within this document.  Messages defined in other and future
+   documents may have different rules.
+################################################################################
+Warning: Section 16 not found. Processing all sections.
+Processing section 16.1. Use of Transaction IDs
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 394.68it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The "transaction-id" field holds a value used by clients and servers
+   to synchronize server responses to client messages.  A client SHOULD
+   generate a random number that cannot easily be guesse...
+################################################################################
+Processing section 16.2. Solicit Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 547.70it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Solicit messages.
+
+   Servers MUST discard any Solicit messages that do not include a
+   Client Identifier option or that do include a Server Identifier
+   option.
+################################################################################
+Processing section 16.3. Advertise Message
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:03<00:03,  3.71s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:03<00:00,  1.86s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Advertise message that meets any of
+   the following conditions:
+
+   *  the message does not include a Server Identifier option (see Section 21.3).
+
+   *  the mess...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  the "transaction-id" field value does not match the value the
+      client used in its Solicit message. 
+   Servers and relay agents MUST discard any received Advertise
+   messages.
+################################################################################
+Processing section 16.4. Request Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.46s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.46s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Request messages.
+
+   Servers MUST discard any received Request message that meets any of
+   the following conditions:
+
+   *  the message does not include a Server...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+Processing section 16.5. Confirm Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:04<00:00,  4.02s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:04<00:00,  4.02s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Confirm messages.
+
+   Servers MUST discard any received Confirm messages that do not
+   include a Client Identifier option (see Section 21.2) or that do
+   include...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+Processing section 16.6. Renew Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.33s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.33s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Renew messages.
+
+   Servers MUST discard any received Renew message that meets any of the
+   following conditions:
+
+   *  the message does not include a Server Ide...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+Processing section 16.7. Rebind Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.31s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.31s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Rebind messages. 
+   Servers MUST discard any received Rebind messages that do not include
+   a Client Identifier option (see Section 21.2) or that do include a
+  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+Processing section 16.8. Decline Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.24s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.24s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Decline messages.
+
+   Servers MUST discard any received Decline message that meets any of
+   the following conditions:
+
+   *  the message does not include a Server...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+Processing section 16.9. Release Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.56s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.56s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Release messages.
+
+   Servers MUST discard any received Release message that meets any of
+   the following conditions:
+
+   *  the message does not include a Server...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+Processing section 16.10. Reply Message
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:01<00:01,  1.90s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:03<00:00,  2.01s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:03<00:00,  1.99s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Reply message that meets any of the
+   following conditions:
+
+   *  the message does not include a Server Identifier option (see Section 21.3).
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  the "transaction-id" field in the message does not match the value
+      used in the original message. 
+   If the client included a Client Identifier option (see Section 21.2)
+   in the original...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+Processing section 16.11. Reconfigure Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:06<00:00,  6.27s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:06<00:00,  6.27s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Servers and relay agents MUST discard any received Reconfigure
+   messages.
+
+   Clients MUST discard any Reconfigure message that meets any of the
+   following conditions:
+
+   *  the message was no...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.19
+
+Reference 4:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 20.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.19'
+  Match Type: Exact match
+  Result: Matched to Section 21.19
+  Section Title: Reconfigure Message Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '20.4'
+  Match Type: Exact match
+  Result: Matched to Section 20.4
+  Section Title: Reconfiguration Key Authentication Protocol (RKAP)
+---------------------------------------------------------------------------
+
+Processing section 16.12. Information-request Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:01<00:00,  1.95s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:01<00:00,  1.95s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Information-request messages.
+
+   Servers MUST discard any received Information-request message that
+   meets any of the following conditions:
+
+   *  the message i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+Processing section 16.13. Relay-forward Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 1101.16it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients MUST discard any received Relay-forward messages.
+################################################################################
+Processing section 16.14. Relay-reply Message
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 1332.79it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Clients and servers MUST discard any received Relay-reply messages.
+################################################################################
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 16 only.
+Focusing on section 16 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/section_dependencies.json
+
+Creating prompts for section 16...
+Creating expert prompt for section 16 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/focus_section_16_prompt_expert.md
+Expert prompt token count: 68,276 tokens
+Creating router prompt for section 16...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/focus_section_16_prompt_router.md
+Router prompt token count: 63,980 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section 16
+================================================================================
+2026-01-03 03:08:20,455 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:08:20,472 - __main__ - INFO - Router prompt length: 316949 chars
+2026-01-03 03:08:20,472 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:08:20,472 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:08:20,472 - __main__ - INFO - ================================================================================
+2026-01-03 03:08:20,605 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:08:20,605 - __main__ - INFO - User prompt length: 316949 chars
+2026-01-03 03:09:49,091 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:09:49,193 - __main__ - INFO - Router analysis complete. Bug likelihood: Low
+2026-01-03 03:09:49,193 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:09:49,193 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:09:49,193 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:09:49,193 - __main__ - INFO - ================================================================================
+2026-01-03 03:09:49,194 - __main__ - INFO - 
+Invoking expert: ActorDirectionality (HIGH)
+2026-01-03 03:09:49,289 - __main__ - INFO - Invoking expert ActorDirectionality with manual prompt...
+2026-01-03 03:09:49,289 - __main__ - INFO - User prompt length: 317660 chars
+2026-01-03 03:09:49,289 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:11:24,220 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:11:24,235 - __main__ - INFO - Expert ActorDirectionality analysis complete
+2026-01-03 03:11:24,236 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 03:11:24,351 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 03:11:24,351 - __main__ - INFO - User prompt length: 320927 chars
+2026-01-03 03:11:24,351 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:13:49,074 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:13:49,109 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 03:13:49,109 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 03:13:49,225 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 03:13:49,226 - __main__ - INFO - User prompt length: 320858 chars
+2026-01-03 03:13:49,226 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:15:45,179 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:15:45,182 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 03:15:45,183 - __main__ - INFO - 
+Invoking expert: Deontic (HIGH)
+2026-01-03 03:15:45,308 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 03:15:45,308 - __main__ - INFO - User prompt length: 320841 chars
+2026-01-03 03:15:45,308 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:17:16,244 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:17:16,247 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 03:17:16,247 - __main__ - INFO - 
+Invoking expert: Structural (MEDIUM)
+2026-01-03 03:17:16,373 - __main__ - INFO - Invoking expert Structural with manual prompt...
+2026-01-03 03:17:16,373 - __main__ - INFO - User prompt length: 317641 chars
+2026-01-03 03:17:16,373 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:19:05,157 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:19:05,160 - __main__ - INFO - Expert Structural analysis complete
+2026-01-03 03:19:05,160 - __main__ - INFO - 
+Invoking expert: CrossRFC (MEDIUM)
+2026-01-03 03:19:05,278 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 03:19:05,278 - __main__ - INFO - User prompt length: 320901 chars
+2026-01-03 03:19:05,278 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:20:50,032 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:20:50,035 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 03:20:50,036 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 03:20:50,204 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 03:20:50,204 - __main__ - INFO - User prompt length: 317680 chars
+2026-01-03 03:20:50,204 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:23:13,842 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:23:13,845 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 03:23:13,849 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/test_analysis.md
+2026-01-03 03:23:13,855 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16/test_analysis.json
+2026-01-03 03:23:13,855 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-16
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 16 defines message validation rules for all DHCPv6 message types (who must discard what, when options or message types are invalid, and multicast/unicast acceptance), updating RFC 8415 to reflect obsoleting Server Unicast and the UseMulticast status code. The rest of the provided text is context (options, message formats, and old 8415 text) that section 16 references or alters.
+Overall Bug Likelihood: Low
+
+Dimensions:
+  - Temporal: LOW - Rules are largely static validation conditions; no complex sequencing or timers are defined here.
+  - ActorDirectionality: HIGH - The section is almost entirely about which *role* (client, server, relay) may send/receive/accept/ignore certain messages and options.
+  - Scope: MEDIUM - Some rules (e.g., multicast/unicast acceptance) are intended to apply only to messages defined in this document, but the wording is broad; also there is per-message vs global handling of status codes.
+  - Causal: MEDIUM - Whether to discard vs process has direct impact on interoperability, especially for transitional deployments (old vs new behavior).
+  - Quantitative: LOW - No critical size/range math here; only references to options defined elsewhere.
+  - Deontic: HIGH - Heavy use of MUST/MUST NOT/SHOULD, including deprecation of prior normative behavior (Server Unicast, UseMulticast).
+  - Structural: MEDIUM - Needs consistency checking against Appendix B tables and option definitions, but there is no formal grammar here.
+  - CrossRFC: MEDIUM - Interacts with behavior originally specified in RFC 8415 (notably Server Unicast, UseMulticast), and with external docs (e.g., RFC 9686) that define additional message types.
+  - Terminology: LOW - Terms and option names look consistent with their definitions; no obvious name mix-ups.
+  - Boundary: MEDIUM - Edge cases like unknown options vs unknown message types, and “formerly valid but now obsoleted” status codes, matter for fallback and interoperability.
+
+Candidate Issues: 2
+
+  Issue 1:
+    Type: Underspecification
+    Label: Handling of obsolete UseMulticast status code and Server Unicast interop with legacy peers
+    Relevant Dimensions: Deontic, CrossRFC, Causal, Scope
+    Sketch: Section 16 explicitly obsoletes the Server Unicast option and the UseMulticast status code and state...
+
+  Issue 2:
+    Type: Underspecification
+    Label: Scope and strength of “Clients SHOULD NOT accept multicast messages”
+    Relevant Dimensions: Deontic, Scope, Causal, CrossRFC
+    Sketch: Section 16 says “Clients SHOULD NOT accept multicast messages,” and then a note clarifies: “The mult...
+
+Response ID: resp_05d6204e668f3db2006958ce7602a0819794c3604d5bb5242e
+
+## ActorDirectionality Expert Analysis
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: This draft defines DHCPv6 roles (client, server, relay) and, in Section 16, gives per–message-type validity and discard rules, plus global rules on how endpoints treat unknown options/types and what traffic (unicast vs multicast) each role should accept. It also removes the legacy Server Unicast option and UseMulticast status code, and partially replaces their behavior with new text in Section 16. The rest of the excerpt provides the overall client/se...
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 16 defines generic and per–message-type validation rules for DHCPv6 messages, including treatment of invalid/unknown options, unknown message types, and acceptance/rejection of multicast vs unicast traffic from clients, while also declaring the Server Unicast option and UseMulticast status code obsolete.
+- ScopeModel:
+  - Targets:
+    - All DHCPv6 message types defined in this document (SOLICIT, ADVERTISE, REQUEST, CONFIRM, RENEW, REBIND, REPLY, RELEASE, ...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following the bis‑12 text literally, the core DHCPv6 state machine still executes coherently. The obsoletion of Server Unicast and UseMulticast does not create a fundamental protocol failure, and the “clients SHOULD NOT accept multicast messages” rule is consistent with the rest of the spec. Mixed old/new deployments may see some inelegant behavior but not hard breakage assuming the bis implementation actually follows the new rules.
+
+---
+
+2. **Causal analysis**
+
+### Issue 1 – Use...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 16 defines global message-validation rules (including multicast/unicast acceptance and handling of invalid options/message types) and explicitly obsoletes the Server Unicast option and the UseMulticast status code, updating the per‑message discard/accept rules and cross‑referencing the option and status-code definitions in Section 21.
+
+- OverallDeonticRisk: Low
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Underspecification
+    - Title: No specified behavior...
+
+## Structural Expert Analysis
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Section 16 defines per–message-type validation rules (which options must/must not appear, transaction ID checks, and multicast/unicast handling) for DHCPv6, in the context of updated message/option formats and the obsoleting of Server Unicast and the UseMulticast status code. I compared those rules to the detailed client/server procedures, message formats, and Appendix B option tables in the same draft and to the pre‑bis RFC 8415 text where relevant.
+- OverallB...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 16 in the rfc8415bis draft defines generic DHCPv6 message validation rules (what to discard, how to treat unknown options, and basic multicast/unicast acceptance), while the rest of the draft and the quoted RFC 8415 text show how the draft intentionally obsoletes the Server Unicast option and the UseMulticast status code and updates IANA accordingly. The question is whether these new validation rules are inconsistent with the earlier RFC 8415 behavior or...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: The key part of this excerpt is Section 16, which defines validation rules for each DHCPv6 message type, plus some global rules (unknown options, unknown message types, multicast/unicast acceptance). The draft also removes the Server Unicast option and the UseMulticast status code from the base protocol and tries to align validation and transport rules with a “multicast-only from client” model, while still allowing interoperability with older implementat...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Low
+Experts: ✓ 7 invoked
+  Dimensions: ActorDirectionality, Scope, Causal, Deontic, Structural, CrossRFC, Boundary
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section 16
+################################################################################
+

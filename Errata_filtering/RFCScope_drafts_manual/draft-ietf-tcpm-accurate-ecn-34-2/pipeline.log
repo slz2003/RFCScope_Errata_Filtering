@@ -1,0 +1,707 @@
+################################################################################
+Processing: Draft draft-ietf-tcpm-accurate-ecn-34, Section 2
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tcpm-accurate-ecn-34, Section 2
+================================================================================
+Preparing IETF draft draft-ietf-tcpm-accurate-ecn-34 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/corpus.json
+
+Extracting references from section 2 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/reference_extraction.log
+Focusing on section 2 and its children.
+Processing section 2. AccECN Protocol Overview and Rationale
+Splitting content into chunks:   0%|          | 0/7 [00:00<?, ?it/s]Splitting content into chunks:  14%|█▍        | 1/7 [00:03<00:18,  3.13s/it]Splitting content into chunks:  43%|████▎     | 3/7 [05:08<07:35, 113.85s/it]Splitting content into chunks: 100%|██████████| 7/7 [05:08<00:00, 44.05s/it] 
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This section provides an informative overview of the AccECN protocol
+   that will be normatively specified in Section 3   Like the general TCP approach, the Data Receiver of each TCP half-
+   conne...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3'
+  Match Type: Exact match
+  Result: Matched to Section 3
+  Section Title: AccECN Protocol Specification
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  an essential feedback part that re-uses the TCP-ECN header bits
+      for the Data Receiver to feed back the number of packets arriving
+      with CE in the IP-ECN field.  This provides more acc...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  a supplementary feedback part using one of two new alternative
+      AccECN TCP options that provide additional feedback on the number
+      of payload bytes that arrive marked with each of the ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7141
+  Reference Type: TEXT
+  Reference Value (keywords/section): Byte and Packet Congestion Notification
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7141:
+  Search Keywords: 'Byte and Packet Congestion Notification'
+  Result: Found in Section 1.1
+  Section Title: Terminology and Scoping
+  Content Preview:    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "R...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The two part design was necessary, given limitations on the space
+   available for TCP options and given the possibility that certain
+   incorrectly designed middleboxes might prevent TCP using any...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  a single upgrade path for the TCP protocol is preferable to a fork
+      in the design which modifies the TCP header to convey all ECN
+      feedback;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  otherwise Classic and Accurate ECN feedback could give conflicting
+      feedback about the same segment, which could open up new security
+      concerns and make implementations unnecessarily c...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   AccECN is designed to work even if the supplementary feedback part is
+   removed or zeroed out, as long as the essential feedback part gets
+   through.
+################################################################################
+Warning: Section 2 not found. Processing all sections.
+Processing section 2.1. Capability Negotiation
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 49.59it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   AccECN is a change to the wire protocol of the main TCP header,
+   therefore it can only be used if both endpoints have been upgraded to
+   understand it.  The TCP Client signals support for AccECN...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   An AccECN TCP Client does not send an AccECN Option on the SYN as SYN
+   option space is limited.  The TCP Server sends an AccECN Option on
+   the SYN/ACK and the TCP Client sends one on the first ...
+################################################################################
+Processing section 2.2. Feedback Mechanism
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 3/3 [00:00<00:00, 554.53it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A Data Receiver maintains four counters initialized at the start of
+   the half-connection.  Three count the number of arriving payload
+   bytes marked CE, ECT(1) and ECT(0) in the IP-ECN field.  T...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The Data Sender maintains four equivalent counters for the half
+   connection, and the AccECN protocol is designed to ensure they will
+   match the values in the Data Receiver's counters, albeit af...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Each ACK carries the three least significant bits (LSBs) of the
+   packet-based CE counter using the ECN bits in the TCP header, now
+   renamed the Accurate ECN (ACE) field (see Figure 3 later).  T...
+################################################################################
+Processing section 2.3. Delayed ACKs and Resilience Against ACK Loss
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks:  25%|██▌       | 1/4 [06:43<20:11, 403.82s/it]Splitting content into chunks:  75%|███████▌  | 3/4 [08:39<02:27, 147.51s/it]Splitting content into chunks: 100%|██████████| 4/4 [08:39<00:00, 129.86s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   With both the ACE and the AccECN Option mechanisms, the Data Receiver
+   continually repeats the current LSBs of each of its respective
+   counters.  There is no need to acknowledge these continual...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): congestion window reduced (CWR) mechanism
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3168:
+  Search Keywords: 'congestion window reduced (CWR) mechanism'
+  Result: Found in Section 6.1.2
+  Section Title: The TCP Sender
+  Content Preview:    For a TCP connection using ECN, new data packets are transmitted with
+   an ECT codepoint set in ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The 3-bit ACE field can wrap fairly frequently.  Therefore, even if
+   it appears to have incremented by one (say), the field might have
+   actually cycled completely then incremented by one.  The ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The fields in an AccECN Option are larger, but they will increment in
+   larger steps because they count bytes not packets.  Nonetheless,
+   their size has been chosen such that a whole cycle of th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN Experimentation
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8311:
+  Search Keywords: 'ECN Experimentation'
+  Result: Found in Section 2
+  Section Title: ECN Experimentation: Overview
+  Content Preview:    Three areas of ECN experimentation are covered by this memo; the
+   cited documents should be con...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Certain specified events trigger the Data Receiver to include an
+   AccECN Option on an ACK.  The rules are designed to ensure that the
+   order in which different markings arrive at the receiver i...
+################################################################################
+Processing section 2.4. Feedback Metrics
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  67%|██████▋   | 2/3 [04:41<02:20, 140.61s/it]Splitting content into chunks: 100%|██████████| 3/3 [06:05<00:00, 116.98s/it]Splitting content into chunks: 100%|██████████| 3/3 [06:05<00:00, 121.71s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The CE packet counter in the ACE field and the CE byte counter in
+   AccECN Options both provide feedback on received CE-marks.  The CE
+   packet counter includes control packets that do not have p...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The AccECN design has been generalized so that it ought to be able to
+   support possible future uses of the experimental ECT(1) codepoint
+   other than the L4S experiment [RFC9330], such as a lowe...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9330
+  Reference Type: TEXT
+  Reference Value (keywords/section): L4S experiment
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9330:
+  Search Keywords: 'L4S experiment'
+  Result: Found in Section 1.1
+  Section Title: Document Roadmap
+  Content Preview:    This document describes the L4S architecture in three passes.  First,
+   the brief overview in Se...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Feedback in bytes is provided to protect against the receiver or a
+   middlebox using attacks similar to 'ACK-Division' to artificially
+   inflate the congestion window, which is why [RFC5681] now ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5681
+  Reference Type: TEXT
+  Reference Value (keywords/section): counts acknowledged bytes not packets
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5681:
+  Search Keywords: 'counts acknowledged bytes not packets'
+  Result: Found in Section 3.1
+  Section Title: Slow Start and Congestion Avoidance
+  Content Preview:    The slow start and congestion avoidance algorithms MUST be used by a
+   TCP sender to control the...
+---------------------------------------------------------------------------
+
+Processing section 2.5. Generic (Mechanistic) Reflector
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks:  25%|██▌       | 1/4 [06:36<19:50, 396.89s/it]Splitting content into chunks:  50%|█████     | 2/4 [06:46<05:37, 168.86s/it]Splitting content into chunks:  75%|███████▌  | 3/4 [15:13<05:23, 323.46s/it]Splitting content into chunks: 100%|██████████| 4/4 [15:14<00:00, 196.22s/it]Splitting content into chunks: 100%|██████████| 4/4 [15:14<00:00, 228.68s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The ACE field provides feedback about CE markings in the IP-ECN field
+   of both data and control packets.  According to [RFC3168] the Data
+   Sender is meant to set the IP-ECN field of control pac...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): IP-ECN field
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3168:
+  Search Keywords: 'IP-ECN field'
+  Result: Found in Section 12
+  Section Title: Summary of changes required in IP and TCP
+  Content Preview:    This document specified two bits in the IP header to be used for ECN.
+   The not-ECT codepoint in...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   It is also useful to be able to rely on generic reflection behaviour
+   when senders need to test for unexpected interference with markings
+   (for instance Section 3.2.2.3, Section 3.2.2.4 and Sec...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.4
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3.2
+
+Reference 4:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 20.2
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): TEXT
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.3
+  Section Title: Testing for Mangling of the IP/ECN Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.4'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.4
+  Section Title: Testing for Zeroing of the ACE Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3.2
+  Section Title: Path Traversal of the AccECN Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '20.2'
+  Match Type: Fuzzy match (score: 85.71428571428572)
+  Result: Matched to Section 2.2
+  Section Title: Feedback Mechanism
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: 'TEXT'
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The initial SYN and SYN/ACK are the most critical control packets, so
+   AccECN feeds back their IP-ECN fields.  Although RFC 3168 prohibits
+   ECN-capable SYNs and SYN/ACKs, providing feedback of ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN-capable SYNs and SYN/ACKs
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): updates this aspect of RFC 3168
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3168:
+  Search Keywords: 'ECN-capable SYNs and SYN/ACKs'
+  Result: Found in Section 6.1.1.2
+  Section Title: Robust TCP Initialization with an Echoed Reserved Field
+  Content Preview:    There is the question of why we chose to have the TCP sending the SYN
+   set two ECN-related flag...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8311:
+  Search Keywords: 'updates this aspect of RFC 3168'
+  Result: Found in Section 4
+  Section Title: Updates to RFC 3168
+  Content Preview:    The following subsections specify updates to RFC 3168 to enable the
+   three areas of experimenta...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Even if the TCP Client (or Server) has set the SYN (or SYN/ACK) to
+   not-ECT in compliance with RFC 3168, feedback on the state of the IP-
+   ECN field when it arrives at the receiver could still ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: Mandalari18
+  Reference Type: TEXT
+  Reference Value (keywords/section): Measuring ECN++
+================================================================================
+
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 2 only.
+Focusing on section 2 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/section_dependencies.json
+
+Creating prompts for section 2...
+Creating expert prompt for section 2 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/focus_section_2_prompt_expert.md
+Expert prompt token count: 64,010 tokens
+Creating router prompt for section 2...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/focus_section_2_prompt_router.md
+Router prompt token count: 41,351 tokens
+
+IETF draft draft-ietf-tcpm-accurate-ecn-34 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be564fdc81918f6c87dec1d36632
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tcpm-accurate-ecn-34, Section 2
+================================================================================
+2026-01-03 02:35:49,886 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:35:49,901 - __main__ - INFO - Router prompt length: 267068 chars
+2026-01-03 02:35:49,901 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:35:49,901 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:35:49,901 - __main__ - INFO - ================================================================================
+2026-01-03 02:35:50,156 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:35:50,156 - __main__ - INFO - User prompt length: 267068 chars
+2026-01-03 02:37:04,892 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:37:05,140 - __main__ - INFO - Router analysis complete. Bug likelihood: Low
+2026-01-03 02:37:05,140 - __main__ - INFO - Using existing vector store(s): vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:37:05,140 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:37:05,140 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:37:05,140 - __main__ - INFO - ================================================================================
+2026-01-03 02:37:05,141 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 02:37:05,356 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 02:37:05,356 - __main__ - INFO - User prompt length: 270073 chars
+2026-01-03 02:37:05,356 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:38:09,145 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:38:09,217 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 02:38:09,217 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 02:38:09,432 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 02:38:09,432 - __main__ - INFO - User prompt length: 270062 chars
+2026-01-03 02:38:09,432 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:39:11,408 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:39:11,410 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 02:39:11,411 - __main__ - INFO - 
+Invoking expert: Deontic (MEDIUM)
+2026-01-03 02:39:11,699 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 02:39:11,699 - __main__ - INFO - User prompt length: 271947 chars
+2026-01-03 02:39:11,699 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:39:51,966 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:39:51,969 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 02:39:51,969 - __main__ - INFO - 
+Invoking expert: Structural (MEDIUM)
+2026-01-03 02:39:52,268 - __main__ - INFO - Invoking expert Structural with manual prompt...
+2026-01-03 02:39:52,268 - __main__ - INFO - User prompt length: 271925 chars
+2026-01-03 02:39:52,268 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:40:21,414 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:40:21,417 - __main__ - INFO - Expert Structural analysis complete
+2026-01-03 02:40:21,417 - __main__ - INFO - 
+Invoking expert: Terminology (MEDIUM)
+2026-01-03 02:40:21,775 - __main__ - INFO - Invoking expert Terminology with manual prompt...
+2026-01-03 02:40:21,775 - __main__ - INFO - User prompt length: 270057 chars
+2026-01-03 02:40:21,776 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:41:00,860 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:41:00,863 - __main__ - INFO - Expert Terminology analysis complete
+2026-01-03 02:41:00,863 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 02:41:01,197 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 02:41:01,197 - __main__ - INFO - User prompt length: 270055 chars
+2026-01-03 02:41:01,197 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:41:38,840 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:41:38,843 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 02:41:38,847 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/test_analysis.md
+2026-01-03 02:41:38,853 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2/test_analysis.json
+2026-01-03 02:41:38,853 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-2
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 2 gives an informative overview of AccECN: essential 3‑bit ACE feedback, optional byte‑count options, delayed‑ACK and loss resilience rationale, and the “generic reflector” behavior for all ECN markings including on SYN/SYN‑ACK. It is meant to preview the detailed normative spec in Section 3 and how it aligns with RFC 3168, 7141, 8311, etc.
+Overall Bug Likelihood: Low
+
+Dimensions:
+  - Temporal: LOW - Overview talks about RTTs and ACK timing qualitatively, but concrete ordering and state transitions are defined later in Section 3.
+  - ActorDirectionality: LOW - Roles (Client/Server, Data Sender/Receiver) are described consistently at a high level; the detailed who‑does‑what is in Section 3.
+  - Scope: MEDIUM - Section 2 sometimes makes broad statements (“all control packets”) that are narrowed in Section 3 (e.g., special handling for SYN/SYN‑ACK), so scope alignment is relevant.
+  - Causal: MEDIUM - Misreading the overview (e.g., how counters treat SYNs) could lead to different counter evolution and break some of the later algorithms; worth causal checking.
+  - Quantitative: LOW - Bit widths and wrap‑around are discussed, but the precise numeric constraints and algorithms are in later sections and seem internally consistent.
+  - Deontic: MEDIUM - Section 2 uses normative‑sounding language (“not allowed to delay…”) in an informative section and slightly overstates some behaviors compared to the later RFC‑2119 text.
+  - Structural: MEDIUM - There is at least one internal inconsistency between the overview description of the CE packet counter and the later formal definition in Section 3.
+  - CrossRFC: LOW - References to RFC 3168, 7141, 8311, etc., appear conceptually aligned; no obvious cross‑RFC contradictions emerge specifically from Section 2.
+  - Terminology: MEDIUM - Terms like “control packets” and “all CE‑marked packets” are used loosely in Section 2 vs. more precise definitions in Section 3, which could be confusing.
+  - Boundary: MEDIUM - SYN / SYN‑ACK handling and CE on these packets are boundary cases where Section 2’s generic statements differ subtly from the precise rules in Section 3.
+
+Candidate Issues: 2
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Overview says CE packet counter covers all CE‑marked control packets, but normative text excludes CE‑marked SYNs
+    Relevant Dimensions: Structural, Scope, Deontic, Causal, Boundary, Terminology
+    Sketch: In Section 2.2, the overview says:  
+      > “The fourth counter counts the number of packets arrivi...
+
+  Issue 2:
+    Type: None
+    Label: Minor normative-tone and strength mismatches between Section 2 overview and Section 3
+    Relevant Dimensions: Deontic, Structural
+    Sketch: There are a few spots where Section 2 uses stronger or more absolute phrasing than the later normati...
+
+Response ID: resp_066a9379d191cb57006958c6d8219c819680826873f8839a33
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 2 gives an *informative* (non‑normative) description of AccECN’s two‑part feedback scheme (ACE field and byte‑count options), how counters are used, and the idea of a “generic reflector” for ECN markings including on SYN/SYN‑ACK. It is intended as a high‑level preview of the detailed rules in Section 3.
+
+- ScopeModel:
+  - Targets:
+    - Per half‑connection, a Data Receiver’s four counters:
+      - Three byte counters for payload bytes marked CE / ECT(1) /...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. **Summary**
+
+There is no fundamental protocol breakage here. The “overview” text in Section 2.2 is slightly looser than the normative rules in Section 3, but the normative text is internally coherent and explicitly special‑cases SYN/SYN‑ACK. An implementation that follows Section 3 as intended will behave correctly; the discrepancy is editorial, not a causal inconsistency.
+
+---
+
+2. **Causal Analysis**
+
+- **What Section 2.2 says (informative)**  
+  It describes the four counters and says the 4...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 2 gives an explicitly “informative overview” of AccECN (ACE bits, byte counters, delayed‑ACK logic, and generic reflection, including SYN/SYN‑ACK handling). Section 3 then contains the actual RFC 2119 requirements that precisely define when counters are incremented, how handshake semantics work, and how options are used and tested.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: Informative overview slightly overgene...
+
+## Structural Expert Analysis
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Section 2 gives an informal description of the AccECN counters and ACE field; Section 3 later gives the precise normative definitions of those counters and the special handshake behavior.
+- OverallBugLikelihood: Medium
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Overview misstates scope of CE packet counter vs. normative definition (SYN packets)
+    - LocationHint: Section 2.2 (“Feedback Mechanism”) vs. Section 3.2 / 3.2.2
+    - Evidenc...
+
+## Terminology Expert Analysis
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: Overview misdescribes what the CE packet/byte counters cover, omitting the SYN/SYN‑ACK exceptions
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 2.2 (overview of counters):  
+          “A Data Receiver maintains four counters initialized at the start of the half‑connection. Three count the number of arriving payload bytes marked CE, ECT(1) a...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 2 is an informative overview of AccECN. It introduces four counters per half‑connection (three byte counters for CE/ECT(0)/ECT(1) and one packet counter for CE), the 3‑bit ACE field, optional byte‑count options, and generic reflection of all ECN markings including on SYN/SYN‑ACK. Section 3 then gives the precise normative rules, including special‑case treatment of CE on SYN/SYN‑ACK and non‑zero counter initialization to support stateless handshak...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Low
+Experts: ✓ 6 invoked
+  Dimensions: Scope, Causal, Deontic, Structural, Terminology, Boundary
+Vector Stores: vs_6958be564fdc81918f6c87dec1d36632
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tcpm-accurate-ecn-34, Section 2
+################################################################################
+

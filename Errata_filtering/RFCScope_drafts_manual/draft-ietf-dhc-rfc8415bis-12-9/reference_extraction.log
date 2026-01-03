@@ -1,0 +1,182 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-9/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Relay agents exchange messages with other relay agents and servers to
+   relay messages between clients and servers that are not connected to
+   the same link.
+
+   All values in the message header ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Options are stored serially in the "options" field, with no padding
+   between the options.  Options are byte-aligned but are not aligned in
+   any other way (such as on 2-byte or 4-byte boundaries...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   There are two relay agent messages (Relay-forward and Relay-reply),
+   which share the following format:
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The following table defines the use of message fields in a
+   Relay-forward message.
+
+   msg-type                RELAY-FORW (12).  A 1-octet field.
+
+   hop-count               Number of relay agent...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   link-address            An address that may be used by the server to
+                           identify the link on which the client is
+                           located.  This is typically a glo...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 19.1.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '19.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 19.1.1
+  Section Title: Relaying a Message from a Client
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   peer-address            The address of the client or relay agent from
+                           which the message to be relayed was received.
+                           A 16-octet field. 
+   optio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.10
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.18
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 13.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.10'
+  Match Type: Exact match
+  Result: Matched to Section 21.10
+  Section Title: Relay Message Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.18'
+  Match Type: Exact match
+  Result: Matched to Section 21.18
+  Section Title: Interface-Id Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '13.1'
+  Match Type: Exact match
+  Result: Matched to Section 13.1
+  Section Title: Selecting Addresses for Assignment to an IA_NA
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The following table defines the use of message fields in a
+   Relay-reply message.
+
+   msg-type                RELAY-REPL (13).  A 1-octet field.
+
+   hop-count               Copied from the Relay-f...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   options                 MUST include a Relay Message option (see Section 21.10); MAY include other options,
+                           such as the Interface-Id option (see Section 21.18).  A variab...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.10
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.18
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.10'
+  Match Type: Exact match
+  Result: Matched to Section 21.10
+  Section Title: Relay Message Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.18'
+  Match Type: Exact match
+  Result: Matched to Section 21.18
+  Section Title: Interface-Id Option
+---------------------------------------------------------------------------
+

@@ -1,0 +1,179 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section 8
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section 8
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/corpus.json
+
+Extracting references from section 8 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/reference_extraction.log
+Focusing on section 8 and its children.
+Processing section 8. Client/Server Message Formats
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  67%|██████▋   | 2/3 [00:05<00:02,  2.58s/it]Splitting content into chunks: 100%|██████████| 3/3 [00:08<00:00,  2.77s/it]Splitting content into chunks: 100%|██████████| 3/3 [00:08<00:00,  2.74s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   All DHCP messages sent between clients and servers share an identical
+   fixed-format header and a variable-format area for options.
+
+   All values in the message header and in options are in netwo...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '7.3'
+  Match Type: Exact match
+  Result: Matched to Section 7.3
+  Section Title: DHCP Message Types
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   options                 Options carried in this message; options are
+                           described in Section 21.  A variable-length
+                           field (4 octets less than the ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21'
+  Match Type: Exact match
+  Result: Matched to Section 21
+  Section Title: DHCP Options
+---------------------------------------------------------------------------
+
+Warning: Section 8 not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 8 only.
+Focusing on section 8 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/section_dependencies.json
+
+Creating prompts for section 8...
+Creating expert prompt for section 8 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/focus_section_8_prompt_expert.md
+Expert prompt token count: 62,204 tokens
+Creating router prompt for section 8...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/focus_section_8_prompt_router.md
+Router prompt token count: 62,557 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section 8
+================================================================================
+2026-01-03 02:44:19,084 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:44:19,116 - __main__ - INFO - Router prompt length: 289153 chars
+2026-01-03 02:44:19,116 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:44:19,116 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:44:19,116 - __main__ - INFO - ================================================================================
+2026-01-03 02:44:19,363 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:44:19,364 - __main__ - INFO - User prompt length: 289153 chars
+2026-01-03 02:44:37,713 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:44:38,052 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 02:44:38,052 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:44:38,052 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:44:38,052 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:44:38,052 - __main__ - INFO - ================================================================================
+2026-01-03 02:44:38,064 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/test_analysis.md
+2026-01-03 02:44:38,070 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8/test_analysis.json
+2026-01-03 02:44:38,070 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-8
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 8 defines the common fixed header and variable options area for DHCPv6 client/server messages, including the msg-type, transaction-id, and options layout, and references the message type list (Section 7.3) and option definitions (Section 21).
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - Pure format description; no sequencing, timers, or state transitions involved.
+  - ActorDirectionality: LOW - Only says “between clients and servers” at a structural level; no send/receive role logic to check here.
+  - Scope: LOW - Scope is clearly “client/server messages” (not relay), and references to Sections 7.3 and 21 are appropriate.
+  - Causal: LOW - The format is straightforward and standard; no algorithmic cause→effect chains or behaviors that could break if misread.
+  - Quantitative: LOW - Field sizes (1 octet msg-type, 3 octet transaction-id, options = total message size − 4 octets) are self-consistent and match existing DHCPv6 practice.
+  - Deontic: LOW - No normative behavior (MUST/SHOULD) in this section, just descriptive structure.
+  - Structural: LOW - The bit diagram matches the prose and aligns with the generic option format in Section 21.1; no ABNF/YANG/etc. to cross-check here.
+  - CrossRFC: LOW - References (7.3 for types, 21 for options) are correct and in-scope; no external RFC numbers here.
+  - Terminology: LOW - Uses existing terms (msg-type, transaction-id, options) consistently with the rest of the draft and RFC 8415 lineage.
+  - Boundary: LOW - No edge cases or bounds behavior (e.g., empty option set) that would need additional rules; empty or minimal messages still have a well-defined structure.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: 
+    Relevant Dimensions: 
+    Sketch: ...
+
+Response ID: resp_0919c28c465b7172006958c8d5bfd08197b3c33b3e5c0dd688
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section 8
+################################################################################
+

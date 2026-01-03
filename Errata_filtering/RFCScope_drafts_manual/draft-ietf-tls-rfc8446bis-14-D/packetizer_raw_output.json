@@ -1,0 +1,37 @@
+{
+  "reports": [
+    {
+      "label": "No substantive protocol or interoperability error in TLS 1.2 update/renaming text",
+      "bug_type": "None",
+      "explanation": "Section D renames TLS 1.2 terminology (e.g., 'master secret' to 'main secret') and updates the RFC 7627 extension name without affecting on‐the-wire behavior, resulting in no protocol or interoperability error.",
+      "justification": [
+        "The candidate issue explicitly notes that there is 'No substantive protocol or interoperability error in TLS 1.2 update/renaming text' (E1).",
+        "The routing summary explains that the section only renames terminology for compatibility and does not change protocol mechanisms (E2)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: No substantive protocol or interoperability error in TLS 1.2 update/renaming text\n    Relevant Dimensions: \n    Sketch: Section D only renames the TLS 1.2 “master/premaster” terminology and the RFC 7627 extension name an..."
+          },
+          {
+            "id": "E2",
+            "text": "Excerpt Summary: Section D normatively renames TLS 1.2 terms from RFC 5246 and RFC 7627 (e.g., “master secret” → “main secret”, “extended_master_secret” extension → “extended_main_secret”), while explicitly keeping the on-the-wire PRF label strings unchanged for compatibility. It is a terminology and registry-update section, not a new protocol mechanism."
+          }
+        ],
+        "summary": [
+          "(E1) Candidate issue noting that there is no substantive protocol or interoperability error in the renaming text.",
+          "(E2) Summary description outlining that the section only renames terminology without altering protocol behavior."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "All evaluation dimensions (Temporal, Causal, Quantitative, etc.) are rated LOW, indicating no significant adverse impact.",
+      "confidence": "High",
+      "experts": [
+        "Router: Issue 1"
+      ],
+      "report_id": "draft-ietf-tls-rfc8446bis-14-D-1"
+    }
+  ]
+}

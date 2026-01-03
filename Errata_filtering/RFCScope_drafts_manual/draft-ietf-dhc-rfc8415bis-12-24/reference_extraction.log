@@ -1,0 +1,154 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-24/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   For an extended discussion about privacy considerations for the
+   client, see [RFC7824]:
+
+   *  In particular, its Section 3 discusses various identifiers that
+      could be misused to track the ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7824
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7824
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7824
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC7844
+  Reference Type: TEXT
+  Reference Value (keywords/section): recommendations regarding how to address or mitigate privacy issues
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7824:
+  Looking for Section: '3'
+  Match Type: Exact match
+  Result: Matched to Section 3
+  Section Title: Identifiers in DHCPv6 Options and Fields
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7824:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: Existing Mechanisms That Affect Privacy
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7824:
+  Looking for Section: '5'
+  Match Type: Exact match
+  Result: Matched to Section 5
+  Section Title: Attacks
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7844:
+  Search Keywords: 'recommendations regarding how to address or mitigate privacy issues'
+  Result: Found in Section 2.7
+  Section Title: What about privacy for DHCP servers?
+  Content Preview:    This document only provides recommendations for DHCP clients.  The
+   main targets are DHCP clien...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This specification does not define any allocation strategies for
+   servers.  Implementers are expected to develop their own algorithm
+   for the server to choose a resource out of the available po...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7824
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7707
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1.2
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7707
+  Reference Type: TEXT
+  Reference Value (keywords/section): problems with certain allocation strategies
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC7824
+  Reference Type: TEXT
+  Reference Value (keywords/section): allocation strategies
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7824:
+  Looking for Section: '4.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.3
+  Section Title: Allocation Strategies
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7707:
+  Looking for Section: '4.1.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.1.2
+  Section Title: Dynamic Host Configuration Protocol for IPv6 (DHCPv6)
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7707:
+  Search Keywords: 'problems with certain allocation strategies'
+  Result: Found in Section 4.2.1
+  Section Title: Reducing the Subnet ID Search Space
+  Content Preview:    When address scanning a remote network, consideration is required to
+   select which subnet IDs t...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7824:
+  Search Keywords: 'allocation strategies'
+  Result: Found in Section 4.3
+  Section Title: Allocation Strategies
+  Content Preview:    A DHCPv6 server running in typical, stateful mode is given a task of
+   managing one or more pool...
+---------------------------------------------------------------------------
+

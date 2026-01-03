@@ -1,0 +1,160 @@
+# Errata Reports
+
+Total reports: 3
+
+---
+
+## Report 1: 9887-4-1
+
+**Label:** Conflicting MUST/MUST NOT Semantics for TAC_PLUS_UNENCRYPTED_FLAG in TLS vs non‑TLS contexts
+
+**Bug Type:** Both
+
+**Explanation:**
+
+There is an apparent conflict between RFC 8907, which prohibits setting TAC_PLUS_UNENCRYPTED_FLAG in production (flag must be 0), and RFC 9887, which mandates setting the flag to 1 for TLS connections, without explicitly differentiating the transport context.
+
+**Justification:**
+
+- RFC 8907 mandates that the flag field be set to 0 in normal (non‑TLS) operation and prohibits production use of flag=1, while RFC 9887 requires that TLS connections use flag=1 on all packets.
+- Expert analyses note that the documents do not explicitly limit the earlier prohibition to non‑TLS connections, leaving a normative gap.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  RFC 8907, Section 4.5: “The flag field MUST be configured with TAC_PLUS_UNENCRYPTED_FLAG set to 0 so that the packet body is obfuscated…” and “TAC_PLUS_UNENCRYPTED_FLAG == 0x1 … This option is deprecated and MUST NOT be used in production. … A request MUST be dropped if TAC_PLUS_UNENCRYPTED_FLAG is set to true.”
+
+- **E2:**
+
+  RFC 9887, Section 4: “A TACACS+ client initiating a TACACS+ TLS connection MUST set the TAC_PLUS_UNENCRYPTED_FLAG bit… All subsequent packets MUST have the TAC_PLUS_UNENCRYPTED_FLAG bit set to 1.”
+
+- **E3:**
+
+  Deontic Analysis Issue-1 KeyTextSnippets: RFC 8907, Section 10.5.2: “TACACS+ servers MUST reject connections that have TAC_PLUS_UNENCRYPTED_FLAG set.” / “TACACS+ clients MUST NOT set TAC_PLUS_UNENCRYPTED_FLAG. Clients MUST be implemented in a way that requires explicit configuration to enable the use of TAC_PLUS_UNENCRYPTED_FLAG. This option MUST NOT be used when the client is in production.”
+
+**Evidence Summary:**
+
+- (E1) RFC 8907 requires flag=0 for obfuscation and prohibits flag=1 in production.
+- (E2) RFC 9887 mandates that TLS connections always use flag=1.
+- (E3) Expert analysis highlights the lack of explicit transport scoping, creating a direct conflict.
+
+**Fix Direction:**
+
+Explicitly state that RFC 8907’s TAC_PLUS_UNENCRYPTED_FLAG requirements apply only to non‑TLS connections and that RFC 9887’s requirements override them for TLS connections.
+
+**Severity:** Medium
+  *Basis:* The conflicting normative requirements may lead to interoperability issues if implementers inadvertently apply both sets of rules simultaneously.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Scope Expert: Issue-1
+- Deontic Expert: Issue-1
+- CrossRFC Expert: Issue-1
+
+---
+
+## Report 2: 9887-4-2
+
+**Label:** Ambiguous Scope of Obsolescence for Obfuscation vs Continued Non‑TLS Use
+
+**Bug Type:** Underspecification
+
+**Explanation:**
+
+RFC 9887 ambiguously declares the obfuscation mechanism as obsoleted while still defining non‑TLS connections that use obfuscation, leaving it unclear whether legacy obfuscation remains valid.
+
+**Justification:**
+
+- The Introduction and Section 4 of RFC 9887 state that obfuscation is obsoleted, but Section 2 defines non‑TLS connections as using obfuscation (or its testing variant).
+- Experts note that this ambiguity may lead implementers to misinterpret whether obfuscation is globally prohibited or continues to be supported for non‑TLS deployments.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  RFC 9887, Introduction: “…updates the TACACS+ protocol to use TLS 1.3 authentication and encryption [RFC8446], and obsoletes the use of TACACS+ obfuscation mechanisms.” and RFC 9887, Section 4: “obfuscation is hereby obsoleted. This section describes how the TACACS+ client and servers MUST operate regarding the obfuscation mechanism.”
+
+- **E2:**
+
+  RFC 9887, Section 2 (Non‑TLS connection definition): “It is a connection without TLS, using the unsecure TACACS+ authentication and obfuscation (or the unobfuscated option for testing).”
+
+- **E3:**
+
+  Deontic Analysis Issue-2: The text creates ambiguity regarding whether obfuscation is entirely prohibited or still permitted on non‑TLS connections.
+
+**Evidence Summary:**
+
+- (E1) RFC 9887 declares obsolescence of the obfuscation mechanism.
+- (E2) Section 2 still defines non‑TLS connections as using obfuscation for legacy purposes.
+- (E3) Expert analysis highlights the resulting ambiguity in the intended scope of obsolescence.
+
+**Fix Direction:**
+
+Clarify that the obsolescence declaration applies only to TACACS+ over TLS, while non‑TLS obfuscation remains governed by RFC 8907 until explicitly deprecated.
+
+**Severity:** Medium
+  *Basis:* The ambiguity may lead to inconsistent interpretations and implementations between new TLS deployments and legacy non‑TLS systems.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Scope Expert: Issue-2
+- Deontic Expert: Issue-2
+- CrossRFC Expert: Issue-2
+
+---
+
+## Report 3: 9887-4-3
+
+**Label:** Ambiguous Client-Side Error Handling for TAC_PLUS_UNENCRYPTED_FLAG
+
+**Bug Type:** Underspecification
+
+**Explanation:**
+
+The client-side rule in RFC 9887 for handling packets with an incorrect TAC_PLUS_UNENCRYPTED_FLAG lacks an explicit TLS qualifier, potentially conflicting with RFC 8907’s detailed non‑TLS error handling instructions.
+
+**Justification:**
+
+- RFC 9887 states that a client MUST terminate the session if it receives a packet with the flag not set to 1, without indicating that this applies only to TLS connections.
+- RFC 8907 provides a more nuanced error handling mechanism for non‑TLS connections, and experts note that the missing TLS qualifier creates ambiguity in client behavior across connection types.
+
+**Evidence Snippets:**
+
+- **E1:**
+
+  RFC 9887, Section 4: “A TACACS+ client that receives a packet with the TAC_PLUS_UNENCRYPTED_FLAG bit not set to 1 MUST terminate the session, and SHOULD log this error.”
+
+- **E2:**
+
+  RFC 8907, Section 10.5.2: When responses have TAC_PLUS_UNENCRYPTED_FLAG inconsistent with expected settings, “the TACACS+ client MUST close the TCP session, and process the response in the same way that a TAC_PLUS_AUTHEN_STATUS_FAIL (authentication sessions) or TAC_PLUS_AUTHOR_STATUS_FAIL (authorization sessions) was received.”
+
+- **E3:**
+
+  Scope Expert Issue-3 analysis: The absence of a TLS qualifier in the client error handling rule introduces ambiguity regarding its intended scope and its interaction with RFC 8907.
+
+**Evidence Summary:**
+
+- (E1) RFC 9887 mandates session termination for packets with flag not set to 1 without a TLS-specific qualifier.
+- (E2) RFC 8907 prescribes detailed error handling for non‑TLS connections.
+- (E3) Expert analysis highlights the resulting ambiguity in client behavior.
+
+**Fix Direction:**
+
+Explicitly restrict the client-side termination rule to TLS connections to prevent conflicts with RFC 8907’s error handling in non‑TLS scenarios.
+
+**Severity:** Medium
+  *Basis:* Ambiguous error handling rules can lead to inconsistent AAA decision-making and interoperability problems between TLS and non‑TLS implementations.
+
+**Confidence:** High
+
+**Experts mentioning this issue:**
+
+- Scope Expert: Issue-3
+- Causal Expert: Client AAA decision ambiguity
+
+---

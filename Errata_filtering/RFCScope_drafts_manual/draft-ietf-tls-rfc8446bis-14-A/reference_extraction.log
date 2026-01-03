@@ -1,0 +1,37 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-A/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This appendix provides a summary of the legal state transitions for
+   the client and server handshakes.  State names (in all capitals,
+   e.g., START) have no formal meaning but are provided for e...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+                              START <----+
+               Send ClientHello |        | Recv HelloRetryRequest
+          [K_send = early data] |        |
+                                v        |
+     ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Note that with the transitions as shown above, clients may send
+   alerts that derive from post-ServerHello messages in the clear or
+   with the early data keys.  If clients need to send such alert...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+                              START <-----+
+               Recv ClientHello |         | Send HelloRetryRequest
+                                v         |
+                             RECVD_CH ----+
+ ...
+################################################################################

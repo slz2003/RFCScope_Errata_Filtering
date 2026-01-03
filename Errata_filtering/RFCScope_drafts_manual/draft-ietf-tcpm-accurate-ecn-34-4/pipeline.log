@@ -1,0 +1,516 @@
+################################################################################
+Processing: Draft draft-ietf-tcpm-accurate-ecn-34, Section 4
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tcpm-accurate-ecn-34, Section 4
+================================================================================
+Preparing IETF draft draft-ietf-tcpm-accurate-ecn-34 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/corpus.json
+
+Extracting references from section 4 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/reference_extraction.log
+Focusing on section 4 and its children.
+Processing section 4. Updates to RFC 3168
+Splitting content into chunks:   0%|          | 0/7 [00:00<?, ?it/s]Splitting content into chunks:  14%|█▍        | 1/7 [00:00<00:01,  4.80it/s]Splitting content into chunks:  29%|██▊       | 2/7 [00:00<00:01,  2.59it/s]Splitting content into chunks:  43%|████▎     | 3/7 [00:01<00:01,  2.73it/s]Splitting content into chunks:  57%|█████▋    | 4/7 [00:01<00:00,  3.03it/s]Splitting content into chunks:  86%|████████▌ | 6/7 [00:02<00:00,  2.94it/s]Splitting content into chunks: 100%|██████████| 7/7 [00:02<00:00,  2.03it/s]Splitting content into chunks: 100%|██████████| 7/7 [00:02<00:00,  2.39it/s]
+Failed to upload RFC 7560: Error code: 404 - {'error': {'message': "No file found with id 'file-Xuii6xQX7MjEgiRbUr4NMb' in vector store 'vs_6958be4839f4819191bd5d6deac1daf4'.", 'type': 'invalid_request_error', 'param': None, 'code': None}}
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This section clarifies which parts of RFC3168 are updated and maps
+   them to the sections of the present AccECN specification that update
+   them:
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): updated
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  The whole of "6.1.1 TCP Initialization" of [RFC3168] is updated by Section 3.1 of the present specification. 
+   *  In "6.1.2.  The TCP Sender" of [RFC3168], all mentions of a
+      congestion r...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.1'
+  Match Type: Fuzzy match (score: 85.71428571428572)
+  Result: Matched to Section 23.1
+  Section Title: IPv4 TOS Byte and IPv6 Traffic Class Octet
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2'
+  Match Type: Fuzzy match (score: 85.71428571428572)
+  Result: Matched to Section 23.2
+  Section Title: TCP Header Flags
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.1.5'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 6.1.5
+  Section Title: Retransmitted TCP packets
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      It will be noted that RFC 8311 already updates, or potentially
+      updates, a number of the requirements in "6.1.2.  The TCP Sender". Section 6.1.2 of RFC 3168 extended standard TCP congestion...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5681
+  Reference Type: TEXT
+  Reference Value (keywords/section): TCP Congestion Control
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): details
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.2'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.2
+  Section Title: The TCP Sender
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  The whole of "6.1.3.  The TCP Receiver" of [RFC3168] is updated by Section 3.2 of the present specification, with the exception of
+      the last paragraph (about congestion response to drop and...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.3'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.3
+  Section Title: The TCP Receiver
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2
+  Section Title: AccECN Feedback
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+         "the TCP data receiver SHOULD ignore the ECN field on arriving
+         data packets that are outside of the receiver's current
+         window."
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      is updated by more stringent acceptability tests for any packet
+      (not just data packets) in the present specification.
+      Specifically, in the normative specification of AccECN (Section ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC5961
+  Reference Type: TEXT
+  Reference Value (keywords/section): acceptability tests
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC9293
+  Reference Type: TEXT
+  Reference Value (keywords/section): acceptability tests
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3'
+  Match Type: Exact match
+  Result: Matched to Section 3
+  Section Title: AccECN Protocol Specification
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '1.3'
+  Match Type: Exact match
+  Result: Matched to Section 1.3
+  Section Title: Terminology
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit
+      use of ECN on TCP control packets and retransmissions.  The
+      present specification does not update that aspect of RFC...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.4
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.5
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.6
+
+Reference 6:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.3
+
+Reference 7:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-generalized-ecn
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN++: Adding Explicit Congestion Notification (ECN) to TCP Control Packets
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: Dropped or Corrupted Packets
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.1
+  Section Title: TCP Initialization
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.4'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.4
+  Section Title: Congestion on the ACK-path
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.5
+  Section Title: Retransmitted TCP packets
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.6'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.6
+  Section Title: TCP Window Probes.
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8311:
+  Looking for Section: '4.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.3
+  Section Title: TCP Control Packets and Retransmissions
+---------------------------------------------------------------------------
+
+Warning: Section 4 not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 4 only.
+Focusing on section 4 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/section_dependencies.json
+
+Creating prompts for section 4...
+Creating expert prompt for section 4 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/focus_section_4_prompt_expert.md
+Expert prompt token count: 95,667 tokens
+Creating router prompt for section 4...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/focus_section_4_prompt_router.md
+Router prompt token count: 39,481 tokens
+
+IETF draft draft-ietf-tcpm-accurate-ecn-34 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be564fdc81918f6c87dec1d36632
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tcpm-accurate-ecn-34, Section 4
+================================================================================
+2026-01-03 02:06:05,474 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:06:05,477 - __main__ - INFO - Router prompt length: 403252 chars
+2026-01-03 02:06:05,477 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:06:05,477 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:06:05,477 - __main__ - INFO - ================================================================================
+2026-01-03 02:06:05,946 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:06:05,946 - __main__ - INFO - User prompt length: 403252 chars
+2026-01-03 02:07:01,636 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:07:02,268 - __main__ - INFO - Router analysis complete. Bug likelihood: Medium
+2026-01-03 02:07:02,268 - __main__ - INFO - Using existing vector store(s): vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:07:02,268 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:07:02,268 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:07:02,276 - __main__ - INFO - ================================================================================
+2026-01-03 02:07:02,277 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 02:07:02,436 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 02:07:02,436 - __main__ - INFO - User prompt length: 404392 chars
+2026-01-03 02:07:02,436 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:08:32,324 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:08:32,434 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 02:08:32,435 - __main__ - INFO - 
+Invoking expert: Deontic (HIGH)
+2026-01-03 02:08:33,076 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 02:08:33,076 - __main__ - INFO - User prompt length: 404355 chars
+2026-01-03 02:08:33,076 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:09:30,459 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:09:30,462 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 02:09:30,462 - __main__ - INFO - 
+Invoking expert: Structural (MEDIUM)
+2026-01-03 02:09:31,083 - __main__ - INFO - Invoking expert Structural with manual prompt...
+2026-01-03 02:09:31,083 - __main__ - INFO - User prompt length: 404376 chars
+2026-01-03 02:09:31,083 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:10:18,110 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:10:18,113 - __main__ - INFO - Expert Structural analysis complete
+2026-01-03 02:10:18,113 - __main__ - INFO - 
+Invoking expert: CrossRFC (HIGH)
+2026-01-03 02:10:18,884 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 02:10:18,884 - __main__ - INFO - User prompt length: 404361 chars
+2026-01-03 02:10:18,884 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:11:30,516 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:11:30,519 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 02:11:30,523 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/test_analysis.md
+2026-01-03 02:11:30,528 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4/test_analysis.json
+2026-01-03 02:11:30,529 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-4
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 4 states how AccECN updates specific parts of RFC 3168 (and interacts with RFC 8311 and others), especially around TCP initialization, sender/receiver ECN behavior, and retransmissions.
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: LOW - No sequencing or timing logic is defined here; it’s a mapping of existing sections.
+  - ActorDirectionality: LOW - Roles (sender/receiver) are referenced but not newly specified; unlikely source of bugs here.
+  - Scope: MEDIUM - The updates apply only when AccECN is negotiated, and there’s potential confusion about how “whole of section X” is scoped.
+  - Causal: LOW - This section doesn’t define new algorithms, just normative mappings.
+  - Quantitative: LOW - No numeric ranges or sizes here.
+  - Deontic: HIGH - This is all about which MUST/SHOULD from RFC 3168 stay, are updated, or no longer apply.
+  - Structural: MEDIUM - It cross-references specific subsections and individual sentences; consistency of those references matters.
+  - CrossRFC: HIGH - Entire section is about how this draft updates RFC 3168 (and relates to RFC 8311, 9293, 5961).
+  - Terminology: LOW - Terms appear consistent; little risk from naming alone here.
+  - Boundary: LOW - Edge-case behavior is not directly defined here; it’s in the referenced sections.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Conflicting statements about whether AccECN updates *all* of RFC 3168 §6.1.1, including the prohibition on ECN-capable SYN/SYN-ACK
+    Relevant Dimensions: Deontic, CrossRFC, Structural, Scope
+    Sketch: Section 4 contains two bullets that, taken literally, contradict each other about RFC 3168 §6.1.1 (“...
+
+Response ID: resp_038fef4c197f8614006958bfe194288196bd9c369a2ea29626
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 4 is meant to be a “mapping table” that says which parts of RFC 3168’s TCP/ECN specification are updated by AccECN, and by which sections of the draft, especially around TCP initialization, sender/receiver ECN behavior, and retransmissions. The question is whether these mappings are scoped correctly or accidentally claim to update more of RFC 3168 than the rest of the draft actually does.
+
+- ScopeModel:
+  - Targets:
+    - RFC 3168 §6.1.1 “TCP Initializati...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 4 of the AccECN draft normatively states which parts of RFC 3168 are updated and how, especially for TCP initialization (§6.1.1), sender/receiver behavior (§6.1.2–6.1.3), and retransmissions. It also attempts to say that AccECN does not touch RFC 3168’s prohibitions on using ECN on TCP control packets and retransmissions, while defining how AccECN endpoints must feed back ECN markings if such packets appear (e.g., under RFC 8311 experiments).
+
+- Overall...
+
+## Structural Expert Analysis
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: I examined Section 4’s “Updates to RFC 3168” bullets and their relation to RFC 3168 §6.1.1–§6.1.6 and RFC 8311, focusing on whether the mapping of which text is updated is self‑consistent.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Conflicting statements about whether all of RFC 3168 §6.1.1 is updated
+    - LocationHint: Section 4, first bullet and last bullet (the one mentioning “Sections 5.2, 6.1.1, 6.1.4...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 4 of the AccECN draft tries to give a precise mapping of which parts of RFC 3168 it updates, especially §6.1.1 “TCP Initialization” and the prohibitions on using ECN on TCP control packets and retransmissions. The text also states that some of those prohibitions are *not* updated, while simultaneously claiming that the “whole” of §6.1.1 is updated.
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Amb...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Medium
+Experts: ✓ 4 invoked
+  Dimensions: Scope, Deontic, Structural, CrossRFC
+Vector Stores: vs_6958be564fdc81918f6c87dec1d36632
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tcpm-accurate-ecn-34, Section 4
+################################################################################
+

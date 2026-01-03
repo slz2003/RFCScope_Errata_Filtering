@@ -1,0 +1,19 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-G/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   [[RFC EDITOR: Please remove in final RFC.]] Since -06 - Updated text
+   about differences from RFC 8446. - Clarify which parts of IANA
+   considerations are new to this document. - Upgrade the requ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Require that message reinjection be done with the current hash.
+      Potentially a clarification and potentially a wire format change
+      depending on previous interpretation (Issue 1227)
+
+  ...
+################################################################################

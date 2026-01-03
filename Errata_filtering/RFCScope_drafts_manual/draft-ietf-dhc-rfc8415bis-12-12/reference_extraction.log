@@ -1,0 +1,197 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-12/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   An Identity Association (IA) is a construct through which a server
+   and a client can identify, group, and manage a set of related IPv6
+   addresses or delegated prefixes.  Each IA consists of an ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The IAID uniquely identifies the IA and MUST be chosen to be unique
+   among the IAIDs for that IA type on the client (e.g., an IA_NA with
+   an IAID of 0 and an IA_PD with an IAID of 0 are each co...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the client wishes to obtain a distinctly new address or prefix and
+   deprecate the existing one, the client sends a Release message to the
+   server for the IAs using the original IAID.  The cl...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client must associate at least one distinct IA with each of its
+   network interfaces for which it is to request the assignment of IPv6
+   addresses from a DHCP server.  The client uses the IAs a...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The configuration information in an IA_NA option consists of one or
+   more IPv6 addresses along with the T1 and T2 values for the IA.  See Section 21.4 for details regarding the representation of ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.4'
+  Match Type: Exact match
+  Result: Matched to Section 21.4
+  Section Title: Identity Association for Non-temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each address in an IA has a preferred lifetime and a valid lifetime,
+   as defined in [RFC4862].  The lifetimes are transmitted from the DHCP
+   server to the client in the IA Address option (see S...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.6
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC4862
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.5.4
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC4862
+  Reference Type: TEXT
+  Reference Value (keywords/section): IPv6 Stateless Address Autoconfiguration
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.6'
+  Match Type: Exact match
+  Result: Matched to Section 21.6
+  Section Title: IA Address Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC4862:
+  Looking for Section: '5.5.4'
+  Match Type: Exact match
+  Result: Matched to Section 5.5.4
+  Section Title: Address Lifetime Expiry
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   An IA_PD is different from an IA for address assignment in that it
+   does not need to be associated with exactly one interface.  One IA_PD
+   can be associated with the client, with a set of inter...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The configuration information in an IA_PD option consists of one or
+   more prefixes along with the T1 and T2 values for the IA_PD.  See Section 21.21 for details regarding the representation of an...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.21
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.21'
+  Match Type: Exact match
+  Result: Matched to Section 21.21
+  Section Title: Identity Association for Prefix Delegation Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each delegated prefix in an IA has a preferred lifetime and a valid
+   lifetime, as defined in [RFC4862].  The lifetimes are transmitted
+   from the DHCP server to the client in the IA Prefix optio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.22
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.5.4
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC4862
+  Reference Type: TEXT
+  Reference Value (keywords/section): IPv6 Stateless Address Autoconfiguration
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.22'
+  Match Type: Exact match
+  Result: Matched to Section 21.22
+  Section Title: IA Prefix Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '5.5.4'
+  Match Type: Fuzzy match (score: 54.54545454545454)
+  Result: Matched to Section 18.2.4
+  Section Title: Creation and Transmission of Renew Messages
+---------------------------------------------------------------------------
+

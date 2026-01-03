@@ -1,0 +1,292 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-22/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   NOTE TO RFC EDITOR: Please remove this section before publication.
+   It is intended for the IESG evaluation.
+
+   This section records the status of known implementations of the
+   protocol defined...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The DHCPv6 protocol was originally published as RFC 3315 in July
+   2003.  Many extensions were defined and RFC 8415 was published in
+   November 2018.  The protocol was implemented by many vendors...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3315
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2003
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3315:
+  Looking for Section: '2003'
+  Match Type: Fuzzy match (score: 75.0)
+  Result: Matched to Section 20.3
+  Section Title: Construction of Relay-reply Messages
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The DHCPv6 protocol enjoys multiple interoperable implementations
+   from all sectors of industry.  There are many open source and
+   proprietary implementations, both general software and hardware...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Android (Google): In March 2023 (IETF'115) Google revealed it is
+      working on the PD client implementation for Android.  Open source.
+      Maturity: prototype.  Details are scarce, but it s...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Cisco Prime Network Registrar: Cisco's software suite that
+      supports many protocols, including RFC8415 compliant server
+      functionality.  Proprietary.  Maturity: widely used.  One of th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): RFC8415 compliant server functionality
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'RFC8415 compliant server functionality'
+  Result: Found in Section 26.1
+  Section Title: Normative References
+  Content Preview:    [RFC768]   Postel, J., "User Datagram Protocol", STD 6, RFC 768,
+              DOI 10.17487/RFC07...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  dhcpcd: Client implementation.  Works on many Linux and BSD
+      distributions, but seems to be the default client for various BSD
+      flavors.  Open source (BSD).  Maturity: widely used, in ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  dhcpd (ISC): Client, relay and server implementation, present in
+      most Linux and BSD distributions.  Open source (Mozilla Public
+      License v2).  The project is no longer developed, but ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): dhcpd, Client, relay and server implementation
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): dibbler, Client, relay and server implementation
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): Limited compatibility
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-dhc-rfc8415bis-12:
+  Search Keywords: 'dhcpd, Client, relay and server implementation'
+  Result: Found in Section 5
+  Section Title: Client/Server Exchanges
+  Content Preview:    Clients and servers exchange DHCP messages using UDP (see [RFC0768]
+   and [BCP145]).  The client...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-dhc-rfc8415bis-12:
+  Search Keywords: 'dibbler, Client, relay and server implementation'
+  Result: Found in Section 19.1
+  Section Title: Relaying a Client Message or a Relay-forward Message
+  Content Preview:    A relay agent relays both messages from clients and Relay-forward
+   messages from other relay ag...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'Limited compatibility'
+  Result: Found in Section 21.7
+  Section Title: Option Request Option
+  Content Preview:    The Option Request option is used to identify a list of options in a
+   message between a client ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  dnsmasq: Probably the most popular implementation in terms of
+      number of devices.  Very popular among CPE and various home
+      appliances.  Client and server implementation with some rela...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  EdgeMax (Ubiquiti): Proprietary implementation running on EdgeMax
+      hardware, home and small enterprise gateways and switches.
+      Focused on DHCPv6-PD.  Source: https://help.ui.com/hc/en-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  EOS (Arista): Proprietary implementation for network switches,
+      routers and other networking hardware.  RFC8415 support explicitly
+      stated.  Server, client, relay implementation.  Sour...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): RFC8415 support
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'RFC8415 support'
+  Result: Found in Section 26.2
+  Section Title: Informative References
+  Content Preview:    [IANA-HARDWARE-TYPES ]
+              IANA, "Hardware Types",
+              <https://www.iana.org/...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Huawei: Server, client and relay functionalities are available on
+      most routers and switches.  Proprietary.  Source:https://support.huawei.com/hedex/
+      hdx .do?docid=EDOC1100247463&id=E...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  iOS (Apple): Client implementation running on Apple portable
+      devices (iPhones, iPads, etc.).  Proprietary.  The implementation
+      is widely used.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  IOS (Cisco): Server, relay, and client implementation that runs on
+      Cisco routers, switches and other networking hardware.
+      Proprietary.  Widely used.  Source:https://community.cisco.c...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Kea (ISC): Server implementation.  Open source (Mozilla Public
+      License v2).  It is a modern replacement for now retired isc-dhcp.
+      More than 500 users subscribed to the mailing list. ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  RouterOS (Mikrotik): Server, relay, and client implementation
+      running on Mikrotik networking hardware (routers, switches, many
+      other appliances).  Proprietary.  Sources:https://wiki....
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  udhcpc6 (busybox): Minimum footprint implementation, intended for
+      embedded devices.  It used to be a separate project (udhcpc6), but
+      it is now part of the BusyBox project.  Open sour...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Unifi (Ubiquiti): Server, relay, and client implementation running
+      on UniFi hardware (routers, switches, firewalls).  Proprietary.
+      Source: https://help.ui.com/hc/en-us/articles/11500...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Windows (Microsoft): Microsoft Windows provides client
+      implementation, which is probably still the most popular OS on
+      desktops and laptops.  The server version of Windows provides
+  ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The DHCPv6 support is also mandated by some third party specs.  For
+   example, all cable modems conformant to DOCSIS3.0 or later must
+   support DHCPv6 client functionality.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   There are many large scale deployments that use DHCPv6.  One of them
+   is Comcast's Xfinity.  Authors are aware of many other large scale
+   country wide deployments, but due to signed Non-Disclos...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   While the original IPv6 Ready Logo testing involved the original
+   DHCPv6 specifications (primarily RFC3315, RFC3633), the large number
+   of tested and certified implementations supports the brea...
+################################################################################

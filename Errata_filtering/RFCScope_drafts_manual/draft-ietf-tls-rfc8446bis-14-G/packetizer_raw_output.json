@@ -1,0 +1,37 @@
+{
+  "reports": [
+    {
+      "label": "Informational Changelog in Section G is Consistent with Normative Text",
+      "bug_type": "Editorial/Informational",
+      "explanation": "Section G contains a changelog that only documents historical edits and is marked for removal, making it purely informational and not impacting normative specifications.",
+      "justification": [
+        "The analysis states: Excerpt Summary: Section G is an editor-only changelog summarizing differences between draft -06/-05/-04/... and earlier versions, referencing already-updated normative text elsewhere in the draft. (E1)",
+        "The candidate issue details mention: Candidate Issues: 1 Issue 1: Type: None Label: Changelog is informational and consistent with main text Relevant Dimensions: Sketch: Section G is explicitly marked for removal by the RFC Editor and only narrates edits already visible... (E2)"
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Excerpt Summary: Section G is an editor-only changelog summarizing differences between draft -06/-05/-04/... and earlier versions, referencing already-updated normative text elsewhere in the draft."
+          },
+          {
+            "id": "E2",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: Changelog is informational and consistent with main text\n    Relevant Dimensions: \n    Sketch: Section G is explicitly marked for removal by the RFC Editor and only narrates edits already visible..."
+          }
+        ],
+        "summary": [
+          "(E1) Excerpt Summary details the editor-only nature of Section G.",
+          "(E2) Candidate Issues section identifies the changelog as informational and marked for removal, supporting the non-normative intent."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "All evaluation dimensions are marked as LOW and the issue is explicitly noted as Type: None, indicating no functional or normative bug.",
+      "confidence": "High",
+      "experts": [
+        "RouterAnalysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-tls-rfc8446bis-14-G-1"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "routing_summary": {
+    "excerpt_summary": "Section 6 of RFC 9887 provides operational and deployment guidance, especially around migration from non-TLS to TLS TACACS+, handling legacy non-TLS clients, and pointing operators to the separate YANG model that includes TLS support.",
+    "overall_bug_likelihood": "Low",
+    "dimensions": {
+      "Temporal": {
+        "relevance": "LOW",
+        "explanation": "No sequencing, timers, or state-machine behavior is defined here beyond high-level “during migration” language."
+      },
+      "ActorDirectionality": {
+        "relevance": "LOW",
+        "explanation": "Roles (clients, servers, operators) are clear and consistent; no “who does what” confusion is evident in this section."
+      },
+      "Scope": {
+        "relevance": "LOW",
+        "explanation": "The text cleanly scopes its statements to “operators”, “deployments during migration”, and “non‑TLS clients”; there is no obvious scope overreach or mismatch."
+      },
+      "Causal": {
+        "relevance": "LOW",
+        "explanation": "The section describes high-level operational impacts (e.g., downgrade risk during migration) but does not specify algorithms where cause→effect chains could be broken."
+      },
+      "Quantitative": {
+        "relevance": "LOW",
+        "explanation": "No sizes, ranges, counters, or numeric limits appear in this section."
+      },
+      "Deontic": {
+        "relevance": "MEDIUM",
+        "explanation": "There is some interplay between lower-case “must” in Section 6 and earlier RFC 2119 requirements in Section 5, so it is worth a light check for normative consistency, though nothing clearly contradictory appears."
+      },
+      "Structural": {
+        "relevance": "LOW",
+        "explanation": "No ABNF, YANG, or formal syntax is defined in this section itself."
+      },
+      "CrossRFC": {
+        "relevance": "MEDIUM",
+        "explanation": "Section 6 references BCP 195 / RFC 9325 and the TACACS+ YANG document at a high level; while this looks consistent, an expert may briefly confirm there is no hidden normative clash or misstatement of those references."
+      },
+      "Terminology": {
+        "relevance": "LOW",
+        "explanation": "Minor variance in phrasing (e.g., “TACACS+ TLS clients” vs “TLS TACACS+ clients”) exists but does not appear to affect interoperability."
+      },
+      "Boundary": {
+        "relevance": "LOW",
+        "explanation": "Edge cases (e.g., mixed TLS/non‑TLS deployments) are acknowledged qualitatively, but there is no detailed boundary behavior that would need precise specification in this section."
+      }
+    },
+    "candidate_issues": [
+      {
+        "bug_type": "None",
+        "short_label": "No substantive specification error apparent in Section 6",
+        "relevant_dimensions": [],
+        "sketch_for_experts": "Section 6 largely summarizes and reiterates operational guidance already normatively covered in Section 5 and in external documents (BCP 195 / RFC 9325 and the TACACS+ YANG work). It warns about downgrade risk during migration and advises minimizing mixed TLS/non‑TLS configurations, and it references prior recommendations about separating TLS and non‑TLS servers. The wording and cross-references appear consistent with those earlier requirements and with the cited documents. An in-depth errata-style issue does not emerge from this section alone."
+      }
+    ]
+  },
+  "expert_analyses": {
+    "Deontic": {
+      "analysis": "DeonticAnalysis:\n- ExcerptSummary: Section 6 of RFC 9887 provides operational guidance for migration from non‑TLS TACACS+ to TLS TACACS+, handling legacy non‑TLS clients, and pointing to a YANG model with TLS support. It deliberately uses lower‑case modal verbs and mostly reiterates or operationalizes the normative security requirements already stated in Sections 3 and 5. There is no new upper‑case BCP 14 normative behavior introduced in Section 6, and its advice is consistent with the earlier requirements.\n\n- OverallDeonticRisk: None\n\n- Issues:\n  - Issue-1:\n    - BugType: None\n    - Title: Section 6’s lower‑case “must/should” is advisory and aligns with earlier normative requirements\n    - Description: Section 6 uses lower‑case “should” and “must” in places such as “TLS should be universally applied throughout the deployment”, “The operator must consider the security impact of supporting both TLS and non‑TLS connections”, and “Operators must follow the recommendation of Section 5.1.1 and deploy separate non‑TLS TACACS+ servers for these non‑TLS clients from those used for the TLS clients.” Because Section 2.1 explicitly restricts BCP 14 semantics to *all‑caps* forms, these lower‑case terms are not normative requirements and instead function as explanatory or operational guidance that reinforces Section 5’s security requirements. For example, Section 5.1.1 already states that TLS TACACS+ servers MUST NOT allow non‑TLS connections and that separate non‑TLS servers SHOULD be set up for legacy clients, while discouraging co‑location on the same host via NOT RECOMMENDED; Section 6.2 simply reminds operators to follow that recommendation, without changing the requirement level. Similarly, the migration text in Section 6.1 (minimize the period where a client is configured with both TLS and non‑TLS servers, consider the security impact) is consistent with, and does not weaken, the earlier prohibition that TACACS+ clients MUST NOT fail back to non‑TLS when TLS fails, even during migration. Overall, the normative landscape remains coherent: the binding requirements live in Sections 3 and 5 (using uppercase MUST/SHOULD/NOT RECOMMENDED), and Section 6 adds no contradictory or essential new obligations that would be accidentally non‑normative due to casing.\n    - KeyTextSnippets:\n      - “The key words ‘MUST’, ‘MUST NOT’, … ‘MAY’, and ‘OPTIONAL’ in this document are to be interpreted as described in BCP 14 … when, and only when, they appear in all capitals, as shown here.”\n      - “New TACACS+ production deployments SHOULD use TLS authentication and encryption.”\n      - “TLS TACACS+ servers … MUST NOT allow non-TLS connections… Instead, separate non-TLS TACACS+ servers SHOULD be set up to cater for these clients.”\n      - “It is NOT RECOMMENDED that TLS TACACS+ servers and non-TLS TACACS+ servers be deployed on the same host…”\n      - “TACACS+ clients MUST NOT fail back to a non-TLS connection if a TLS connection fails. This prohibition includes during the migration of a deployment (Section 6.1).”\n      - “Section 5.2 mentions that for an optimal deployment of TLS TACACS+, TLS should be universally applied…”\n      - “The period where any client is configured with both TLS and non‑TLS TACACS+ servers should be minimized.”\n      - “Operators must follow the recommendation of Section 5.1.1 and deploy separate non-TLS TACACS+ servers for these non-TLS clients from those used for the TLS clients.”\n    - Impact: Because the document clearly scopes BCP 14 meaning to all‑caps keywords and the substantive security and interoperability requirements are correctly expressed with upper‑case MUST/SHOULD/NOT RECOMMENDED in Sections 3 and 5, there is no true normative inconsistency or gap introduced by Section 6. At most, the lower‑case “must/should” in Section 6 could be seen as strong advice to operators, but it does not change or contradict the protocol’s formal requirements, so it should not mislead careful implementers regarding what is strictly required for interoperability or security.",
+      "response_id": "resp_0088caf73c656693006958c64868ec81909bf8adb8e663df3e",
+      "vector_store_ids": [
+        "vs_6958c1299d1881919236f07c8d11bc8e"
+      ],
+      "user_prompt": null
+    },
+    "CrossRFC": {
+      "analysis": "CrossRFCReport:\n- ExcerptSummary: Section 6 of RFC 9887 gives operational guidance for deploying TACACS+ over TLS, highlights the need to follow BCP 195 (RFC 9325) for TLS configuration, and points operators to a separate YANG model that includes TLS support. The surrounding sections normatively fix TACACS+ over TLS to TLS 1.3+ only, deprecating any use of earlier TLS versions, and describe the new IANA port registration and configuration behavior.\n- OverallCrossRFCLikelihood: Medium\n- Issues:\n  - Issue-1:\n    - BugType: Inconsistency\n    - ShortLabel: TLS 1.3‑only profile claimed “permissible under BCP 195” despite BCP 195’s TLS 1.2 requirement\n    - Description: RFC 9887 mandates “A minimum of TLS 1.3 [RFC8446] MUST be used for transport. Earlier versions of TLS MUST NOT be used.” (Section 3.2) and later states that its profile “outlines additional restrictions permissible under [BCP195]. For example, any recommendations referring to TLS 1.2, including the mandatory support, are not relevant for Secure TACACS+, as TLS 1.3 or above is mandated.” (Section 5.1). By contrast, BCP 195 / RFC 9325 states that “New application protocols that employ TLS/DTLS for channel or session encryption MUST integrate with both TLS/DTLS versions 1.2 and 1.3; nevertheless, in rare cases where broad interoperability is not a concern, application protocol designers MAY choose to forego TLS 1.2.” (Section 3.1.1) and generally expects new application protocols to conform to its best practices (Section 5). TACACS+ over TLS as specified in RFC 9887 is effectively a new TLS-based application profile, and broad interoperability is in fact a central concern for a AAA control protocol, yet the document unconditionally forbids TLS 1.2 and characterizes ignoring the TLS 1.2 “MUST support” requirements as “permissible under [BCP195]” without giving a concrete “rare case” justification. Implementers that follow RFC 9887 will therefore not implement TLS 1.2 at all, while strict readers of BCP 195 would treat such a profile as non‑conformant to the BCP’s explicit “MUST integrate with both TLS 1.2 and 1.3” requirement for new application protocols. The inconsistency is not in Section 6’s mere reference to BCP 195 (which is fine), but in the surrounding normative text’s claim of adherence to BCP 195 while explicitly contravening one of its central version‑support requirements for new protocols.\n    - EntitiesInvolved: [\"RFC 9887 Section 3.2\", \"RFC 9887 Section 5.1\", \"RFC 9325 (BCP 195) Section 3.1.1\", \"RFC 9325 Section 5\"]\n    - CrossRefsUsed: [\"BCP 195 / RFC 9325 general recommendations and protocol‑version requirements\", \"RFC 9887 TLS version requirements and its characterization of BCP 195 applicability\"]\n    - Confidence: Medium\n- IfNoIssues:\n  - Comment: Although Section 6 itself only gives high‑level guidance (“Refer to [BCP195] for guidance.” and an informative reference to the TACACS+ YANG model, which correctly states it includes TLS support), and those specific references are consistent with RFC 9325 and the TACACS+ YANG draft, the broader document text around Section 6 introduces the above normative tension with BCP 195’s TLS‑version guidance.",
+      "response_id": "resp_04ece3778ef033da006958c6861ac08197b40951a5d2a3a1ad",
+      "vector_store_ids": [
+        "vs_6958c1299d1881919236f07c8d11bc8e"
+      ],
+      "user_prompt": null
+    }
+  },
+  "vector_store_ids": [
+    "vs_6958c1299d1881919236f07c8d11bc8e"
+  ],
+  "metadata": {
+    "model": "gpt-5.1",
+    "router_reasoning_effort": "medium",
+    "expert_reasoning_effort": "medium",
+    "test_mode": "manual"
+  }
+}

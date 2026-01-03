@@ -1,0 +1,491 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-5/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   This document improves the confidentiality, integrity, and
+   authentication of the connection and network traffic between TACACS+
+   peers by adding TLS support.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Simply adding TLS support to the protocol does not guarantee the
+   protection of the TLS TACACS+ server and clients.  It is essential
+   for the operators and equipment vendors to adhere to the la...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   [BCP195] offers substantial guidance for implementing and deploying
+   protocols that use TLS.  Those implementing and deploying Secure
+   TACACS+ must adhere to the recommendations relevant to TLS...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: BCP195
+  Reference Type: TEXT
+  Reference Value (keywords/section): guidance for implementing and deploying protocols that use TLS
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: BCP195
+  Reference Type: TEXT
+  Reference Value (keywords/section): recommendations relevant to TLS 1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC195:
+  Search Keywords: 'guidance for implementing and deploying protocols that use TLS'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC195:
+  Search Keywords: 'recommendations relevant to TLS 1.3'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   This document outlines additional restrictions permissible under
+   [BCP195].  For example, any recommendations referring to TLS 1.2,
+   including the mandatory support, are not relevant for Secure...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: BCP195
+  Reference Type: TEXT
+  Reference Value (keywords/section): additional restrictions permissible
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC195:
+  Search Keywords: 'additional restrictions permissible'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   This document concerns the use of TLS as transport for TACACS+ and
+   does not make any changes to the core TACACS+ protocol, other than
+   the direct implications of deprecating obfuscation.  Oper...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   New TACACS+ production deployments SHOULD use TLS authentication and
+   encryption.  Also see [RFC3365].
+
+   TLS TACACS+ servers (as defined in Section 2) MUST NOT allow non-TLS
+   connections, bec...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC3365
+  Reference Type: TEXT
+  Reference Value (keywords/section): Strong Security Requirements for Internet Engineering Task Force Standard Protocols
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '2'
+  Match Type: Exact match
+  Result: Matched to Section 2
+  Section Title: Technical Definitions
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Well-Known TCP/IP Port Number
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   It is NOT RECOMMENDED that TLS TACACS+ servers and non-TLS TACACS+
+   servers be deployed on the same host, for reasons discussed in Section 5.3.  Non-TLS connections would be better served by depl...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Well-Known TCP/IP Port Number
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   TACACS+ clients MUST NOT fail back to a non-TLS connection if a TLS
+   connection fails.  This prohibition includes during the migration of
+   a deployment (Section 6.1).
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '6.1'
+  Match Type: Exact match
+  Result: Matched to Section 6.1
+  Section Title: Migration
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   TLS 1.3 resumption and PSK techniques make it possible to send early
+   data, aka 0-RTT data, data that is sent before the TLS handshake
+   completes.  Replay of this data is a risk.  Given the sen...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   TLS TACACS+ clients and servers MUST NOT include the "early_data"
+   extension.  See Sections 2.3 and 4.2.10 of [RFC8446] for security
+   concerns.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.10
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: TEXT
+  Reference Value (keywords/section): security concerns
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '2.3'
+  Match Type: Exact match
+  Result: Matched to Section 2.3
+  Section Title: 0-RTT Data
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2.10'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.10
+  Section Title: Early Data Indication
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8446:
+  Search Keywords: 'security concerns'
+  Result: Found in Section 10
+  Section Title: Security Considerations
+  Content Preview:    Security issues are discussed throughout this memo, especially in
+   Appendices C, D, and E.
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Recommendations in [BCP195] MUST be followed to determine which TLS
+   versions and algorithms should be supported, deprecated, obsoleted,
+   or abandoned.
+
+   Also, Section 9 of [RFC8446] prescrib...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: BCP195
+  Reference Type: TEXT
+  Reference Value (keywords/section): Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 9
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC195:
+  Search Keywords: 'Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '9'
+  Match Type: Exact match
+  Result: Matched to Section 9
+  Section Title: Compliance Requirements
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Operators should be cognizant of the potential of TLS TACACS+ server
+   and/or client isolation from their peer's CA by network failures.
+   Isolation from a public key certificate's CA will cause ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.4.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '3.4.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.4.1
+  Section Title: TLS Certificate Path Verification
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Operators should be aware that the TLS SNI extension is part of the
+   TLS client hello, which is sent in cleartext.  It is, therefore,
+   subject to eavesdropping.  Also see Section 11.1 of [RFC60...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 11.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC6066
+  Reference Type: TEXT
+  Reference Value (keywords/section): TLS Extensions
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '11.1'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 5.1.1
+  Section Title: TLS Use
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6066:
+  Search Keywords: 'TLS Extensions'
+  Result: Found in Section 1.1
+  Section Title: Specific Extensions Covered
+  Content Preview:    The extensions described here focus on extending the functionality
+   provided by the TLS protoco...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   The use of wildcards in TLS server identities creates a single point
+   of failure: a compromised private key of a wildcard certificate
+   impacts all servers using it.  Their use MUST follow the
+ ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9525
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9525
+  Reference Type: TEXT
+  Reference Value (keywords/section): Service Identity in TLS
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9525:
+  Looking for Section: '7.1'
+  Match Type: Exact match
+  Result: Matched to Section 7.1
+  Section Title: Wildcard Certificates
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9525:
+  Search Keywords: 'Service Identity in TLS'
+  Result: Found in Section 6
+  Section Title: Verifying Service Identity
+  Content Preview:    At a high level, the client verifies the application service's
+   identity by performing the foll...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Implementors must ensure that the configuration scheme introduced for
+   enabling TLS is straightforward and leaves no room for ambiguity
+   regarding whether TLS or non-TLS will be used between th...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   This document recommends the use of a separate port number that TLS
+   TACACS+ servers will listen to.  Where deployments have not
+   overridden the defaults explicitly, TACACS+ client implementati...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Implementors may offer a single option for TACACS+ clients and
+   servers to disable all non-TLS TACACS+ operations.  When enabled on a
+   TACACS+ server, it will not respond to any requests from n...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   A new port number is considered appropriate (rather than a mechanism
+   that negotiates an upgrade from an initial non-TLS TACACS+
+   connection) because it allows:
+
+   *  ease of blocking the unob...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   However, the coexistence of inferior authentication and obfuscation,
+   whether a non-TLS connection or deprecated parts that compose TLS,
+   also presents an opportunity for downgrade attacks.  Ca...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   The simplest mitigation exposure from non-TLS connection methods is
+   to refuse non-TLS connections at the host entirely, perhaps using
+   separate hosts for non-TLS connections and TLS.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Another approach is mutual configuration that requires TLS.  TACACS+
+   clients and servers SHOULD support configuration that requires peers,
+   globally and individually, to use TLS.  Furthermore,...
+################################################################################

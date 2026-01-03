@@ -1,0 +1,167 @@
+[
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "1.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "5116",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "8439",
+    "reference_type": "SECTION",
+    "reference_value": "2.8",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "6655",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B.4"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "SHS",
+    "reference_type": "TEXT",
+    "reference_value": "hash algorithms",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.fips.180-4",
+    "reference_text": "\"Secure hash standard\", National Institute of Standards and Technology (U.S.), DOI 10.6028/nist.fips.180-4, 2015, <https://doi.org/10.6028/nist.fips.180-4>.",
+    "reference_summary": "The Secure Hash Standard (SHS), as specified in FIPS 180-4 by the National Institute of Standards and Technology (NIST), defines seven secure hash algorithms:\n\n1. **SHA-1**: Produces a 160-bit message digest.\n2. **SHA-224**: Produces a 224-bit message digest.\n3. **SHA-256**: Produces a 256-bit message digest.\n4. **SHA-384**: Produces a 384-bit message digest.\n5. **SHA-512**: Produces a 512-bit message digest.\n6. **SHA-512/224**: Produces a 224-bit message digest.\n7. **SHA-512/256**: Produces a 256-bit message digest.\n\nThese algorithms are designed to generate a condensed representation (message digest) of electronic data, which is used to detect any changes to the original message. The message digests vary in length from 160 to 512 bits, depending on the specific algorithm. Secure hash algorithms are typically employed alongside other cryptographic algorithms, such as digital signature algorithms and keyed-hash message authentication codes, or in the generation of random numbers. ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf?utm_source=openai))\n\nIt's important to note that in March 2023, NIST announced plans to revise FIPS 180-4. The proposed revisions include removing the SHA-1 specification, incorporating guidance from NIST Special Publication 800-107, improving the standard's editorial quality, and updating its references. ([nist.gov](https://www.nist.gov/news-events/news/2023/03/decision-revise-fips-180-4-secure-hash-standard-shs?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B.4"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "11",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B"
+    },
+    "document_type": "RFC",
+    "document_tag": "2119",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B"
+    },
+    "document_type": "RFC",
+    "document_tag": "9147",
+    "reference_type": "SECTION",
+    "reference_value": "A",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B"
+    },
+    "document_type": "RFC",
+    "document_tag": "2246",
+    "reference_type": "SECTION",
+    "reference_value": "A",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B"
+    },
+    "document_type": "RFC",
+    "document_tag": "4346",
+    "reference_type": "SECTION",
+    "reference_value": "A",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "B"
+    },
+    "document_type": "RFC",
+    "document_tag": "5246",
+    "reference_type": "SECTION",
+    "reference_value": "A",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

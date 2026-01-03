@@ -1,0 +1,31 @@
+{
+  "reports": [
+    {
+      "label": "Candidate Issue with Missing Details in Issue 1",
+      "bug_type": "Underspecification",
+      "explanation": "The analysis output flags a candidate issue (Issue 1) but provides no clear details—its type, label, and relevant dimensions are left empty—indicating an incomplete or underspecified entry.",
+      "justification": [
+        "The candidate issue is noted in the analysis with 'Issue 1:' showing 'Type: None', an empty 'Label', and an empty 'Relevant Dimensions', with only a placeholder 'Sketch: ...' provided (E1)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The analysis output includes a candidate issue entry with no detailed information provided."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "The overall bug likelihood is noted as None and the candidate issue lacks detail, reducing its impact despite its presence.",
+      "confidence": "Low",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-8-1"
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+################################################################################
+Processing: RFC 9887, Section 6
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for RFC 9887, Section 6
+================================================================================
+Preparing RFC 9887 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6
+
+Extracting references from the references section of the RFC.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/references.json
+
+Parsing the contents of the RFC.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/corpus.json
+
+Extracting references from section 6 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/reference_extraction.log
+Focusing on section 6 and its children.
+Processing section 6. Operational Considerations
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:05<00:05,  5.46s/it]Splitting content into chunks: 100%|██████████| 2/2 [01:18<00:00, 45.24s/it]Splitting content into chunks: 100%|██████████| 2/2 [01:18<00:00, 39.28s/it]
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Operational and deployment considerations are spread throughout the
+   document.  While avoiding repetition, it is useful for the impatient
+   to direct particular attention to Sections 5.2 and 5.1...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1.5
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: TACACS+ Configuration
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 5.1.5
+  Section Title: TLS Server Name Indicator (SNI)
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5'
+  Match Type: Exact match
+  Result: Matched to Section 5
+  Section Title: Security Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   It is essential for operators to understand the implications of a TLS
+   certificate-based authentication solution, including the correct
+   handling of certificates, CAs, and all elements of TLS c...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: BCP195
+  Reference Type: TEXT
+  Reference Value (keywords/section): guidance
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC195:
+  Search Keywords: 'guidance'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+Warning: Section 6 not found. Processing all sections.
+Processing section 6.1. Migration
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:01<00:00,  1.68s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:01<00:00,  1.68s/it]
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Section 5.2 mentions that for an optimal deployment of TLS TACACS+,
+   TLS should be universally applied throughout the deployment.
+   However, during the migration process from a non-TLS TACACS+
+ ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: TACACS+ Configuration
+---------------------------------------------------------------------------
+
+Processing section 6.2. Maintaining Non-TLS TACACS+ Clients
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:01<00:00,  1.27s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:01<00:00,  1.27s/it]
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   Some TACACS+ client devices in a deployment may not implement TLS.
+   These devices will require access to non-TLS TACACS+ servers.
+   Operators must follow the recommendation of Section 5.1.1 and ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9887
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9887:
+  Looking for Section: '5.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.1.1
+  Section Title: TLS Use
+---------------------------------------------------------------------------
+
+Processing section 6.3. YANG Model for TACACS+ Clients
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [04:55<00:00, 295.57s/it]Splitting content into chunks: 100%|██████████| 1/1 [04:55<00:00, 295.57s/it]
+
+################################################################################
+ANALYZING RFC 9887 EXCERPT:
+################################################################################
+   [TACACS-YANG ] specifies a YANG model for managing TACACS+ clients,
+   including TLS support.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-opsawg-secure-tacacs-yang-13
+  Reference Type: TEXT
+  Reference Value (keywords/section): YANG model for managing TACACS+ clients
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-opsawg-secure-tacacs-yang-13:
+  Search Keywords: 'YANG model for managing TACACS+ clients'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    The System Management data model [RFC7317] defines separate
+   functionality to support local and...
+---------------------------------------------------------------------------
+
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 6 only.
+Focusing on section 6 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/section_dependencies.json
+
+Creating prompts for section 6...
+Creating expert prompt for section 6 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/focus_section_6_prompt_expert.md
+Expert prompt token count: 24,959 tokens
+Creating router prompt for section 6...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/focus_section_6_prompt_router.md
+Router prompt token count: 6,867 tokens
+
+RFC 9887 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958c1299d1881919236f07c8d11bc8e
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for RFC 9887, Section 6
+================================================================================
+2026-01-03 02:32:51,383 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:32:51,385 - __main__ - INFO - Router prompt length: 99104 chars
+2026-01-03 02:32:51,385 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:32:51,385 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:32:51,385 - __main__ - INFO - ================================================================================
+2026-01-03 02:32:51,520 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:32:51,520 - __main__ - INFO - User prompt length: 99104 chars
+2026-01-03 02:33:27,281 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:33:27,893 - __main__ - INFO - Router analysis complete. Bug likelihood: Low
+2026-01-03 02:33:27,894 - __main__ - INFO - Using existing vector store(s): vs_6958c1299d1881919236f07c8d11bc8e
+2026-01-03 02:33:27,894 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:33:27,894 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:33:27,894 - __main__ - INFO - ================================================================================
+2026-01-03 02:33:27,894 - __main__ - INFO - 
+Invoking expert: Deontic (MEDIUM)
+2026-01-03 02:33:28,284 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 02:33:28,284 - __main__ - INFO - User prompt length: 99741 chars
+2026-01-03 02:33:28,284 - __main__ - INFO - Vector stores: vs_6958c1299d1881919236f07c8d11bc8e
+2026-01-03 02:34:29,394 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:34:29,454 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 02:34:29,454 - __main__ - INFO - 
+Invoking expert: CrossRFC (MEDIUM)
+2026-01-03 02:34:29,976 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 02:34:29,977 - __main__ - INFO - User prompt length: 99746 chars
+2026-01-03 02:34:29,977 - __main__ - INFO - Vector stores: vs_6958c1299d1881919236f07c8d11bc8e
+2026-01-03 02:35:21,751 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:35:21,754 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 02:35:21,757 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/test_analysis.md
+2026-01-03 02:35:21,761 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6/test_analysis.json
+2026-01-03 02:35:21,761 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9887-6
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 6 of RFC 9887 provides operational and deployment guidance, especially around migration from non-TLS to TLS TACACS+, handling legacy non-TLS clients, and pointing operators to the separate YANG model that includes TLS support.
+Overall Bug Likelihood: Low
+
+Dimensions:
+  - Temporal: LOW - No sequencing, timers, or state-machine behavior is defined here beyond high-level “during migration” language.
+  - ActorDirectionality: LOW - Roles (clients, servers, operators) are clear and consistent; no “who does what” confusion is evident in this section.
+  - Scope: LOW - The text cleanly scopes its statements to “operators”, “deployments during migration”, and “non‑TLS clients”; there is no obvious scope overreach or mismatch.
+  - Causal: LOW - The section describes high-level operational impacts (e.g., downgrade risk during migration) but does not specify algorithms where cause→effect chains could be broken.
+  - Quantitative: LOW - No sizes, ranges, counters, or numeric limits appear in this section.
+  - Deontic: MEDIUM - There is some interplay between lower-case “must” in Section 6 and earlier RFC 2119 requirements in Section 5, so it is worth a light check for normative consistency, though nothing clearly contradictory appears.
+  - Structural: LOW - No ABNF, YANG, or formal syntax is defined in this section itself.
+  - CrossRFC: MEDIUM - Section 6 references BCP 195 / RFC 9325 and the TACACS+ YANG document at a high level; while this looks consistent, an expert may briefly confirm there is no hidden normative clash or misstatement of those references.
+  - Terminology: LOW - Minor variance in phrasing (e.g., “TACACS+ TLS clients” vs “TLS TACACS+ clients”) exists but does not appear to affect interoperability.
+  - Boundary: LOW - Edge cases (e.g., mixed TLS/non‑TLS deployments) are acknowledged qualitatively, but there is no detailed boundary behavior that would need precise specification in this section.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No substantive specification error apparent in Section 6
+    Relevant Dimensions: 
+    Sketch: Section 6 largely summarizes and reiterates operational guidance already normatively covered in Sect...
+
+Response ID: resp_0392b1ac2f059f3f006958c626c9588194b6c6be71d3b0aae7
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 6 of RFC 9887 provides operational guidance for migration from non‑TLS TACACS+ to TLS TACACS+, handling legacy non‑TLS clients, and pointing to a YANG model with TLS support. It deliberately uses lower‑case modal verbs and mostly reiterates or operationalizes the normative security requirements already stated in Sections 3 and 5. There is no new upper‑case BCP 14 normative behavior introduced in Section 6, and its advice is consistent with the earlier r...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 6 of RFC 9887 gives operational guidance for deploying TACACS+ over TLS, highlights the need to follow BCP 195 (RFC 9325) for TLS configuration, and points operators to a separate YANG model that includes TLS support. The surrounding sections normatively fix TACACS+ over TLS to TLS 1.3+ only, deprecating any use of earlier TLS versions, and describe the new IANA port registration and configuration behavior.
+- OverallCrossRFCLikelihood: Medium
+- Issues:
+ ...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Low
+Experts: ✓ 2 invoked
+  Dimensions: Deontic, CrossRFC
+Vector Stores: vs_6958c1299d1881919236f07c8d11bc8e
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed RFC 9887, Section 6
+################################################################################
+

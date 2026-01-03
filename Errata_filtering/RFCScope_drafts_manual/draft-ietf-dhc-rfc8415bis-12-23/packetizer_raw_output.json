@@ -1,0 +1,107 @@
+{
+  "reports": [
+    {
+      "label": "Misleading Security Text for SOL_MAX_RT/INF_MAX_RT in Multi‑Server Environments",
+      "bug_type": "Inconsistency",
+      "explanation": "Section 23.1 claims that a valid DHCP server response neutralizes maliciously high SOL_MAX_RT and INF_MAX_RT values, but the normative rules require a client to update these parameters from any valid message, allowing a rogue server’s value to persist.",
+      "justification": [
+        "The normative processing mandates that upon receiving any valid SOL_MAX_RT/INF_MAX_RT option the client must update its timer, even if the response comes from an attacker.",
+        "The security text’s assurance that valid responses override malicious ones is inconsistent with the unconditional update rules (see Sections 21.24, 21.25, and 18.2.10)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "A DHCP client MUST ignore any SOL_MAX_RT option values that are less than 60 or more than 86400.  \n        If a DHCP client receives a message containing a SOL_MAX_RT option that has a valid value for SOL_MAX_RT, the client MUST set its internal SOL_MAX_RT parameter to the value contained in the SOL_MAX_RT option. This value of SOL_MAX_RT is then used by the retransmission mechanism defined in Sections 15 and 18.2.1. … This value is expected to be retained for as long as practically possible. An updated SOL_MAX_RT value applies only to the network interface on which the client received the SOL_MAX_RT option. (Section 21.24)"
+          },
+          {
+            "id": "E2",
+            "text": "A malicious DHCP server might cause a client to set its SOL_MAX_RT and INF_MAX_RT parameters to an unreasonably high value with the SOL_MAX_RT (see Section 21.24) and INF_MAX_RT (see Section 21.25) options; this may cause an undue delay in a client completing its DHCP protocol transaction in the case where no other valid response is received. Assuming that the client also receives a response from a valid DHCP server, large values for SOL_MAX_RT and INF_MAX_RT will not have any effect. (Section 23.1)"
+          }
+        ],
+        "summary": [
+          "(E1) Describes the mandatory update of SOL_MAX_RT from any valid option as defined in Section 21.24.",
+          "(E2) States the security text claim in Section 23.1 that large timer values have no effect if a valid server responds."
+        ]
+      },
+      "fix_direction": "Rephrase Section 23.1 to reflect that clients update SOL_MAX_RT/INF_MAX_RT from any valid response and note that in multi‐server environments a rogue value may persist, impacting retransmission timing.",
+      "severity": "Medium",
+      "severity_basis": "Multiple experts noted that this discrepancy can lead to denial‐of‐service conditions by allowing maliciously high timer values to affect retransmission behavior.",
+      "confidence": "High",
+      "experts": [
+        "Temporal Expert: T1",
+        "Deontic Expert: Issue-1",
+        "Boundary Expert: Finding-1"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-23-1"
+    },
+    {
+      "label": "Misuse of DHCPv6‑Shield/SAVI‑DHCP to Prevent RKAP Key Eavesdropping",
+      "bug_type": "Inconsistency",
+      "explanation": "The draft incorrectly asserts that deploying DHCPv6‑Shield and SAVI‑DHCP prevents on‑link eavesdropping of the RKAP key, even though these mechanisms only mitigate rogue server injection and source spoofing.",
+      "justification": [
+        "The text claims that disallowing direct client‑to‑client communication or using [RFC7610] and [RFC7513] prevents RKAP key disclosure, conflating injection prevention with confidentiality.",
+        "RFC 7610 and RFC 7513 are designed to filter DHCPv6 messages and validate source addresses, not to encrypt traffic or prevent passive observation."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "the text states that on public Wi‑Fi “it is possible for others within radio range to snoop DHCP and other traffic” and that an attacker can learn the RKAP key by monitoring the initial Solicit/Advertise/Request/Reply exchange, then concludes: “but this is relatively easily prevented by disallowing direct client‑to‑client communication on these networks or using [RFC7610] and [RFC7513].”"
+          },
+          {
+            "id": "E2",
+            "text": "RFC 7610 defines a Layer‑2 filtering mechanism to block DHCPv6 server messages arriving on untrusted ports; it does not encrypt or otherwise hide DHCPv6 traffic from on‑link observers."
+          }
+        ],
+        "summary": [
+          "(E1) Shows the claim that DHCPv6‑Shield and SAVI‑DHCP prevent eavesdropping on public Wi‑Fi.",
+          "(E2) Clarifies that these mechanisms do not provide confidentiality and thus cannot prevent passive observation."
+        ]
+      },
+      "fix_direction": "Revise Section 23.4 to clarify that DHCPv6‑Shield and SAVI‑DHCP only help prevent unauthorized injection, and that safeguarding the RKAP key from eavesdropping requires link‑layer isolation or encryption.",
+      "severity": "Medium",
+      "severity_basis": "Mischaracterizing the security benefits could mislead implementers into under-securing the DHCPv6 deployment in public environments.",
+      "confidence": "High",
+      "experts": [
+        "Scope Expert: Issue-1",
+        "CrossRFC Expert: Issue-2"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-23-2"
+    },
+    {
+      "label": "Understated Replay Attack Impact on Resource Exhaustion with Manual IPsec Keys",
+      "bug_type": "Inconsistency",
+      "explanation": "Section 23.2 claims that replay attacks with manually configured pre-shared IPsec keys only lead to CPU/bandwidth exhaustion, but in reality, such replays can continuously refresh or recreate DHCPv6 bindings and tie up address/prefix pools.",
+      "justification": [
+        "An attacker replaying captured, ESP-protected messages can force the server to treat them as new requests, resulting in repeated (re)allocation of addresses or prefixes.",
+        "Repeated replays may prevent bindings from expiring, effectively causing resource exhaustion beyond mere processing delays."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "If an attacker can replay previously captured, IPsec-protected client/relay traffic after the original bindings have expired and been returned to the pool, the server will treat those as fresh requests and (re)allocate addresses and/or prefixes to those DUID/IAID tuples, consuming real pool entries for “ghost” clients. Repeating this with a recorded population of clients can indeed tie up assignable addresses and delegated prefixes without any current client using them, i.e., a resource-exhaustion attack beyond mere CPU/bandwidth DoS."
+          },
+          {
+            "id": "E2",
+            "text": "replayed renewals can keep those resources perpetually “in use” from the server’s point of view, even though no real clients are consuming them. That is a form of resource exhaustion of “assignable addresses and delegated prefixes”, not merely CPU exhaustion."
+          }
+        ],
+        "summary": [
+          "(E1) Describes how replays of IPsec-protected messages can force reallocation of resources, leading to pool exhaustion.",
+          "(E2) Emphasizes that repeated renewals via replay can keep address/prefix resources continuously allocated."
+        ]
+      },
+      "fix_direction": "Update Section 23.2 to acknowledge that replay attacks under manual-key IPsec can lead to address and prefix pool exhaustion, and recommend deployment of effective replay protection measures.",
+      "severity": "Medium",
+      "severity_basis": "The potential for resource depletion poses a significant operational risk if replay protection is not implemented.",
+      "confidence": "Medium",
+      "experts": [
+        "CrossRFC Expert: Issue-1",
+        "Boundary Expert: Finding-2"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-23-3"
+    }
+  ]
+}

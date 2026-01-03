@@ -1,0 +1,204 @@
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 4 states how AccECN updates specific parts of RFC 3168 (and interacts with RFC 8311 and others), especially around TCP initialization, sender/receiver ECN behavior, and retransmissions.
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: LOW - No sequencing or timing logic is defined here; it’s a mapping of existing sections.
+  - ActorDirectionality: LOW - Roles (sender/receiver) are referenced but not newly specified; unlikely source of bugs here.
+  - Scope: MEDIUM - The updates apply only when AccECN is negotiated, and there’s potential confusion about how “whole of section X” is scoped.
+  - Causal: LOW - This section doesn’t define new algorithms, just normative mappings.
+  - Quantitative: LOW - No numeric ranges or sizes here.
+  - Deontic: HIGH - This is all about which MUST/SHOULD from RFC 3168 stay, are updated, or no longer apply.
+  - Structural: MEDIUM - It cross-references specific subsections and individual sentences; consistency of those references matters.
+  - CrossRFC: HIGH - Entire section is about how this draft updates RFC 3168 (and relates to RFC 8311, 9293, 5961).
+  - Terminology: LOW - Terms appear consistent; little risk from naming alone here.
+  - Boundary: LOW - Edge-case behavior is not directly defined here; it’s in the referenced sections.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Conflicting statements about whether AccECN updates *all* of RFC 3168 §6.1.1, including the prohibition on ECN-capable SYN/SYN-ACK
+    Relevant Dimensions: Deontic, CrossRFC, Structural, Scope
+    Sketch: Section 4 contains two bullets that, taken literally, contradict each other about RFC 3168 §6.1.1 (“...
+
+Response ID: resp_038fef4c197f8614006958bfe194288196bd9c369a2ea29626
+
+================================================================================
+EXPERT ANALYSES
+================================================================================
+================================================================================
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 4 is meant to be a “mapping table” that says which parts of RFC 3168’s TCP/ECN specification are updated by AccECN, and by which sections of the draft, especially around TCP initialization, sender/receiver ECN behavior, and retransmissions. The question is whether these mappings are scoped correctly or accidentally claim to update more of RFC 3168 than the rest of the draft actually does.
+
+- ScopeModel:
+  - Targets:
+    - RFC 3168 §6.1.1 “TCP Initialization” (ECN capability negotiation rules, and the pre‑AccECN global rules about when TCP may set ECT, including prohibitions on SYN/SYN‑ACK etc.).
+    - RFC 3168 §6.1.2 “The TCP Sender” (mapping “ECE ACK” → sender’s congestion response, and use of the CWR flag).
+    - RFC 3168 §6.1.3 “The TCP Receiver” (receiver’s ECE‑echo behavior).
+    - RFC 3168 §6.1.5 text about ignoring ECN on out‑of‑window data packets.
+    - RFC 3168 §§5.2, 6.1.1, 6.1.4, 6.1.5, 6.1.6 insofar as they “prohibit use of ECN on TCP control packets and retransmissions.”
+  - Conditions:
+    - All AccECN behavior is explicitly conditional on AccECN having been successfully negotiated in the three‑way handshake; hosts then enter “AccECN mode” (Section 3.1.1, 3.1.5).
+    - Section 3.1.5: “An implementation that supports AccECN has the rights and obligations concerning the use of ECN defined below, which update those in Section 6.1.1 of [RFC3168].” This is scoped to hosts in AccECN mode, not to all TCP connections.
+    - When a connection falls back to Classic ECN, Section 3.1.2 says the implementation “MUST then comply with [RFC3168].”
+    - RFC 8311 has already relaxed some 3168 prohibitions (notably ECN‑capable control packets) in a scoped, “experiment only” way; AccECN explicitly wants to remain within that experiment space, not to globally change those semantics.
+  - NotedAmbiguities:
+    - Section 4 says “The whole of ‘6.1.1 TCP Initialization’ of [RFC3168] is updated by Section 3.1 of the present specification,” but later in the same section it says the spec “does not update” those parts of 6.1.1 (and related sections) that prohibit ECN on control packets and retransmissions.
+    - Section 4 says that in 6.1.2, “the requirements to set the CWR flag no longer apply,” without stating that this is only when AccECN has been negotiated; elsewhere, the draft still requires Classic ECN mode (including CWR) when AccECN is not in use.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: “Whole of RFC 3168 §6.1.1 is updated” vs “does not update” its ECN‑on‑control‑packets prohibitions
+    - ScopeProblemType: Over‑broad update claim that conflicts with a later scoped non‑update, making it unclear which portions of §6.1.1 still apply (especially the SYN/SYN‑ACK ECN prohibitions).
+    - Evidence:
+      - Section 4, first bullet: “The whole of ‘6.1.1 TCP Initialization’ of [RFC3168] is updated by Section 3.1 of the present specification.”
+      - Later bullet in Section 4: “Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit use of ECN on TCP control packets and retransmissions. The present specification does not update that aspect of RFC 3168, but it does say what feedback an AccECN Data Receiver ought to provide if it receives an ECN‑capable control packet or retransmission.”
+      - Section 3.1.5: “An implementation that supports AccECN has the rights and obligations concerning the use of ECN defined below, which update those in Section 6.1.1 of [RFC3168].”
+      - Introduction: “All aspects of RFC 3168 other than the TCP feedback scheme and its negotiation remain unchanged by this specification.”
+      - RFC 3168 §6.1.1 includes, among other bullets, “A host MUST NOT set ECT on SYN or SYN‑ACK packets,” later relaxed (but not removed) by RFC 8311 §4.3.
+    - DetailedReasoning:
+      1. RFC 3168 §6.1.1 “TCP Initialization” does more than describe the ECN handshake; it also embeds several global rules about when a TCP sender may set ECT, including a generic prohibition on ECT on SYN and SYN‑ACK, and cross‑references to later sections that forbid ECN on control packets and retransmissions.
+      2. Section 4’s first bullet says “The whole of ‘6.1.1 TCP Initialization’ … is updated by Section 3.1,” which, read literally, implies that everything in §6.1.1 is now overridden by the AccECN handshake and mode rules.
+      3. However, later in Section 4, the draft explicitly carves out the very same 6.1.1 prohibitions on ECN‑capable control packets and retransmissions, saying “The present specification does not update that aspect of RFC 3168,” and also references RFC 8311 as the vehicle for experiments that do allow ECN‑capable SYN/SYN‑ACK and control packets.
+      4. Elsewhere, the draft itself scopes its update more narrowly: Section 3.1.5 says the new rules “concerning the use of ECN” update those in §6.1.1, and only for implementations that “support AccECN” and have entered “AccECN mode”; it does not claim to redefine all of TCP initialization.
+      5. The Introduction also says “All aspects of RFC 3168 other than the TCP feedback scheme and its negotiation remain unchanged,” reinforcing that the intended scope is “feedback‑related pieces of 6.1.1”, not the entirety of that section’s semantics.
+      6. The combined effect is that Section 4 contains two contradictory views: one that the “whole” of §6.1.1 is replaced by Section 3.1, and another that the ECN‑on‑control‑packets prohibitions in §6.1.1 are explicitly *not* updated (beyond what RFC 8311 has already done).
+      7. If an implementer takes “the whole of 6.1.1 is updated” at face value, they could conclude that the base 3168 (and 8311) rules about not using ECT on SYN/SYN‑ACK and other control packets are globally superseded by AccECN’s text, even outside any explicit experiment, which is incompatible with the later bullet and with the design goal of leaving IP‑layer ECN semantics and control‑packet restrictions untouched except via RFC 8311.
+      8. Conversely, if they focus on the “does not update that aspect” bullet, they may conclude that *none* of §6.1.1 is updated for AccECN, which would contradict §3.1.5’s clear statement that AccECN hosts gain different “rights and obligations concerning the use of ECN” than 3168’s original text.
+      9. The most coherent reading, consistent with the body of the draft, is that Section 3.1 and 3.1.5 update *only the ECN negotiation and feedback‑mode parts* of §6.1.1 (and only when AccECN is negotiated), while leaving the 3168/8311 rules about where ECN‑capable packets may be used (SYNs, control packets, retransmissions) unchanged.
+      10. Section 4’s first bullet overstates this by saying the “whole of 6.1.1” is updated, and then the later bullet has to claw back an exception, creating a genuine scope inconsistency that can mislead implementers about whether the default prohibitions on ECN‑capable control packets (including SYN/SYN‑ACK) still apply outside the explicit experimental context.
+      11. This should be corrected by narrowing the first bullet’s scope (e.g., “The ECN negotiation and initialization rules in §6.1.1 are updated by Section 3.1, while its prohibitions on ECN‑capable control packets and retransmissions remain as in RFC 3168, as further relaxed only by RFC 8311.”), and by explicitly tying that to AccECN‑mode connections.
+
+  - Issue-2:
+    - BugType: Both
+    - ShortLabel: Scope of RFC 3168 §6.1.2 updates (s.cep and CWR removal) not explicitly limited to AccECN mode
+    - ScopeProblemType: Missing conditional (“only when AccECN is in use”), leading to an apparent global change that conflicts with other parts of the draft that retain Classic ECN semantics.
+    - Evidence:
+      - Section 4, second bullet: “In ‘6.1.2.  The TCP Sender’ of [RFC3168], all mentions of a congestion response to an ECN‑Echo (ECE) ACK packet are updated by Section 3.2 of the present specification to mean an increment to the sender’s count of CE‑marked packets, s.cep. And the requirements to set the CWR flag no longer apply, as specified in Section 3.1.5 of the present specification. Otherwise, the remaining requirements in ‘6.1.2.  The TCP Sender’ still stand.”
+      - Section 3.1.2: When an AccECN‑capable host falls back to Classic ECN, “it MUST set both its half connections into the feedback mode shown … If the TCP Client has set itself into Classic ECN feedback mode it MUST then comply with [RFC3168].”
+      - Section 3.1.5 under “Congestion response”: A host “in AccECN mode … MUST NOT set CWR to indicate that it has received and responded to indications of congestion… For the avoidance of doubt, this is unlike an RFC 3168 data sender…”
+      - RFC 3168 §6.1.2 requires that an ECN‑capable sender set CWR “on the first new data packet sent after the window reduction.”
+    - DetailedReasoning:
+      1. RFC 3168 §6.1.2 is written for generic “TCP connections using ECN,” with Classic ECN feedback: ECE ACKs signal congestion; the sender halves its congestion window and sets CWR on the first packet after responding.
+      2. Section 4 claims that “all mentions of a congestion response to an ECN‑Echo (ECE) ACK packet are updated … to mean an increment to … s.cep,” and that “the requirements to set the CWR flag no longer apply,” but it does not attach any condition such as “for AccECN connections” or “when AccECN mode has been negotiated.”
+      3. Elsewhere, the draft is careful to scope these behavioral changes: Section 3.1.5’s CWR prohibition is explicitly “A host in AccECN mode … MUST NOT set CWR…”, and Section 3.1.2 says that when a host *falls back* to Classic ECN, it “MUST then comply with [RFC3168],” which includes the CWR behavior in §6.1.2.
+      4. That means the intent is clearly: for AccECN‑mode connections, §6.1.2’s “ECE ACK” semantics cease to apply (because the ECE bit is now part of ACE), and AccECN replaces that with counter‑based s.cep updates and no CWR; but for Classic ECN‑mode connections, §6.1.2 (as updated by RFC 8311) remains fully in force, including CWR.
+      5. Taken literally, however, Section 4’s bullet reads as a *global* update to §6.1.2, implying that no TCP sender, under any ECN mode, is now required to set CWR, and that “ECE ACK” semantics are universally replaced by AccECN counters. That reading directly contradicts the fallback text in §3.1.2 and the explicit “in AccECN mode” scope in §3.1.5.
+      6. An implementer who only skims Section 4 could therefore remove CWR handling from their Classic ECN code paths or reinterpret all “ECE ACK” mentions in §6.1.2 as s.cep semantics, which would be wrong for Classic ECN connections that AccECN hosts are still required to support according to §3.1.2.
+      7. The underlying problem is scope: the update in Section 4 needs to say that it applies *only to AccECN‑mode connections*, not to all uses of RFC 3168 §6.1.2; but this condition is only implicit, via the reference back to §3.1.5, and is not stated in the mapping bullet itself.
+      8. This is both an inconsistency (with §3.1.2’s explicit requirement to follow RFC 3168 when in Classic ECN mode) and an underspecification (because the mapping bullet does not express the necessary “only when AccECN is negotiated” condition).
+      9. Clarifying the bullet to something like “For connections operating in AccECN mode, all mentions … are updated … and the requirements to set CWR no longer apply; for connections in Classic ECN feedback mode, RFC 3168 §6.1.2 (as updated by RFC 8311) still applies unchanged” would resolve the scope ambiguity.
+
+- ResidualUncertainties:
+  - The intended layering between RFC 3168, RFC 8311, and AccECN is mostly clear in the body text, but Section 4 tries to compress that into a short mapping and ends up over‑stating the scope of some updates. It remains slightly ambiguous whether the authors meant “updated when AccECN is negotiated” everywhere in Section 4, or only in some bullets; the fixes above assume the former, which matches the Introduction and §3.1/§3.1.5.
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 4 of the AccECN draft normatively states which parts of RFC 3168 are updated and how, especially for TCP initialization (§6.1.1), sender/receiver behavior (§6.1.2–6.1.3), and retransmissions. It also attempts to say that AccECN does not touch RFC 3168’s prohibitions on using ECN on TCP control packets and retransmissions, while defining how AccECN endpoints must feed back ECN markings if such packets appear (e.g., under RFC 8311 experiments).
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Conflicting claims about whether AccECN updates *all* of RFC 3168 §6.1.1, including the prohibition on ECN-capable SYN/SYN-ACK
+    - Description:
+      Section 4 first asserts that “The whole of ‘6.1.1 TCP Initialization’ of [RFC3168] is updated by Section 3.1 of the present specification.” This is a strong statement of complete replacement of RFC 3168 §6.1.1 by the AccECN rules.    
+      Later in the same section, it says that “Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit use of ECN on TCP control packets and retransmissions. The present specification does not update that aspect of RFC 3168…”.    
+      However, RFC 3168 §6.1.1 explicitly contains the normative prohibition “A host MUST NOT set ECT on SYN or SYN-ACK packets.”   If the “whole” of §6.1.1 is updated, that prohibition is superseded; if “the present specification does not update that aspect”, then that prohibition remains in force (subject to RFC 8311’s experimental relaxations). Both statements cannot be simultaneously true as written. The intended behavior seems to be: AccECN replaces the *handshake and ECN-capability negotiation rules* of §6.1.1 (who may set ECT, when a connection is considered ECN-capable), but does not itself change the base RFC 3168 prohibition on using ECN on control packets and retransmissions (leaving that to RFC 8311). The current text, however, uses “the whole of 6.1.1” in the first bullet and then carves out “that aspect” in a later bullet, creating a self-contradiction at the requirement level.
+    - KeyTextSnippets:
+      - “*The whole of ‘6.1.1 TCP Initialization’ of [RFC3168] is updated by Section 3.1 of the present specification.*”    
+      - “*Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit use of ECN on TCP control packets and retransmissions. The present specification does not update that aspect of RFC 3168…*”    
+      - RFC 3168 §6.1.1 rule: “*A host MUST NOT set ECT on SYN or SYN-ACK packets.*”    
+    - Impact:
+      This inconsistency can mislead implementers about whether the AccECN spec, by itself, supersedes the “MUST NOT set ECT on SYN/SYN-ACK” rule of RFC 3168 §6.1.1, or whether that prohibition still applies (subject only to RFC 8311’s experimental relaxations). Different readers could reasonably come to opposite conclusions about the binding requirements on ECN-capable SYN/SYN-ACK usage in AccECN-capable stacks. To restore a coherent normative structure, the text in Section 4 should be tightened—for example, by saying that Section 3.1 updates the *negotiation and ECN-capability initialization rules* of §6.1.1, while explicitly stating that the prohibitions on ECN use on control packets and retransmissions in §§5.2, 6.1.1, 6.1.4–6.1.6 remain unchanged (except as already modified by RFC 8311).
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: I examined Section 4’s “Updates to RFC 3168” bullets and their relation to RFC 3168 §6.1.1–§6.1.6 and RFC 8311, focusing on whether the mapping of which text is updated is self‑consistent.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Conflicting statements about whether all of RFC 3168 §6.1.1 is updated
+    - LocationHint: Section 4, first bullet and last bullet (the one mentioning “Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit use of ECN on TCP control packets and retransmissions.”)
+    - Evidence:
+      - Snippet1: `*  The whole of "6.1.1 TCP Initialization" of [RFC3168] is updated by Section 3.1 of the present specification.`
+      - Snippet2: `*  Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit use of ECN on TCP control packets and retransmissions.  The present specification does not update that aspect of RFC 3168, but it does say what feedback an AccECN Data Receiver ought to provide if it receives an ECN-capable control packet or retransmission.`
+      - Snippet3 (from RFC 3168 §6.1.1 as quoted in the excerpt): `* A host MUST NOT set ECT on SYN or SYN-ACK packets.`
+      - Snippet4 (from the Introduction of the AccECN draft): `This document updates RFC 3168 with respect to negotiation and use of the feedback scheme for TCP.  All aspects of RFC 3168 other than the TCP feedback scheme and its negotiation remain unchanged by this specification.` 
+    - TechnicalExplanation: |
+        Section 4 explicitly states that “the whole of ‘6.1.1 TCP Initialization’ of [RFC3168] is updated by Section 3.1” of the AccECN specification. RFC 3168 §6.1.1 includes, among other things, the requirement “A host MUST NOT set ECT on SYN or SYN-ACK packets.” In the same Section 4, a later bullet says that “Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit use of ECN on TCP control packets and retransmissions. The present specification does not update that aspect of RFC 3168…”. These two statements conflict structurally: one claims the *whole* of §6.1.1 is updated (which would, on its face, displace all of its requirements, including the “MUST NOT set ECT on SYN/SYN‑ACK” rule), while the other simultaneously claims that the AccECN document “does not update” the prohibition on ECN-capable control packets that is part of that same §6.1.1. The Introduction compounds the confusion by saying that “all aspects of RFC 3168 other than the TCP feedback scheme and its negotiation remain unchanged,” yet the sweeping “whole of 6.1.1” language reads as a blanket update beyond just feedback negotiation. This creates normative ambiguity for implementers: a strict reading of the “whole of 6.1.1 is updated” bullet suggests that AccECN replaces *all* of §6.1.1 (possibly dropping the “MUST NOT set ECT on SYN/SYN‑ACK” requirement), whereas the later bullet and the Introduction say that the prohibition on ECN-capable control packets remains governed by RFC 3168 (as further relaxed only by RFC 8311). Because this is specifically the section that governs handshake behavior, ECN capability on control packets, and entry into ECN modes, a mismatch about what is or is not updated can directly affect interoperable implementation of AccECN and ECN experiments.
+    - PatchSuggestion: |
+        Narrow the scope of the “whole of 6.1.1” claim so that it only covers the parts actually updated (ECN feedback negotiation and initialization), and explicitly exclude the existing prohibition on ECN-capable control packets, which remains as in RFC 3168 as updated by RFC 8311. For example, replace the first bullet in Section 4 with something like:
+
+        > *  The parts of "6.1.1 TCP Initialization" of [RFC3168] that specify how ECN capability is negotiated and how TCP enters and maintains an ECN feedback mode are updated by Section 3.1 of the present specification.  Other aspects of Section 6.1.1, including the prohibition on setting ECT on SYN and SYN/ACK packets (as further relaxed only by [RFC8311]), remain unchanged.
+
+        And adjust the later bullet to make that partition explicit, e.g.:
+
+        > *  Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit use of ECN on TCP control packets and retransmissions.  With the exception of the specific text on ECN feedback negotiation cited above, the present specification does not update that aspect of RFC 3168, but it does say what feedback an AccECN Data Receiver ought to provide if it receives an ECN-capable control packet or retransmission (for forward compatibility with schemes enabled by [RFC8311]).
+
+        Alternatively, if the intent really *is* to supersede the “MUST NOT set ECT on SYN or SYN‑ACK” requirement for AccECN connections, then the last bullet in Section 4 should be reworded to say so explicitly and should reference RFC 8311’s relaxation, so that the mapping between the updated text and the surviving RFC 3168 requirements is unambiguous.
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 4 of the AccECN draft tries to give a precise mapping of which parts of RFC 3168 it updates, especially §6.1.1 “TCP Initialization” and the prohibitions on using ECN on TCP control packets and retransmissions. The text also states that some of those prohibitions are *not* updated, while simultaneously claiming that the “whole” of §6.1.1 is updated.
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Ambiguous / self‑contradictory update of RFC 3168 §6.1.1
+    - Description: Section 4 first states that “The whole of ‘6.1.1 TCP Initialization’ of [RFC3168] is updated by Section 3.1 of the present specification.” Later in the same section it says “Sections 5.2, 6.1.1, 6.1.4, 6.1.5 and 6.1.6 of [RFC3168] prohibit use of ECN on TCP control packets and retransmissions. The present specification does not update that aspect of RFC 3168…”. RFC 3168 §6.1.1 includes both the ECN negotiation rules and the prohibition “A host MUST NOT set ECT on SYN or SYN-ACK packets”, which RFC 8311 has already softened to “MUST NOT … unless otherwise specified by an Experimental RFC in the IETF document stream”.  When AccECN says the *whole* of §6.1.1 is updated, an implementer could reasonably infer that this includes the “MUST NOT set ECT on SYN/SYN‑ACK” sentence, yet a few bullets later the draft asserts that it “does not update that aspect” and relies instead on RFC 8311 and separate experiments like ECN++. This creates an internal contradiction about whether AccECN is, or is not, an additional update to RFC 3168’s control‑packet prohibitions. While the *intended* semantics appear to be “AccECN fully replaces the RFC 3168 TCP‑initialization/negotiation rules, but leaves the control‑packet ECT prohibitions exactly as previously updated by RFC 8311”, the wording in Section 4 does not say that and can mislead implementers about how far AccECN’s update to §6.1.1 really goes. In cross‑RFC terms, this makes the status of the “no ECT on SYN/SYN‑ACK” rule (as already relaxed by RFC 8311) ambiguous when AccECN is in use, even though AccECN’s actual protocol text otherwise seems designed to be consistent with RFC 3168+RFC 8311.
+    - EntitiesInvolved: ["AccECN draft Section 4", "AccECN draft Section 3.1 / 3.1.5", "RFC 3168 Section 6.1.1", "RFC 8311 Section 4.3"]
+    - CrossRefsUsed: ["RFC 8311’s update of RFC 3168 §6.1.1 to allow ECT on SYN/SYN-ACK under Experimental RFCs "]
+    - Confidence: High
+- IfNoIssues:
+  - Comment:
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+
+Vector Stores Used: vs_6958be564fdc81918f6c87dec1d36632

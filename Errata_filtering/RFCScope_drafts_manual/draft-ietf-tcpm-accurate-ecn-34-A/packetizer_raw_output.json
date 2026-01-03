@@ -1,0 +1,278 @@
+{
+  "reports": [
+    {
+      "label": "LRO/ACK Aggregation vs n ≤ 7 CE Marks Bound (Temporal T1)",
+      "bug_type": "Both",
+      "explanation": "The specification contains a tension between the normative rule that ‘n’ (the number of CE‐marked packets between ACKs) MUST be no greater than 7 and the allowance for LRO/GRO to coalesce many packets into a single ACK, which may allow more than 7 CE marks and compromise the sender’s decoding algorithm.",
+      "justification": [
+        "The text mandates that 'n MUST be no greater than 7' to prevent ambiguity (Section 3.2.2.5.1) but also permits LRO/GRO processing that can delay multiple CE marks to a single ACK (Section 3.2.2.5.1).",
+        "This inconsistency creates implementation tension between performance optimizations and maintaining a reliable 3‐bit wrap bound."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Increment-Triggered ACKs: An AccECN receiver of a packet MUST emit an ACK if 'n' CE marks have arrived since the previous ACK. … In either case, 'n' MUST be no greater than 7. (Section 3.2.2.5.1)"
+          },
+          {
+            "id": "E2",
+            "text": "If the arrivals of a number of data packets are all processed as one event, e.g., using large receive offload (LRO) or generic receive offload (GRO), both the above rules SHOULD be interpreted as requiring multiple ACKs to be emitted back-to-back … If this is problematic for high performance, either rule can be interpreted as requiring just a single ACK at the end of the whole receive event. (Section 3.2.2.5.1)"
+          },
+          {
+            "id": "E3",
+            "text": "The 3-bit ACE field can wrap fairly frequently. … The Data Receiver is not allowed to delay sending an ACK to such an extent that the ACE field would cycle. (Section 2.3)"
+          }
+        ],
+        "summary": [
+          "(E1) establishes the strict upper bound of 7 CE marks per ACK.",
+          "(E2) shows that LRO/GRO may allow a single ACK to summarize many more CE-marked packets.",
+          "(E3) underlines the intent to prevent the ACE field from wrapping."
+        ]
+      },
+      "fix_direction": "Clarify or redefine the LRO/GRO guidance to either require multiple ACKs when more than 7 CE marks occur or adjust the bound for aggregated receive events so that the sender’s decoding remains unambiguous.",
+      "severity": "Medium",
+      "severity_basis": "The inconsistency can lead to divergent sender interpretations of CE count in high-aggregation scenarios, impacting congestion feedback accuracy.",
+      "confidence": "High",
+      "experts": [
+        "Temporal: T1"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-A-1"
+    },
+    {
+      "label": "Late/Duplicate Handshake ACKs vs ACE Handshake Encoding (Temporal T2)",
+      "bug_type": "Underspecification",
+      "explanation": "The specification’s treatment of handshake ACKs is ambiguous because it relies on an informally defined notion of 'superseded' ACKs, which may lead to misinterpretation when a late or duplicate handshake ACK (using handshake encoding) is received after the server transitions to ESTABLISHED.",
+      "justification": [
+        "The text specifies that handshake encoding is only valid while the server is in SYN-RCVD state, yet also permits the possibility of receiving handshake-encoded pure ACKs post-ESTABLISHED.",
+        "The reliance on a loosely defined 'superseded' criterion introduces ambiguity in whether later ACKs are processed or ignored."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "This shall be called the handshake encoding of the ACE field, and it is the only exception to the rule that the ACE field carries the 3 least significant bits of the r.cep counter on packets with SYN=0. (Section 3.2.2.1)"
+          },
+          {
+            "id": "E2",
+            "text": "Once the TCP Server transitions to ESTABLISHED state, it might later receive other pure ACK(s) with the handshake encoding… A Server MAY implement a test for such a case, but it is not required. (Section 3.2.2.2)"
+          },
+          {
+            "id": "E3",
+            "text": "Whenever the Data Sender receives an ACK with SYN=0 … it first checks whether it has already been superseded (defined in Appendix A.1) by another ACK in which case it ignores the ECN feedback. (Section 3.2.2.2)"
+          }
+        ],
+        "summary": [
+          "(E1) defines the handshake encoding exception for ACKs in SYN-RCVD state.",
+          "(E2) notes that handshake encoding may be received after the server enters ESTABLISHED.",
+          "(E3) shows that the concept of 'superseded' ACKs is used to ignore later feedback, but is informally defined."
+        ]
+      },
+      "fix_direction": "Either establish normative, precise criteria for when a handshake ACK is considered 'superseded' or explicitly mandate that handshake-encoded ACE values be ignored after ESTABLISHED state.",
+      "severity": "Low",
+      "severity_basis": "The risk is mainly limited to transient misalignment in the CE counter interpretation and does not impact connection establishment or wire-level interoperability.",
+      "confidence": "High",
+      "experts": [
+        "Temporal: T2"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-A-2"
+    },
+    {
+      "label": "Irreversible 'Ignore AccECN Options' Mode After Zeroing Detection (Temporal T3)",
+      "bug_type": "Underspecification",
+      "explanation": "The document defines two modes regarding AccECN Options—one reversible when options are absent and one irreversible when options are zeroed—but does not clarify if or when a host can exit the 'ignore options' mode triggered by zeroing.",
+      "justification": [
+        "The text describes a reversible mode when options are assumed absent but provides no exit condition for the mode that ignores options after zero detection.",
+        "This inconsistency leaves implementers uncertain if a recovered option stream should be reintegrated into normal feedback processing."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "If it runs a test and either initial value is zero, the Server will switch into a mode that ignores AccECN Options for this half connection. (Server case, Section 3.2.3.2.4)"
+          },
+          {
+            "id": "E2",
+            "text": "While a host is in the mode that ignores AccECN Options it MUST adopt the conservative interpretation of the ACE field discussed in Section 3.2.2.5. (Section 3.2.3.2.4)"
+          },
+          {
+            "id": "E3",
+            "text": "If a host is in the mode that assumes incoming AccECN Options are not available, but it receives an AccECN Option at any later point during the connection… (Section 3.2.3.2.3)"
+          }
+        ],
+        "summary": [
+          "(E1) shows the irreversible switch into an 'ignore options' mode upon detecting zeroed options.",
+          "(E2) mandates conservative interpretation once in that mode.",
+          "(E3) contrasts with the reversible 'assume not available' mode, highlighting the ambiguity."
+        ]
+      },
+      "fix_direction": "Clarify whether the 'ignore options' mode is permanent or provide normative criteria for reverting to normal behavior when valid AccECN Options are subsequently received.",
+      "severity": "Low",
+      "severity_basis": "The ambiguity affects the long-term behavior of the AccECN feedback mechanism in scenarios where path conditions change, though it does not prevent correct negotiation.",
+      "confidence": "High",
+      "experts": [
+        "Temporal: T3"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-A-3"
+    },
+    {
+      "label": "Contradiction Between General Feedback Obligation and Specific Handshake Exception (Deontic Issue-1)",
+      "bug_type": "Inconsistency",
+      "explanation": "The specification mandates that a host in AccECN mode is generally obliged to respond to ECN feedback; however, it also explicitly instructs a server in SYN-RCVD state receiving a handshake ACK with an ACE value of zero to never respond to ECN feedback, resulting in a normative contradiction.",
+      "justification": [
+        "Section 3.1.5 states that an AccECN-mode host is obliged to respond appropriately to congestion feedback.",
+        "In contrast, Section 3.2.2.1 (Note 1) specifies that if a server in SYN-RCVD receives a zero value on a pure ACK, it MUST NOT respond to AccECN feedback for the rest of the connection."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "A host in AccECN mode: - is obliged to respond appropriately to AccECN feedback that indicates there were ECN marks on packets it had previously sent… (Section 3.1.5)"
+          },
+          {
+            "id": "E2",
+            "text": "If the Server is in AccECN mode and in SYN-RCVD state, and if it receives a value of zero on a pure ACK with SYN=0 and no SACK blocks, for the rest of the connection the Server MUST NOT set ECT on outgoing packets and MUST NOT respond to AccECN feedback. (Section 3.2.2.1, Note 1)"
+          }
+        ],
+        "summary": [
+          "(E1) lays out a general obligation to react to ECN feedback.",
+          "(E2) creates an exception by mandating no response when a specific handshake condition occurs."
+        ]
+      },
+      "fix_direction": "Modify the general obligation to clearly carve out the handshake ACE=0 case as a normative exception, or remove the contradiction by rephrasing one of the statements.",
+      "severity": "Medium",
+      "severity_basis": "The contradiction could lead to divergent implementations, where some servers might respond to CE feedback and others might not, affecting congestion control behavior.",
+      "confidence": "High",
+      "experts": [
+        "Deontic: Issue-1"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-A-4"
+    },
+    {
+      "label": "Ambiguous Normative Status for Sender Behavior Under Suspected ECN Mangling (Deontic Issue-2)",
+      "bug_type": "Underspecification",
+      "explanation": "The document offers only non-normative advice on how the Data Sender should behave when ECN mangling or ACE/AccECN-option zeroing is suspected, resulting in an ambiguous normative standard that may lead to divergent congestion control responses.",
+      "justification": [
+        "The text advises that the Data Sender 'ought to send non-ECN-capable packets' and 'is advised not to respond to any feedback of CE markings' upon detecting continuous CE-marking or a zero ACE field.",
+        "However, the general normative obligation still requires reaction to congestion feedback, creating uncertainty about which behavior is compliant."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "A host in AccECN mode: … is still obliged to respond appropriately to congestion feedback, even when it is solely sending non-ECN-capable packets. (Section 3.1.5)"
+          },
+          {
+            "id": "E2",
+            "text": "If continuous CE-marking is detected, for the remainder of the half-connection, the Data Sender ought to send non-ECN-capable packets and it is advised not to respond to any feedback of CE markings. … This advice is not stated normatively. (Section 3.2.2.3)"
+          },
+          {
+            "id": "E3",
+            "text": "If the first post-handshake ACE is zero, the Data Sender … ought to send non-ECN-capable packets and it is advised not to respond to any feedback of CE markings. … This advice is not stated normatively. (Section 3.2.2.4)"
+          }
+        ],
+        "summary": [
+          "(E1) establishes the general obligation to respond to congestion feedback.",
+          "(E2) and (E3) provide non-normative advice for handling suspected mangling, resulting in ambiguity."
+        ]
+      },
+      "fix_direction": "Define a clear, normative fallback behavior for the Data Sender when suspected ECN mangling or option zeroing is detected, reducing the discretion left to implementers.",
+      "severity": "Medium",
+      "severity_basis": "This ambiguity may lead to significant differences in congestion response under adversarial or degraded network conditions, undermining the intended security and robustness.",
+      "confidence": "High",
+      "experts": [
+        "Deontic: Issue-2"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-A-5"
+    },
+    {
+      "label": "Undefined Receiver Counters 'r.ec0b' Versus Defined 'r.e0b' (Structural/Terminology Issue)",
+      "bug_type": "Inconsistency",
+      "explanation": "The specification inconsistently refers to the receiver’s byte counters using the names 'r.ec0b' and 'r.ec1b' in one section while elsewhere the defined names are 'r.e0b' and 'r.e1b', potentially confusing implementers.",
+      "justification": [
+        "Section 3.2 defines the receiver counters as r.e0b and r.e1b, but later in Section 3.2.3.3 the text refers to r.ec0b and r.ec1b.",
+        "This discrepancy is also noted in the Terminology analysis, where the misnaming could lead to uncertainty regarding which counters are to be used."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Each Data Receiver of each half connection maintains four counters, r.cep, r.ceb, r.e0b and r.e1b. (Section 3.2)"
+          },
+          {
+            "id": "E2",
+            "text": "It SHOULD always include an AccECN Option if the r.ceb counter is incrementing and it MAY include an AccECN Option if r.ec0b or r.ec1b is incrementing. (Section 3.2.3.3)"
+          }
+        ],
+        "summary": [
+          "(E1) specifies the defined counter names as r.e0b and r.e1b.",
+          "(E2) shows the inconsistent use of r.ec0b and r.ec1b in a later section."
+        ]
+      },
+      "fix_direction": "Replace the incorrect references 'r.ec0b' and 'r.ec1b' with the defined 'r.e0b' and 'r.e1b' in Section 3.2.3.3.",
+      "severity": "Medium",
+      "severity_basis": "Inconsistent naming in normative text can lead to confusion in implementation and misinterpretation of the protocol state.",
+      "confidence": "High",
+      "experts": [
+        "Structural: Issue-1",
+        "Terminology: Issue-1"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-A-6"
+    },
+    {
+      "label": "Misnamed Option Field 'EEB0' Versus Defined 'EE0B' (Terminology Issue)",
+      "bug_type": "Inconsistency",
+      "explanation": "An example in the document misnames an option field as 'EEB0' instead of the defined and consistently used 'EE0B', which could confuse readers and implementers.",
+      "justification": [
+        "Figures, tables, and normative text define the option field as 'EE0B', yet an example in Section 3.2.3.3 incorrectly refers to it as 'EEB0'.",
+        "Such a typographical error in an example may lead to uncertainty when correlating field names with the official definitions."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "As a second example, if the first packet to arrive happens to be CE-marked, the Data Receiver will have to arbitrarily choose whether to precede the ECEB field with an EE0B field or an EE1B field.  If it chooses, say, EEB0 but it turns out never to receive ECT(0), it can start sending EE1B and ECEB instead… (Section 3.2.3.3)"
+          }
+        ],
+        "summary": [
+          "(E1) shows the erroneous use of 'EEB0' instead of the defined 'EE0B'."
+        ]
+      },
+      "fix_direction": "Replace 'EEB0' with 'EE0B' in the example text of Section 3.2.3.3.",
+      "severity": "Low",
+      "severity_basis": "This appears to be a minor typographical error in an example and is unlikely to affect interoperable behavior.",
+      "confidence": "High",
+      "experts": [
+        "Terminology: Issue-2"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-A-7"
+    },
+    {
+      "label": "Mis-citing RFC 3168’s Definition of 'Invalid' ECN Transitions (CrossRFC Issue)",
+      "bug_type": "Inconsistency",
+      "explanation": "The document asserts that the invalid transitions of the IP-ECN field are defined in RFC 3168 Section 18 and repeats them verbatim, but the list does not precisely match the detailed analysis found in RFC 3168, risking confusion for readers cross-referencing the RFC.",
+      "justification": [
+        "Section 3.2.2.3 lists three invalid transitions as a repetition from RFC 3168, but RFC 3168’s treatment is more nuanced and subdivided into multiple classes.",
+        "This mis-citation could mislead implementers expecting an exact reproduction of the RFC’s classification."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Invalid transitions of the IP-ECN field are defined in section 18 of the Classic ECN specification [RFC3168] and repeated here for convenience: * the not-ECT codepoint changes; * either ECT codepoint transitions to not-ECT; * the CE codepoint changes. (Section 3.2.2.3)"
+          }
+        ],
+        "summary": [
+          "(E1) shows the claimed repetition of RFC 3168’s invalid transitions, which does not fully capture the nuance of the original specification."
+        ]
+      },
+      "fix_direction": "Clarify that the list is an editorial summary and, if necessary, adjust the wording to accurately reflect the original treatment in RFC 3168.",
+      "severity": "Low",
+      "severity_basis": "This issue is primarily editorial and is unlikely to impact actual protocol behavior or interoperability.",
+      "confidence": "Medium",
+      "experts": [
+        "CrossRFC: Issue-1"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-A-8"
+    }
+  ]
+}

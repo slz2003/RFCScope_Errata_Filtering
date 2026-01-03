@@ -1,0 +1,128 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 7 defines the TLS 1.3 key schedule and related cryptographic computations: HKDF-based key derivation (including HKDF-Expand-Label/Derive-Secret), traffic secret evolution and traffic key generation, (EC)DHE shared secret encoding, and the TLS exporter construction.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - Key schedule is a static derivation graph; no state/event ordering issues appear inconsistent.
+  - ActorDirectionality: LOW - Computations are symmetric and per-endpoint; no confusion about which side performs which derivation is evident.
+  - Scope: LOW - The scope of each secret (early, handshake, application, exporter, resumption) is clearly delineated and consistently referenced.
+  - Causal: LOW - If implemented literally, the algorithms are executable and match the described security goals; no obvious cause→effect contradictions are visible.
+  - Quantitative: LOW - Lengths (Hash.length, key_length, iv_length, zero strings) and bounds (e.g., 2^48-1, 255-byte AEAD expansion) are numerically consistent with the record layer and AEAD model.
+  - Deontic: LOW - Normative requirements around key erasure, limits, and MUST/SHOULD behaviors are internally consistent and do not conflict with each other.
+  - Structural: LOW - The HkdfLabel struct, key schedule diagram, and formulas for HKDF-Expand-Label, Derive-Secret, traffic key derivation, and exporters align with the prose and with the rest of the document.
+  - CrossRFC: LOW - References to HKDF (RFC 5869), HMAC (RFC 2104), DTLS 1.3 label prefix behavior (RFC 9147), and X25519/X448 behavior (RFC 7748) are used correctly and without apparent mismatch.
+  - Terminology: LOW - The retained use of "master" inside HKDF labels (while preferring "main" in prose) is explicitly acknowledged and justified for compatibility; naming and usage are consistent.
+  - Boundary: LOW - Edge cases (missing PSK => zero secret, all-zero X25519/X448 shared secret, AEAD expansion ≤255, sequence number non-wrap) are handled explicitly; no clear gaps in boundary behavior are evident.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: 
+    Relevant Dimensions: 
+    Sketch: ...
+
+Response ID: resp_0e8966c784e6b783006958d3affe748194811483bf1bed3a74
+
+
+Vector Stores Used: vs_6958ce993c388191a7c9f32559e3b152
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

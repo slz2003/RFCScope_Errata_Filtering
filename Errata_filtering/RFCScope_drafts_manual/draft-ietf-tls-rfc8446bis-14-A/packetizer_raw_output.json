@@ -1,0 +1,31 @@
+{
+  "reports": [
+    {
+      "label": "Candidate Issue: Unspecified details in Appendix A candidate issue",
+      "bug_type": "Candidate Issue",
+      "explanation": "The analyzer output lists a candidate issue (Issue 1) with no explicit label or detailed description, creating ambiguity about its nature.",
+      "justification": [
+        "The candidate issue is noted as 'Issue 1' with Type: None, an empty Label, no Relevant Dimensions, and a placeholder Sketch, which leaves its intention underspecified (E1)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The candidate issue is mentioned with no explicit label or detailed information."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "The candidate issue appears to be a placeholder with no clear operational impact or detailed description, suggesting a low severity.",
+      "confidence": "Medium",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-tls-rfc8446bis-14-A-1"
+    }
+  ]
+}

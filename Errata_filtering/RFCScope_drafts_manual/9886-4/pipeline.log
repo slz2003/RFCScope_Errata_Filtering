@@ -1,0 +1,515 @@
+################################################################################
+Processing: RFC 9886, Section 4
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for RFC 9886, Section 4
+================================================================================
+Preparing RFC 9886 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4
+
+Extracting references from the references section of the RFC.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/references.json
+
+Parsing the contents of the RFC.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/corpus.json
+
+Extracting references from section 4 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/reference_extraction.log
+Focusing on section 4 and its children.
+Processing section 4. Public Information Registry
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  17%|█▋        | 1/6 [08:26<42:10, 506.18s/it]Splitting content into chunks:  33%|███▎      | 2/6 [08:28<13:59, 209.85s/it]Splitting content into chunks:  50%|█████     | 3/6 [14:49<14:24, 288.03s/it]Splitting content into chunks:  67%|██████▋   | 4/6 [20:09<10:01, 300.54s/it]Splitting content into chunks:  83%|████████▎ | 5/6 [20:44<03:24, 204.82s/it]Splitting content into chunks: 100%|██████████| 6/6 [26:42<00:00, 256.84s/it]Splitting content into chunks: 100%|██████████| 6/6 [26:42<00:00, 267.05s/it]
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Per [RFC9434], all information classified as public is stored in the
+   DNS, specifically authoritative name servers, to satisfy REG-1 from
+   [RFC9153].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9434
+  Reference Type: TEXT
+  Reference Value (keywords/section): all information classified as public
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9153
+  Reference Type: TEXT
+  Reference Value (keywords/section): REG-1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9434:
+  Search Keywords: 'all information classified as public'
+  Result: Found in Section 4.1
+  Section Title: Public Information Registry
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9153:
+  Search Keywords: 'REG-1'
+  Result: Found in Section 4.4
+  Section Title: Registries
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Authoritative name servers use domain names as identifiers and data
+   is stored in Resource Records (RRs) with associated RRTypes.  This
+   document defines two new RRTypes, one for HHIT metadata ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '5.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.1
+  Section Title: HHIT Resource Record
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: UAS Broadcast RID Resource Record
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble
+   reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an
+   HHIT RRType.  Depending on local circumstances or additional...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3596
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.5
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.2.1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: TEXT
+  Reference Value (keywords/section): DRIP Entity Tag (DET) Authentication Formats and Protocols for Broadcast Remote Identification (RID)
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: STD88
+  Reference Type: TEXT
+  Reference Value (keywords/section): DNS Extensions to Support IP Version 6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3596:
+  Looking for Section: '2.5'
+  Match Type: Exact match
+  Result: Matched to Section 2.5
+  Section Title: IP6.ARPA Domain
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9575:
+  Looking for Section: '3.1.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.2.1
+  Section Title: DIME Endorsements of Subordinate DETs
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9575:
+  Search Keywords: 'DRIP Entity Tag (DET) Authentication Formats and Protocols for Broadcast Remote Identification (RID)'
+  Result: Found in Section 1.1
+  Section Title: DRIP Entity Tag (DET) Authentication Goals for Broadcast RID
+  Content Preview:    ASTM [F3411] Authentication Messages (Message Type 0x2), when used
+   with DET-based formats [RFC...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   DNSSEC MUST be used for apex entities (those which use a self-signed
+   Canonical Registration Certificate) and is RECOMMENDED for other
+   entities.  When a DIME decides to use DNSSEC, they SHOULD...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: TEXT
+  Reference Value (keywords/section): apex entities
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC6841
+  Reference Type: TEXT
+  Reference Value (keywords/section): framework for cryptographic algorithms and key management
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9886:
+  Search Keywords: 'apex entities'
+  Result: Found in Section 6.2.2.3
+  Section Title: Initial Values
+  Content Preview:    The following values are defined by this document:
+
+     +=======+===============================...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6841:
+  Search Keywords: 'framework for cryptographic algorithms and key management'
+  Result: Found in Section 5
+  Section Title: Outline of a Set of Provisions
+  Content Preview:    This section contains a recommended outline for a set of provisions,
+   intended to serve as a ch...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   A DET IPv6 address gets mapped into domain names using the scheme
+   defined in Section 2.5 of RFC 3596 [STD88].  However, DNS lookups of
+   these names query for HHIT and/or BRID resource records ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3596
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.5
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: STD88
+  Reference Type: TEXT
+  Reference Value (keywords/section): Internet Standard 88
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3596:
+  Looking for Section: '2.5'
+  Match Type: Exact match
+  Result: Matched to Section 2.5
+  Section Title: IP6.ARPA Domain
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC88:
+  Search Keywords: 'Internet Standard 88'
+  Result: Found in Section D
+  Section Title: Checking
+  Content Preview:    The nature of remote job entry service is such that a low rate of
+   undetected errors is mandato...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The HHIT RRType provides the public key for signature verification
+   and URIs via the certificate.  The BRID RRType provides static
+   Broadcast RID information such as the Broadcast Endorsements ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: TEXT
+  Reference Value (keywords/section): Broadcast Endorsements
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9575:
+  Search Keywords: 'Broadcast Endorsements'
+  Result: Found in Section B.2
+  Section Title: Full Authentication Example
+  Content Preview:    This example (Figure 13) is focused on showing that 100% of ASTM
+   Messages can be authenticated...
+---------------------------------------------------------------------------
+
+Warning: Section 4 not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 4 only.
+Focusing on section 4 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/section_dependencies.json
+
+Creating prompts for section 4...
+Creating expert prompt for section 4 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/focus_section_4_prompt_expert.md
+Expert prompt token count: 28,065 tokens
+Creating router prompt for section 4...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/focus_section_4_prompt_router.md
+Router prompt token count: 16,546 tokens
+
+RFC 9886 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be4c24408191bdbddafd81dfd4e3
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for RFC 9886, Section 4
+================================================================================
+2026-01-03 02:28:00,856 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:28:00,867 - __main__ - INFO - Router prompt length: 104407 chars
+2026-01-03 02:28:00,867 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:28:00,867 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:28:00,867 - __main__ - INFO - ================================================================================
+2026-01-03 02:28:01,099 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:28:01,099 - __main__ - INFO - User prompt length: 104407 chars
+2026-01-03 02:29:12,536 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:29:12,774 - __main__ - INFO - Router analysis complete. Bug likelihood: Medium
+2026-01-03 02:29:12,774 - __main__ - INFO - Using existing vector store(s): vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:29:12,774 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:29:12,774 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:29:12,774 - __main__ - INFO - ================================================================================
+2026-01-03 02:29:12,775 - __main__ - INFO - 
+Invoking expert: Temporal (MEDIUM)
+2026-01-03 02:29:13,327 - __main__ - INFO - Invoking expert Temporal with manual prompt...
+2026-01-03 02:29:13,327 - __main__ - INFO - User prompt length: 108972 chars
+2026-01-03 02:29:13,327 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:30:08,597 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:30:08,695 - __main__ - INFO - Expert Temporal analysis complete
+2026-01-03 02:30:08,696 - __main__ - INFO - 
+Invoking expert: Scope (HIGH)
+2026-01-03 02:30:09,356 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 02:30:09,356 - __main__ - INFO - User prompt length: 109012 chars
+2026-01-03 02:30:09,356 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:31:27,142 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:31:27,148 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 02:31:27,148 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 02:31:27,835 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 02:31:27,835 - __main__ - INFO - User prompt length: 109045 chars
+2026-01-03 02:31:27,836 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:32:20,748 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:32:20,751 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 02:32:20,755 - __main__ - INFO - 
+Invoking expert: Quantitative (MEDIUM)
+2026-01-03 02:32:21,222 - __main__ - INFO - Invoking expert Quantitative with manual prompt...
+2026-01-03 02:32:21,222 - __main__ - INFO - User prompt length: 105123 chars
+2026-01-03 02:32:21,223 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:34:23,775 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:34:23,778 - __main__ - INFO - Expert Quantitative analysis complete
+2026-01-03 02:34:23,778 - __main__ - INFO - 
+Invoking expert: Deontic (HIGH)
+2026-01-03 02:34:24,100 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 02:34:24,100 - __main__ - INFO - User prompt length: 109009 chars
+2026-01-03 02:34:24,100 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:35:16,648 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:35:16,651 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 02:35:16,651 - __main__ - INFO - 
+Invoking expert: Structural (MEDIUM)
+2026-01-03 02:35:16,943 - __main__ - INFO - Invoking expert Structural with manual prompt...
+2026-01-03 02:35:16,943 - __main__ - INFO - User prompt length: 105161 chars
+2026-01-03 02:35:16,943 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:36:57,563 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:36:57,566 - __main__ - INFO - Expert Structural analysis complete
+2026-01-03 02:36:57,566 - __main__ - INFO - 
+Invoking expert: CrossRFC (MEDIUM)
+2026-01-03 02:36:57,847 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 02:36:57,848 - __main__ - INFO - User prompt length: 105184 chars
+2026-01-03 02:36:57,848 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:38:18,085 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:38:18,087 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 02:38:18,088 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 02:38:18,513 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 02:38:18,513 - __main__ - INFO - User prompt length: 109008 chars
+2026-01-03 02:38:18,513 - __main__ - INFO - Vector stores: vs_6958be4c24408191bdbddafd81dfd4e3
+2026-01-03 02:39:26,025 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:39:26,028 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 02:39:26,032 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/test_analysis.md
+2026-01-03 02:39:26,038 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/test_analysis.json
+2026-01-03 02:39:26,038 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 4 of RFC 9886 defines how DET-based public information is stored and retrieved using DNS, introduces the HHIT and BRID RRTypes for that purpose, and normatively constrains use of DNSSEC for different entities. The surrounding sections and referenced RFCs define the DET hierarchy, reverse-DNS mapping, and security / policy framework that this relies on.
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: MEDIUM - There is an implicit “when published / when in use” sequencing for DET DNS records vs. the “just-in-time” publication concept discussed later in the RFC.
+  - ActorDirectionality: LOW - Roles like DIME, apex, and authoritative name servers are mentioned, but there is no complex request/response or message-flow semantics to check here.
+  - Scope: HIGH - Rules differ by scope (apex vs non-apex entities, UAS RID vs other use cases, ip6.arpa reverse tree vs other DNS names), so mis-scoping or over-scoping of MUSTs/RECOMMENDEDs is a primary concern.
+  - Causal: MEDIUM - The combination of “MUST resolve to an HHIT RRType” and optional/just-in-time publication can directly affect whether validation and lookups are possible, so literal implementation choices could break the intended trust model.
+  - Quantitative: MEDIUM - The correctness of the reverse mapping example for 2001:30::1 into ip6.arpa relies on nibble-order and length; there is modest risk of off-by-one or format errors.
+  - Deontic: HIGH - Section 4 contains several key MUST/RECOMMENDED/SHOULD requirements (HHIT and BRID presence, DNSSEC usage) that must be internally consistent and consistent with later security considerations.
+  - Structural: MEDIUM - The mapping from IPv6 DETs to ip6.arpa names and the association of new RRTypes (HHIT, BRID) to those names need to be structurally consistent with RFC 3596 and with examples elsewhere in the document.
+  - CrossRFC: MEDIUM - Section 4 explicitly leans on RFC 9434, RFC 9153 REG-1, RFC 3596 (reverse mapping), RFC 9575 (Broadcast Endorsements), and RFC 6841 (DNSSEC framework), so mis-statements of what those documents require or allow are possible.
+  - Terminology: LOW - Terms like DET, HHIT, BRID, “apex” are used consistently with earlier DRIP work; risk here is low.
+  - Boundary: MEDIUM - Edge cases such as DETs that are not yet in active use, entities that are not apex, or deployments where DNSSEC is or is not used can stress the rules about record existence and validation.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Conflict between “DETs MUST resolve to HHIT RRType” and later recommendation for not publishing RRTypes until needed
+    Relevant Dimensions: Deontic, Temporal, Scope, Causal, Boundary
+    Sketch: Section 4 states: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and MUS...
+
+Response ID: resp_0cbef7230c505ca8006958c504911081979b29aecf73a127e5
+
+## Temporal Expert Analysis
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    Section 4 defines a “steady‑state” requirement that each DET reverse‑DNS name MUST have an HHIT RR (and BRID for UAS RID), while later text explicitly recommends “just‑in‑time” publication and even deletion of these RRsets. This creates a temporal tension about when, along the lifecycle of a DET, those RRs must actually exist. The document also encourages dynamic registration “before a flight and deletes them afterwards”, but never defines the DET regi...
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 4 defines how DETs are represented in DNS: each DET is mapped to a reverse ip6.arpa name that “MUST resolve” to an HHIT RR, and, in the UAS RID use case, also to a BRID RR; it also scopes when DNSSEC is required and how public DET-related information is obtained via DNS.
+
+- ScopeModel:
+  - Targets:
+    - DETs (all DET-based identifiers as defined in RFC 9374) represented as IPv6 addresses under the 2001:30::/28 prefix and their corresponding reverse ip6.a...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. Summary
+
+Following the text literally is still *implementable*, but Section 4’s unconditional “MUST resolve to an HHIT RRType” sits in real tension with Section 7.2’s “RECOMMENDED” just‑in‑time (JIT) non‑publication of RRTypes. The conditions under which the HHIT/BRID records *must* be present are not specified, and the interaction with DNSSEC and caching is explicitly left “out of scope”, so it is easy for a literal implementer to build a system where DETs are used in RID but cannot be resol...
+
+## Quantitative Expert Analysis
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary:  
+  Section 4 of RFC 9886 defines how DETs (128‑bit IPv6-based identifiers) are mapped into DNS reverse names under ip6.arpa and bound to two new RRTypes, HHIT (RRType 67) and BRID (RRType 68). Subsequent sections define the wire formats of these RRTypes using CDDL/CBOR and give detailed examples, and the Security Considerations further constrain when HHIT records should (or should not) exist in DNS and how DNSSEC is to be used.
+
+- Issues:
+
+  - Issue-1:
+  ...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 4 normatively defines how DETs are represented in DNS via HHIT and BRID RRTypes and mandates certain DNSSEC behaviors. Section 7 refines security and operational guidance, including how and when these RRTypes and DNSSEC should be used. Together they define the mandatory public‑lookup behavior and integrity guarantees for DET-based identifiers.
+
+- OverallDeonticRisk: High
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Both
+    - Title: Conflict between “DETs MU...
+
+## Structural Expert Analysis
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: The excerpt defines how DET IPv6 addresses map into ip6.arpa reverse names and introduces two CBOR-encoded DNS RRTypes (HHIT and BRID), with CDDL definitions and worked examples. I checked the IPv6-to-ip6.arpa nibble-reverse mapping, the use of HHIT/BRID under those names, and the internal consistency between the CDDL, prose descriptions, and example encodings.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: HID...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 4 of RFC 9886 describes how DET-based public information is stored and retrieved via DNS using two new RRTypes (HHIT and BRID), mandates that DET reverse-DNS names under ip6.arpa return HHIT (and for UAS RID also BRID), and sets expectations for DNSSEC usage and policy frameworks, referencing RFC 9434, RFC 9153 REG‑1, RFC 3596, RFC 9575, and RFC 6841. The question is whether any of these cross-references misstate what those other documents/registries act...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 4 of RFC 9886 defines how a DET (a 128‑bit IPv6-based identifier) is mapped into the DNS under ip6.arpa and bound to two new RRTypes: HHIT (public key + certificate/URI) and BRID (Broadcast RID information, including endorsements). It normatively says each DET name “MUST resolve” to an HHIT RR, and for UAS RID the BRID RR “MUST be present”, and also gives requirements on when DNSSEC MUST/SHOULD be used. Section 7.2 then discusses “just‑in‑time” p...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Medium
+Experts: ✓ 8 invoked
+  Dimensions: Temporal, Scope, Causal, Quantitative, Deontic, Structural, CrossRFC, Boundary
+Vector Stores: vs_6958be4c24408191bdbddafd81dfd4e3
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed RFC 9886, Section 4
+################################################################################
+

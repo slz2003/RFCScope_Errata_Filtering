@@ -1,0 +1,272 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section A
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section A
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/corpus.json
+
+Extracting references from section A only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/reference_extraction.log
+Focusing on section A and its children.
+Processing section A. Summary of Changes
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks:  20%|██        | 1/5 [07:40<30:41, 460.31s/it]Splitting content into chunks: 100%|██████████| 5/5 [07:49<00:00, 70.52s/it] Splitting content into chunks: 100%|██████████| 5/5 [07:49<00:00, 93.90s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This appendix provides a summary of the changes made from RFC8415:
+
+   1.  The following mechanisms were obsoleted.  These were not widely
+       deployed while adding complexity to client and serv...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): Dynamic Host Configuration Protocol for IPv6 (DHCPv6)
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '1'
+  Match Type: Exact match
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'Dynamic Host Configuration Protocol for IPv6 (DHCPv6)'
+  Result: Found in Section 26.2
+  Section Title: Informative References
+  Content Preview:    [IANA-HARDWARE-TYPES ]
+              IANA, "Hardware Types",
+              <https://www.iana.org/...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       IA_TA option.  The Identity Association for Temporary Addresses
+          option has been obsoleted.  A client that needs a short-term /
+          special purpose address can use a new IA_NA bi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       UNICAST option.  The Server Unicast option has been obsoleted.
+          Use of this was rarely practical as typically relay agents
+          between the client and server need to glean informa...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       UseMulticast status code.  The UseMulticast status code has been
+          obsoleted.  Clients will always multicast messages (as Server
+          Unicast option has been obsoleted) and servers...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   2.  The following errata for RFC 8415 were incorporated: erratum IDs
+       6159, 6269 and 6183.  Note that erratum ID 6269 was no longer
+       applicable after the Server Unicast Option was obsol...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 13.1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.2
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '3'
+  Match Type: Exact match
+  Result: Matched to Section 3
+  Section Title: Background
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '13.1'
+  Match Type: Exact match
+  Result: Matched to Section 13.1
+  Section Title: Selecting Addresses for Assignment to an IA_NA
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: Terminology
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '7.2'
+  Match Type: Exact match
+  Result: Matched to Section 7.2
+  Section Title: UDP Ports
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '5'
+  Match Type: Exact match
+  Result: Matched to Section 5
+  Section Title: Client/Server Exchanges
+---------------------------------------------------------------------------
+
+Warning: Section A not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section A only.
+Focusing on section A and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/section_dependencies.json
+
+Creating prompts for section A...
+Creating expert prompt for section A with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/focus_section_A_prompt_expert.md
+Expert prompt token count: 73,479 tokens
+Creating router prompt for section A...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/focus_section_A_prompt_router.md
+Router prompt token count: 62,672 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section A
+================================================================================
+2026-01-03 03:50:56,372 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:50:56,400 - __main__ - INFO - Router prompt length: 339853 chars
+2026-01-03 03:50:56,401 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:50:56,401 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:50:56,401 - __main__ - INFO - ================================================================================
+2026-01-03 03:50:56,571 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:50:56,571 - __main__ - INFO - User prompt length: 339853 chars
+2026-01-03 03:51:32,907 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:51:33,052 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 03:51:33,052 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:51:33,052 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:51:33,052 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:51:33,053 - __main__ - INFO - ================================================================================
+2026-01-03 03:51:33,085 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/test_analysis.md
+2026-01-03 03:51:33,091 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A/test_analysis.json
+2026-01-03 03:51:33,091 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-A
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Appendix A summarizes the deltas between RFC 8415 and this bis draft, mainly obsoleting IA_TA, the Server Unicast option, and the UseMulticast status code, plus incorporating errata and a few clarifications.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - Appendix A is descriptive about feature status, not sequences or timers.
+  - ActorDirectionality: LOW - No new rules about who sends what; it only states that some mechanisms are obsoleted.
+  - Scope: LOW - Not explicitly scored by router
+  - Causal: LOW - Not explicitly scored by router
+  - Quantitative: LOW - Not explicitly scored by router
+  - Deontic: LOW - Not explicitly scored by router
+  - Structural: LOW - Not explicitly scored by router
+  - CrossRFC: LOW - Not explicitly scored by router
+  - Terminology: LOW - Not explicitly scored by router
+  - Boundary: LOW - Not explicitly scored by router
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No substantive protocol error or underspecification visible in Appendix A
+    Relevant Dimensions: 
+    Sketch: Appendix A’s statements about obsoleting IA_TA, the Server Unicast option, and the UseMulticast stat...
+
+Response ID: resp_047a0a31640d4ee4006958d872126c8194acc5befe62656f16
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section A
+################################################################################
+

@@ -1,0 +1,524 @@
+[
+  {
+    "tag": "RFC2018",
+    "text": "Mathis, M., Mahdavi, J., Floyd, S., and A. Romanow, \"TCP Selective Acknowledgment Options\", RFC 2018, DOI 10.17487/RFC2018, October 1996, <https://www.rfc-editor.org/info/rfc2018>.",
+    "links": [
+      {
+        "text": "RFC 2018",
+        "address": "./rfc2018"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc2018",
+        "address": "https://www.rfc-editor.org/info/rfc2018"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC2119",
+    "text": "Bradner, S., \"Key words for use in RFCs to Indicate Requirement Levels\", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <https://www.rfc-editor.org/info/rfc2119>.",
+    "links": [
+      {
+        "text": "BCP 14",
+        "address": "./bcp14"
+      },
+      {
+        "text": "RFC 2119",
+        "address": "./rfc2119"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc2119",
+        "address": "https://www.rfc-editor.org/info/rfc2119"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC2883",
+    "text": "Floyd, S., Mahdavi, J., Mathis, M., and M. Podolsky, \"An Extension to the Selective Acknowledgement (SACK) Option for TCP\", RFC 2883, DOI 10.17487/RFC2883, July 2000, <https://www.rfc-editor.org/info/rfc2883>.",
+    "links": [
+      {
+        "text": "RFC 2883",
+        "address": "./rfc2883"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc2883",
+        "address": "https://www.rfc-editor.org/info/rfc2883"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC3168",
+    "text": "Ramakrishnan, K., Floyd, S., and D. Black, \"The Addition of Explicit Congestion Notification (ECN) to IP\",RFC 3168, DOI 10.17487/RFC3168, September 2001, <https://www.rfc-editor.org/info/rfc3168>.",
+    "links": [
+      {
+        "text": "RFC 3168",
+        "address": "./rfc3168"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3168",
+        "address": "https://www.rfc-editor.org/info/rfc3168"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC5961",
+    "text": "Ramaiah, A., Stewart, R., and M. Dalal, \"Improving TCP's Robustness to Blind In-Window Attacks\", RFC 5961, DOI 10.17487/RFC5961, August 2010, <https://www.rfc-editor.org/info/rfc5961>.",
+    "links": [
+      {
+        "text": "RFC 5961",
+        "address": "./rfc5961"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5961",
+        "address": "https://www.rfc-editor.org/info/rfc5961"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC8174",
+    "text": "Leiba, B., \"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words\", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <https://www.rfc-editor.org/info/rfc8174>.",
+    "links": [
+      {
+        "text": "RFC 2119",
+        "address": "./rfc2119"
+      },
+      {
+        "text": "BCP 14",
+        "address": "./bcp14"
+      },
+      {
+        "text": "RFC 8174",
+        "address": "./rfc8174"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8174",
+        "address": "https://www.rfc-editor.org/info/rfc8174"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC9293",
+    "text": "Eddy, W., Ed., \"Transmission Control Protocol (TCP)\", STD 7, RFC 9293, DOI 10.17487/RFC9293, August 2022, <https://www.rfc-editor.org/info/rfc9293>.",
+    "links": [
+      {
+        "text": "RFC 9293",
+        "address": "./rfc9293"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9293",
+        "address": "https://www.rfc-editor.org/info/rfc9293"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "I-D.ietf-tcpm-generalized-ecn ",
+    "text": "Bagnulo, M. and B. Briscoe, \"ECN++: Adding Explicit Congestion Notification (ECN) to TCP Control Packets\", Work in Progress, Internet-Draft, draft-ietf-tcpm- generalized-ecn-16, 20 October 2024, <https://datatracker.ietf.org/doc/html/draft-ietf-tcpm-generalized-ecn-16>.",
+    "links": [
+      {
+        "text": "draft-ietf-tcpm",
+        "address": "./draft-ietf-tcpm"
+      },
+      {
+        "text": "https://datatracker.ietf.org/doc/html/draft-ietf-tcpm-generalized-ecn-16",
+        "address": "https://datatracker.ietf.org/doc/html/draft-ietf-tcpm-generalized-ecn-16"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "Mandalari18",
+    "text": "Mandalari, A., Lutu, A., Briscoe, B., Bagnulo, M., and \u00d6. Alay, \"Measuring ECN++: Good News for ++, Bad News for ECN over Mobile\", IEEE Communications Magazine , March 2018, <http://www.it.uc3m.es/amandala/              ecn++/ecn_commag_2018.html>.",
+    "links": [
+      {
+        "text": "http://www.it.uc3m.es/amandala/",
+        "address": "http://www.it.uc3m.es/amandala/"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC3449",
+    "text": "Balakrishnan, H., Padmanabhan, V., Fairhurst, G., and M. Sooriyabandara, \"TCP Performance Implications of Network Path Asymmetry\", BCP 69, RFC 3449, DOI 10.17487/RFC3449, December 2002, <https://www.rfc-editor.org/info/rfc3449>.",
+    "links": [
+      {
+        "text": "BCP 69",
+        "address": "./bcp69"
+      },
+      {
+        "text": "RFC 3449",
+        "address": "./rfc3449"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3449",
+        "address": "https://www.rfc-editor.org/info/rfc3449"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC3540",
+    "text": "Spring, N., Wetherall, D., and D. Ely, \"Robust Explicit Congestion Notification (ECN) Signaling with Nonces\",RFC 3540, DOI 10.17487/RFC3540, June 2003, <https://www.rfc-editor.org/info/rfc3540>.",
+    "links": [
+      {
+        "text": "RFC 3540",
+        "address": "./rfc3540"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3540",
+        "address": "https://www.rfc-editor.org/info/rfc3540"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC4987",
+    "text": "Eddy, W., \"TCP SYN Flooding Attacks and Common Mitigations\", RFC 4987, DOI 10.17487/RFC4987, August 2007, <https://www.rfc-editor.org/info/rfc4987>.",
+    "links": [
+      {
+        "text": "RFC 4987",
+        "address": "./rfc4987"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4987",
+        "address": "https://www.rfc-editor.org/info/rfc4987"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5562",
+    "text": "Kuzmanovic, A., Mondal, A., Floyd, S., and K. Ramakrishnan, \"Adding Explicit Congestion Notification (ECN) Capability to TCP's SYN/ACK Packets\", RFC 5562, DOI 10.17487/RFC5562, June 2009, <https://www.rfc-editor.org/info/rfc5562>.",
+    "links": [
+      {
+        "text": "RFC 5562",
+        "address": "./rfc5562"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5562",
+        "address": "https://www.rfc-editor.org/info/rfc5562"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5681",
+    "text": "Allman, M., Paxson, V., and E. Blanton, \"TCP Congestion Control\", RFC 5681, DOI 10.17487/RFC5681, September 2009, <https://www.rfc-editor.org/info/rfc5681>.",
+    "links": [
+      {
+        "text": "RFC 5681",
+        "address": "./rfc5681"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5681",
+        "address": "https://www.rfc-editor.org/info/rfc5681"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5690",
+    "text": "Floyd, S., Arcia, A., Ros, D., and J. Iyengar, \"Adding Acknowledgement Congestion Control to TCP\", RFC 5690, DOI 10.17487/RFC5690, February 2010, <https://www.rfc-editor.org/info/rfc5690>.",
+    "links": [
+      {
+        "text": "RFC 5690",
+        "address": "./rfc5690"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5690",
+        "address": "https://www.rfc-editor.org/info/rfc5690"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5925",
+    "text": "Touch, J., Mankin, A., and R. Bonica, \"The TCP Authentication Option\", RFC 5925, DOI 10.17487/RFC5925, June 2010, <https://www.rfc-editor.org/info/rfc5925>.",
+    "links": [
+      {
+        "text": "RFC 5925",
+        "address": "./rfc5925"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5925",
+        "address": "https://www.rfc-editor.org/info/rfc5925"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6582",
+    "text": "Henderson, T., Floyd, S., Gurtov, A., and Y. Nishida, \"The NewReno Modification to TCP's Fast Recovery Algorithm\",RFC 6582, DOI 10.17487/RFC6582, April 2012, <https://www.rfc-editor.org/info/rfc6582>.",
+    "links": [
+      {
+        "text": "RFC 6582",
+        "address": "./rfc6582"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6582",
+        "address": "https://www.rfc-editor.org/info/rfc6582"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6679",
+    "text": "Westerlund, M., Johansson, I., Perkins, C., O'Hanlon, P., and K. Carlberg, \"Explicit Congestion Notification (ECN) for RTP over UDP\", RFC 6679, DOI 10.17487/RFC6679, August 2012, <https://www.rfc-editor.org/info/rfc6679>.",
+    "links": [
+      {
+        "text": "RFC 6679",
+        "address": "./rfc6679"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6679",
+        "address": "https://www.rfc-editor.org/info/rfc6679"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6994",
+    "text": "Touch, J., \"Shared Use of Experimental TCP Options\",RFC 6994, DOI 10.17487/RFC6994, August 2013, <https://www.rfc-editor.org/info/rfc6994>.",
+    "links": [
+      {
+        "text": "RFC 6994",
+        "address": "./rfc6994"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6994",
+        "address": "https://www.rfc-editor.org/info/rfc6994"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7141",
+    "text": "Briscoe, B. and J. Manner, \"Byte and Packet Congestion Notification\", BCP 41, RFC 7141, DOI 10.17487/RFC7141, February 2014, <https://www.rfc-editor.org/info/rfc7141>.",
+    "links": [
+      {
+        "text": "BCP 41",
+        "address": "./bcp41"
+      },
+      {
+        "text": "RFC 7141",
+        "address": "./rfc7141"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7141",
+        "address": "https://www.rfc-editor.org/info/rfc7141"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7323",
+    "text": "Borman, D., Braden, B., Jacobson, V., and R. Scheffenegger, Ed., \"TCP Extensions for High Performance\",RFC 7323, DOI 10.17487/RFC7323, September 2014, <https://www.rfc-editor.org/info/rfc7323>.",
+    "links": [
+      {
+        "text": "RFC 7323",
+        "address": "./rfc7323"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7323",
+        "address": "https://www.rfc-editor.org/info/rfc7323"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7413",
+    "text": "Cheng, Y., Chu, J., Radhakrishnan, S., and A. Jain, \"TCP Fast Open\", RFC 7413, DOI 10.17487/RFC7413, December 2014, <https://www.rfc-editor.org/info/rfc7413>.",
+    "links": [
+      {
+        "text": "RFC 7413",
+        "address": "./rfc7413"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7413",
+        "address": "https://www.rfc-editor.org/info/rfc7413"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7560",
+    "text": "Kuehlewind, M., Ed., Scheffenegger, R., and B. Briscoe, \"Problem Statement and Requirements for Increased Accuracy in Explicit Congestion Notification (ECN) Feedback\",RFC 7560, DOI 10.17487/RFC7560, August 2015, <https://www.rfc-editor.org/info/rfc7560>.",
+    "links": [
+      {
+        "text": "RFC 7560",
+        "address": "./rfc7560"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7560",
+        "address": "https://www.rfc-editor.org/info/rfc7560"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7713",
+    "text": "Mathis, M. and B. Briscoe, \"Congestion Exposure (ConEx) Concepts, Abstract Mechanism, and Requirements\", RFC 7713, DOI 10.17487/RFC7713, December 2015, <https://www.rfc-editor.org/info/rfc7713>.",
+    "links": [
+      {
+        "text": "RFC 7713",
+        "address": "./rfc7713"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7713",
+        "address": "https://www.rfc-editor.org/info/rfc7713"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8257",
+    "text": "Bensley, S., Thaler, D., Balasubramanian, P., Eggert, L., and G. Judd, \"Data Center TCP (DCTCP): TCP Congestion Control for Data Centers\", RFC 8257, DOI 10.17487/RFC8257, October 2017, <https://www.rfc-editor.org/info/rfc8257>.",
+    "links": [
+      {
+        "text": "RFC 8257",
+        "address": "./rfc8257"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8257",
+        "address": "https://www.rfc-editor.org/info/rfc8257"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8311",
+    "text": "Black, D., \"Relaxing Restrictions on Explicit Congestion Notification (ECN) Experimentation\", RFC 8311, DOI 10.17487/RFC8311, January 2018, <https://www.rfc-editor.org/info/rfc8311>.",
+    "links": [
+      {
+        "text": "RFC 8311",
+        "address": "./rfc8311"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8311",
+        "address": "https://www.rfc-editor.org/info/rfc8311"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8511",
+    "text": "Khademi, N., Welzl, M., Armitage, G., and G. Fairhurst, \"TCP Alternative Backoff with ECN (ABE)\", RFC 8511, DOI 10.17487/RFC8511, December 2018, <https://www.rfc-editor.org/info/rfc8511>.",
+    "links": [
+      {
+        "text": "RFC 8511",
+        "address": "./rfc8511"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8511",
+        "address": "https://www.rfc-editor.org/info/rfc8511"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8684",
+    "text": "Ford, A., Raiciu, C., Handley, M., Bonaventure, O., and C. Paasch, \"TCP Extensions for Multipath Operation with Multiple Addresses\", RFC 8684, DOI 10.17487/RFC8684, March 2020, <https://www.rfc-editor.org/info/rfc8684>.",
+    "links": [
+      {
+        "text": "RFC 8684",
+        "address": "./rfc8684"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8684",
+        "address": "https://www.rfc-editor.org/info/rfc8684"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9000",
+    "text": "Iyengar, J., Ed. and M. Thomson, Ed., \"QUIC: A UDP-Based Multiplexed and Secure Transport\", RFC 9000, DOI 10.17487/RFC9000, May 2021, <https://www.rfc-editor.org/info/rfc9000>.",
+    "links": [
+      {
+        "text": "RFC 9000",
+        "address": "./rfc9000"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9000",
+        "address": "https://www.rfc-editor.org/info/rfc9000"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9040",
+    "text": "Touch, J., Welzl, M., and S. Islam, \"TCP Control Block Interdependence\", RFC 9040, DOI 10.17487/RFC9040, July 2021, <https://www.rfc-editor.org/info/rfc9040>.",
+    "links": [
+      {
+        "text": "RFC 9040",
+        "address": "./rfc9040"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9040",
+        "address": "https://www.rfc-editor.org/info/rfc9040"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9260",
+    "text": "Stewart, R., T\u00fcxen, M., and K. Nielsen, \"Stream Control Transmission Protocol\", RFC 9260, DOI 10.17487/RFC9260, June 2022, <https://www.rfc-editor.org/info/rfc9260>.",
+    "links": [
+      {
+        "text": "RFC 9260",
+        "address": "./rfc9260"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9260",
+        "address": "https://www.rfc-editor.org/info/rfc9260"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9330",
+    "text": "Briscoe, B., Ed., De Schepper, K., Bagnulo, M., and G. White, \"Low Latency, Low Loss, and Scalable Throughput (L4S) Internet Service: Architecture\", RFC 9330, DOI 10.17487/RFC9330, January 2023, <https://www.rfc-editor.org/info/rfc9330>.",
+    "links": [
+      {
+        "text": "RFC 9330",
+        "address": "./rfc9330"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9330",
+        "address": "https://www.rfc-editor.org/info/rfc9330"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9438",
+    "text": "Xu, L., Ha, S., Rhee, I., Goel, V., and L. Eggert, Ed., \"CUBIC for Fast and Long-Distance Networks\", RFC 9438, DOI 10.17487/RFC9438, August 2023, <https://www.rfc-editor.org/info/rfc9438>.",
+    "links": [
+      {
+        "text": "RFC 9438",
+        "address": "./rfc9438"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9438",
+        "address": "https://www.rfc-editor.org/info/rfc9438"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RoCEv2",
+    "text": "InfiniBand Trade Association, \"InfiniBand Architecture Specification Volume 1, Release 1.4\", 2020, <https://www.infinibandta.org/ibta-specification/>.",
+    "links": [
+      {
+        "text": "https://www.infinibandta.org/ibta-specification/",
+        "address": "https://www.infinibandta.org/ibta-specification/"
+      }
+    ],
+    "type": "informative"
+  }
+]

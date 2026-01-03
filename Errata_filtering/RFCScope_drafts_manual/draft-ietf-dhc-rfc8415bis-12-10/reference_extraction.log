@@ -1,0 +1,44 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-10/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   So that domain names may be encoded uniformly, a domain name or a
+   list of domain names is encoded using the technique described in Section 3.1 of [RFC1035].  The message compression scheme in Se...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC1035
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC1035
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC1035:
+  Looking for Section: '3.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1
+  Section Title: Name space definitions
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC1035:
+  Looking for Section: '4.1.4'
+  Match Type: Exact match
+  Result: Matched to Section 4.1.4
+  Section Title: Message compression
+---------------------------------------------------------------------------
+

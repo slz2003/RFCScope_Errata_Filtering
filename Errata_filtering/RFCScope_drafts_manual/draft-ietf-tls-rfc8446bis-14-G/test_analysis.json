@@ -1,0 +1,66 @@
+{
+  "routing_summary": {
+    "excerpt_summary": "Section G is an editor-only changelog summarizing differences between draft -06/-05/-04/... and earlier versions, referencing already-updated normative text elsewhere in the draft.",
+    "overall_bug_likelihood": "None",
+    "dimensions": {
+      "Temporal": {
+        "relevance": "LOW",
+        "explanation": "The changelog mentions changes over draft versions, but no protocol event ordering or state sequencing is specified here."
+      },
+      "ActorDirectionality": {
+        "relevance": "LOW",
+        "explanation": "It only narrates what was changed; no sender/receiver behavior is normatively defined."
+      },
+      "Scope": {
+        "relevance": "LOW",
+        "explanation": "Mentions of “clarify X” or “upgrade requirement to MUST” are descriptive of edits already present elsewhere; no new scope rules are introduced here."
+      },
+      "Causal": {
+        "relevance": "LOW",
+        "explanation": "It does not prescribe behavior; it only documents that other sections were modified."
+      },
+      "Quantitative": {
+        "relevance": "LOW",
+        "explanation": "No numeric limits or sizes are defined here beyond referencing that key usage limits text was ported; the actual limits live in Sections 4.6.3 and 5.5, which are already internally consistent."
+      },
+      "Deontic": {
+        "relevance": "LOW",
+        "explanation": "It reports that some requirements were upgraded (e.g., SHOULD→MUST) but the operative requirements are in the main body; no conflicting MUST/SHOULD appears in G itself."
+      },
+      "Structural": {
+        "relevance": "LOW",
+        "explanation": "This is prose meta-information, not ABNF/YANG/structures; nothing to cross-check structurally."
+      },
+      "CrossRFC": {
+        "relevance": "LOW",
+        "explanation": "It notes that references to RFC 9147, RFC 8773, RFC 9525 were added and extension tables updated, but those details are specified—and appear consistent—in the corresponding sections."
+      },
+      "Terminology": {
+        "relevance": "LOW",
+        "explanation": "It notes terminology cleanups (e.g., “master”→“main”) already reflected elsewhere; no inconsistent new terms are introduced here."
+      },
+      "Boundary": {
+        "relevance": "LOW",
+        "explanation": "No edge-case behavior is defined; it merely states that clarifications (e.g., ignoring NST when no resumption) were added to normative sections."
+      }
+    },
+    "candidate_issues": [
+      {
+        "bug_type": "None",
+        "short_label": "Changelog is informational and consistent with main text",
+        "relevant_dimensions": [],
+        "sketch_for_experts": "Section G is explicitly marked for removal by the RFC Editor and only narrates edits already visible in the normative sections (e.g., key update limits, alert levels, extension handling). No internal contradictions or mismatches between what G claims and what the body of the draft specifies are apparent, so there is nothing here that would translate into a protocol or interoperability bug."
+      }
+    ]
+  },
+  "expert_analyses": {},
+  "vector_store_ids": [
+    "vs_6958ce993c388191a7c9f32559e3b152"
+  ],
+  "metadata": {
+    "model": "gpt-5.1",
+    "router_reasoning_effort": "medium",
+    "expert_reasoning_effort": "medium",
+    "test_mode": "manual"
+  }
+}

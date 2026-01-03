@@ -1,0 +1,381 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-6/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The reverse domain for the DET Prefix, i.e., 3.0.0.1.0.0.2.ip6.arpa.,
+   is managed by IANA.  IANA will liaise, as needed, with the
+   International Civil Aviation Organization (ICAO) to verify the...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '6.2.1.4'
+  Match Type: Exact match
+  Result: Matched to Section 6.2.1.4
+  Section Title: ISO 3166-1 Countries Range
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   IANA has created the registry for RAA Allocations under the "Drone
+   Remote ID Protocol" registry group <https://www.iana.org/assignments/
+   drip >.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   RAA Allocations:  a 14-bit value used to represent RAAs.  Future
+      additions to this registry are to be made based on the following
+      range and policy table:
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   +===========+======================+================================+
+   | RAA Range | Allocation           | Policy                         |
+   +===========+======================+===============...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.10
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.4
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.10'
+  Match Type: Exact match
+  Result: Matched to Section 4.10
+  Section Title: IESG Approval
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '6.2.1.4'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 5.2.1
+  Section Title: Managing Designated Experts in the IETF
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.4'
+  Match Type: Exact match
+  Result: Matched to Section 4.4
+  Section Title: First Come First Served
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.1
+  Section Title: Private Use
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '6.2.1.5'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 5.2.1
+  Section Title: Managing Designated Experts in the IETF
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Value:  The RAA value delegated for this entry.
+
+   Name:  Name of the delegated RAA.  For the ISO 3166-1 Countries
+      (Section 6.2.1.4), this should be the name of the country.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '6.2.1.4'
+  Match Type: Exact match
+  Result: Matched to Section 6.2.1.4
+  Section Title: ISO 3166-1 Countries Range
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Reference:  A publicly accessible link to the policy requirements for
+      prospective HDA operators to register under this RAA.  This field
+      is OPTIONAL.
+
+   Contact:  Contact details of the...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Value:
+   Name:
+   Reference:
+   Contact:
+   NS RRType Content (HDA=0):
+   NS RRType Content (HDA=4096):
+   NS RRType Content (HDA=8192):
+   NS RRType Content (HDA=12288):
+
+                   Figur...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '6.2.1.3'
+  Match Type: Exact match
+  Result: Matched to Section 6.2.1.3
+  Section Title: Handling Nibble Split
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   To support DNS delegation in 3.0.0.1.0.0.2.ip6.arpa., a single RAA is
+   given 4 delegations by borrowing the upper two bits of HDA space (see
+   Figure 7 for an example).  This enables a clean nib...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+ 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 0 0 0 0 0 0 0 0 0 0
+ 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 9 8 7 6 5 4 3 2 1 0
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           0           | x ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The mapping between ISO 3166-1 Numeric Nation Codes and RAAs is
+   specified and documented by IANA.  Each Nation is assigned 4 RAAs
+   that are left to the national authority for their purpose.  F...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The registration policy for this range is set to IESG Approval
+   (Section 4.10 of [RFC8126]) and IANA will liaise with the ICAO to
+   verify the authenticity of delegation requests (using Figure 6...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.10
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: TEXT
+  Reference Value (keywords/section): Guidelines for Writing an IANA Considerations Section
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.10'
+  Match Type: Exact match
+  Result: Matched to Section 4.10
+  Section Title: IESG Approval
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   If nibble-reversed lookup in DNS is desired, it can only be provided
+   by private DNS servers as zone delegations from the global root will
+   not be performed for this address range.  Thus the RA...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.1
+  Section Title: Private Use
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   One anticipated acceptable use of the private range is for
+   experimentation and testing prior to request allocation or assignment
+   from IANA.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   This document requests a new registry for HHIT Entity Types under the
+   "Drone Remote ID Protocol" registry group
+   <https://www.iana.org/assignments/drip >.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   HHIT Entity Type:  Numeric, field of the HHIT RRType to encode the
+      HHIT Entity Type.  All entries in this registry are under the
+      First Come First Served policy (Section 4.4 of [RFC8126]...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8126
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8126:
+  Looking for Section: '4.4'
+  Match Type: Exact match
+  Result: Matched to Section 4.4
+  Section Title: First Come First Served
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Value:  HHIT Type value of the entry.
+
+   HHIT Type:  Name of the entry and an optional abbreviation.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Reference:  Public document allocating the value and any additional
+      information such as semantics.  This can be a URL pointing to an
+      Internet-Draft, IETF RFC, or web page among others.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Value:
+   HHIT Type:
+   Reference:
+
+                   Figure 8: HHIT Type Registration Form
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The following values are defined by this document:
+
+     +=======+===========================================+===========+
+     | Value | HHIT Type                                 | Reference |
+   ...
+################################################################################

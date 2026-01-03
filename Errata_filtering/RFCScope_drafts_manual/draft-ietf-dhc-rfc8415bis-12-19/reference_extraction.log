@@ -1,0 +1,506 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-19/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The relay agent SHOULD be configured to use a list of destination
+   addresses that includes unicast addresses.  The list of destination
+   addresses MAY include the All_DHCP_Servers multicast addr...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the relay agent relays messages to the All_DHCP_Servers multicast
+   address or other multicast addresses, it sets the Hop Limit field
+   to 8.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the relay agent receives a message other than Relay-forward and
+   Relay-reply and the relay agent does not recognize its message type,
+   it MUST forward the message as described in Section 19....
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 19.1.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '19.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 19.1.1
+  Section Title: Relaying a Message from a Client
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A relay agent relays both messages from clients and Relay-forward
+   messages from other relay agents.  When a relay agent receives a
+   Relay-forward message, a recognized message type for which i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.10
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.10'
+  Match Type: Exact match
+  Result: Matched to Section 21.10
+  Section Title: Relay Message Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   [RFC6221] defines a Lightweight DHCPv6 Relay Agent (LDRA) that allows
+   relay agent information to be inserted by an access node that
+   performs a link-layer bridging (i.e., non-routing) function...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6221
+  Reference Type: TEXT
+  Reference Value (keywords/section): Lightweight DHCPv6 Relay Agent
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6221:
+  Search Keywords: 'Lightweight DHCPv6 Relay Agent'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    DHCPv6 Relay Agents [RFC3315] are deployed to forward DHCPv6 messages
+   between clients and serv...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the relay agent received the message to be relayed from a client,
+   the relay agent places a globally scoped unicast address (i.e., GUA
+   or ULA) from a prefix assigned to the link on which th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7969
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7969:
+  Looking for Section: '3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2
+  Section Title: DHCPv6-Specific Behavior
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This address will be used by the server to determine the link from
+   which the client should be assigned leases and other configuration
+   information.
+
+   The hop-count value in the Relay-forward...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6939
+  Reference Type: TEXT
+  Reference Value (keywords/section): Client Link-Layer Address option
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the relay agent cannot use the address in the link-address field
+   to identify the interface through which the response to the client
+   will be relayed, the relay agent MUST include an Interfa...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.18
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.18'
+  Match Type: Exact match
+  Result: Matched to Section 21.18
+  Section Title: Interface-Id Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the message received by the relay agent is a Relay-forward message
+   and the hop-count value in the message is greater than or equal to
+   HOP_COUNT_LIMIT, the relay agent discards the received...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The relay agent copies the source address from the IP datagram in
+   which the message was received into the peer-address field in the
+   Relay-forward message and sets the hop-count field to the v...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the source address from the IP datagram header of the received
+   message is a globally scoped unicast address (i.e., GUA or ULA), the
+   relay agent sets the link-address field to 0; otherwise,...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.18
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.18'
+  Match Type: Exact match
+  Result: Matched to Section 21.18
+  Section Title: Interface-Id Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A relay agent forwards messages containing prefix delegation options
+   in the same way as it would relay addresses (i.e., per
+   Sections 19.1.1 and 19.1.2).
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 19.1.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 19.1.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '19.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 19.1.1
+  Section Title: Relaying a Message from a Client
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '19.1.2'
+  Match Type: Exact match
+  Result: Matched to Section 19.1.2
+  Section Title: Relaying a Message from a Relay Agent
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If a server communicates with a client through a relay agent about
+   delegated prefixes, the server may need a protocol or other
+   out-of-band communication to configure routing information for
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The relay agent processes any options included in the Relay-reply
+   message in addition to the Relay Message option (see Section 21.10).
+
+   The relay agent extracts the message from the Relay Mes...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.10
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.10'
+  Match Type: Exact match
+  Result: Matched to Section 21.10
+  Section Title: Relay Message Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the Relay-reply message includes an Interface-Id option (see Section 21.18), the relay agent relays the message from the server to
+   the client on the link identified by the Interface-Id option...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.18
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.18'
+  Match Type: Exact match
+  Result: Matched to Section 21.18
+  Section Title: Interface-Id Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A server uses a Relay-reply message to (1) return a response to a
+   client if the original message from the client was relayed to the
+   server in a Relay-forward message or (2) send a Reconfigure...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A response to the client MUST be relayed through the same relay
+   agents as the original client message.  The server causes this to
+   happen by creating a Relay-reply message that includes a Rela...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.10
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.10'
+  Match Type: Exact match
+  Result: Matched to Section 21.10
+  Section Title: Relay Message Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   For example, if client C sent a message that was relayed by relay
+   agent A to relay agent B and then to the server, the server would
+   send the following Relay-reply message to relay agent B:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+      msg-type:       RELAY-REPL
+      hop-count:      1
+      link-address:   0
+      peer-address:   A
+      Relay Message option containing the following:
+         msg-type:     RELAY-REPL
+        ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+                       Figure 10: Relay-reply Example 
+   When sending a Reconfigure message to a client through a relay agent,
+   the server creates a Relay-reply message that includes a Relay
+   Mes...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each time a message is relayed by a relay agent towards a server, a
+   new encapsulation level is added around the message.  Each relay is
+   allowed to insert additional options on the encapsulati...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  First, relays can provide additional information about the client.
+      That source of information is usually more trusted by a server
+      administrator, as it comes from the network infrastr...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Second, a relay may need some information to send a response back
+      to the client.  Relay agents are expected to be stateless (not
+      retain any state after a message has been processed)....
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.18
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC4994
+  Reference Type: TEXT
+  Reference Value (keywords/section): DHCPv6 Relay Agent Echo Request Option
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.18'
+  Match Type: Exact match
+  Result: Matched to Section 21.18
+  Section Title: Interface-Id Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4994:
+  Search Keywords: 'DHCPv6 Relay Agent Echo Request Option'
+  Result: Found in Section 3
+  Section Title: The Relay Agent Echo Request Option
+  Content Preview:    The relay agent adds options in the Relay Forward message that the
+   server uses to guide its de...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Third, sometimes a relay is the best device to provide values for
+      certain options.  A relay can insert an option into the message
+      being forwarded to the server and ask the server to ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6422
+  Reference Type: TEXT
+  Reference Value (keywords/section): Relay-Supplied DHCP Options
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6422:
+  Search Keywords: 'Relay-Supplied DHCP Options'
+  Result: Found in Section 2
+  Section Title: Protocol Summary
+  Content Preview:    DHCP clients do not support a mechanism for receiving options from
+   relay agents -- the relay a...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   For various reasons, servers may need to retain the relay information
+   after the message processing is completed.  One is a bulk leasequery
+   mechanism that may ask for all addresses and/or pref...
+################################################################################

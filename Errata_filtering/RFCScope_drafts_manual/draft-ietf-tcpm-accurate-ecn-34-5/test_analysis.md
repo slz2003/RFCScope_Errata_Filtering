@@ -1,0 +1,42 @@
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 5 describes how AccECN interacts with existing TCP mechanisms and variants, notably SYN cookies, common TCP options (including TFO, MPTCP, TCP-AO), and feedback-integrity mechanisms (sender tests, ConEx, TCP-AO).
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - Compatibility text references handshakes and retransmissions, but does not introduce new sequencing rules beyond those normatively defined earlier.
+  - ActorDirectionality: LOW - Roles (client/server, sender/receiver) are used consistently and mainly restate earlier normative behavior.
+  - Scope: LOW - Section 5 is explicitly informative; it stays within the intended scope of “interaction/compatibility” and doesn’t silently redefine normative behavior.
+  - Causal: LOW - Described interactions (e.g., with SYN cookies, TFO, ConEx) are high-level and do not create obvious impossible or self-contradictory behaviors when literally implemented.
+  - Quantitative: LOW - No new numeric ranges, counters, or sizes are defined here; it only refers back to earlier-defined fields and counters.
+  - Deontic: LOW - Only a few SHOULD/MAY in this section, and they are clearly advisory and not in tension with the normative rules in Section 3 or the referenced RFCs.
+  - Structural: LOW - No new ABNF, diagrams, or formal structures are introduced here; just prose about interactions.
+  - CrossRFC: LOW - The references to RFC 4987, 5562, 7560, 7713, 8257, 8311, 8684, 5925, etc., appear consistent with how those RFCs define SYN cookies, ECN+/TryOnce, ConEx, DCTCP, TFO, MPTCP, and TCP-AO.
+  - Terminology: LOW - Uses previously defined terms (AccECN, Classic ECN feedback, ACE, SYN cookie, etc.) consistently with earlier sections and with their defining RFCs.
+  - Boundary: LOW - Edge cases like SYN-cookie operation and option-space pressure are discussed explicitly; no clear missing corner-case behavior is introduced here.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: 
+    Relevant Dimensions: 
+    Sketch: ...
+
+Response ID: resp_0e577d1634211490006958c774794c819590655ca9bac4b548
+
+
+Vector Stores Used: vs_6958be564fdc81918f6c87dec1d36632

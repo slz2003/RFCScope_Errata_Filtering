@@ -1,0 +1,66 @@
+{
+  "routing_summary": {
+    "excerpt_summary": "Section 10 is the standard boilerplate “Security Considerations” section, pointing the reader to detailed security discussion in Appendices C, E, and F; the user also provided the referenced material from RFC 8446 for context.",
+    "overall_bug_likelihood": "None",
+    "dimensions": {
+      "Temporal": {
+        "relevance": "LOW",
+        "explanation": "No sequencing, timers, or state-machine logic in Section 10 itself."
+      },
+      "ActorDirectionality": {
+        "relevance": "LOW",
+        "explanation": "No client/server role behavior or directionality rules here."
+      },
+      "Scope": {
+        "relevance": "LOW",
+        "explanation": "Only high-level references to appendices; no scoped requirements or per-object rules."
+      },
+      "Causal": {
+        "relevance": "LOW",
+        "explanation": "No operational algorithm or behavior being specified in Section 10."
+      },
+      "Quantitative": {
+        "relevance": "LOW",
+        "explanation": "No sizes, limits, counters, or numeric ranges in the section."
+      },
+      "Deontic": {
+        "relevance": "LOW",
+        "explanation": "No new MUST/SHOULD/etc. in Section 10 beyond generic “security issues are discussed”; nothing to reconcile."
+      },
+      "Structural": {
+        "relevance": "LOW",
+        "explanation": "Only cross-references to appendices; no ABNF/YANG/bitfields here."
+      },
+      "CrossRFC": {
+        "relevance": "LOW",
+        "explanation": "The only external reference is to RFC 3552, which is correct for security considerations guidance; no registry IDs or section-number details to validate here."
+      },
+      "Terminology": {
+        "relevance": "LOW",
+        "explanation": "No new or reused technical terms being defined; just generic “security issues”."
+      },
+      "Boundary": {
+        "relevance": "LOW",
+        "explanation": "No edge-case behavior or limits described here."
+      }
+    },
+    "candidate_issues": [
+      {
+        "bug_type": "None",
+        "short_label": "No substantive logic or constraints in Section 10 to analyze for errors or underspecification.",
+        "relevant_dimensions": [],
+        "sketch_for_experts": ""
+      }
+    ]
+  },
+  "expert_analyses": {},
+  "vector_store_ids": [
+    "vs_6958ce993c388191a7c9f32559e3b152"
+  ],
+  "metadata": {
+    "model": "gpt-5.1",
+    "router_reasoning_effort": "medium",
+    "expert_reasoning_effort": "medium",
+    "test_mode": "manual"
+  }
+}

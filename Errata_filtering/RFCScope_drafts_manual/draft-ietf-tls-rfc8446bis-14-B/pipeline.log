@@ -1,0 +1,805 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section B
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section B
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/corpus.json
+
+Extracting references from section B only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/reference_extraction.log
+Focusing on section B and its children.
+Processing section B. Protocol Data Structures and Constant Values
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.88s/it]Splitting content into chunks: 100%|██████████| 1/1 [00:03<00:00,  3.88s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This appendix provides the normative protocol types and the
+   definitions for constants.  Values listed as "_RESERVED" were used in
+   previous versions of TLS and are listed here for completeness...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '1.3'
+  Match Type: Exact match
+  Result: Matched to Section 1.3
+  Section Title: Updates Affecting TLS 1.2
+---------------------------------------------------------------------------
+
+Warning: Section B not found. Processing all sections.
+Processing section B.1. Record Layer
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 4/4 [00:00<00:00, 581.43it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      enum {
+          invalid(0),
+          change_cipher_spec(20),
+          alert(21),
+          handshake(22),
+          application_data(23),
+          (255)
+      } ContentType;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          ContentType type;
+          ProtocolVersion legacy_record_version;
+          uint16 length;
+          opaque fragment[TLSPlaintext.length];
+      } TLSPlaintext;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          opaque content[TLSPlaintext.length];
+          ContentType type;
+          uint8 zeros[length_of_padding];
+      } TLSInnerPlaintext;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          ContentType opaque_type = application_data; /* 23 */
+          ProtocolVersion legacy_record_version = 0x0303; /* TLS v1.2 */
+          uint16 length;
+          opaque encrypt...
+################################################################################
+Processing section B.2. Alert Messages
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 251.10it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+
+      enum { warning(1), fatal(2), (255) } AlertLevel;
+
+      enum {
+          close_notify(0),
+          unexpected_message(10),
+          bad_record_mac(20),
+          decryption_failed_RESERVED(21...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          AlertLevel level;
+          AlertDescription description;
+      } Alert;
+################################################################################
+Processing section B.3. Handshake Protocol
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 328.49it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      enum {
+          hello_request_RESERVED(0),
+          client_hello(1),
+          server_hello(2),
+          hello_verify_request_RESERVED(3),
+          new_session_ticket(4),
+          end_of_ea...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          HandshakeType msg_type;    /* handshake type */
+          uint24 length;             /* remaining bytes in message */
+          select (Handshake.msg_type) {
+              cas...
+################################################################################
+Processing section B.3.1. Key Exchange Messages
+Splitting content into chunks:   0%|          | 0/15 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 15/15 [00:00<00:00, 322.56it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+
+    uint16 ProtocolVersion;
+    opaque Random[32];
+
+    uint8 CipherSuite[2];    /* Cryptographic suite selector */
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        ProtocolVersion legacy_version = 0x0303;    /* TLS v1.2 */
+        Random random;
+        opaque legacy_session_id<0..32>;
+        CipherSuite cipher_suites<2..2^16-2>;
+        op...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        ProtocolVersion legacy_version = 0x0303;    /* TLS v1.2 */
+        Random random;
+        opaque legacy_session_id_echo<0..32>;
+        CipherSuite cipher_suite;
+        uint8 leg...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        ExtensionType extension_type;
+        opaque extension_data<0..2^16-1>;
+    } Extension;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    enum {
+        server_name(0),                             /* RFC 6066 */
+        max_fragment_length(1),                     /* RFC 6066 */
+        status_request(5),                          /* ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        NamedGroup group;
+        opaque key_exchange<1..2^16-1>;
+    } KeyShareEntry;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        KeyShareEntry client_shares<0..2^16-1>;
+    } KeyShareClientHello;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        NamedGroup selected_group;
+    } KeyShareHelloRetryRequest;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        KeyShareEntry server_share;
+    } KeyShareServerHello;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        uint8 legacy_form = 4;
+        opaque X[coordinate_length];
+        opaque Y[coordinate_length];
+    } UncompressedPointRepresentation;
+
+    enum { psk_ke(0), psk_dhe_ke(1), (255)...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        PskKeyExchangeMode ke_modes<1..255>;
+    } PskKeyExchangeModes;
+
+    struct {} Empty;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        select (Handshake.msg_type) {
+            case new_session_ticket:   uint32 max_early_data_size;
+            case client_hello:         Empty;
+            case encrypted_extension...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        opaque identity<1..2^16-1>;
+        uint32 obfuscated_ticket_age;
+    } PskIdentity;
+
+    opaque PskBinderEntry<32..255>;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        PskIdentity identities<7..2^16-1>;
+        PskBinderEntry binders<33..2^16-1>;
+    } OfferedPsks;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+    struct {
+        select (Handshake.msg_type) {
+            case client_hello: OfferedPsks;
+            case server_hello: uint16 selected_identity;
+        };
+    } PreSharedKeyExtension;
+################################################################################
+Processing section B.3.1.1. Version Extension
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 490.68it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          select (Handshake.msg_type) {
+              case client_hello:
+                   ProtocolVersion versions<2..254>;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+              case server_hello: /* and HelloRetryRequest */
+                   ProtocolVersion selected_version;
+          };
+      } SupportedVersions;
+################################################################################
+Processing section B.3.1.2. Cookie Extension
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 577.73it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          opaque cookie<1..2^16-1>;
+      } Cookie;
+################################################################################
+Processing section B.3.1.3. Signature Algorithm Extension
+Splitting content into chunks:   0%|          | 0/8 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 8/8 [00:00<00:00, 251.75it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      enum {
+          /* RSASSA-PKCS1-v1_5 algorithms */
+          rsa_pkcs1_sha256(0x0401),
+          rsa_pkcs1_sha384(0x0501),
+          rsa_pkcs1_sha512(0x0601),
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+          /* ECDSA algorithms */
+          ecdsa_secp256r1_sha256(0x0403),
+          ecdsa_secp384r1_sha384(0x0503),
+          ecdsa_secp521r1_sha512(0x0603),
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+          /* RSASSA-PSS algorithms with public key OID rsaEncryption */
+          rsa_pss_rsae_sha256(0x0804),
+          rsa_pss_rsae_sha384(0x0805),
+          rsa_pss_rsae_sha512(0x0806),
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+          /* EdDSA algorithms */
+          ed25519(0x0807),
+          ed448(0x0808),
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+          /* RSASSA-PSS algorithms with public key OID RSASSA-PSS */
+          rsa_pss_pss_sha256(0x0809),
+          rsa_pss_pss_sha384(0x080a),
+          rsa_pss_pss_sha512(0x080b),
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+          /* Legacy algorithms */
+          rsa_pkcs1_sha1(0x0201),
+          ecdsa_sha1(0x0203),
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+          /* Reserved Code Points */
+          obsolete_RESERVED(0x0000..0x0200),
+          dsa_sha1_RESERVED(0x0202),
+          obsolete_RESERVED(0x0204..0x0400),
+          dsa_sha256_RESERVED(0x0402...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          SignatureScheme supported_signature_algorithms<2..2^16-2>;
+      } SignatureSchemeList;
+################################################################################
+Processing section B.3.1.4. Supported Groups Extension
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 5/5 [00:00<00:00, 248.00it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      enum {
+          unallocated_RESERVED(0x0000),
+
+          /* Elliptic Curve Groups (ECDHE) */
+          obsolete_RESERVED(0x0001..0x0016),
+          secp256r1(0x0017), secp384r1(0x0018), secp521...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+          /* Finite Field Groups (DHE) */
+          ffdhe2048(0x0100), ffdhe3072(0x0101), ffdhe4096(0x0102),
+          ffdhe6144(0x0103), ffdhe8192(0x0104),
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+          /* Reserved Code Points */
+          ffdhe_private_use(0x01FC..0x01FF),
+          ecdhe_private_use(0xFE00..0xFEFF),
+          obsolete_RESERVED(0xFF01..0xFF02),
+          (0xFFFF)
+      } N...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          NamedGroup named_group_list<2..2^16-1>;
+      } NamedGroupList;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Values within "obsolete_RESERVED" ranges are used in previous
+   versions of TLS and MUST NOT be offered or negotiated by TLS 1.3
+   implementations.  The obsolete curves have various known/theoret...
+################################################################################
+Processing section B.3.2. Server Parameters Messages
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 5/5 [00:00<00:00, 268.99it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      opaque DistinguishedName<1..2^16-1>;
+
+      struct {
+          DistinguishedName authorities<3..2^16-1>;
+      } CertificateAuthoritiesExtension;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          opaque certificate_extension_oid<1..2^8-1>;
+          opaque certificate_extension_values<0..2^16-1>;
+      } OIDFilter;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          OIDFilter filters<0..2^16-1>;
+      } OIDFilterExtension;
+
+      struct {} PostHandshakeAuth;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          Extension extensions<0..2^16-1>;
+      } EncryptedExtensions;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          opaque certificate_request_context<0..2^8-1>;
+          Extension extensions<0..2^16-1>;
+      } CertificateRequest;
+################################################################################
+Processing section B.3.3. Authentication Messages
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 6/6 [00:00<00:00, 514.31it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      enum {
+          X509(0),
+          OpenPGP_RESERVED(1),
+          RawPublicKey(2),
+          (255)
+      } CertificateType;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          select (certificate_type) {
+              case RawPublicKey:
+                /* From RFC 7250 ASN.1_subjectPublicKeyInfo */
+                opaque ASN1_subjectPublicKeyInfo<1....
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+              case X509:
+                opaque cert_data<1..2^24-1>;
+          };
+          Extension extensions<0..2^16-1>;
+      } CertificateEntry;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          opaque certificate_request_context<0..2^8-1>;
+          CertificateEntry certificate_list<0..2^24-1>;
+      } Certificate;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          SignatureScheme algorithm;
+          opaque signature<0..2^16-1>;
+      } CertificateVerify;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          opaque verify_data[Hash.length];
+      } Finished;
+################################################################################
+Processing section B.3.4. Ticket Establishment
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [00:00<00:00, 461.32it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          uint32 ticket_lifetime;
+          uint32 ticket_age_add;
+          opaque ticket_nonce<0..255>;
+          opaque ticket<1..2^16-1>;
+          Extension extensions<0..2^16-1>;
+...
+################################################################################
+Processing section B.3.5. Updating Keys
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 588.14it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+
+      struct {} EndOfEarlyData;
+
+      enum {
+          update_not_requested(0), update_requested(1), (255)
+      } KeyUpdateRequest;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          KeyUpdateRequest request_update;
+      } KeyUpdate;
+################################################################################
+Processing section B.4. Cipher Suites
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks:  80%|████████  | 4/5 [04:52<01:13, 73.03s/it]Splitting content into chunks: 100%|██████████| 5/5 [04:54<00:00, 54.54s/it]Splitting content into chunks: 100%|██████████| 5/5 [04:54<00:00, 58.98s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A cipher suite defines the pair of the AEAD algorithm and hash
+   algorithm to be used with HKDF.  Cipher suite names follow the naming
+   convention:
+
+      CipherSuite TLS_AEAD_HASH = VALUE;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   +===========+=======================================================+
+   | Component | Contents                                              |
+   +===========+======================================...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This specification defines the following cipher suites for use with
+   TLS 1.3. 
+              +==============================+=============+
+              | Description                  | Value   ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The corresponding AEAD algorithms AEAD_AES_128_GCM, AEAD_AES_256_GCM,
+   and AEAD_AES_128_CCM are defined in [RFC5116].
+   AEAD_CHACHA20_POLY1305 is defined in [RFC8439].  AEAD_AES_128_CCM_8
+   is ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5116
+  Reference Type: TEXT
+  Reference Value (keywords/section): AEAD algorithms AEAD_AES_128_GCM, AEAD_AES_256_GCM, AEAD_AES_128_CCM
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8439
+  Reference Type: TEXT
+  Reference Value (keywords/section): AEAD_CHACHA20_POLY1305
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC6655
+  Reference Type: TEXT
+  Reference Value (keywords/section): AEAD_AES_128_CCM_8
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: SHS
+  Reference Type: TEXT
+  Reference Value (keywords/section): hash algorithms
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5116:
+  Search Keywords: 'AEAD algorithms AEAD_AES_128_GCM, AEAD_AES_256_GCM, AEAD_AES_128_CCM'
+  Result: Found in Section 5
+  Section Title: AEAD Algorithms
+  Content Preview:    This section defines four AEAD algorithms; two are based on AES GCM,
+   two are based on AES CCM....
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8439:
+  Search Keywords: 'AEAD_CHACHA20_POLY1305'
+  Result: Found in Section 2.8
+  Section Title: AEAD Construction
+  Content Preview:    AEAD_CHACHA20_POLY1305 is an authenticated encryption with additional
+   data algorithm.  The inp...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6655:
+  Search Keywords: 'AEAD_AES_128_CCM_8'
+  Result: Found in Section 6
+  Section Title: New AEAD Algorithms
+  Content Preview:    The following AEAD algorithms are defined:
+
+        AEAD_AES_128_CCM_8     = 18
+        AEAD_AES_...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Although TLS 1.3 uses the same cipher suite space as previous
+   versions of TLS, TLS 1.3 cipher suites are defined differently, only
+   specifying the symmetric ciphers, and cannot be used for TLS...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '11'
+  Match Type: Exact match
+  Result: Matched to Section 11
+  Section Title: IANA Considerations
+---------------------------------------------------------------------------
+
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section B only.
+Focusing on section B and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/section_dependencies.json
+
+Creating prompts for section B...
+Creating expert prompt for section B with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/focus_section_B_prompt_expert.md
+Expert prompt token count: 83,153 tokens
+Creating router prompt for section B...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/focus_section_B_prompt_router.md
+Router prompt token count: 68,730 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958ce993c388191a7c9f32559e3b152
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section B
+================================================================================
+2026-01-03 03:50:48,316 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:50:48,345 - __main__ - INFO - Router prompt length: 361000 chars
+2026-01-03 03:50:48,346 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:50:48,346 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:50:48,346 - __main__ - INFO - ================================================================================
+2026-01-03 03:50:48,603 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:50:48,603 - __main__ - INFO - User prompt length: 361000 chars
+2026-01-03 03:51:50,991 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:51:51,253 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 03:51:51,253 - __main__ - INFO - Using existing vector store(s): vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:51:51,253 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:51:51,253 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:51:51,253 - __main__ - INFO - ================================================================================
+2026-01-03 03:51:51,272 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/test_analysis.md
+2026-01-03 03:51:51,275 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B/test_analysis.json
+2026-01-03 03:51:51,275 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-B
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section B defines the formal TLS 1.3 protocol data structures and constant values (record layer, alerts, handshake, extensions, cipher suites), largely as a consolidated, implementation-oriented restatement of definitions that also appear in the main body.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - Section B is almost entirely type/constant definitions; no ordering or state-machine logic beyond what is already in the main text.
+  - ActorDirectionality: LOW - The excerpt does not assign behaviors to client/server; it only declares shared data structures.
+  - Scope: LOW - The scope (TLS 1.3 vs older versions) is already clarified in the surrounding appendix text; Section B itself is just structural.
+  - Causal: LOW - These are declarative layouts; no algorithms or cause-effect chains are introduced here beyond what is specified elsewhere.
+  - Quantitative: LOW - Lengths and ranges (e.g., vector floors, max sizes) match those in the main sections of the draft and RFC 8446; no clear numeric inconsistencies appear.
+  - Deontic: LOW - Normative requirements (“MUST”, “MUST NOT”) about when to send/use these types are in earlier sections; Section B itself mostly omits new normative language.
+  - Structural: LOW - The structures in B are consistent with the earlier definitions (e.g., in Sections 4, 5, 6); added *_RESERVED ranges simply restate registry content and do not contradict the main text.
+  - CrossRFC: LOW - Cross-references in comments (e.g., to RFC 6066, 7919, 8422, 8446, 8879, 9147) align with how those registries and code points are defined in the referenced RFCs.
+  - Terminology: LOW - Where the same types appear both in the main body and in Appendix B (e.g., HandshakeType, ContentType, CertificateType), the differences are limited to inclusion of RESERVED values and are consistent with the stated intent that these are for backward compatibility only.
+  - Boundary: LOW - Edge cases (e.g., minimum lengths, empty vectors) follow the same constraints already explained in the main sections; no new edge behavior is introduced here.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: 
+    Relevant Dimensions: 
+    Sketch: ...
+
+Response ID: resp_03d598643d9f0a34006958d86a57d48196a60dcae7d35db8f3
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958ce993c388191a7c9f32559e3b152
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section B
+################################################################################
+

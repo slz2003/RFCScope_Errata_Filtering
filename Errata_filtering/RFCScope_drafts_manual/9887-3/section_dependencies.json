@@ -1,0 +1,797 @@
+[
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "3.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "4.5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "6151",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "FIPS-140-3",
+    "reference_type": "TEXT",
+    "reference_value": "Security Requirements for Cryptographic Modules",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://nvlpubs.nist.gov/nistpubs/FIPS/",
+    "reference_text": "NIST, \"Security Requirements for Cryptographic Modules\", NIST FIPS 140-3, DOI 10.6028/NIST.FIPS.140-3, March 2019, <https://nvlpubs.nist.gov/nistpubs/FIPS/ NIST.FIPS.140-3.pdf >.",
+    "reference_summary": "The National Institute of Standards and Technology (NIST) published the Federal Information Processing Standard (FIPS) 140-3, titled \"Security Requirements for Cryptographic Modules,\" in March 2019. This standard outlines the security requirements for cryptographic modules used within security systems that protect sensitive but unclassified information. \n\nFIPS 140-3 defines four increasing levels of security\u2014Levels 1 through 4\u2014designed to accommodate a wide range of applications and environments. Each level builds upon the previous one, adding more stringent requirements to enhance the security of cryptographic modules. \n\nThe standard specifies security requirements across several areas related to the secure design, implementation, and operation of cryptographic modules, including:\n\n- **Cryptographic Module Specification**: Detailed description of the module and its security functions.\n\n- **Cryptographic Module Interfaces**: Definition of all entry and exit points and their functions.\n\n- **Roles, Services, and Authentication**: Identification of authorized roles and the corresponding services, along with authentication methods.\n\n- **Software/Firmware Security**: Measures to ensure the integrity and security of software and firmware components.\n\n- **Operating Environment**: Requirements for the module's operational context, including the operating system and other software.\n\n- **Physical Security**: Protections against physical tampering and environmental conditions.\n\n- **Non-Invasive Security**: Safeguards against non-invasive attacks that could compromise the module.\n\n- **Sensitive Security Parameter Management**: Procedures for handling critical security parameters, such as cryptographic keys.\n\n- **Self-Tests**: Mechanisms for the module to perform self-tests to ensure proper functioning.\n\n- **Life-Cycle Assurance**: Controls over the development, distribution, and maintenance of the module.\n\n- **Mitigation of Other Attacks**: Strategies to address other potential vulnerabilities not covered in the above areas.\n\nFIPS 140-3 is applicable to all federal agencies that use cryptographic-based security systems to protect sensitive information in computer and telecommunication systems. The standard is also available for adoption by private and commercial organizations. \n\nFor more detailed information, you can access the full document here:  "
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-uta-require-tls13-12",
+    "reference_type": "SECTION",
+    "reference_value": "8",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "5.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "5.1.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "7",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "B.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "10.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "4.3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "3.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "3.5",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "7250",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.4.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "3.4.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "6.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "7924",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "7250",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "A",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "3.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9525",
+    "reference_type": "SECTION",
+    "reference_value": "1.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "6.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9525",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "5.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "5425",
+    "reference_type": "SECTION",
+    "reference_value": "5.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "5280",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.1.6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "5.1.5",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "9.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.4.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "B.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "5.1.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "C.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "9257",
+    "reference_type": "SECTION",
+    "reference_value": "6.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "9887",
+    "reference_type": "SECTION",
+    "reference_value": "6.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.6"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "4.6.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3.6"
+    },
+    "document_type": "RFC",
+    "document_tag": "8446",
+    "reference_type": "SECTION",
+    "reference_value": "C.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "6151",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "10.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "6151",
+    "reference_type": "SECTION",
+    "reference_value": "3.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9325",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9325",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "10.5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "3.4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9325",
+    "reference_type": "SECTION",
+    "reference_value": "4.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "10.5.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9887",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "8907",
+    "reference_type": "SECTION",
+    "reference_value": "10.5.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "reports": [
+    {
+      "label": "No substantive specification or registry inconsistency detected in Section 11",
+      "bug_type": "None",
+      "explanation": "The analysis indicates that the IANA actions in Section 11 merely restate or minimally extend existing IANA policies, resulting in no substantive specification inconsistency.",
+      "justification": [
+        "The Candidate Issues section explicitly states: No substantive specification or registry inconsistency detected in Section 11. (E1)",
+        "The sketch further explains that the IANA Considerations largely restate or minimally extend existing policies. (E1)"
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: No substantive specification or registry inconsistency detected in Section 11\n    Relevant Dimensions: \n    Sketch: The IANA Considerations in this draft largely restate or minimally extend the IANA policies and cont..."
+          }
+        ],
+        "summary": [
+          "(E1) The Candidate Issue 1 indicates that Section 11 does not introduce any substantive specification or registry inconsistency and notes that the IANA Considerations are largely reiterative."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "Dimensional ratings in the analysis are consistently low and the issue is informational rather than an operational error.",
+      "confidence": "High",
+      "experts": [
+        "RouterAnalysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-tls-rfc8446bis-14-11-1"
+    }
+  ]
+}

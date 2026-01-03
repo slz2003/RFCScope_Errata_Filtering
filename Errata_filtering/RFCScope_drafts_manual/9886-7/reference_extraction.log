@@ -1,0 +1,250 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-7/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The Registrar and Registry are commonly used concepts in the DNS.
+   These components connect the DIME with the DNS hierarchy and thus
+   operation SHOULD follow best common practices, specifically...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: BCP237
+  Reference Type: TEXT
+  Reference Value (keywords/section): guidance
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC237:
+  Search Keywords: 'guidance'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   If DNSSEC is used, a DNSSEC Practice Statement SHOULD be developed
+   and published.  It SHOULD explain how DNSSEC has been deployed and
+   what security measures are in place.  [RFC6841] documents...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6841
+  Reference Type: TEXT
+  Reference Value (keywords/section): DNSSEC policies and DNSSEC Practice Statements
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6841:
+  Search Keywords: 'DNSSEC policies and DNSSEC Practice Statements'
+  Result: Found in Section 3
+  Section Title: Concepts
+  Content Preview:    This section describes the concepts of a DNSSEC Policy and of a
+   DNSSEC Practice Statement.  Ot...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The interfaces and protocol specifications for registry-registrar
+   interactions are intentionally not specified in this document.  These
+   will depend on nationally defined policy and prevailing...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: STD69
+  Reference Type: TEXT
+  Reference Value (keywords/section): Extensible Provisioning Protocol (EPP)
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: STD95
+  Reference Type: TEXT
+  Reference Value (keywords/section): Registration Data Access Protocol (RDAP)
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC69:
+  Search Keywords: 'Extensible Provisioning Protocol (EPP)'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Decisions about DNS or registry best practices and other operational
+   matters that influence security SHOULD be made by the CAA, ideally in
+   consultation with local stakeholders.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The guidance above is intended to reduce the likelihood of
+   interoperability problems and minimize security and stability
+   concerns.  For instance, validation and authentication of DNS
+   respo...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   When DNSSEC is not in use, due to the length of the ORCHID hash
+   selected for DETs (Section 3.5 of [RFC9374]), clients MUST "walk" the
+   tree of certificates locating each certificate by perform...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9374
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.5
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: TEXT
+  Reference Value (keywords/section): DNSSEC, ORCHID hash, clients MUST walk the tree, certificates, DNS lookups, HHIT RRTypes, valid registration
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9374:
+  Looking for Section: '3.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.5
+  Section Title: ORCHIDs for HHITs
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9886:
+  Search Keywords: 'DNSSEC, ORCHID hash, clients MUST walk the tree, certificates, DNS lookups, HHIT RRTypes, valid registration'
+  Result: Found in Section 7.1
+  Section Title: DNS Operational and Registration Considerations
+  Content Preview:    The Registrar and Registry are commonly used concepts in the DNS.
+   These components connect the...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The contents of the BRID RRType auth key, containing Endorsements as
+   described in Section 4.2 of [RFC9575], are a shadow of the X.509
+   certificate found in the HHIT RRType.  The validation of ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.4.2
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: TEXT
+  Reference Value (keywords/section): DRIP Entity Tag (DET) Authentication Formats and Protocols for Broadcast Remote Identification (RID)
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9575:
+  Looking for Section: '4.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.2
+  Section Title: DRIP Link
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9575:
+  Looking for Section: '6.4.2'
+  Match Type: Exact match
+  Result: Matched to Section 6.4.2
+  Section Title: UAS RID Trust Assessment
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   DETs are built upon asymmetric keys.  As such the public key must be
+   revealed to enable clients to perform signature verifications.
+   [RFC9374] security considerations cover various attacks on ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9374
+  Reference Type: TEXT
+  Reference Value (keywords/section): security considerations
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9374:
+  Search Keywords: 'security considerations'
+  Result: Found in Section 8
+  Section Title: IANA Considerations
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   When practical, it is RECOMMENDED that no RRTypes under a DET's
+   specific domain name be published unless and until it is required for
+   use by other parties.  Such action would cause at least t...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Optimally this requires that the UAS somehow signal to the DIME that
+   a flight using a Specific Session ID will soon be underway or
+   complete.  It may also be facilitated under UTM if the USS (...
+################################################################################

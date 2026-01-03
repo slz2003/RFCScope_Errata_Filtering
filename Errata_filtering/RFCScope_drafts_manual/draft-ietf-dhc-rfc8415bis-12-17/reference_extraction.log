@@ -1,0 +1,53 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-17/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The client's behavior regarding interface selection is different,
+   depending on the purpose of the configuration.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   When a client sends a DHCP message to the
+   All_DHCP_Relay_Agents_and_Servers multicast address, it SHOULD send
+   the message through the interface for which configuration information
+   (includi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Delegated prefixes are not associated with a particular interface in
+   the same way as addresses are for address assignment as mentioned in Section 17.1 above.
+
+   When a client sends a DHCP messa...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 17.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7084
+  Reference Type: TEXT
+  Reference Value (keywords/section): Basic Requirements for IPv6 Customer Edge Routers
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '17.1'
+  Match Type: Exact match
+  Result: Matched to Section 17.1
+  Section Title: Source Address and Interface Selection for Address Assignment
+---------------------------------------------------------------------------
+

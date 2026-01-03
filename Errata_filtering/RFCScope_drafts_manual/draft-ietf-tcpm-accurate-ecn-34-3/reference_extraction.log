@@ -1,0 +1,3539 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-3/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+
+
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Given the ECN Nonce [RFC3540] has been reclassified as historic
+   [RFC8311], the TCP flag that was previously called NS (Nonce Sum) is
+   renamed as the AE (Accurate ECN) flag (the TCP header flag...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3540
+  Reference Type: TEXT
+  Reference Value (keywords/section): Robust Explicit Congestion Notification (ECN) Signaling with Nonces
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): Relaxing Restrictions on Explicit Congestion Notification (ECN) Experimentation
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '7'
+  Match Type: Exact match
+  Result: Matched to Section 7
+  Section Title: IANA Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   During the TCP three-way handshake at the start of a connection, to
+   request more Accurate ECN feedback the TCP Client (host A) MUST set
+   the TCP flags (AE,CWR,ECE) = (1,1,1) in the initial SYN...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If a TCP Server (host B) that is AccECN-enabled receives a SYN with
+   the above three flags set, it MUST set both its half connections into
+   AccECN mode.  Then it MUST set the AE, CWR and ECE TC...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '2.5'
+  Match Type: Exact match
+  Result: Matched to Section 2.5
+  Section Title: Generic (Mechanistic) Reflector
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   When the TCP Server returns any of the 4 combinations in the top
+   block of Table 2, it confirms that it supports AccECN.  The TCP
+   Server MUST NOT set one of these 4 combination of flags on the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Once a TCP Client (A) has sent the above SYN to declare that it
+   supports AccECN, and once it has received the above SYN/ACK segment
+   that confirms that the TCP Server supports AccECN, the TCP ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.1.5'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 6.1.5
+  Section Title: Retransmitted TCP packets
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.1.4'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 6.1.4
+  Section Title: Congestion on the ACK-path
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   It is RECOMMENDED that the AccECN protocol is implemented alongside
+   Selective Acknowledgement (SACK) [RFC2018].  If SACK is implemented
+   with AccECN, Duplicate Selective Acknowledgement (D-SAC...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC2018
+  Reference Type: TEXT
+  Reference Value (keywords/section): Selective Acknowledgement (SACK)
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC2883
+  Reference Type: TEXT
+  Reference Value (keywords/section): Duplicate Selective Acknowledgement (D-SACK)
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The three flags set to 1 to indicate AccECN support on the SYN have
+   been carefully chosen to enable natural fall-back to prior stages in
+   the evolution of ECN.  Table 2 tabulates all the negot...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3540
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN Nonce feedback
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): Classic ECN feedback
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   +========+========+============+============+======================+
+   | Host A | Host B |    SYN     |  SYN/ACK   | Feedback Mode        |
+   |        |        |    A->B    |    B->A    | of Host...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Table 2 is divided into blocks each separated by an empty row. 
+   1.  The top block shows the case already described in Section 3.1       where both endpoints support AccECN and how the TCP Server...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3448
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3448
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3448:
+  Looking for Section: '1'
+  Match Type: Exact match
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3448:
+  Looking for Section: '3.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1
+  Section Title: TCP Throughput Equation
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   2.  The second block shows the cases where the TCP Client (A)
+       supports AccECN but the TCP Server (B) supports some earlier
+       variant of TCP feedback, indicated in its SYN/ACK.  Therefor...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): Classic ECN feedback mode
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+       An AccECN implementation has no need to recognize or support the
+       Server response labelled 'Nonce' or ECN Nonce feedback more
+       generally [RFC3540], which has been reclassified as hi...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC3540
+  Reference Type: TEXT
+  Reference Value (keywords/section): Robust Explicit Congestion Notification (ECN) Signaling with Nonces
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): Relaxing Restrictions on Explicit Congestion Notification (ECN) Experimentation
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Compatibility with Feedback Integrity Mechanisms
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.3
+  Section Title: Forward Compatibility
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   3.  The third block shows the cases where the TCP Server (B) supports
+       AccECN but the TCP Client (A) supports some earlier variant of
+       TCP feedback, indicated in its SYN.
+
+       When a...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+       *  set both its half connections into the Classic ECN feedback
+          mode and return a SYN/ACK with (AE,CWR,ECE) = (0,0,1) as
+          shown.  Then it MUST comply with [RFC3168].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): compliance
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+       *  set both its half-connections into Not ECN mode and return a
+          SYN/ACK with (AE,CWR,ECE) = (0,0,0), then continue with ECN
+          disabled.  This latter case is unlikely to be des...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+       When an AccECN-enabled TCP Server (B) receives a SYN with
+       (AE,CWR,ECE) = (0,0,0) it MUST set both its half connections into
+       the Not ECN feedback mode, return a SYN/ACK with (AE,CW...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   4.  The fourth block displays a combination labelled `Broken'.  Some
+       older TCP Server implementations incorrectly set the TCP-ECN
+       flags in the SYN/ACK by reflecting those in the SYN. ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Simultaneous Open:  An originating AccECN Host (A), having sent a SYN
+      with (AE,CWR,ECE) = (1,1,1), might receive another SYN from host
+      B.  Host A MUST then enter the same feedback mode ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   In-window SYN during TIME-WAIT:  Many TCP implementations create a
+      new TCP connection if they receive an in-window SYN packet during
+      TIME-WAIT state.  When a TCP host enters TIME-WAIT o...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If a TCP Server that implements AccECN receives a SYN with the three
+   TCP header flags (AE,CWR,ECE) set to any combination other than
+   (0,0,0), (0,1,1) or (1,1,1) and it does not have logic spe...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If a TCP Client has sent a SYN requesting AccECN feedback with
+   (AE,CWR,ECE) = (1,1,1) then receives a SYN/ACK with the currently
+   reserved combination (AE,CWR,ECE) = (1,0,1) but it does not ha...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      |  For the avoidance of doubt, the behaviour described in the
+      |  present specification applies whether or not the three
+      |  remaining reserved TCP header flags are zero. 
+   All these...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+
+
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If the sender of an AccECN SYN (the TCP Client) times out before
+   receiving the SYN/ACK, it SHOULD attempt to negotiate the use of
+   AccECN at least one more time by continuing to set all three ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Retrying once before fall-back adds delay in the case where a
+   middlebox drops an AccECN (or ECN) SYN deliberately.  However, recent
+   measurements [Mandalari18] imply that a drop is less likely...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: Mandalari18
+  Reference Type: TEXT
+  Reference Value (keywords/section): Measuring ECN++: Good News for ++, Bad News for ECN over Mobile
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Implementers MAY use other fall-back strategies if they are found to
+   be more effective (e.g., attempting to negotiate AccECN on the SYN
+   only once or more than twice (most appropriate during h...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Further it might make sense to also remove any other new or
+   experimental fields or options on the SYN in case a middlebox might
+   be blocking them, although the required behaviour will depend o...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): experiment that allows ECT on a SYN
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Whichever fall-back strategy is used, the TCP initiator SHOULD cache
+   failed connection attempts.  If it does, it SHOULD NOT give up
+   attempting to negotiate AccECN on the SYN of subsequent con...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.5
+  Section Title: Implications of AccECN Mode
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.5
+  Section Title: Implications of AccECN Mode
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  Once the TCP Client has sent SYNs with (AE,CWR,ECE) = (1,1,1) and
+      with (AE,CWR,ECE) = (0,0,0), it might eventually receive a SYN/ACK
+      from the Server in response to one, the other, or...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  Such a TCP Client enters the feedback mode appropriate to the
+      first SYN/ACK it receives according to Table 2, and it does not
+      switch to a different mode, whatever other SYN/ACKs it m...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  If a TCP Client has entered AccECN mode but then subsequently
+      sends a SYN or receives a SYN/ACK with (AE,CWR,ECE) = (0,0,0), it
+      is still allowed to set ECT on packets for the rest of...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.5
+  Section Title: Implications of AccECN Mode
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  Having entered AccECN mode, in general a TCP Client commits to
+      respond to any incoming congestion feedback, whether or not it
+      sets ECT on outgoing packets (for rationale and some exc...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8311:
+  Looking for Section: '3.2.2.3'
+  Match Type: Fuzzy match (score: 60.0)
+  Result: Matched to Section 2.2
+  Section Title: Network Considerations for ECN Experimentation
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8311:
+  Looking for Section: '3.2.2.4'
+  Match Type: Fuzzy match (score: 60.0)
+  Result: Matched to Section 2.2
+  Section Title: Network Considerations for ECN Experimentation
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  Having entered AccECN mode, a TCP Client commits to using AccECN
+      to feed back the IP-ECN field in incoming packets for the rest of
+      the connection, as specified in Section 3.2, even i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2
+  Section Title: AccECN Feedback
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A TCP Server might send multiple SYN/ACKs indicating different
+   feedback modes.  For instance, when falling back to sending a SYN/ACK
+   with (AE,CWR,ECE) = (0,0,0) after previous AccECN SYN/ACKs...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3.2.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.4.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3.2.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3.2.2
+  Section Title: Testing for Loss of Packets Carrying the AccECN Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.4.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.4.1
+  Section Title: Retransmitted SYNs
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   All fall-back strategies will need to follow all the normative rules
+   in Section 3.1.5, which concern behaviour when SYNs or SYN/ACKs
+   negotiating different types of feedback are sent within th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.5
+  Section Title: Implications of AccECN Mode
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.5
+  Section Title: Implications of AccECN Mode
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  if a TCP Server in AccECN mode receives a SYN with (AE,CWR,ECE) =
+      (0,0,0), it preferably acknowledges it first using an AccECN SYN/
+      ACK, but it can retry using a SYN/ACK with (AE,CWR...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  If a TCP Server in AccECN mode sends multiple AccECN SYN/ACKs, it
+      uses the TCP-ECN flags in each SYN/ACK to feed back the IP-ECN
+      field on the latest SYN to have arrived;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  If a TCP Server enters AccECN mode then subsequently sends a SYN/
+      ACK or receives a SYN with (AE,CWR,ECE) = (0,0,0), it is
+      prohibited from setting ECT on any packet for the rest of t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  Having entered AccECN mode, in general a TCP Server commits to
+      respond to any incoming congestion feedback, whether or not it
+      sets ECT on outgoing packets (for rationale and some exc...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2.2.3'
+  Match Type: Fuzzy match (score: 71.42857142857143)
+  Result: Matched to Section 9.2.1.3
+  Section Title: Changes to IPsec Tunnel Header Processing
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2.2.4'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 9.2.2
+  Section Title: Changes to the ECN Field within an IPsec Tunnel.
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  Having entered AccECN mode, a TCP Server commits to using AccECN
+      to feed back the IP-ECN field in incoming packets for the rest of
+      the connection, as specified in Section 3.2, even i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2'
+  Match Type: Fuzzy match (score: 85.71428571428572)
+  Result: Matched to Section 23.2
+  Section Title: TCP Header Flags
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Section 3.1.1 describes the only ways that a host can enter AccECN
+   mode, whether as a Client or as a Server.
+
+   An implementation that supports AccECN has the rights and obligations
+   concerni...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1.1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): The Addition of Explicit Congestion Notification (ECN) to IP
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.1
+  Section Title: Negotiation during the TCP three-way handshake
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1.1'
+  Match Type: Exact match
+  Result: Matched to Section 6.1.1
+  Section Title: TCP Initialization
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   'Valid SYN':  A SYN that has the same port numbers and the same ISN
+      as the SYN that first caused the Server to open the connection.
+      An 'Acceptable' packet is defined in Section 1.3.
+
+  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3540
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '1.3'
+  Match Type: Exact match
+  Result: Matched to Section 1.3
+  Section Title: Terminology
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3540:
+  Looking for Section: '1.3'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 13
+  Section Title: Authors' Addresses
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  Any implementation that supports AccECN:
+      -  MUST NOT switch into a different feedback mode to the one it
+         first entered according to Table 2, no matter whether it
+         subseque...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  SHOULD ignore the TCP-ECN flags in SYNs or SYN/ACKs that are
+         received after the implementation reaches the Established
+         state, in line with the general TCP approach [RFC9293]...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9293
+  Reference Type: TEXT
+  Reference Value (keywords/section): TCP-ECN flags in SYNs or SYN/ACKs
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+         Reason: Reaching established state implies that at least one
+         SYN and one SYN/ACK have successfully been delivered.  And all
+         the rules for handshake fall-back are designed to...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  MUST NOT send a 'Classic' ECN-setup SYN [RFC3168] with
+         (AE,CWR,ECE) = (0,1,1) and a SYN with (AE,CWR,ECE) = (1,1,1)
+         requesting AccECN feedback within the same connection;
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): Classic ECN-setup SYN
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  MUST NOT send a 'Classic' ECN-setup SYN/ACK [RFC3168] with
+         (AE,CWR,ECE) = (0,0,1) and a SYN/ACK agreeing to use AccECN
+         feedback within the same connection;
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: TEXT
+  Reference Value (keywords/section): Classic ECN-setup SYN/ACK
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): AccECN feedback
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  MUST reset the connection with a RST packet, if it receives a
+         'Classic' ECN-setup SYN with (AE,CWR,ECE) = (0,1,1) and a SYN
+         requesting AccECN feedback during the same handsh...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  MUST reset the connection with a RST packet, if it receives
+         'Classic' ECN-setup SYN/ACK with (AE,CWR,ECE) = (0,0,1) and a
+         SYN/ACK agreeing to use AccECN feedback during the ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      The last four rules are necessary because, if one peer were to
+      negotiate the feedback mode in two different types of handshake,
+      it would not be possible for the other peer to know fo...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  A TCP Server already in AccECN mode:
+      -  SHOULD acknowledge a valid SYN arriving with (AE,CWR,ECE) =
+         (0,0,0) by emitting an AccECN SYN/ACK (with the appropriate
+         combinatio...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      Rationale: When a SYN arrives with (AE,CWR,ECE) = (0,0,0) at a TCP
+      Server that is already in AccECN mode, it implies that the TCP
+      Client had probably not received the previous AccECN...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  SHOULD respond to any subsequent valid SYN using a SYN/ACK with
+         (AE,CWR,ECE) = (0,0,0), even if the SYN is offering to
+         negotiate Classic ECN or AccECN feedback mode;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+         Rationale: There would be no point in the Server offering any
+         type of ECN feedback, because the Client will not be using ECN.
+         However, there is no interoperability reason to...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If for any reason a host is not willing to provide ECN feedback on a
+   particular TCP connection, it SHOULD clear the AE, CWR and ECE flags
+   in all SYN and/or SYN/ACK packets that it sends.
+
+   ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  SHOULD set an ECT codepoint in the IP header of packets to
+         indicate to the network that the transport is capable and
+         willing to participate in ECN for this packet;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  MAY not set ECT on any packet (for instance if it has reason to
+         believe such a packet would be blocked);
+      A TCP Server in AccECN mode:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  MUST NOT set ECT on any packet for the rest of the connection,
+         if it has received or sent at least one valid SYN or Acceptable
+         SYN/ACK with (AE,CWR,ECE) = (0,0,0) during the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+         This rule solely applies to a Server because, when a Server
+         enters AccECN mode it doesn't know for sure whether the Client
+         will end up in AccECN mode.  But when a Client ent...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  is obliged to respond appropriately to AccECN feedback that
+         indicates there were ECN marks on packets it had previously
+         sent, where 'appropriately' is defined in Section 6.1...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '6.1'
+  Match Type: Exact match
+  Result: Matched to Section 6.1
+  Section Title: TCP
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8311:
+  Looking for Section: '2.1'
+  Match Type: Exact match
+  Result: Matched to Section 2.1
+  Section Title: Effective Congestion Control is Required
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8311:
+  Looking for Section: '4.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.1
+  Section Title: Congestion Response Differences
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  is still obliged to respond appropriately to congestion
+         feedback, even when it is solely sending non-ECN-capable
+         packets (for rationale, some examples and some exceptions se...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2.2.3'
+  Match Type: Fuzzy match (score: 71.42857142857143)
+  Result: Matched to Section 9.2.1.3
+  Section Title: Changes to IPsec Tunnel Header Processing
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2.2.4'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 9.2.2
+  Section Title: Changes to the ECN Field within an IPsec Tunnel.
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  is still obliged to respond appropriately to congestion
+         feedback, even if it has sent or received a SYN or SYN/ACK
+         packet with (AE,CWR,ECE) = (0,0,0) during the handshake;
+
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+         For the avoidance of doubt, this is unlike an RFC 3168 data
+         sender and this does not preclude the Data Sender from setting
+         the bits of the ACE counter field, which includes ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      -  MUST feed back the information in the IP-ECN field of incoming
+         packets using Accurate ECN feedback, as specified in Section 3.2. 
+         For the avoidance of doubt, this requiremen...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.3
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2
+  Section Title: AccECN Feedback
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.3
+  Section Title: Testing for Mangling of the IP/ECN Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3.3
+  Section Title: Usage of the AccECN TCP Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+         Reason: ECT at the IP layer does not explicitly confirm the
+         peer has the correct ECN feedback logic, because the packets
+         could have been mangled at the IP layer.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Each Data Receiver of each half connection maintains four counters,
+   r.cep, r.ceb, r.e0b and r.e1b:
+
+   *  The Data Receiver MUST increment the CE packet counter (r.cep),
+      for every Acceptab...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  A Data Receiver that supports sending of AccECN TCP Options MUST
+      increment the r.ceb, r.e0b or r.e1b byte counters by the number of
+      TCP payload octets in Acceptable packets marked wi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Each Data Sender of each half connection maintains four counters,
+   s.cep, s.ceb, s.e0b and s.e1b intended to track the equivalent
+   counters at the Data Receiver.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A Data Receiver feeds back the CE packet counter using the Accurate
+   ECN (ACE) field, as explained in Section 3.2.2.  And it optionally
+   feeds back all the byte counters using the AccECN TCP Op...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2
+  Section Title: The ACE Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3
+  Section Title: The AccECN Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   When a host first enters AccECN mode, in its role as a Data Receiver
+   it initializes its counters to r.cep = 5, r.e0b = r.e1b = 1 and r.ceb
+   = 0,
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Non-zero initial values are used to support a stateless handshake
+   (see Section 5.1) and to be distinct from cases where the fields are
+   incorrectly zeroed (e.g., by middleboxes - see Section 3...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8321
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8321
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3.2.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8321:
+  Looking for Section: '5.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.1
+  Section Title: Report on the Operational Experiment
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8321:
+  Looking for Section: '3.2.3.2.4'
+  Match Type: Fuzzy match (score: 71.42857142857143)
+  Result: Matched to Section 3.3.2
+  Section Title: Double-Marking Methodology
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   When a host enters AccECN mode, in its role as a Data Sender it
+   initializes its counters to s.cep = 5, s.e0b = s.e1b = 1 and s.ceb =
+   0.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   After AccECN has been negotiated on the SYN and SYN/ACK, both hosts
+   overload the three TCP flags (AE, CWR and ECE) in the main TCP header
+   as one 3-bit field.  Then the field is given a new na...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+
+       0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
+     +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+     |               |           |           | U | A | P | ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The original definition of these three flags in the TCP header,
+   including the addition of support for the ECN Nonce, is shown for
+   comparison in Figure 1.  This specification does not rename t...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.1
+  Section Title: ACE Field on the ACK of the SYN/ACK
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Both parts of each of these conditions are equally important.  For
+   instance, even if AccECN negotiation has been successful, the ACE
+   field is not defined on any segments with SYN=1 (e.g., a
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A TCP Client (A) in AccECN mode MUST feed back which of the 4
+   possible values of the IP-ECN field was on the SYN/ACK by writing it
+   into the ACE field of a pure ACK with no SACK blocks using t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Normally, a TCP Client acknowledges a SYN/ACK with an ACK that
+   satisfies the above conditions anyway (SYN=0, no data, no SACK
+   blocks).  If an AccECN TCP Client intends to acknowledge the SYN/...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: Compatibility with TCP Experiments and Common TCP Options
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The TCP Client MUST also use the handshake encoding for the pure ACK
+   of any retransmitted SYN/ACK that confirms that the TCP Server
+   supports AccECN.  The procedure for the TCP Server to follo...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.4.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.4.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.4.2
+  Section Title: Retransmitted SYN/ACKs
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   When an AccECN Server in SYN-RCVD state receives a pure ACK with
+   SYN=0 and no SACK blocks, instead of treating the ACE field as a
+   counter, it MUST infer the meaning of each possible value of ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Given this encoding of the ACE field on the ACK of a SYN/ACK is
+   exceptional, an AccECN Server using large receive offload (LRO) might
+   prefer to disable LRO until such an ACK has transitioned ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   {Note 1}: If the Server is in AccECN mode and in SYN-RCVD state, and
+   if it receives a value of zero on a pure ACK with SYN=0 and no SACK
+   blocks, for the rest of the connection the Server MUST...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Any of the circumstances below could cause a value of zero but,
+   whatever the cause, the actions above would be the appropriate
+   response:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  The TCP Client has somehow entered No ECN feedback mode (most
+      likely if the Server received a SYN or sent a SYN/ACK with
+      (AE,CWR,ECE) = (0,0,0) after entering AccECN mode, but possib...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  The TCP Client genuinely might be in AccECN mode, but its count of
+      received CE marks might have caused the ACE field to wrap to zero.
+      This is highly unlikely, but not impossible beca...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: Compatibility with TCP Experiments and Common TCP Options
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.4'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.4
+  Section Title: Testing for Zeroing of the ACE Field
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   {Note 2}: If the Server is in AccECN mode, these values are Currently
+   Unused but the AccECN Server's behaviour is still defined for forward
+   compatibility.  Then the designer of a future proto...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   {Note 3}: In the case where a Server that implements AccECN is also
+   using a stateless handshake (termed a SYN cookie) it will not
+   remember whether it entered AccECN mode.  The values 0b000 or...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '5.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.1
+  Section Title: Compatibility with SYN Cookies
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Whenever the Data Receiver sends an ACK with SYN=0 (with or without
+   data), unless the handshake encoding in Section 3.2.2.1 applies, the
+   Data Receiver MUST encode the least significant 3 bits...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.1
+  Section Title: ACE Field on the ACK of the SYN/ACK
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2.2.1'
+  Match Type: Fuzzy match (score: 71.42857142857143)
+  Result: Matched to Section 9.2.1.1
+  Section Title: ECN Tunnel Security Association Database Field
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Whenever the Data Sender receives an ACK with SYN=0 (with or without
+   data), it first checks whether it has already been superseded
+   (defined in Appendix A.1) by another ACK in which case it ig...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.1
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): A.1
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): A.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.1
+  Section Title: ACE Field on the ACK of the SYN/ACK
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: 'A.1'
+  Match Type: Exact match
+  Result: Matched to Section A.1
+  Section Title: Example Algorithm to Encode/Decode the AccECN Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: 'A.2'
+  Match Type: Exact match
+  Result: Matched to Section A.2
+  Section Title: Example Algorithm for Safety Against Long Sequences of ACK Loss
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  It takes the least significant 3 bits of its local s.cep counter
+      and subtracts them from the incoming ACE counter to work out the
+      minimum positive increment it could apply to s.cep (...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  It then follows the safety procedures in Section 3.2.2.5.2 to
+      calculate or estimate how many packets the ACK could have
+      acknowledged under the prevailing conditions to determine whet...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.5.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.5.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.5.2
+  Section Title: Data Sender Safety Procedures
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The encode/decode procedures during the three-way handshake are
+   exceptions to the general rules given so far, so they are spelled out
+   step by step below for clarity:
+   *  If a TCP Server in ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      Reason: It would be redundant for the Server to include CE-marked
+      SYNs in its r.cep counter, because it already reliably delivers
+      feedback of any CE marking using the encoding in the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  If a TCP Client in AccECN mode receives CE feedback in the TCP
+      flags of a SYN/ACK, it MUST NOT increment s.cep (it remains at its
+      initial value of 5), so that it stays in step with r...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  If a TCP Client in AccECN mode receives a CE mark in the IP-ECN
+      field of a SYN/ACK, it MUST increment r.cep, but no more than once
+      no matter how many CE-marked SYN/ACKs it receives
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      Reason: Incrementing r.cep ensures the Client will eventually
+      deliver any CE marking to the Server reliably when it starts using
+      the ACE field.  Even though the Client also feeds bac...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  If a TCP Server in AccECN mode and in SYN-RCVD state receives CE
+      feedback in the TCP flags of a pure ACK with no SACK blocks, it
+      MUST increment s.cep (from 5 to 6).  The TCP Server t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      Reasoning: The TCP Server can only increment s.cep once, because
+      the first ACK it receives will cause it to transition out of SYN-
+      RCVD state.  The Server's congestion response would...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      Once the TCP Server transitions to ESTABLISHED state, it might
+      later receive other pure ACK(s) with the handshake encoding in the
+      ACE field.  A Server MAY implement a test for such a...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      Reasoning: Such ACKs will be quite unusual, e.g., a SYN/ACK (or
+      ACK of the SYN/ACK) that is delayed for longer than the Server's
+      retransmission timeout; or packet duplication by the ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  TCP Client side:
+
+      The value of the TCP-ECN flags on the SYN/ACK indicates the value
+      of the IP-ECN field when the SYN arrived at the Server.  The TCP
+      Client can compare this wit...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      The value of the ACE field on the last ACK of the three-way
+      handshake indicates the value of the IP-ECN field when the SYN/ACK
+      arrived at the TCP Client.  The Server can compare this...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If a Data Sender in AccECN mode starts sending non-ECN-capable
+   packets because it has detected mangling, it is still advised to
+   respond to CE feedback.  Reason: any CE-marking arriving at the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Once a Data Sender has entered AccECN mode it is advised to check
+   whether it is receiving continuous feedback of CE.  Specifying
+   exactly how to do this is beyond the scope of the present
+   s...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The above advice on switching to sending non-ECN-capable packets but
+   still responding to CE-markings unless they become continuous is not
+   stated normatively (in capitals), because the best st...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   As always, once a host has entered AccECN mode, it follows the
+   general mandatory requirements (Section 3.1.5) to remain in the same
+   feedback mode and to continue feeding back any ECN markings...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.5
+  Section Title: Implications of AccECN Mode
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '2.5'
+  Match Type: Exact match
+  Result: Matched to Section 2.5
+  Section Title: Generic (Mechanistic) Reflector
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The ACK of the SYN/ACK is not reliably delivered (nonetheless, the
+   count of CE marks is still eventually delivered reliably).  If this
+   ACK does not arrive, the Server is advised to continue t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   All the fall-back behaviours in this section are necessary in case
+   mangling of the IP-ECN field is asymmetric, which is currently common
+   over some mobile networks [Mandalari18].  Then one end...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: Mandalari18
+  Reference Type: TEXT
+  Reference Value (keywords/section): Measuring ECN++
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Invalid transitions of the IP-ECN field are defined in section 18 of
+   the Classic ECN specification [RFC3168] and repeated here for
+   convenience:
+
+   *  the not-ECT codepoint changes;
+   *  eit...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): Invalid transitions of the IP-ECN field
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '18'
+  Match Type: Exact match
+  Result: Matched to Section 18
+  Section Title: Possible Changes to the ECN Field in the Network
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  the CE codepoint changes. RFC 3168 says that a router that changes ECT to not-ECT is invalid
+   but safe.  However, from a host's viewpoint, this transition is
+   unsafe because it could be the ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: Mandalari18
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN++
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Section 3.2.2 required the Data Receiver to initialize the r.cep
+   counter to a non-zero value.  Therefore, in either direction the
+   initial value of the ACE counter ought to be non-zero.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2
+  Section Title: The ACE Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2.2'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 9.2.2
+  Section Title: Changes to the ECN Field within an IPsec Tunnel.
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This section does not concern the case where the ACE field is zero
+   when the handshake encoding has been used on the ACK of the SYN/ACK
+   under the carefully worded conditions in Section 3.2.2.1...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.1
+  Section Title: ACE Field on the ACK of the SYN/ACK
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If AccECN has been successfully negotiated, the Data Sender MAY check
+   the value of the ACE counter in the first feedback packet (with or
+   without data) that arrives after the three-way handsha...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This advice is not stated normatively (in capitals), because the best
+   strategy might depend on experience of the most likely scenarios,
+   which can only be known at the time of deployment.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Note that a host in AccECN mode MUST continue to provide Accurate ECN
+   feedback to its peer, even if it is no longer sending ECT itself over
+   the other half connection. 
+   If reordering occurs...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The possibility of re-ordering means that there is a small chance
+   that the ACE field on the first packet to arrive is genuinely zero
+   (without middlebox interference).  This would cause a host...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Note that the Data Sender MUST NOT test whether the arriving counter
+   in the initial ACE field has been initialized to a specific valid
+   value - the above check solely tests whether the ACE fie...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If too many CE-marked segments are acknowledged at once, or if a long
+   run of ACKs is lost or thinned out, the 3-bit counter in the ACE
+   field might have cycled between two ACKs arriving at the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The following rules define when the receiver of a packet in AccECN
+   mode emits an ACK:
+
+   Change-Triggered ACKs:  An AccECN Data Receiver SHOULD emit an ACK
+      whenever a data packet marked C...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      Even though this rule is stated as a "SHOULD", it is important for
+      a transition to trigger an ACK if at all possible, The only valid
+      exception to this rule is given below these bulle...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      For the avoidance of doubt, this rule is deliberately worded to
+      apply solely when _data_ packets arrive, but the comparison with
+      the previous packet includes any packet, not just dat...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Increment-Triggered ACKs:  An AccECN receiver of a packet MUST emit 
+      an ACK if 'n' CE marks have arrived since the previous ACK.  If
+      there is unacknowledged data at the receiver, 'n' SH...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The above rules for when to send an ACK are designed to be
+   complemented by those in Section 3.2.3.3, which concern whether an
+   AccECN TCP Option ought to be included on ACKs.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3.3
+  Section Title: Usage of the AccECN TCP Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If the arrivals of a number of data packets are all processed as one
+   event, e.g., using large receive offload (LRO) or generic receive
+   offload (GRO), both the above rules SHOULD be interprete...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Even if a number of data packets do not arrive as one event, the
+   'Change-Triggered ACKs' rule could sometimes cause the ACK rate to be
+   problematic for high performance (although high performa...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   In a scenario where both endpoints support AccECN, if host B has
+   chosen to use ECN-capable pure ACKs (as allowed in [RFC8311]
+   experiments) and enough of these ACKs become CE-marked, then the
+...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN-capable pure ACKs
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   In the above bidirectional scenario, incoming ACKs of ACKs could be
+   mistaken for duplicate ACKs.  But ACKs of ACKs can be distinguished
+   from duplicate ACKs because they do not contain any SAC...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-generalized-ecn-16
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN++: Adding Explicit Congestion Notification (ECN) to TCP Control Packets
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If the Data Sender has not received AccECN TCP Options to give it
+   more dependable information, and it detects that the ACE field could
+   have cycled, it SHOULD deem whether it cycled by taking ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If missing acknowledgement numbers arrive later (reordering) and
+   prove that the counter did not cycle, the Data Sender MAY attempt to
+   neutralize the effect of any action it took based on a co...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The Data Sender can estimate how many packets (of any marking) an ACK
+   acknowledges.  If the ACE counter on an ACK seems to imply that the
+   minimum number of newly CE-marked packets is greater ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Two alternative AccECN Options are defined as shown in Figure 4.  The
+   initial 'E' of each field name stands for 'Echo'.
+
+    0                   1                   2                   3
+    0 1...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Figure 4 shows two option field orders; order 0 and order 1.  They
+   both consists of three 24-bit fields.  Order 0 provides the 24 least
+   significant bits of the r.e0b, r.ceb and r.e1b counters...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The choice to use three bytes (24 bits) fields in the options was
+   made to strike a balance between TCP option space usage, and the
+   required fidelity of the counters to accomodate typical scen...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '7'
+  Match Type: Exact match
+  Result: Matched to Section 7
+  Section Title: IANA Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Note that there is no field to feed back Not-ECT bytes.  Nonetheless
+   an algorithm for the Data Sender to calculate the number of payload
+   bytes received as Not-ECT is given in Appendix A.4.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Whenever a Data Receiver sends an AccECN Option, the rules in Section 3.2.3.3 allow it to omit unchanged fields from the tail of
+   the option, to help cope with option space limitations, as long a...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3.3
+  Section Title: Usage of the AccECN TCP Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+             +========+==================+==================+
+             | Length | Order 0          | Order 1          |
+             +========+==================+==================+
+             |...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The empty option of Length=2 is provided to allow for a case where an
+   AccECN Option has to be sent (e.g., on the SYN/ACK to test the path),
+   but there is very limited space for the option.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   All implementations of a Data Sender that read any AccECN Option MUST
+   be able to read AccECN Options of any of the above lengths.  For
+   forward compatibility, if the AccECN Option is of any ot...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   AccECN Options have to be optional to implement, because both sender
+   and receiver have to be able to cope without options anyway - in
+   cases where they do not traverse a network path.  It is R...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If a Data Receiver intends to send an AccECN Option at any time
+   during the rest of the connection it is RECOMMENDED to also test path
+   traversal of the AccECN Option as specified in Section 3....
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3.2
+  Section Title: Path Traversal of the AccECN Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Whenever the Data Receiver includes any of the counter fields (ECEB,
+   EE0B, EE1B) in an AccECN Option, it MUST encode the 24 least
+   significant bits of the current value of the associated count...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Whenever the Data Sender receives an ACK carrying an AccECN Option,
+   it first checks whether the ACK has already been superseded by
+   another ACK in which case it ignores the ECN feedback.  If t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Note that, as specified in Section 3.2, any data on the SYN (SYN=1,
+   ACK=0) is not included in any of the byte counters held locally for
+   each ECN marking nor in an AccECN Option on the wire.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8314
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2
+  Section Title: AccECN Feedback
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8314:
+  Looking for Section: '3.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2
+  Section Title: Implicit TLS for IMAP
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+
+
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The TCP Client MUST NOT include an AccECN TCP Option on the SYN.  If
+   there is somehow an AccECN Option on a SYN, it MUST be ignored when
+   forwarded or received.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A TCP Server that confirms its support for AccECN (in response to an
+   AccECN SYN from the Client as described in Section 3.1) SHOULD
+   include an AccECN TCP Option on the SYN/ACK.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1
+  Section Title: Negotiating to use AccECN
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A TCP Client that has successfully negotiated AccECN SHOULD include
+   an AccECN Option in the first ACK at the end of the three-way
+   handshake.  However, this first ACK is not delivered reliably...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A host MAY omit an AccECN Option in any of the above three cases due
+   to insufficient option space or if it has cached knowledge that the
+   packet would be likely to be blocked on the path to th...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If the TCP Server has not received an ACK to acknowledge its SYN/ACK
+   after the normal TCP timeout or it receives a second SYN with a
+   request for AccECN support, then either the SYN/ACK might ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.5
+  Section Title: Implications of AccECN Mode
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      |  Note that a retransmitted AccECN SYN/ACK will not necessarily
+      |  have the same TCP-ECN flags as the original SYN/ACK, because it
+      |  feeds back the IP-ECN field of the latest SYN t...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.5
+  Section Title: Implications of AccECN Mode
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The above fall-back approach limits any interference by middleboxes
+   that might drop packets with unknown options, even though it is more
+   likely that SYN/ACK loss is due to congestion.  The TC...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.1.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.5
+  Section Title: Implications of AccECN Mode
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Further it might make sense to also remove any other new or
+   experimental fields or options on the SYN/ACK, although the required
+   behaviour will depend on the specification of the other option...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If the TCP Client detects that the first data segment it sent with an
+   AccECN Option was lost, in deployment scenarios where AccECN path
+   traversal might be problematic, it SHOULD fall back to ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9040
+  Reference Type: TEXT
+  Reference Value (keywords/section): caching of TCP parameters and status information
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If a middlebox is dropping packets with options it does not
+   recognize, a host that is sending little or no data but mostly pure
+   ACKs will not inherently detect such losses.  Such a host MAY d...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Similarly, an AccECN endpoint MAY separately memorize which data
+   packets carried an AccECN Option and disable the sending of AccECN
+   Options if the loss probability of those packets is signifi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If the TCP Client has successfully negotiated AccECN but does not
+   receive an AccECN Option on the SYN/ACK (e.g., because is has been
+   stripped by a middlebox or not sent by the Server), the Cl...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Similarly, if the TCP Server has successfully negotiated AccECN but
+   does not receive an AccECN Option on the first segment that
+   acknowledges sequence space at least covering the ISN, it switc...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   While a host is in this mode that assumes incoming AccECN Options are
+   not available, it MUST adopt the conservative interpretation of the
+   ACE field discussed in Section 3.2.2.5.  However, it ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.5
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3.2.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.5
+  Section Title: Safety against Ambiguity of the ACE Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3.2.2'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3.2.2
+  Section Title: Testing for Loss of Packets Carrying the AccECN Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If a host is in the mode that assumes incoming AccECN Options are not
+   available, but it receives an AccECN Option at any later point during
+   the connection, this clearly indicates that AccECN ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   For a related test for invalid initialization of the ACE field, see Section 3.2.2.4
+
+   Section 3.2.1 required the Data Receiver to initialize the r.e0b and
+   r.e1b counters to a non-zero value.  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.4
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.4'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.4
+  Section Title: Testing for Zeroing of the ACE Field
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.1
+  Section Title: Initialization of Feedback Counters
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  the TCP Server MAY check that the initial value of the EE0B field
+      or the EE1B field is non-zero in the first segment that
+      acknowledges sequence space that at least covers the ISN plu...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.2.5'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.2.5
+  Section Title: Safety against Ambiguity of the ACE Field
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Note that the Data Sender MUST NOT test whether the arriving byte
+   counters in an initial AccECN Option have been initialized to
+   specific valid values - the above checks solely test whether th...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   When AccECN Options are available they ought to provide more
+   unambiguous feedback.  However, they supplement but do not replace
+   the ACE field.  An endpoint using AccECN feedback MUST always
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If an AccECN Option is present, the s.cep counter might increase more
+   than expected from the increase of the s.ceb counter (e.g., due to a
+   CE-marked control packet).  The sender's response to...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Compatibility with Feedback Integrity Mechanisms
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If either endpoint detects that the s.ceb counter has increased but
+   the s.cep has not (and by testing ACK coverage it is certain how much
+   the ACE field has wrapped), and if there is no explan...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If a Data Receiver in AccECN mode intends to use AccECN TCP Options
+   to provide feedback, the rules below determine when it includes an
+   AccECN TCP Option, and which fields to include, given ot...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Importance of Congestion Control:  AccECN is for congestion control,
+      which implementations SHOULD generally prioritize over other TCP
+      options when there is insufficient space for all th...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      If SACK has been negotiated [RFC2018], and the smallest
+      recommended AccECN Option would leave insufficient space for two
+      SACK blocks on a particular ACK, the Data Receiver MUST give
+...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC2018
+  Reference Type: TEXT
+  Reference Value (keywords/section): SACK
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Recommended Simple Scheme:  The Data Receiver SHOULD include an
+      AccECN TCP Option on every scheduled ACK if any byte counter has
+      incremented since the last ACK.  Whenever possible, it S...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      A scheduled ACK means an ACK that the Data Receiver would send by
+      its regular delayed ACK rules.  Recall that Section 1.3 defines an
+      'ACK' as either with data payload or without.  Bu...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '1.3'
+  Match Type: Exact match
+  Result: Matched to Section 1.3
+  Section Title: Terminology
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   When available TCP option space is limited on particular packets, the
+   recommended scheme will need to include compromises.  To guide the
+   implementer the rules below are ranked in order of imp...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Necessary Option Length:  When TCP option space is limited, an AccECN
+      TCP option MAY be truncated to omit one or two fields from the end
+      of the option, as indicated by the permitted var...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      If there is insufficient space to include an AccECN TCP option
+      containing the counter(s) that have changed since the previous
+      AccECN TCP option, then the entire AccECN TCP option MUS...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3
+  Section Title: The AccECN Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      For the avoidance of doubt, this rule does not concern the arrival
+      of control packets with no payload, because they cannot alter any
+      byte counters.
+
+   Continual Repetition:  Otherwi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      *  the Data Receiver SHOULD include a counter that has continued
+         to increment on the next scheduled ACK following a change-
+         triggered AccECN TCP Option;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      *  while the same counter continues to increment, it SHOULD
+         include the counter every n ACKs as consistently as possible,
+         where n can be chosen by the implementer;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      *  It SHOULD always include an AccECN Option if the r.ceb counter
+         is incrementing and it MAY include an AccECN Option if r.ec0b
+         or r.ec1b is incrementing
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      *  It SHOULD include each counter at least once for every 2^22
+         bytes incremented to prevent overflow during continual
+         repetition.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The above rules complement those in Section 3.2.2.5, which determine
+   when to generate an ACK irrespective of whether an AccECN TCP Option
+   is to be included.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.2.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3168:
+  Looking for Section: '3.2.2.5'
+  Match Type: Fuzzy match (score: 66.66666666666667)
+  Result: Matched to Section 9.2.2
+  Section Title: Changes to the ECN Field within an IPsec Tunnel.
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The recommended scheme is intended as a simple way to ensure that all
+   the relevant byte counters will be carried on any ACK that reaches
+   the Data Sender, no matter how many pure ACKs are filt...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   As an example of the recommended scheme, if ECT(0) is the only
+   codepoint that has ever arrived in the IP-ECN field, the Data
+   Receiver will feed back an AccECN0 TCP Option with only the EE0B
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   With the recommended scheme, if the data sending direction switches
+   during a connection, there can be cases where the AccECN TCP Option
+   that is meant to feed back the counter values at the en...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   If a host has determined that segments with AccECN Options always
+   seem to be discarded somewhere along the path, it is no longer
+   obliged to follow any of the rules in this section.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+
+      and other Middleboxes    Given AccECN alters the TCP protocol on the wire, this section
+   specifies new requirements on certain networking equipment that
+   forwards TCP and inspects TCP heade...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A large class of middleboxes split TCP connections.  Such a middlebox
+   would be compliant with the AccECN protocol if the TCP implementation
+   on each side complied with the present AccECN speci...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Another large class of middleboxes intervenes to some degree at the
+   transport layer, but attempts to be transparent (invisible) to the
+   end-to-end connection.  A subset of this class of middle...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A middlebox that is not normalizing the TCP protocol and does not
+   itself act as a back-to-back pair of TCP endpoints (i.e., a middlebox
+   that intends to be transparent or invisible at the tran...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8290
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8290
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8290:
+  Looking for Section: '3.2.3'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 5.2.3
+  Section Title: Packet Limit
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8290:
+  Looking for Section: '3.2.1'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 5.2.1
+  Section Title: Interval
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   A TCP normalizer is likely to block or alter an AccECN TCP Option if
+   the length value or the initial values of its byte-counter fields do
+   not match one of those specified in Section 3.2.3 or ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.1
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC5925
+  Reference Type: TEXT
+  Reference Value (keywords/section): TCP Authentication Option
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3
+  Section Title: The AccECN Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.1
+  Section Title: Initialization of Feedback Counters
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3
+  Section Title: The AccECN Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Section 5.2.1 of BCP 69 [RFC3449] gives best current practice on
+   filtering (aka. thinning or coalescing) of pure TCP ACKs.  It advises
+   that filtering ACKs carrying ECN feedback ought to prese...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3449
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2.1
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3449:
+  Looking for Section: '5.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.2.1
+  Section Title: ACK Filtering
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '5.2.1'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 3.2.1
+  Section Title: Initialization of Feedback Counters
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The problem divides into two parts: determining if an ACK is part of
+   a connection that is using AccECN and then preserving the correct
+   operation of AccECN feedback:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  To determine whether a pure TCP ACK is part of an AccECN
+      connection without resorting to connection tracking and per-flow
+      state, a useful heuristic would be to check for a non-zero E...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: I-D.ietf-tcpm-generalized-ecn
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN++ experiment
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5690
+  Reference Type: TEXT
+  Reference Value (keywords/section): Acknowledgement Congestion Control
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   *  The main concern with preserving correct AccECN operation involves
+      leaving enough ACKs for the Data Sender to work out whether the
+      3-bit ACE field has wrapped.  In the worst case, in...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC6040
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.2.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '3.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.2.3
+  Section Title: The AccECN Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC6040:
+  Looking for Section: '3.2.3'
+  Match Type: Fuzzy match (score: 75.0)
+  Result: Matched to Section 3.2
+  Section Title: Decapsulation at Tunnel Egress
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Note that the present specification of AccECN in TCP does not presume
+   to rely on any of the above ACK filtering behaviour in the network,
+   because it has to be robust against pre-existing netw...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+
+        Offload    Hardware to offload certain TCP processing represents another large
+   class of middleboxes (even though it is often a function of a host's
+   network interface and rarely in its o...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Offloading can happen in the transmit path, usually referred to as
+   TCP Segmentation Offload (TSO), and the receive path where it is
+   called Large Receive Offload (LRO).
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   In the transmit direction, with AccECN, all segments created from the
+   same super-segment should retain the same ACE field, which should
+   make TSO straighforward.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   However, with TSO hardware that supports [RFC3168], the CWR bit is
+   usually masked out on the middle and last segment.  If applied to an
+   AccECN segment, this would change the ACE field, and wo...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): CWR bit
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): AccECN segment
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Initially, when Classic ECN [RFC3168] and Accurate ECN flows coexist
+   on the same offloading engine, the host software may need to work
+   around incompatibilities (e.g., when only global configu...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): Classic ECN
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   One way around this could be to only negotiate for Accurate ECN, but
+   not offer a fall back to [RFC3168] ECN.  Another way could be to
+   allow TSO only as long as the CWR flag in the TCP header ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   For LRO in the receive direction, a different issue may get exposed
+   with [RFC3168] ECN supporting hardware. 
+   The ACE field changes with every received CE marking, so today's
+   receive offloa...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3168
+  Reference Type: TEXT
+  Reference Value (keywords/section): ECN supporting hardware
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Current offload hardware ejects a segment from the coalescing process
+   whenever the TCP ECN flags change.  In data centres it has been
+   fortunate for this offload hardware that DCTCP-style feed...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   ECN encodes a varying signal in the ACK stream, so it is inevitable
+   that offload hardware will ultimately need to handle any form of ECN
+   feedback exceptionally.  The ACE field has been design...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   The above process has been designed to enable a continuing
+   incremental deployment path - to more highly dynamic congestion
+   control.  Once offload hardware supports AccECN, it will be able to
+...
+################################################################################

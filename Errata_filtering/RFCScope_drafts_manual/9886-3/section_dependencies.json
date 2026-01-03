@@ -1,0 +1,272 @@
+[
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "8.2.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "3596",
+    "reference_type": "SECTION",
+    "reference_value": "2.5",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "88",
+    "reference_type": "SECTION",
+    "reference_value": "G",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9886",
+    "reference_type": "SECTION",
+    "reference_value": "6.2.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "ISO3166-1",
+    "reference_type": "TEXT",
+    "reference_value": "Codes for the representation of names of countries and their subdivisions",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://www.iso.org/standard/72482.html",
+    "reference_text": "ISO, \"Codes for the representation of names of countries and their subdivisions - Part 1: Country code\", ISO 3166-1:2020, August 2020, <https://www.iso.org/standard/72482.html >.",
+    "reference_summary": "ISO 3166-1:2020, titled \"Codes for the representation of names of countries and their subdivisions \u2013 Part 1: Country code,\" establishes standardized codes for country names. These codes are designed for use in applications requiring the expression of current country names in a coded format. ([iso.org](https://www.iso.org/standard/72482.html?utm_source=openai))\n\nThe standard defines three types of country codes:\n\n- **Alpha-2 code**: A two-letter code recommended for general use.\n- **Alpha-3 code**: A three-letter code that is more closely related to the country's name.\n- **Numeric-3 code**: A three-digit numeric code useful for applications requiring language independence.\n\nFor example, the United States is represented as \"US\" (Alpha-2), \"USA\" (Alpha-3), and \"840\" (Numeric-3). ([blog.ansi.org](https://blog.ansi.org/2020/10/iso-country-codes-iso-3166-standards/?utm_source=openai))\n\nThe codes are intended for use in any application requiring the expression of current country names in coded form. ([iso.org](https://www.iso.org/standard/72482.html?utm_source=openai))\n\nISO 3166-1:2020 is maintained by the ISO 3166 Maintenance Agency (ISO 3166/MA), which regularly updates the standard to reflect changes in country names and subdivisions. ([iso.org](https://www.iso.org/iso-3166-country-codes.html?utm_source=openai))\n\nThe standard is available for purchase through the ISO website. ([iso.org](https://www.iso.org/standard/72482.html?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3.1.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "3.3.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "3.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "3.5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "3.3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "8.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "3.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "9886",
+      "section_id": "3"
+    },
+    "document_type": "RFC",
+    "document_tag": "9374",
+    "reference_type": "SECTION",
+    "reference_value": "3.3.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

@@ -1,0 +1,320 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-3/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This document deals with the formatting of data in an external
+   representation.  The following very basic and somewhat casually
+   defined presentation syntax will be used.
+
+   In the definitions...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The representation of all data items is explicitly specified.  The
+   basic data block size is one byte (i.e., 8 bits).  Multiple-byte data
+   items are concatenations of bytes, from left to right,...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Comments begin with "/*" and end with "*/".
+
+   Single-byte entities containing uninterpreted data are of type
+   opaque.
+
+   A type alias T' for an existing type T is defined by:
+      T T';
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The basic numeric data type is an unsigned byte (uint8).  All larger
+   numeric data types are constructed from a fixed-length series of
+   bytes concatenated as described in Section 3.1 and are al...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '3.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1
+  Section Title: Basic Block Size
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      uint8 uint16[2];
+      uint8 uint24[3];
+      uint8 uint32[4];
+      uint8 uint64[8];
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   All values, here and elsewhere in the specification, are transmitted
+   in network byte (big-endian) order; the uint32 represented by the hex
+   bytes 01 02 03 04 is equivalent to the decimal value...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A vector (single-dimensioned array) is a stream of homogeneous data
+   elements.  For presentation purposes, this specification refers to
+   vectors as lists.  The size of the vector may be specifi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Here, T' occupies n bytes in the data stream, where n is a multiple
+   of the size of T.  The length of the vector is not included in the
+   encoded stream.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In the following example, Datum is defined to be three consecutive
+   bytes that the protocol does not interpret, while Data is three
+   consecutive Datum, consuming a total of nine bytes.
+
+      o...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Variable-length vectors are defined by specifying a subrange of legal
+   lengths, inclusively, using the notation <floor..ceiling>.  When
+   these are encoded, the actual length precedes the vector...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In the following example, "mandatory" is a vector that must contain
+   between 300 and 400 bytes of type opaque.  It can never be empty.
+   The actual length field consumes two bytes, a uint16, whi...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '3.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.3
+  Section Title: Numbers
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      opaque mandatory<300..400>;
+            /* length field is two bytes, cannot be empty */
+      uint16 longer<0..800>;
+            /* zero to 400 16-bit unsigned integers */
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   An additional sparse data type, called "enum" or "enumerated", is
+   available.  Each definition is a different type.  Only enumerateds of
+   the same type may be assigned or compared.  Every eleme...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Future extensions or additions to the protocol may define new values.
+   Implementations need to be able to parse and ignore unknown values
+   unless the definition of the field states otherwise.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   An enumerated occupies as much space in the byte stream as would its
+   maximal defined ordinal value.  The following definition would cause
+   one byte to be used to carry fields of type Color.
+
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In the following example, Taste will consume two bytes in the data
+   stream but can only assume the values 1, 2, or 4 in the current
+   version of the protocol.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      enum { sweet(1), sour(2), bitter(4), (32000) } Taste;
+   The names of the elements of an enumeration are scoped within the
+   defined type.  In the first example, a fully qualified reference to
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The names assigned to enumerateds do not need to be unique.  The
+   numerical value can describe a range over which the same name
+   applies.  The value includes the minimum and maximum inclusive v...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Structure types may be constructed from primitive types for
+   convenience.  Each specification declares a new, unique type.  The
+   syntax used for definitions is much like that of C.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          T1 f1;
+          T2 f2;
+          ...
+          Tn fn;
+      } T;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Fixed- and variable-length list (vector) fields are allowed using the
+   standard list syntax.  Structures V1 and V2 in the variants example
+   (Section 3.8) demonstrate this.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.8
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '3.8'
+  Match Type: Exact match
+  Result: Matched to Section 3.8
+  Section Title: Variants
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The fields within a structure may be qualified using the type's name,
+   with a syntax much like that available for enumerateds.  For example,
+   T.f2 refers to the second field of the previous dec...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Fields and variables may be assigned a fixed value using "=", as in:
+
+      struct {
+          T1 f1 = 8;  /* T.f1 must always be 8 */
+          T2 f2;
+      } T;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Defined structures may have variants based on some knowledge that is
+   available within the environment.  The selector must be an enumerated
+   type that defines the possible variants the structur...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          T1 f1;
+          T2 f2;
+          ....
+          Tn fn;
+          select (E) {
+              case e1: Te1 [[fe1]];
+              case e2: Te2 [[fe2]];
+              ....
+     ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          uint16 number;
+          opaque string<0..10>; /* variable length */
+      } V1;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          uint32 number;
+          opaque string[10];    /* fixed length */
+      } V2;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          VariantTag type;
+          select (VariantRecord.type) {
+              case apple:  V1;
+              case orange: V2;
+          };
+      } VariantRecord;
+################################################################################

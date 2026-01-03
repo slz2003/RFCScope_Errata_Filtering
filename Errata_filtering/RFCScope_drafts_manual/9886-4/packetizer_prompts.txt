@@ -1,0 +1,639 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    Section 4 defines a “steady‑state” requirement that each DET reverse‑DNS name MUST have an HHIT RR (and BRID for UAS RID), while later text explicitly recommends “just‑in‑time” publication and even deletion of these RRsets. This creates a temporal tension about when, along the lifecycle of a DET, those RRs must actually exist. The document also encourages dynamic registration “before a flight and deletes them afterwards”, but never defines the DET registration lifecycle or the ordering constraints between DET use in RID and DNS publication. Together, these lead to a normative inconsistency and to underspecified timing that can produce observable races for lookups and validation.
+  OverallTemporalRisk: Medium
+  CandidateIssues:
+    - Id: T1
+      Type: Both
+      ShortLabel: "Always-resolving DET vs just-in-time / dynamic DNS publication"
+      Description: |
+        Section 4 states unconditionally that DETs MUST resolve to an HHIT RRType and that for UAS RID, a BRID RRType MUST be present at the DET’s reverse‑DNS name. Later, the document recommends that no RRTypes under a DET’s name be published until they are required by other parties, explicitly acknowledging that this “would cause at least the HHIT RRType to not be in the DNS”. Earlier, Section 3.1 also describes a “dynamic DRIP registration” mode where the operator registers HHIT and related resources before a flight and deletes them afterwards. Taken literally and over time, these models cannot all hold simultaneously: there are periods in the DET’s lifecycle where the spec both requires the RRs to exist (MUST resolve) and recommends or exemplifies that they not exist (just‑in‑time and deletion). The document never defines the temporal conditions under which the MUST applies (e.g., “while the DET is in active public use”) versus when just‑in‑time/non‑existence is allowed.
+      TemporalReasoning: |
+        1. Section 4 defines an apparently unconditional requirement on name resolution over time: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present…” This reads as: for any DET governed by this document, at any time a DNS query is issued at its reverse‑DNS name, an HHIT RR (and, for UAS RID, a BRID RR) must be returned, i.e., there is no temporal qualification on when during the DET’s lifetime this must hold.
+        2. Earlier, Section 3.1 explicitly proposes “Dynamic DRIP registration … when the operator of a UAS device registers its corresponding HHIT record and other resources before a flight and deletes them afterwards.” In that model, the state timeline for a given DET is: (a) DET exists as an identifier but has no DNS records; (b) before the flight, HHIT and related RRs are created; (c) during/around the flight, lookups are expected to succeed; (d) after the flight, those records may be deleted. At times (a) and (d), a query to the DET’s reverse‑DNS name returns NXDOMAIN/NODATA, not an HHIT RR, even though the DET remains syntactically a DET and might appear in logs or recordings.
+        3. Section 7.2 then recommends a “just in time” publication pattern: “it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.” That is an explicit endorsement of time intervals where a DET exists but its DNS name has *no* HHIT RR.
+        4. No part of the text qualifies the Section 4 MUST with a lifecycle state (e.g., “registered and active”), nor defines when a DET is considered “registered” or “in use” versus merely allocated or dormant. Thus, an implementation that:
+           * follows Section 4 literally must ensure the HHIT (and BRID) RR are always present from the moment the DET is allocated/registered onward; but
+           * follows Section 3.1 and 7.2 literally will create periods before first use and after a flight where no such records exist.
+           At those times, the same DET both “MUST resolve to an HHIT RRType” and is recommended or exemplified to have no RRTypes.
+        5. From a temporal perspective, this yields irreconcilable obligations on the allowable state transitions of the DNS for a DET: the spec both forbids and encourages transitions from “RRs present” to “RRs absent” for a given DET, without any wording that scopes the MUST to a narrower phase (e.g., “while advertised as a UAS ID”).
+        6. This also has knock‑on effects on flows described or referenced elsewhere: REG‑1 requires that DRIP “enable lookup, from the UAS ID, of information designated…as public and MUST NOT restrict access…based on identity or role”; the 9434 and 9575 text assumes that DET‑based Broadcast RID can be authenticated via public registry lookups or via stored Broadcast Endorsements. Under dynamic deletion or just‑in‑time patterns, there are windows where observers or investigators cannot perform a DNS‑based lookup at all, despite the DET having been a “valid” RID identifier moments or days earlier.
+        7. The document attempts to partially contain this by stating that “The combination of this ‘just in time’ publishing mechanism and DNSSEC is out of scope for this document,” but that is about the mechanism, not the normative applicability of the Section 4 MUSTs over time.
+      KeyEvidence:
+        ExcerptPoints:
+          - "DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575]."
+          - "Dynamic DRIP registration is another possible solution, for example when the operator of a UAS device registers its corresponding HHIT record and other resources before a flight and deletes them afterwards."
+          - "When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed."
+          - "The combination of this 'just in time' publishing mechanism and DNSSEC is out of scope for this document."
+          - "Per [RFC9434], all information classified as public is stored in the DNS, specifically authoritative name servers, to satisfy REG-1 from [RFC9153]."
+        ContextPoints:
+          - REG-1: "DRIP MUST enable lookup, from the UAS ID, of information designated by cognizant authority as public..."
+          - 9434 Section 4.1.2: "A DRIP identifier MUST be registered as an Internet domain name ... Thus, the DNS can provide all the needed public DRIP information."
+      ImpactOnImplementations: |
+        Implementers attempting to be faithful to the specification face conflicting guidance on the lifecycle of DNS records for a DET. If they strictly honour Section 4, they cannot adopt the dynamic registration or just‑in‑time publication that Sections 3.1 and 7.2 explicitly suggest; if they follow those later recommendations, there will be periods where valid DETs do not resolve to HHIT (and BRID) RRs, in apparent violation of the MUST. Different operators may interpret these conflicts differently (e.g., some always publish, others publish only around flights), leading to inconsistent behaviour for observers and relying parties. It also complicates conformance claims: an implementation that follows the RECOMMENDED just‑in‑time behaviour is arguably non‑compliant with the Section 4 MUST as written. Clarifying that the MUST applies only while the DET is “in active public use” or “advertised as a UAS ID”, or explicitly carving out dynamic/just‑in‑time operation as an allowed mode, would resolve the temporal inconsistency.
+      AffectedArtifacts:
+        - "Section 4: Public Information Registry (paragraphs defining MUST resolve to HHIT and BRID RRType MUST be present)"
+        - "Section 3.1: Use of Existing DNS Models (paragraph on Dynamic DRIP registration)"
+        - "Section 7.2: DET and Public Key Exposure (paragraph on just-in-time publishing)"
+      Severity: High
+
+    - Id: T2
+      Type: Underspecification
+      ShortLabel: "Unspecified timing between DET use and DNS publication / races"
+      Description: |
+        Beyond the normative conflict, the document leaves the ordering between key operational events only loosely described: when exactly DNS records for a DET must be published relative to the start of a flight or other use, how long they must remain available, and what behaviour is expected if observers attempt lookups when records are not yet or no longer present. The text mentions registering before a flight and deleting afterwards, and suggests that a UAS or USS “signal” that a flight is or will be underway to trigger just‑in‑time publication, but provides no concrete temporal constraints or failure‑handling. This risks real‑world races where Broadcast RID traffic containing a DET is visible while the corresponding HHIT/BRID records are still unpublished or already removed.
+      TemporalReasoning: |
+        1. Section 3.1 describes “Dynamic DRIP registration” where the operator registers the HHIT record and other resources “before a flight and deletes them afterwards.” Section 7.2 refines this into “just in time” publishing, suggesting that “Optimally this requires that the UAS somehow signal to the DIME that a flight using a Specific Session ID will soon be underway or complete.”
+        2. These descriptions define rough relative ordering (“before a flight”, “soon be underway”, “afterwards”), but they do not specify how far in advance of first DET use the DNS records must exist, nor how long after flight completion they must persist. They also do not specify any temporal guarantee for observers: e.g., that once a DET has been broadcast as a UAS ID, its HHIT/BRID records MUST remain resolvable for at least some minimum time window to support delayed lookups or offline observers.
+        3. In DNS, zone updates and cache propagation are not instantaneous: when the DIME first publishes HHIT/BRID records, there is a non‑zero period before any given recursive resolver can reliably obtain them. If publication is triggered very close to flight start (or only upon an external signal at flight start), there is a possible window where the UA is broadcasting a DET that observers can see, but DNS lookups for that DET will still fail (NXDOMAIN/NODATA) because publication has not happened yet or caches have not been updated.
+        4. Similarly, if records are deleted “after a flight” with no minimum retention requirement, there is a window where logs or forensic recordings contain DETs from a flight that completed recently, but public lookup and validation cannot be performed anymore (e.g., for post‑incident investigation), despite other DRIP documents describing support for offline or delayed observers.
+        5. The text mentions that “Optimally this requires that the UAS somehow signal to the DIME…” and that USS/UTM might facilitate this signalling, but the mechanics and timing of that signalling are explicitly “out of scope.” No guidance is given on acceptable lead times, persistence intervals, or what observers or validators should do upon lookup failure (retry interval, cache semantics, fallback to endorsement‑only validation, etc.). 
+        6. As a result, different deployments can choose widely varying timing policies (publish minutes before vs. seconds before vs. only upon first query; delete immediately vs. retain for days), all arguably consistent with the high‑level text, but resulting in very different observable behaviour for clients and different degrees of conformance to the spirit of REG‑1 and related requirements.
+      KeyEvidence:
+        ExcerptPoints:
+          - "Dynamic DRIP registration is another possible solution, for example when the operator of a UAS device registers its corresponding HHIT record and other resources before a flight and deletes them afterwards."
+          - "When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties."
+          - "Optimally this requires that the UAS somehow signal to the DIME that a flight using a Specific Session ID will soon be underway or complete. It may also be facilitated under UTM if the USS (which may or may not be a DIME) signals when a given operation using a Session ID goes active."
+          - "The combination of this 'just in time' publishing mechanism and DNSSEC is out of scope for this document."
+        ContextPoints:
+          - 9575 Section 1.1: emphasis on supporting Observers who may be offline at the time of observation and need trustworthy, actionable information.
+          - 9153 REG-1: requirement to enable public lookup from the UAS ID of public information.
+      ImpactOnImplementations: |
+        Implementors have no clear guidance on how early or how long to publish HHIT/BRID records relative to DET use, nor on required behaviour if lookups fail because records are not yet or no longer present. Some may choose very aggressive just‑in‑time publication and rapid deletion, reducing key exposure but causing frequent lookup failures and inconsistent behaviour for observers and validators. Others may choose long‑lived records, effectively ignoring the “just‑in‑time” recommendation. This diversity can lead to interoperability surprises, especially for cross‑jurisdiction tools that expect a more deterministic relationship between seeing a DET in RID traffic and being able to resolve that DET in DNS for at least some period. Adding minimal temporal requirements (e.g., “records for a DET used as a UAS ID MUST be published before the first time it is broadcast and MUST remain resolvable for at least X after final use, where X is determined by policy”) or at least clarifying expectations around race conditions and retention would make the behaviour more predictable.
+      AffectedArtifacts:
+        - "Section 3.1: paragraph on Dynamic DRIP registration"
+        - "Section 7.2: DET and Public Key Exposure (paragraphs on 'just in time' publishing and signalling)"
+      Severity: Medium
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 4 defines how DETs are represented in DNS: each DET is mapped to a reverse ip6.arpa name that “MUST resolve” to an HHIT RR, and, in the UAS RID use case, also to a BRID RR; it also scopes when DNSSEC is required and how public DET-related information is obtained via DNS.
+
+- ScopeModel:
+  - Targets:
+    - DETs (all DET-based identifiers as defined in RFC 9374) represented as IPv6 addresses under the 2001:30::/28 prefix and their corresponding reverse ip6.arpa names.
+    - HHIT RRType: metadata RR containing canonical registration certificate and URIs to private-information registries.
+    - BRID RRType: RR holding static UAS Broadcast RID information, notably Broadcast Endorsements (BEs).
+    - “Apex entities” / self-signed roots of trust (HHIT Entity Type “Apex”, and any entity self-signing its canonical registration certificate).
+    - Other DRIP entities (UA, UAS, operator, DIME, RAA, HDA, etc.) with DETs and HHIT Entity Types.
+    - DIMEs operating DET/DNS segments.
+  - Conditions:
+    - For all DETs: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and MUST resolve to an HHIT RRType.” (Section 4).
+    - For UAS RID: “For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].” (Section 4).
+    - Other RRTypes (e.g., DS) at the DET ip6.arpa name are optional: “other RRTypes MAY be present … when using DNSSEC.” (Section 4).
+    - DNSSEC usage: “DNSSEC MUST be used for apex entities (those which use a self-signed Canonical Registration Certificate) and is RECOMMENDED for other entities. When a DIME decides to use DNSSEC, they SHOULD define a framework for cryptographic algorithms and key management [RFC6841].” (Section 4).
+    - Later, in Security Considerations: “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS…” (Section 7.2).
+  - NotedAmbiguities:
+    - Temporal/lifecycle scope of “DETs … MUST resolve to an HHIT RRType”: does this apply immediately upon DET allocation, only once the DET is put into operational use, or only when “required for use by other parties”?
+    - Scope of “For UAS RID, the BRID RRType MUST be present”: is this per UA DET used as a UAS RID, per every DET participating in the DRIP hierarchy used for UAS RID (RAA, HDA, Apex, DIME, UA, operator, etc.), or per zone?
+    - The DNSSEC guidance in Section 4 is phrased specifically in terms of DIME decisions, while Security Considerations apply DNSSEC/DPS concepts more broadly to registries and self-signed entities; the precise mapping of “apex entities” and “DIMEs” to zones and HHIT types could be clearer but is mostly inferable.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Unconditional “DETs MUST resolve to HHIT RRType” vs. RECOMMENDED “no RRTypes under a DET’s name” until needed
+    - ScopeProblemType: Missing lifecycle conditionality / conflicting temporal scope for presence of HHIT (and BRID) RRs at DET ip6.arpa names
+    - Evidence:
+      - Section 4: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”
+      - Section 7.2: “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.”
+      - Section 7.1: “When DNSSEC is not in use… clients MUST ‘walk’ the tree of certificates locating each certificate by performing DNS lookups of HHIT RRTypes for each DET verifying inclusion into the hierarchy. The collection of these certificates… is the only way without DNSSEC to prove valid registration.”
+    - DetailedReasoning:
+      - Section 4 states, without conditions, that DETs “MUST resolve to an HHIT RRType” at their ip6.arpa reverse-name, and, in the UAS RID case, that a BRID RRType also “MUST be present”. This reads as an always-on requirement for the existence of at least one HHIT RR (and, for UAS RID DETs, a BRID RR) at every DET’s reverse DNS name, throughout the DET’s lifetime.
+      - Section 7.2 then introduces a recommended “just in time” publication model: “no RRTypes under a DET’s specific domain name [should] be published unless and until it is required for use by other parties”, explicitly acknowledging that this “would cause at least the HHIT RRType to not be in the DNS” prior to that point. This is a direct description of a (recommended) state in which a valid DET exists but its reverse ip6.arpa name does *not* resolve to an HHIT RR.
+      - Without additional scoping, an implementation that follows Section 7.2 literally (withholding HHIT until some external use trigger) will violate the Section 4 MUST during the period from DET allocation/issuance up to that trigger: during this time the DET is defined and can be used internally, but its ip6.arpa name does not resolve to HHIT.
+      - Conversely, an implementation that strictly enforces the Section 4 MUST at all times (publishing HHIT as soon as the DET is created) will systematically ignore the Section 7.2 RECOMMENDED behavior, since there is no point in a DET’s lifecycle where the name does *not* already have an HHIT RR that would need to be withheld.
+      - The problem is fundamentally one of temporal scope: Section 4 does not qualify *when* a DET “MUST resolve” to HHIT, while Section 7.2 clearly contemplates a pre-publication phase in which the ip6.arpa name intentionally has no RRsets—yet the DET still exists as a registered identifier.
+      - The broader DRIP requirements and architecture reinforce that the reverse lookup must function *once* the DET is actively used: REG‑1 in RFC 9153 requires public lookup from UAS ID without role-based restriction, and RFC 9434 Section 4.1.2 requires registering DRIP identifiers as domain names so that “the DNS can provide all the needed public DRIP information.” Likewise, RFC 9886 Section 7.1 assumes HHIT RRs exist for all relevant DETs when clients “walk the tree of certificates.”
+      - These external references strongly suggest the *intended* scope is: (a) a DET can exist before any public DNS publication; (b) *once the DET is used in a context where other parties may need to perform lookups or certificate-chain verification*, its ip6.arpa name must have an HHIT RR (and BRID RR for UAS RID).
+      - However, the current text does not state that lifecycle boundary; instead it presents one unconditional MUST and one unconditional RECOMMENDED that describe mutually incompatible states for the same name at the same phase of the DET’s existence.
+      - If implemented literally as written, interoperable behavior is impossible: some deployers will prioritize privacy and follow Section 7.2 (breaking the Section 4 MUST and the “MUST walk the tree” assumption in Section 7.1 for some period), while others will ignore Section 7.2 to satisfy Section 4, leading to different expectations about when a DET will be resolvable in DNS.
+      - This inconsistency can be resolved by explicitly scoping the Section 4 MUSTs to apply only “once the DET is put into operational use or otherwise expected to be looked up by other parties”, and/or by clarifying in Section 7.2 that “just-in-time” publication is an *initial* state permitted *until* that point, at which time the Section 4 obligations become binding.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: Ambiguous scope of “For UAS RID, the BRID RRType MUST be present”
+    - ScopeProblemType: Unclear target population of DETs for which BRID is mandatory (UA-only vs. all DETs participating in UAS RID)
+    - Evidence:
+      - Section 4: “For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”
+      - Section 5.2: “The UAS Broadcast RID Resource Record (BRID, RRType 68) is a format to hold information typically sent over UAS Broadcast RID that is static. … The primary function for DRIP is to include of one or more Broadcast Endorsements as defined in [RFC9575] in the auth field. These Endorsements are generated by the registrar upon successful registration and broadcast by the entity.”
+      - RFC 9575 Section 3.1.2.1: DIME Endorsements of Subordinate DETs describe BEs for multiple relationships (_BE: HDA, UA_; _BE: RAA, HDA_; _BE: Apex, RAA_), forming a chain through the hierarchy.
+      - Examples in Appendix A of RFC 9886 show: RAAs and HDAs with HHIT RRs only (Figures 9–17), and a registrant UA DET with both HHIT and BRID RRs (Figure 18 and its decoded BRID CBOR in Figure 21), suggesting BRID is attached at the UA (or registrant) DET, not at every hierarchical DET.
+    - DetailedReasoning:
+      - The normative statement “For UAS RID, the BRID RRType MUST be present” is scoped only by the phrase “For UAS RID”, without specifying *which* DETs within the DET hierarchy or DRIP ecosystem are covered. UAS RID involves many DET-bearing entities: UA, UAS, operator, pilot, Network RID SP/DP, DIME, HDA, RAA, Apex, etc.
+      - RFC 9575 clearly defines Broadcast Endorsements across multiple parent–child relationships (Apex→RAA, RAA→HDA, HDA→UA). Section 5.2 of RFC 9886 says the BRID RR “includes one or more Broadcast Endorsements … in the auth field”, implying that chains or segments of the BE chain can be stored in BRID.
+      - The examples in Appendix A show BRID attached only to the registrant/UA DET (Figure 18), while the RAA and HDA DETs have only HHIT records (Figures 9, 13, etc.). This strongly suggests that, in practice, BRID is intended to be mandatory for *UA-level* DETs used as UAS IDs (and perhaps other DETs that actually broadcast RID messages), not for every DET in the hierarchy.
+      - However, the current wording in Section 4 can be naturally read as: “in the UAS RID use case, each DET MUST have a BRID RR, in addition to the HHIT RR”, because no limitation is expressed to “UA DETs” or “DETs used as UAS IDs in Broadcast RID”. Under that reading, one would expect every HDA, RAA, Apex, DIME, operator, etc. DET used in UAS RID to have both HHIT and BRID RRs at its ip6.arpa name.
+      - Requiring BRID for all such entities may be unnecessary or even counterproductive: RAAs and HDAs typically do not themselves broadcast RID messages; their Broadcast Endorsements on subordinates can be retrieved either from the UA’s BRID RR or via online services, and forcing BRID everywhere would bloat zones and complicate management without clear benefit.
+      - Conversely, an implementer could interpret “For UAS RID” as applying only to UA or UA Session ID DETs, and thus omit BRID for other entity types. That seems aligned with the examples but is *not* stated, leaving room for divergent interpretations and inconsistent deployment expectations.
+      - The scope problem is that the document never explicitly ties the BRID “MUST be present” to a well-defined subset such as “every DET used as a UA’s UAS ID in Broadcast RID” or “every DET whose Broadcast Endorsements are expected to be retrievable from DNS by Observers.” Instead, it uses the broad system-level phrase “For UAS RID”.
+      - This lack of precise scope can result in either over-scoping (operators feeling obligated to create BRID RRs for RAAs/HDAs/Apex/etc. DETs, which the examples do not do) or under-scoping (operators only provisioning BRID for UA DETs, but not, for example, for special UAS DETs or other DETs that might in fact broadcast RID information).
+      - The document would be clearer and less error-prone if it explicitly stated the target set of DETs for the BRID MUST, e.g., “For each DET used as a UAS ID in ASTM Broadcast RID, the corresponding reverse ip6.arpa name MUST have a BRID RRType resource record containing the Broadcast Endorsements chain as specified herein.”
+
+- ResidualUncertainties:
+  - The intended lifecycle model for DETs is not fully spelled out: it is unclear whether the authors envisioned a formal “inactive” vs. “active” state for DETs, with Section 4’s MUSTs applying only in the active state, and Section 7.2’s “no RRTypes” recommendation applying only in the inactive state.
+  - It is also not explicit whether BRID RRs are *only* expected for UA Session IDs, or also for manufacturer serial-number DETs, UAS DETs, or certain infrastructure DETs that might themselves broadcast RID messages; the examples and text lean toward UA/registrant-only, but this is not conclusively defined.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. Summary
+
+Following the text literally is still *implementable*, but Section 4’s unconditional “MUST resolve to an HHIT RRType” sits in real tension with Section 7.2’s “RECOMMENDED” just‑in‑time (JIT) non‑publication of RRTypes. The conditions under which the HHIT/BRID records *must* be present are not specified, and the interaction with DNSSEC and caching is explicitly left “out of scope”, so it is easy for a literal implementer to build a system where DETs are used in RID but cannot be resolved or validated in practice.
+
+I would classify this mainly as **causal underspecification with normative tension**, not as an outright unimplementable contradiction.
+
+---
+
+2. Causal Analysis
+
+### 2.1 What Section 4 demands
+
+Section 4 says, unconditionally:
+
+- “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and **MUST resolve to an HHIT RRType**.”  
+- “For UAS RID, the BRID RRType **MUST** be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”
+
+Read literally, for *any* DET and especially any DET used for UAS RID:
+
+- The nibble‑reversed ip6.arpa name corresponding to the DET must always have an HHIT RR.
+- If the DET is a UAS RID DET, that same name must always also have a BRID RR.
+
+This is presented as a standing invariant; there is no conditioning language like “when the DET is in active use” or “once registration has been completed”.
+
+Operationally, an implementer taking this literally will:
+
+- Provision HHIT and (for RID) BRID RRs at registration time and leave them present indefinitely.
+- Avoid any scheme where a DET in use might *not* have these RRs available.
+
+That trivially satisfies the requirement and is fully executable.
+
+### 2.2 What Section 7.2 recommends
+
+Later, Section 7.2 says:
+
+- “When practical, it is **RECOMMENDED** that no RRTypes under a DET’s specific domain name be published unless and until it is required for use by other parties.”
+- “Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key … from being exposed before its needed.”
+- “The combination of this ‘just in time’ publishing mechanism and DNSSEC is out of scope for this document.”
+
+Here they explicitly contemplate states where:
+
+- A DET is registered (keys, certs exist), but
+- Its ip6.arpa name has **no HHIT RR at all**, and possibly no BRID RR either,
+- Until some trigger causes the operator to publish them.
+
+They also envisage that UAS or USS/UTM “somehow signal” the DIME just before an operation so that records can be published:
+
+> “Optimally this requires that the UAS somehow signal to the DIME that a flight using a Specific Session ID will soon be underway or complete…”
+
+But there is no protocol or timing requirement, and the interplay with DNSSEC and caching is explicitly “out of scope”.
+
+### 2.3 Where the tension and underspecification bite
+
+From a protocol‑as‑program perspective:
+
+#### a. Normative tension (MUST vs RECOMMENDED)
+
+- Section 4’s “MUST resolve to an HHIT RRType” is unconditional in wording.
+- Section 7.2 says “RECOMMENDED that no RRTypes … be published” (implying HHIT is absent) until some later condition holds, and explicitly notes that HHIT “would not be in the DNS”.
+
+BCP 14 semantics say “RECOMMENDED/SHOULD” can be overridden when there are valid reasons (e.g., to obey a MUST elsewhere), so a careful implementer can resolve the tension by ignoring JIT and always publishing HHIT/BRID. That means the spec is *not* logically unimplementable.
+
+However, the spec never says:
+
+- That Section 4’s MUST only applies *after* some well‑defined “activation” event, or
+- That JIT publication MUST be implemented in a way that never lets a DET be in use (e.g., broadcast as UAS ID) without its HHIT and BRID being present and resolvable.
+
+Without that scoping, a naive but good‑faith implementer could:
+
+- Implement JIT “as RECOMMENDED” and
+- Not realize they are, in effect, violating Section 4’s unconditional MUST during important periods.
+
+#### b. Concrete failure modes for lookup and validation
+
+Consider a UAS RID deployment that implements JIT per Section 7.2:
+
+1. The DIME allocates DETs and issues the Canonical Registration Certificates (HHIT RR contents) and BEs (BRID auth contents), but does **not** pre‑publish HHIT/BRID RRs in DNS, per 7.2.
+2. At t0, the UA starts broadcasting RID messages with its DET and Broadcast Endorsements (BE: HDA, UA, etc., per RFC 9575).
+3. An Observer with network connectivity tries, at or shortly after t0, to:
+   - Resolve the DET’s ip6.arpa name for HHIT,
+   - Retrieve BRID to get static BEs and cross‑check broadcast material.
+
+Possible behaviors:
+
+- If the DIME has not yet “JIT‑published” the HHIT and BRID:
+  - Resolver gets NXDOMAIN or NODATA, possibly DNSSEC‑validated.
+  - Observer cannot obtain the Canonical Registration Certificate from DNS.
+  - Observer cannot obtain BRID‑provided static BEs.
+  - The intended “public lookup” property (REG‑1 from RFC 9153) is not satisfied at this moment.
+
+- If the DIME JIT‑publishes after an initial NXDOMAIN, and DNSSEC is used:
+  - Negative answers (NXDOMAIN / NSEC / NSEC3) can be cached for their TTL by validating resolvers.
+  - For the duration of that negative‑cache TTL, *subsequent* lookups will still see the name as non‑existent, even though HHIT/BRID have been published.
+  - So during a significant fraction of the flight, Observers may be unable to resolve the DET to HHIT/BRID *at all*, contrary to the architectural statement that “all information classified as public is stored in the DNS” for lookup  .
+
+The RFC pre‑emptively says that the DNSSEC+JIT combination is “out of scope”, but **still RECOMMENDS** JIT. That leaves key operational choices (TTL, negative TTL, pre‑publishing patterns, timing guarantees) completely unspecified, even though they critically affect whether public lookup actually works in the field.
+
+#### c. Relation to higher‑level invariants
+
+Higher‑level DRIP requirements emphasize:
+
+- REG‑1 from RFC 9153: “DRIP MUST enable lookup, from the UAS ID, of [public] information and MUST NOT restrict access … based on identity or role”  .
+- RFC 9434: DRIP identifiers “MUST be registered as an Internet domain name … [so] the DNS can provide all the needed public DRIP information”  .
+
+A JIT scheme that allows a DET to be used in Broadcast RID while its HHIT/BRID are still unpublished or effectively unreachable due to negative caching *temporarily violates* that invariant: public lookup from the UAS ID is not actually enabled during that time.
+
+The core cause is not that the abstract architecture is wrong, but that:
+
+- The spec never states **when** HHIT/BRID records must exist and be resolvable relative to when a DET is advertised or used as a UAS ID.
+- It also fails to constrain or even discuss TTL/negative caching implications of DNSSEC in the face of JIT, despite recommending that pattern.
+
+---
+
+3. Problem Classification
+
+- **Causal Underspecification** (primary):
+  - The document does not specify the temporal relationship between:
+    - DET issuance, DNS publishing of HHIT/BRID, and
+    - First use of DET as an identifier in RID.
+  - It also leaves crucial DNSSEC+JIT parameters (TTL, negative TTL, pre‑publish patterns) out of scope while still recommending JIT, even though they directly determine whether lookups work during operations.
+
+- **Normative Tension but not strict inconsistency**:
+  - Section 4’s “MUST resolve to an HHIT RRType” appears unconditional.
+  - Section 7.2 recommends behavior that explicitly has “no HHIT RRType … in the DNS” at some times.
+  - Because “RECOMMENDED/SHOULD” is weaker than “MUST”, a fully conformant implementation can simply ignore the JIT recommendation and always publish HHIT/BRID; therefore, the spec is still implementable, but the tension is likely to mislead.
+
+---
+
+4. Minimal Fix Shape (conceptual)
+
+A small, local set of clarifications would remove the ambiguity and avoid the failure modes:
+
+1. **Scope the Section 4 MUSTs temporally and contextually**, e.g.:
+
+   - “When a DET is registered in the public DNS for use as a UAS ID, the corresponding ip6.arpa name **MUST** contain an HHIT RR; for DETs used for UAS RID, a BRID RR **MUST** also be present whenever the DET is being used or is intended to be resolvable by other parties.”
+
+2. **Constrain/qualify the JIT recommendation in Section 7.2**, for example:
+
+   - State explicitly that JIT publication is optional and **MUST NOT** result in a DET being advertised (e.g., in RID messages or endorsements) before HHIT and any required BRID records are published and globally resolvable.
+   - Add guidance that, when DNSSEC and caching are used, operators MUST account for negative caching TTLs and publication lead times (e.g., by pre‑publishing records ahead of operations and using suitably short TTLs) if they choose to implement JIT.
+
+These changes keep the design (DNS‑based registry, HHIT+BRID, optional JIT) but repair the cause–effect chain so that a DET used in RID is always resolvable in practice, and implementers are not pulled in conflicting normative directions.
+
+---
+
+5. Non‑Issues
+
+- There is **no** absolute logical contradiction that makes the RFC unimplementable: an operator that always publishes HHIT/BRID for registered DETs, and does not attempt JIT, complies with all MUSTs and runs a coherent system.
+- Private‑range RAAs and non‑global DNS for purely private experiments (Section 6.2.1.5) are also not problematic: those are explicitly scoped to private DNS and do not pretend to satisfy global REG‑1‑style lookup.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Quantitative Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary:  
+  Section 4 of RFC 9886 defines how DETs (128‑bit IPv6-based identifiers) are mapped into DNS reverse names under ip6.arpa and bound to two new RRTypes, HHIT (RRType 67) and BRID (RRType 68). Subsequent sections define the wire formats of these RRTypes using CDDL/CBOR and give detailed examples, and the Security Considerations further constrain when HHIT records should (or should not) exist in DNS and how DNSSEC is to be used.
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: HID abbreviation length (CDDL .size(15) vs 9‑char example/default)
+    - Description: The HHIT RRType’s `hid-abbreviation` field is constrained in CDDL to be exactly 15 bytes long, but both the normative “default” formatting rule and all examples use a 9‑character string (4 hex digits, a separator, and 4 hex digits). An implementation that validates CBOR with the CDDL literally will reject the examples in the RFC and the mandated default string format.  
+    - Evidence:  
+      CDDL for HHIT RDATA:  
+      `hhit-rr = [ hhit-entity-type: uint, hid-abbreviation: tstr .size(15), canonical-registration-cert: bstr ]`    
+      Default text format:  
+      “Absent of such a policy, this field MUST be filled with the four character hexadecimal representations of the RAA and HDA (in that order) with a separator character, such as a space, in between. For example, a DET with an RAA value of 10 and HDA value of 20 would be abbreviated as: 000A 0014.”    
+      Example decoded HHIT RDATA:  
+      `[ 10,  # Reserved (RAA Auth from DKI)  "3ff8 0000",  h'30820142...' ]`    
+      where `"3ff8 0000"` is 9 characters long.
+    - QuantitativeReasoning:  
+      - `.size(15)` in CDDL means the text string must be exactly 15 code units long.  
+      - The mandated default format is “RRRR HHHH” (4 + 1 + 4 = 9 characters).  
+      - All HHIT examples use strings like `"3ff8 0000"` or `"3ff8 000a"`, again 9 characters.  
+      - A strict CDDL-based decoder will consider these out‑of‑spec because 9 ≠ 15.
+    - Consequences:  
+      Independent implementations that follow CDDL literally will reject conforming zone data that follow the default textual rule and examples, leading to interop failures between producers using the examples/description and consumers that validate against the CDDL schema. Implementers are left unsure whether to pad to 15 characters, relax the size constraint, or ignore the examples.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: BRID `uas_ids` / `auth` array structure vs examples
+    - Description: The CDDL for the BRID RRType defines both `uas_ids` and `auth` as arrays of grouped substructures (`uas-id-grp` and `auth-grp`), but the decoded BRID example in Figure 21 encodes these fields as flat arrays of primitive values, not arrays of arrays. This creates two incompatible interpretations of the on‑the‑wire CBOR layout.  
+    - Evidence:  
+      CDDL for BRID:  
+      ```  
+      bcast-rr = {
+          uas_type => nibble-field,
+          uas_ids => [+ uas-id-grp],
+          ? auth => [+ auth-grp],
+          ...
+      }
+      uas-id-grp = [
+          id_type: &uas-id-types,
+          uas_id: bstr .size(20)
+      ]
+      auth-grp = [
+          a_type: &auth-types,
+          a_data: bstr .size(1..362)
+      ]
+      ```    
+
+      Decoded BRID RDATA example:  
+      ```  
+      {
+          0: 0,
+          1: [4, h'012001003FFE000A05130824699A4BC6B2'],
+          2: [
+              5, h'01FADEF6...',   5, h'0197E0F6...',
+              5, h'010AE1F6...',   5, h'01DCE2F6...'
+          ]
+      }
+      ```    
+      There are no inner brackets grouping `[id_type, uas_id]` or `[a_type, a_data]` tuples into arrays.
+    - QuantitativeReasoning:  
+      - In CDDL, `uas_ids => [+ uas-id-grp]` means: value is an array whose elements are each a `uas-id-grp` array (`[id_type, uas_id]`), so the CBOR shape should be: `1: [ [id_type, uas_id], [id_type, uas_id], ... ]`.  
+      - Similarly, `auth => [+ auth-grp]` means `2: [ [a_type, a_data], [a_type, a_data], ... ]`.  
+      - The example, however, uses `1: [4, <bstr>]` (a single flat pair) and `2: [5, <bstr>, 5, <bstr>, ...]` with no nested grouping.  
+      - These are two different CBOR shapes; a decoder written to one will not accept the other.
+    - Consequences:  
+      Some implementers will follow the CDDL and encode/decode `uas_ids` and `auth` as arrays of arrays, while others will follow the example and implement them as flat arrays of alternating values. Interoperability will fail when a BRID RR created by one implementation is parsed by the other, because the CBOR structure does not match expectations (e.g., the parser will see an integer where it expects an array or vice versa).
+
+  - Issue-3:
+    - BugType: Inconsistency
+    - ShortLabel: HHIT RRType always present vs “just‑in‑time” absence
+    - Description: Section 4 requires that each DET reverse name resolve to an HHIT RRType, but Section 7.2 later recommends not publishing any RRTypes (including HHIT) under a DET’s domain name until needed (“just in time” publishing). These two normative statements create contradictory cardinality requirements on whether an HHIT RR must exist for a DET at times when it is not actively in use.  
+    - Evidence:  
+      - Section 4: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and MUST resolve to an HHIT RRType.”    
+      - Section 7.2: “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.”  
+    - QuantitativeReasoning:  
+      - The Section 4 “MUST resolve to an HHIT RRType” is an unconditional BCP 14 requirement, implying that for any allocated DET, its reverse name under ip6.arpa always has an HHIT RRSet (cardinality ≥ 1).  
+      - Section 7.2 “RECOMMENDED that no RRTypes … be published unless and until it is required” advocates cardinality 0 for RRTypes (including HHIT) at that same name until some operational threshold is met.  
+      - A DET that exists but is not currently in use cannot simultaneously have “no RRTypes under [its] specific domain name” and “MUST resolve to an HHIT RRType.”
+    - Consequences:  
+      Implementers following Section 4 literally will provision an HHIT RR for every DET at all times; implementers following Section 7.2 literally will omit HHIT RRTypes until just before use. This leads to divergent behavior about whether lookups for a given DET should succeed outside of active flights, and makes it unclear what is “compliant” behavior. It also complicates security reasoning (e.g., about expected presence/absence of HHIT RRs) and any conformance testing.
+
+  - Issue-4:
+    - BugType: Underspecification
+    - ShortLabel: BRID `auth` field optional vs normative text about mandatory BEs
+    - Description: The BRID RRType’s CDDL and field description treat the `auth` field (which carries Broadcast Endorsements) as optional, but Section 4 normatively states that, for UAS RID, the BRID RRType “MUST be present to provide” these Broadcast Endorsements. The spec never explicitly says, in BCP 14 terms, when the `auth` map entry itself must be present and non‑empty, leaving ambiguity about valid BRID instances in the UAS RID use case.  
+    - Evidence:  
+      - CDDL: `bcast-rr = { uas_type => nibble-field, uas_ids => [+ uas-id-grp], ? auth => [+ auth-grp], ... }` — the leading `?` makes `auth` entirely optional.    
+      - Text for BRID: “The primary function for DRIP is to include of one or more Broadcast Endorsements as defined in [RFC9575] in the auth field. These Endorsements are generated by the registrar upon successful registration and broadcast by the entity.”    
+      - Section 4: “For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”  
+    - QuantitativeReasoning:  
+      - Structurally, `? auth => [+ auth-grp]` allows 0 occurrences of `auth`. If present, the inner `+` requires 1 or more auth‑grp entries (so 1+ BEs), but there is no requirement the key exist.  
+      - The BRID prose uses non‑BCP14 wording (“primary function”) and the Section 4 statement requires the BRID RRType to “be present to provide” BEs, but does not say “the `auth` field MUST be present and contain at least one Broadcast Endorsement when BRID is used for UAS RID.”  
+      - As written, a BRID RR with `auth` omitted technically satisfies the CDDL but does not clearly satisfy the stated intent; conversely, an implementer could argue it is compliant with Section 4 simply by publishing a BRID with other fields and no `auth`.
+    - Consequences:  
+      Different implementations may:  
+      - Always populate `auth` with at least one Broadcast Endorsement when using BRID for UAS RID;  
+      - Or, treat `auth` as optional and publish BRID records without any endorsements, expecting observers to rely only on other mechanisms.  
+      This can lead to observers failing to find Broadcast Endorsements where they expect them, or implementations being considered “non‑compliant” by others despite obeying the CDDL. The ambiguity primarily affects interoperability of validation logic that expects certain minimum content in BRID RRTypes.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 4 normatively defines how DETs are represented in DNS via HHIT and BRID RRTypes and mandates certain DNSSEC behaviors. Section 7 refines security and operational guidance, including how and when these RRTypes and DNSSEC should be used. Together they define the mandatory public‑lookup behavior and integrity guarantees for DET-based identifiers.
+
+- OverallDeonticRisk: High
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Both
+    - Title: Conflict between “DETs MUST resolve to HHIT” and “RECOMMENDED not to publish RRTypes until needed”
+    - Description:
+      Section 4 imposes an unconditional requirement on the DNS representation of DETs: “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed …) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present…” This reads as: for any DET in scope of this specification, its reverse-IP6.ARPA name must always have at least an HHIT RR (and, for UAS RID, also a BRID RR). In contrast, Section 7.2 introduces a privacy‑motivated “just in time” publication model: “it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS…” This explicitly contemplates periods where a valid DET’s DNS name has no RRTypes at all, i.e., NXDOMAIN/NODATA for the HHIT QTYPE, which directly violates the earlier “MUST resolve to an HHIT RRType”. Because the Section 4 MUST is unconditional (no qualification such as “when the DET is in active use or being advertised”), while Section 7.2’s RECOMMENDED behavior explicitly removes that HHIT RR for part of the DET’s lifecycle, the two normative statements are in direct tension. This also interacts with the stated goal “Per [RFC9434], all information classified as public is stored in the DNS … to satisfy REG-1 from [RFC9153]” and the later requirement that, without DNSSEC, “clients MUST ‘walk’ the tree of certificates locating each certificate by performing DNS lookups of HHIT RRTypes for each DET” to prove valid registration: if the HHIT RR is intentionally unpublished during some period, these mandated public lookups and certificate walks will fail for otherwise valid DETs. The underlying intent seems to be: (a) when a DET is actually being used in a way that others might look it up, its reverse name must resolve with HHIT (and BRID for UAS RID), but (b) to reduce exposure, operators are encouraged not to publish those RRTypes before that point. However, that conditionality on “when in active use / when lookup by other parties is expected” is never stated in Section 4, and Section 7.2 does not clearly frame itself as an exception to, or refinement of, the Section 4 MUST. As written, an implementer cannot simultaneously satisfy the unconditional “MUST resolve to an HHIT RRType” at all times and the “RECOMMENDED that no RRTypes … be published unless and until … required” guidance. The clean resolution would be to qualify the Section 4 MUSTs (e.g., “When a DET is used as a UAS ID or otherwise made available for use by other parties, its reverse IP6.ARPA name MUST resolve to an HHIT RRType, and for UAS RID the BRID RRType MUST be present”) and/or explicitly state in Section 7.2 that just‑in‑time publication is a privacy optimization that applies only before any external use and does not relax the Section 4 requirements once a DET is used in RID or other DRIP interactions.
+    - KeyTextSnippets:
+      - “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”
+      - “Per [RFC9434], all information classified as public is stored in the DNS, specifically authoritative name servers, to satisfy REG-1 from [RFC9153].”
+      - “When DNSSEC is not in use, due to the length of the ORCHID hash selected for DETs (Section 3.5 of [RFC9374]), clients MUST ‘walk’ the tree of certificates locating each certificate by performing DNS lookups of HHIT RRTypes for each DET verifying inclusion into the hierarchy.”
+      - “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.”
+    - Impact:
+      This inconsistency can lead to divergent implementations: some operators may always publish HHIT (and BRID) once a DET exists, while others may suppress these RRTypes except “just in time”, despite the unconditional MUST in Section 4. That in turn undermines predictable public lookup behavior (REG‑1) and the certificate‑walk process mandated when DNSSEC is absent, and may cause interoperability failures or security downgrade (Observers and other relying parties being unable to validate DET registrations) in precisely those scenarios where privacy‑motivated operators follow Section 7.2’s RECOMMENDED guidance. Clarifying the condition under which the Section 4 MUSTs apply, and explicitly reconciling them with the just‑in‑time model, is needed to avoid contradictory normative requirements.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: The excerpt defines how DET IPv6 addresses map into ip6.arpa reverse names and introduces two CBOR-encoded DNS RRTypes (HHIT and BRID), with CDDL definitions and worked examples. I checked the IPv6-to-ip6.arpa nibble-reverse mapping, the use of HHIT/BRID under those names, and the internal consistency between the CDDL, prose descriptions, and example encodings.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: HID Abbreviation length constraint in CDDL conflicts with prose and examples
+    - LocationHint: Section 5.1.2, Figure 4 (HHIT Wire Format CDDL) and associated text/examples
+    - Evidence:
+      - Snippet1: CDDL for HHIT RRType:  
+        `hhit-rr = [ hhit-entity-type: uint, hid-abbreviation: tstr .size(15), canonical-registration-cert: bstr ]` (Figure 4).
+      - Snippet2: Prose and examples for the same field:  
+        *Text*: “Absent of such a policy, this field MUST be filled with the four character hexadecimal representations of the RAA and HDA (in that order) with a separator character, such as a space, in between. For example, a DET with an RAA value of 10 and HDA value of 20 would be abbreviated as: 000A 0014.”  
+        *CBOR diagnostic examples*: `"3ff8 0000"`, `"3ff8 000a"` shown as the `hid-abbreviation` values in Figures 10, 14, 16, and 19.
+    - TechnicalExplanation: |
+        The CDDL constrains `hid-abbreviation` to `tstr .size(15)`, which in RFC 8610 means a text string of exactly 15 characters, not a maximum length. However, the normative prose says the abbreviation format is largely a matter of local policy, and when no policy exists, it MUST be “the four character hexadecimal representations of the RAA and HDA ... with a separator character ... in between”, i.e., 4 + 1 + 4 = 9 characters (“000A 0014”). All HHIT RRType examples use 9-character strings such as "3ff8 0000" and "3ff8 000a" for `hid-abbreviation`. Under a strict CDDL validator, these example values and the mandated default format are invalid because they are not 15 characters long. This is a structural inconsistency between the formal wire-format specification (CDDL) and both the normative text and examples, and will affect interoperable encoding/decoding if implementations rely on the CDDL.
+    - PatchSuggestion: |
+        Adjust the CDDL so that `hid-abbreviation` allows the documented and exemplified lengths rather than forcing exactly 15 characters. For example:
+
+        - Replace in Figure 4:
+
+          `hid-abbreviation: tstr .size(15),`
+
+        - With either of the following (depending on intended flexibility):
+
+          a) If any non-empty abbreviation up to 15 characters is allowed:
+
+             `hid-abbreviation: tstr .size(1..15),`
+
+          b) If specifically the documented default (9 chars) and possibly longer policy-defined forms up to 15 chars are allowed:
+
+             `hid-abbreviation: tstr .size(9..15),`
+
+        and, if desired, add a clarifying sentence to the prose such as:
+
+        “The HID Abbreviation field is a text string of between 1 and 15 characters; in the absence of local policy, the default format ‘RRRR HHHH’ (9 characters) MUST be used.”
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 4 of RFC 9886 describes how DET-based public information is stored and retrieved via DNS using two new RRTypes (HHIT and BRID), mandates that DET reverse-DNS names under ip6.arpa return HHIT (and for UAS RID also BRID), and sets expectations for DNSSEC usage and policy frameworks, referencing RFC 9434, RFC 9153 REG‑1, RFC 3596, RFC 9575, and RFC 6841. The question is whether any of these cross-references misstate what those other documents/registries actually require or define.
+- OverallCrossRFCLikelihood: Low
+- Issues: []
+- IfNoIssues:
+  - Comment:  
+    The behavior described in Section 4 of RFC 9886 is generally consistent with the cited RFCs and registries:
+
+    * Alignment with RFC 9434 and RFC 9153: RFC 9434 requires that a DRIP identifier “MUST be registered as an Internet domain name (at an arbitrary level in the hierarchy, e.g., in .ip6.arpa)” and states that “the DNS can provide all the needed public DRIP information” for DRIP identifiers, which is exactly the design RFC 9886 is concretizing for DETs. RFC 9153’s REG‑1 only requires that public information be look‑uppable from the UAS ID without access control; using DNS with DET-based reverse names satisfies that and does not contradict any requirement in RFC 9153 or 9434.
+
+    * Use of ip6.arpa and non‑PTR RRs: RFC 3596 defines IP6.ARPA and explicitly notes that the reverse domain “may be used for other purposes as well” beyond classic PTR lookups. Section 4’s use of ip6.arpa reverse names for DETs, and querying for HHIT/BRID QTYPEs instead of PTR, is consistent with this and does not conflict with 3596’s semantics.
+
+    * Broadcast Endorsements and BRID RRType vs. RFC 9575: RFC 9575 defines Broadcast Endorsements and their carriage in DRIP Link messages, but does not restrict their use to radio channels only. RFC 9886’s BRID RRType is defined as a static DNS container for such endorsements (or equivalent authentication data), and its references to RFC 9575 sections (3.1.2.1 for the concept and 4.2 plus 6.4.2 for format/validation) match how RFC 9575 structures those concepts. There is no codepoint or semantic mismatch between how “Broadcast Endorsement” is used in the two documents.
+
+    * DNSSEC and RFC 6841: RFC 6841 offers a framework for DNSSEC Policy and Practice Statements, including how to describe key management, DS handling, and operational controls. RFC 9886’s text that DNSSEC “MUST” be used for apex/self‑signed entities and that DIMEs using DNSSEC “SHOULD define a framework for cryptographic algorithms and key management [RFC6841]” fits squarely within 6841’s intended use and does not misstate its contents; later Security Considerations reiterate this consistently.
+
+    * Internal IANA/registry linkages: The HHIT Entity Type field in the HHIT RRType is explicitly tied to the “HHIT Entity Types” IANA registry defined in Section 6.2.2, and the DET hierarchy / prefix delegation text in Section 4 is consistent with the reverse zone and RAA/HDA allocations described in Sections 3 and 6.2.1 of RFC 9886 itself. No mismatched registry names or codepoints are evident in the provided material.
+
+    In sum, Section 4 tightens and operationalizes the architecture from RFC 9434 and the requirements from RFC 9153 using DNS and DNSSEC in ways that are compatible with RFC 3596, RFC 9575, and RFC 6841. Any differences are additive design choices (e.g., mandating HHIT and BRID RRTypes and requiring DNSSEC for certain entities) rather than contradictions with the referenced specifications, so there is no clear cross‑RFC/registry bug in this excerpt.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 4 of RFC 9886 defines how a DET (a 128‑bit IPv6-based identifier) is mapped into the DNS under ip6.arpa and bound to two new RRTypes: HHIT (public key + certificate/URI) and BRID (Broadcast RID information, including endorsements). It normatively says each DET name “MUST resolve” to an HHIT RR, and for UAS RID the BRID RR “MUST be present”, and also gives requirements on when DNSSEC MUST/SHOULD be used. Section 7.2 then discusses “just‑in‑time” publication of RRsets, recommending that DET names may have no RRTypes until they are actually needed, to reduce public key exposure.
+- OverallBoundaryBugLikelihood: High
+
+Findings:
+  - Finding-1:
+    - BugType: Inconsistency
+    - ShortLabel: Conflict between “DETs MUST resolve to HHIT” and “RECOMMENDED to have no RRTypes until needed”
+    - BoundaryAxis: DET lifecycle / timing of RR publication (DET allocated but not yet in active use; DET in use vs not yet/ no longer in use)
+    - ExcerptEvidence:
+      - Section 4:  
+        “DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) **and MUST resolve to an HHIT RRType**. … For UAS RID, the BRID RRType **MUST be present** to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].”  
+      - Section 7.2:  
+        “When practical, it is **RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties**. **Such action would cause at least the HHIT RRType to not be in the DNS**, protecting the public key in the certificate from being exposed before its needed.”
+    - Reasoning:
+      1. The domain of interest here is the full lifecycle of a DET: it may be minted and registered, then later actively used as a UAS ID in RID, and then possibly quiescent again. During all of these phases, it has a canonical reverse-DNS name under ip6.arpa.
+      2. Section 4 uses unconditional BCP 14 language: every DET “MUST resolve to an HHIT RRType”; for UAS RID, the BRID RRType “MUST be present”. There is no stated condition on when in the lifecycle this must hold (e.g., “when the DET is used as a UAS ID in operation”); read literally, this applies at all times for any valid DET in the DRIP hierarchy.
+      3. Section 7.2 then introduces a “just‑in‑time” publication model: it is RECOMMENDED that “no RRTypes” exist under the DET’s domain name “unless and until” other parties need them, and explicitly notes this “would cause at least the HHIT RRType to not be in the DNS”.
+      4. As soon as a DET is allocated and considered valid in the DRIP sense (e.g., has a Canonical Registration Certificate in the DIME), an implementation following Section 4 strictly would ensure that the reverse name always resolves to an HHIT RR (and, for UAS RID usage, has a BRID RR as well), regardless of whether the DET is currently in active use. Conversely, an implementation following Section 7.2 strictly will intentionally *not* publish any RRTypes – in particular, no HHIT RR – before some operational trigger (“required for use by other parties”) occurs.
+      5. For DETs that are allocated but not yet in active use, these two normative statements directly conflict: the Section 4 MUST requires that a query for the DET’s reverse name return an HHIT RR, while the Section 7.2 RECOMMENDED behavior requires that the name have no RRTypes at all until some later time. Different implementers could reasonably choose to prioritize one over the other, leading to inconsistent observable behavior (some DETs always resolvable vs others NXDOMAIN/NOERROR‑NODATA until “activated”).
+      6. Because neither section scopes its language to a clearly disjoint subset of DETs or to a clearly specified state (e.g., “when a DET is being used as a UAS ID in RID operations”), the conflict is not naturally resolved by reading them as complementary. The phrase “a DET's specific domain name” in 7.2 can only naturally be read as the same ip6.arpa name that Section 4 is talking about.
+      7. This is not a purely theoretical edge: operationally, DETs will exist in large number, and there is clear motivation for both behaviors: regulators and implementations wanting always-on resolvability to satisfy REG‑1‑style public lookup, and privacy‑/exposure‑sensitive deployments wanting to keep keys unpublished until needed as per 7.2.
+    - ImpactAssessment:
+      - Interoperability: For an Observer or other relying party implementing the architecture of RFC 9434 and RFC 9575, Section 4 suggests that any valid DET can always be validated via DNS (HHIT and, for UAS RID, BRID), while an implementation following 7.2 may legitimately omit records until shortly before or during use. This can cause lookups for “registered” DETs to fail (no HHIT/BRID) in one deployment but succeed in another, even when the high-level DRIP behavior is intended to be the same.
+      - Correctness / security: The “just‑in‑time” behavior explicitly anticipates periods where a DET is valid but does not “resolve to an HHIT RRType” as required by Section 4, potentially breaking certificate‑chain reconstruction via DNS (especially in non‑DNSSEC deployments where clients must “walk” the tree of HHIT certificates) and undermining the assumption that a DET either maps to authenticated public information or does not exist. Since both behaviors are normatively allowed yet mutually incompatible at this boundary, this is a real specification inconsistency.
+
+Notes:
+  - Not a bug: I examined other boundary cases (e.g., private-use RAAs where nibble‑reverse lookup is only via private DNS, BRID records whose `auth` field is syntactically optional, and the requirement that self‑signed “apex” entities MUST use DNSSEC). In each of these, the document either clearly scopes behavior to a particular subset (e.g., private RAAs using private DNS only) or the looser syntax can be interpreted as allowing misconfiguration but not creating a contradiction in normative requirements. The only clear, interoperability‑relevant boundary inconsistency in the provided excerpt is the timing conflict between Section 4’s unconditional “MUST resolve to HHIT / MUST have BRID” and Section 7.2’s RECOMMENDED absence of RRTypes until needed.
+
+[Used vector stores: vs_6958be4c24408191bdbddafd81dfd4e3]
+
+
+Vector Stores Used: vs_6958be4c24408191bdbddafd81dfd4e3
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

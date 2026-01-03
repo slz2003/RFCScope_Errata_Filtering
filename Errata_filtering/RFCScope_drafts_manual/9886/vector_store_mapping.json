@@ -1,0 +1,35 @@
+{
+  "_combined": {
+    "vector_store_id": "vs_6958be4c24408191bdbddafd81dfd4e3",
+    "rfcs": [
+      "RFC2119",
+      "RFC4648",
+      "RFC5280",
+      "RFC6841",
+      "RFC8005",
+      "RFC8126",
+      "RFC8174",
+      "RFC8610",
+      "RFC8949",
+      "RFC9153",
+      "RFC9374",
+      "RFC9434",
+      "RFC9575",
+      "draft-ietf-drip-dki-09"
+    ]
+  },
+  "RFC8174": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC2119": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC9434": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC9374": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC8005": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC8610": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC9153": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC8949": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC5280": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC6841": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC8126": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC4648": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "RFC9575": "vs_6958be4c24408191bdbddafd81dfd4e3",
+  "draft-ietf-drip-dki-09": "vs_6958be4c24408191bdbddafd81dfd4e3"
+}

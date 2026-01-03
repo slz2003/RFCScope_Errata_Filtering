@@ -1,0 +1,369 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-20/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This document introduces two security mechanisms for the
+   authentication of DHCP messages: (1) authentication (and encryption)
+   of messages sent between servers and relay agents using IPsec and...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Relay agents and servers that exchange messages can use IPsec as
+   detailed in [RFC8213].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8213
+  Reference Type: TEXT
+  Reference Value (keywords/section): IPsec as detailed
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8213:
+  Search Keywords: 'IPsec as detailed'
+  Result: Found in Section 3
+  Section Title: Security of Messages Exchanged between Servers and Relay Agents
+  Content Preview:    For DHCPv6 [RFC3315], this specification REQUIRES relay and server
+   implementations to support ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Authentication of DHCP messages is accomplished through the use of
+   the Authentication option (see Section 21.11).  The authentication
+   information carried in the Authentication option can be u...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.11'
+  Match Type: Exact match
+  Result: Matched to Section 21.11
+  Section Title: Authentication Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Authentication option provides a framework for multiple
+   authentication protocols.  One such protocol, RKAP, is defined in Section 20.4.  Other protocols defined in the future will be
+   spec...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 20.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '20.4'
+  Match Type: Exact match
+  Result: Matched to Section 20.4
+  Section Title: Reconfiguration Key Authentication Protocol (RKAP)
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The protocol field in the Authentication option identifies the
+   specific protocol used to generate the authentication information
+   carried in the option.  The algorithm field identifies a speci...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The RDM field of the Authentication option (see Section 21.11)
+   determines the type of replay detection used in the replay detection
+   field.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.11'
+  Match Type: Exact match
+  Result: Matched to Section 21.11
+  Section Title: Authentication Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the RDM field contains 0x00, the replay detection field MUST be
+   set to the value of a strictly monotonically increasing 64-bit
+   unsigned integer (modulo 2^64).  Using this technique can red...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5905
+  Reference Type: TEXT
+  Reference Value (keywords/section): 64-bit NTP timestamp format
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5905:
+  Search Keywords: '64-bit NTP timestamp format'
+  Result: Found in Section 6
+  Section Title: Data Types
+  Content Preview:    All NTP time values are represented in twos-complement format, with
+   bits numbered in big-endia...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client that receives a message with the RDM field set to 0x00 MUST
+   compare its replay detection field with the previous value sent by
+   that same server (based on the Server Identifier option...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Servers that support the reconfigure mechanism MUST ensure that the
+   replay detection value is retained between restarts.  Failing to do
+   so may cause clients to refuse Reconfigure messages sen...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RKAP provides protection against misconfiguration of a client caused
+   by a Reconfigure message sent by a malicious DHCP server.  In this
+   protocol, a DHCP server sends a reconfigure key to the ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Both the reconfigure key sent from the server to the client and the
+   HMAC in subsequent Reconfigure messages are carried as the
+   authentication information in an Authentication option (see Sect...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.11'
+  Match Type: Exact match
+  Result: Matched to Section 21.11
+  Section Title: Authentication Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The following fields are set in an Authentication option (see Section 21.11) for RKAP:
+
+   protocol      3
+
+   algorithm     1
+
+   RDM           0
+
+   The format of the authentication information f...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.11'
+  Match Type: Exact match
+  Result: Matched to Section 21.11
+  Section Title: Authentication Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The server selects a reconfigure key for a client during the
+   Request/Reply, Solicit/Reply, or Information-request/Reply message
+   exchange.  The server records the reconfigure key and transmits...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.11
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.11'
+  Match Type: Exact match
+  Result: Matched to Section 21.11
+  Section Title: Authentication Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.11'
+  Match Type: Exact match
+  Result: Matched to Section 21.11
+  Section Title: Authentication Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   To provide authentication for a Reconfigure message, the server
+   selects a replay detection value according to the RDM selected by the
+   server and computes an HMAC-MD5 of the Reconfigure messag...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The client will receive a reconfigure key from the server in an
+   Authentication option (see Section 21.11) in the initial Reply
+   message from the server.  The client records the reconfigure key...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.11'
+  Match Type: Exact match
+  Result: Matched to Section 21.11
+  Section Title: Authentication Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   To authenticate a Reconfigure message, the client computes an
+   HMAC-MD5 over the Reconfigure message, with zeroes substituted for
+   the HMAC-MD5 field, using the reconfigure key received from th...
+################################################################################

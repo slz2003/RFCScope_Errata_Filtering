@@ -1,0 +1,502 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-7/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The TLS handshake establishes one or more input secrets which are
+   combined to create the actual working keying material, as detailed
+   below.  The key derivation process incorporates both the i...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The key derivation process makes use of the HKDF-Extract and HKDF-
+   Expand functions as defined for HKDF [RFC5869], as well as the
+   functions defined below:
+
+       HKDF-Expand-Label(Secret, La...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5869
+  Reference Type: TEXT
+  Reference Value (keywords/section): HKDF
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5869:
+  Search Keywords: 'HKDF'
+  Result: Found in Section 3
+  Section Title: Notes to HKDF Users
+  Content Preview:    This section contains a set of guiding principles regarding the use
+   of HKDF.  A much more exte...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+       struct {
+           uint16 length = Length;
+           opaque label<7..255> = "tls13 " + Label;
+           opaque context<0..255> = Context;
+       } HkdfLabel;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+       Derive-Secret(Secret, Label, Messages) =
+            HKDF-Expand-Label(Secret, Label,
+                              Transcript-Hash(Messages), Hash.length)
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The Hash function used by Transcript-Hash and HKDF is the cipher
+   suite hash algorithm.  Hash.length is its output length in bytes.
+   Messages is the concatenation of the indicated handshake mes...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Any extensions to TLS which use "HKDF-Expand-Label" use the HkdfLabel
+   definition associated with the version of TLS with which they are
+   being used.  When used with this specification, that me...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9147
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.9
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9147
+  Reference Type: TEXT
+  Reference Value (keywords/section): DTLS
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9147:
+  Looking for Section: '5.9'
+  Match Type: Exact match
+  Result: Matched to Section 5.9
+  Section Title: Cryptographic Label Prefix
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Keys are derived from two input secrets using the HKDF-Extract and
+   Derive-Secret functions.  The general pattern for adding a new secret
+   is to use HKDF-Extract with the Salt being the current...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '7.4'
+  Match Type: Exact match
+  Result: Matched to Section 7.4
+  Section Title: (EC)DHE Shared Secret Calculation
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  HKDF-Extract is drawn as taking the Salt argument from the top and
+      the IKM argument from the left, with its output to the bottom and
+      the name of the output on the right.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Derive-Secret's Secret argument is indicated by the incoming
+      arrow.  For instance, the Early Secret is the Secret for
+      generating the client_early_traffic_secret.
+
+   *  "0" indicates...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Note: the key derivation labels use the string "master" even though
+   the values are referred to as "main" secrets.  This mismatch is a
+   result of renaming the values while retaining compatibili...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Note: this does not show all the leaf keys such as the separate AEAD
+   and IV keys but rather the first set of secrets derived from the
+   handshake.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+                    0
+                    |
+                    v
+        PSK -->  HKDF-Extract = Early Secret
+                    |
+                    +-----> Derive-Secret(.,
+                    | ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The general pattern here is that the secrets shown down the left side
+   of the diagram are just raw entropy without context, whereas the
+   secrets down the right side include Handshake Context an...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If a given secret is not available, then the 0-value consisting of a
+   string of Hash.length bytes set to zeros is used.  Note that this
+   does not mean skipping rounds, so if PSK is not in use, ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   There are multiple potential Early Secret values, depending on which
+   PSK the server ultimately selects.  The client will need to compute
+   one for each potential PSK; if no PSK is selected, it ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Once the handshake is complete, it is possible for either side to
+   update its sending traffic keys using the KeyUpdate handshake message
+   defined in Section 4.6.3.  The next generation of traff...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.6.3
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.6.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.6.3
+  Section Title: Key and Initialization Vector Update
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '7.3'
+  Match Type: Exact match
+  Result: Matched to Section 7.3
+  Section Title: Traffic Key Calculation
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+       application_traffic_secret_N+1 =
+           HKDF-Expand-Label(application_traffic_secret_N,
+                             "traffic upd", "", Hash.length)
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Once client_/server_application_traffic_secret_N+1 and its associated
+   traffic keys have been computed, implementations SHOULD delete
+   client_/server_application_traffic_secret_N and its associ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The traffic keying material is generated from the following input
+   values:
+   *  A secret value
+
+   *  A purpose value indicating the specific value being generated
+
+   *  The length of the key b...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      +====================+=======================================+
+      | Data Type          | Secret                                |
+      +====================+==================================...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Alerts are sent with the then current sending key (or as plaintext if
+   no such key has been established.)  All the traffic keying material
+   is recomputed whenever the underlying Secret changes ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   For finite field groups, a conventional Diffie-Hellman [KEYAGREEMENT ]
+   computation is performed.  The negotiated key (Z) is converted to a
+   byte string by encoding in big-endian form and left-...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: NIST.SP.800-56AR3
+  Reference Type: TEXT
+  Reference Value (keywords/section): Recommendation for pair-wise key-establishment schemes using discrete logarithm cryptography
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   For secp256r1, secp384r1 and secp521r1, ECDH calculations (including
+   key generation and shared secret calculation) are performed according
+   to Sections 5.6.1.2 and 5.7.1.2 of [KEYAGREEMENT ] u...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: KEYAGREEMENT
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.6.1.2
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: KEYAGREEMENT
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.7.1.2
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: KEYAGREEMENT
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.8.2
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  The public key to put into the KeyShareEntry.key_exchange
+      structure is the result of applying the ECDH scalar multiplication
+      function to the secret key of appropriate length (into sc...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  The ECDH shared secret is the result of applying the ECDH scalar
+      multiplication function to the secret key (into scalar input) and
+      the peer's public key (into u-coordinate point inpu...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   For these curves, implementations SHOULD use the approach specified
+   in [RFC7748] to calculate the Diffie-Hellman shared secret.
+   Implementations MUST check whether the computed Diffie-Hellman ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7748
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7748
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7748
+  Reference Type: TEXT
+  Reference Value (keywords/section): Diffie-Hellman shared secret
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7748:
+  Looking for Section: '6'
+  Match Type: Exact match
+  Result: Matched to Section 6
+  Section Title: Diffie-Hellman
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7748:
+  Looking for Section: '7'
+  Match Type: Exact match
+  Result: Matched to Section 7
+  Section Title: Security Considerations
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7748:
+  Search Keywords: 'Diffie-Hellman shared secret'
+  Result: Found in Section 6
+  Section Title: Diffie-Hellman
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   [RFC5705] defines keying material exporters for TLS in terms of the
+   TLS pseudorandom function (PRF).  This document replaces the PRF with
+   HKDF, thus requiring a new construction.  The exporte...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5705
+  Reference Type: TEXT
+  Reference Value (keywords/section): keying material exporters for TLS
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5705:
+  Search Keywords: 'keying material exporters for TLS'
+  Result: Found in Section 6
+  Section Title: IANA Considerations
+  Content Preview:    IANA has created a TLS Exporter Label registry for this purpose.  The
+   initial contents of the ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   TLS-Exporter(label, context_value, key_length) =
+       HKDF-Expand-Label(Derive-Secret(Secret, label, ""),
+                         "exporter", Hash(context_value), key_length)
+   Where Secret is ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If no context is provided, the context_value is zero length.
+   Consequently, providing no context computes the same value as
+   providing an empty context.  This is a change from previous versions...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5705
+  Reference Type: TEXT
+  Reference Value (keywords/section): exporter labels
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: Handshake Protocol
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5705:
+  Search Keywords: 'exporter labels'
+  Result: Found in Section 4
+  Section Title: Exporter Definition
+  Content Preview:    The output of the exporter is intended to be used in a single scope,
+   which is associated with ...
+---------------------------------------------------------------------------
+

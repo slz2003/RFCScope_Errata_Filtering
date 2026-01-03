@@ -1,0 +1,449 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: >
+    The excerpt describes how a DHCPv6 client chooses the outgoing interface
+    and (implicitly) source context when sending messages, distinguishing
+    between address-assignment traffic (IA_NA, etc.) and prefix-delegation
+    traffic (IA_PD). For CE routers following RFC 7084, the client behaves
+    as a host on its WAN/upstream link while acting as a requesting router
+    for delegated prefixes that are ultimately used on downstream links.
+
+- OverallAssessment: PlausibleBug
+
+- FindingsOnRoutedIssues:
+  - Issue-1:
+    - RelatedIssueId: "Issue-1"
+    - Assessment: PlausibleBug
+    - BugType: Underspecification
+    - Summary: >
+        Section 17 splits client interface-selection behavior into
+        “for address assignment” (send via the interface being configured)
+        and “for prefix delegation” (send via the upstream interface),
+        but both rules are stated at the *message* level (“when a client
+        sends a DHCP message for the purpose of …”) while other parts of
+        the spec allow or encourage combining multiple IA types in a single
+        transaction. In such mixed messages, it is ambiguous which
+        interface-selection rule should govern, especially in more complex
+        multi-interface or multi-upstream scenarios.
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 17.1: “When a client sends a DHCP message … it SHOULD send
+          the message through the interface for which configuration
+          information (including the addresses) is being requested. However,
+          the client MAY send the message through another interface…”
+        - Section 17.2: “When a client sends a DHCP message for the purpose
+          of prefix delegation, it SHOULD be sent on the interface
+          associated with the upstream router… This rule applies even in the
+          case where a separate IA_PD is used for each downstream interface.”
+        - Section 12.2: IA_PD “can be associated with the client, with a set
+          of interfaces, or with exactly one interface. … It may associate a
+          distinct IA_PD with each of its downstream network interfaces…”
+        - Section 18.1: “a client SHOULD use a single transaction for all of
+          the IA options required on an interface… servers MUST return the
+          same T1/T2 values for all IA options in a Reply…”
+        - Section 6.4 (CE routers): “This model of operation combines
+          address assignment (see Section 6.2) and prefix delegation
+          (see Section 6.3). In general, this model assumes that a single
+          set of transactions between the client and server will assign or
+          extend the client's non-temporary addresses and delegated
+          prefixes.”
+      - Reasoning: >
+          From an actor/direction standpoint, 17.1 binds the outgoing
+          interface to the *interface being configured* (addresses), while
+          17.2 binds it to the *interface toward the delegating router*
+          (upstream WAN). Both are phrased as rules about an entire DHCP
+          message, not about individual IAs.
+
+          Elsewhere, the spec explicitly allows fairly rich IA_PD usage
+          (IA_PD associated with client or with downstream interfaces) and
+          encourages “a single set of transactions” and “a single
+          transaction for all of the IA options required on an interface”
+          that can include both IA_NA and IA_PD together. In the common CE
+          case with a single upstream link, both 17.1 and 17.2 naturally
+          point to the same WAN interface, so implementations will probably
+          behave correctly.
+
+          However, in more complex roles (e.g., a node that mixes IA_NA for
+          one interface with IA_PD intended for downstream use in the same
+          message, or a multihomed CE with more than one upstream link) the
+          text does not say which of the two “purpose-based” rules should
+          control interface selection for that message. Because this is
+          articulated only at the message level and not per IA, and no
+          precedence is given between 17.1 and 17.2 in mixed-purpose
+          messages, there is a plausible underspecification about which
+          interface the client must actually use in those edge cases.
+
+- AdditionalActorIssues: []
+
+
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 17 gives per-message rules for which *interface* a DHCPv6 client should use when sending messages, distinguishing between address-assignment traffic (IA_NA etc.) and prefix-delegation traffic (IA_PD), with additional expectations for CE routers as in RFC 7084. The rest of the excerpt defines the IA/IA_PD model, multi-IA usage, CE router behavior, and general client message processing, which together constrain how those Section 17 rules are meant to apply.
+
+- ScopeModel:
+  - Targets:
+    - DHCPv6 client behavior for selecting the *outgoing interface* (and implicitly the source address) when sending:
+      - Messages whose purpose is address assignment / other configuration for a specific interface (IA_NA, possibly stateless options)   (Section 17.1).
+      - Messages whose purpose is prefix delegation using IA_PD   (Section 17.2).
+    - Identity Associations:
+      - IA_NA: one or more per interface, each **must** be associated with exactly one interface   (Section 12.1).
+      - IA_PD: may be associated with the client, with a set of interfaces, or with exactly one interface; clients may use a distinct IA_PD “for each of its downstream network interfaces”   (Section 12.2).
+    - CE routers:
+      - WAN-side CE router requirements for IA_NA and IA_PD, including “MUST act as an IPv6 host” on the WAN and “MUST support DHCPv6 prefix delegation requesting router behavior”   (RFC 7084, Section 4.2).
+      - CE model that “combines address assignment … and prefix delegation” with “a single set of transactions” to manage both   (Section 6.4).
+  - Conditions:
+    - Section 17.1 applies when a client “sends a DHCP message to the All_DHCP_Relay_Agents_and_Servers multicast address” and is requesting configuration for a particular interface; the message SHOULD go out that interface, but MAY go out a different interface if the target interface is logical or if the client is sure two interfaces are on the same link  .
+    - Section 17.2 applies “when a client sends a DHCP message for the purpose of prefix delegation”: it SHOULD be sent on “the interface associated with the upstream router (typically, connected to an ISP network)”, even if separate IA_PDs exist per downstream interface  .
+    - General modeling assumptions:
+      - The document assumes that “the DHCP servers and the client, communicating with the servers via a specific interface, belong to a single provisioning domain”   (Section 6).
+      - Clients SHOULD “use a single transaction for all of the IA options required on an interface”; servers MUST give uniform T1/T2 across IAs in a reply so the client can renew/rebind all IAs from a server “at the same time”   (Sections 18.1, 18.2.4).
+    - Message composition:
+      - Messages (Solicit/Request/Renew/Rebind, etc.) may contain multiple IA options, potentially of different IA types (IA_NA, IA_PD)   (Sections 18.2.1, 18.2.4).
+      - CE routers are expected, in the common case, to use a *single* set of transactions to manage both non-temporary addresses and delegated prefixes   (Section 6.4).
+  - NotedAmbiguities:
+    - Section 17’s rules are phrased in terms of the *entire message* (“When a client sends a DHCP message …”), whereas the IA model and Section 18.1 are per-interface and per-IA. There is no explicit statement that a message must not mix IAs whose “natural” upstream interfaces differ; that prohibition is only implicit in “SHOULD use a single transaction for all of the IA options required on an interface”  .
+    - For messages that simultaneously contain both IA_NA and IA_PD (the CE-router case), 17.1 (“for which configuration information … is being requested”) and 17.2 (“for the purpose of prefix delegation”) both apply, but the text does not explicitly say that the chosen interface is simply the common upstream interface serving both purposes.
+    - Multi-homed or multi-WAN scenarios where the same server DUID is reachable over different physical interfaces are not explicitly analyzed; the text generally assumes the per-interface “provisioning domain” model and per-interface transactions, leaving the multi-link / same-DUID case to implementation judgment.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: Section 17’s interface-selection rules are broadly coherent with the IA and operational models; no clear normative scope error found
+    - ScopeProblemType: None
+    - Evidence:
+      - Section 17.1 ties multicast client messages to “the interface for which configuration information (including the addresses) is being requested”, with exceptions only for logical interfaces or known-same-link interfaces  .
+      - Section 17.2 specifies that PD messages “SHOULD be sent on the interface associated with the upstream router … This rule applies even in the case where a separate IA_PD is used for each downstream interface”  , explicitly coupling PD traffic to the upstream-facing link.
+      - Section 12.1 requires that each address-assignment IA_NA “must be associated with exactly one interface”  , and Section 12.2 allows IA_PDs to be associated with the client or with downstream interfaces but does not require any per-downstream upstream interface selection  .
+      - Section 18.1 tells clients they “SHOULD use a single transaction for all of the IA options required on an interface”  , which naturally aligns message composition with a single outgoing interface as per Section 17.
+      - Section 6.4 explicitly describes the CE router model as one where “a single set of transactions between the client and server will assign or extend the client's non-temporary addresses and delegated prefixes” over the WAN-facing interface  , consistent with applying both 17.1 and 17.2 to that same upstream interface.
+    - DetailedReasoning:
+      - The most plausible area for a scope bug is the interaction between (a) per-message interface-selection rules in Section 17 and (b) the per-IA, per-interface model in Sections 12 and 18, especially when multiple IA_NA and IA_PD options are involved.
+      - However, the core IA model is explicitly per-interface for IA_NA, and Section 18.1’s guidance that a client SHOULD use “a single transaction for all of the IA options required on an interface” effectively scopes each transaction—and thus each outgoing DHCP message—to one logical interface. This matches Section 17.1’s rule of using the interface “for which configuration information … is being requested.”
+      - For prefix delegation, Section 12.2 and the CE-router model in Section 6.4 clearly assume that PD is negotiated over the upstream WAN interface, even when separate IA_PDs are conceptually mapped to different downstream interfaces. Section 17.2’s “SHOULD be sent on the interface associated with the upstream router … even in the case where a separate IA_PD is used for each downstream interface” simply makes that intended scope explicit.
+      - In the CE-router case where a single message naturally contains both IA_NA and IA_PD for the WAN side, Section 17.1 (“interface for which configuration … including the addresses … is being requested”) and Section 17.2 (“interface associated with the upstream router”) both resolve to the same WAN interface; there is no conflict in the literal normative text, and the examples in Sections 6.3–6.4 support that interpretation.
+      - Potentially tricky multi-homing cases (multiple upstream interfaces, or a single server DUID reachable via more than one interface) are not directly analyzed, but the specification’s general assumption of per-interface provisioning domains and per-interface transactions, together with the use of “SHOULD” (not “MUST”) on both the “single transaction per interface” and interface-selection rules, give implementations enough leeway to treat those as extensions or deployment-specific behavior rather than strictly governed by this base RFC.
+      - Given this, there is no clear mismatch where a normative rule is scoped too broadly/narrowly or applies to the wrong entity; instead, the text consistently steers implementations toward per-interface DHCP transactions on the appropriate link (local for IA_NA, upstream for IA_PD), and any ambiguous multi-link, multi-provider scenarios appear to be intentionally left out of the base scope rather than accidentally mis-specified.
+
+- ResidualUncertainties:
+  - The document does not fully spell out behavior for clients with multiple upstream links to the *same* server DUID (e.g., redundant WAN interfaces to one provider) or for complex multi-homing with distinct provisioning domains per interface. In such scenarios, implementers must interpret Section 18.1’s “single transaction per interface” and Section 17’s interface-selection rules in a conservative, per-interface manner, as the base spec provides no explicit multi-homing model.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following Section 17 as written does not lead to any inherent protocol failure. The interface-selection rules for address assignment (IA_NA) vs. prefix delegation (IA_PD) are consistent with how servers infer links and route delegated prefixes, including for RFC 7084 CE routers. Misbehavior only occurs if an implementation ignores the SHOULDs in Section 17, not if it follows them.
+
+---
+
+2. **Causal Analysis**
+
+**a. How servers infer the “link” for a client**
+
+For address assignment, the server must know which link the client is on so it can hand out “appropriate to the link” addresses:
+
+- Direct (no relay): “If the server receives the message directly from the client and the source address ... is a link-local address, then the client is on the same link to which the interface over which the message was received is attached.”  
+- With relay: “If the server receives the message from a forwarding relay agent, then the client is on the same link as the one to which the interface, identified by the link-address field ... is attached.”  
+
+Section 13.1 then says the server uses this to select addresses that are appropriate to that link.  
+
+For **prefix delegation**, the server doesn’t assign per-link host addresses; instead, it gives a prefix and then needs to route that prefix toward the requesting router’s upstream link (directly, or via a relay)  . The “link” it cares about is where the requesting router sits in the provider network.
+
+**b. Section 17.1 – IA_NA (address assignment)**
+
+Section 17.1 says:
+
+> When a client sends a DHCP message to the All_DHCP_Relay_Agents_and_Servers multicast address, it SHOULD send the message through the interface for which configuration information (including the addresses) is being requested. However, the client MAY send the message through another interface if the interface for which configuration is being requested is a logical interface without direct link attachment or the client is certain that two interfaces are attached to the same link.  
+
+Mechanically, this means:
+
+- For a normal physical interface that needs addresses, you send Solicit/Request/etc. out that very interface. The server then correctly infers the link (via source LL or relay link-address) and assigns addresses “appropriate to the link” per Section 13.1.
+- The “MAY send through another interface” is *explicitly* constrained: only if  
+  - the target interface is purely logical and cannot directly send to the link (e.g., certain tunnels), or  
+  - you are certain two interfaces are on the same L2 link.  
+
+So Section 17.1 is carefully aligned with the server’s link-detection logic. If followed, it does not produce wrong-link assignments.
+
+**c. Section 17.2 – IA_PD (prefix delegation)**
+
+Section 17.2 says:
+
+> When a client sends a DHCP message for the purpose of prefix delegation, it SHOULD be sent on the interface associated with the upstream router (typically, connected to an ISP network); see [RFC7084]. The upstream interface is typically determined by configuration. This rule applies even in the case where a separate IA_PD is used for each downstream interface.  
+
+This matches the PD model described earlier:
+
+- The server is “provisioned with prefixes to be delegated to clients” and the client is usually a router receiving prefixes from an ISP.  
+- If the server communicates about delegated prefixes via a relay, it may need separate mechanisms to configure routing for those prefixes on the provider’s routers.  
+
+So, causally:
+
+- Sending IA_PD-bearing messages on the **upstream** interface ensures the server will anchor the delegated prefix’s route to the correct next hop (the CE’s upstream link or the nearest relay on that path).
+- Even if the CE internally associates different IA_PDs with different downstream interfaces, that mapping is *purely client-local*. The server does not need, and is not designed, to know about downstream topology; it only needs to know where to route the aggregate delegated prefix. That’s exactly what 17.2 enforces.
+
+If, instead, a client sent PD messages on a LAN-facing interface, the server could install a route for the delegated prefix pointing at the wrong link, and traffic toward the subscriber network would be misrouted. Section 17.2’s SHOULD is precisely there to *prevent* this causal misrouting.
+
+**d. Interaction with “single transaction for multiple IAs” and RFC 7084 CEs**
+
+Section 18.1 says a client SHOULD use a single transaction for all IA options required on an interface and servers MUST return the same T1/T2 across IAs in a Reply.  
+
+Section 6.4 (Customer Edge Routers) says this model “combines address assignment and prefix delegation” and “assumes that a single set of transactions between the client and server will assign or extend the client's non-temporary addresses and delegated prefixes.”  
+
+For RFC 7084 CE routers, that “single set of transactions” is on the **WAN/upstream interface**:
+
+- WAN-side requirements explicitly say the CE “MUST act as an IPv6 host” on the WAN interface (W-1) and “MUST support DHCPv6” client behavior, including IA_NA and IA_PD (prefix delegation).  
+- The WAN interface is also where the CE discovers default routers (RAs) and where it initiates DHCPv6 PD per WPD-1/WPD-4.  
+
+Thus for a CE:
+
+- IA_NA + IA_PD options live in the same Solicit/Request on the WAN interface.
+- Section 17.1 (for IA_NA) and 17.2 (for IA_PD) both point to the **same** physical interface (the WAN/upstream router interface), so there is no conflict; the “purpose” distinction doesn’t force incompatible interface choices in the CE use case that RFC 7084 defines.
+
+**e. Multi-interface / multi-upstream edge cases**
+
+The spec largely assumes “typical” deployments (single upstream) and says the upstream interface is “typically determined by configuration.” For multi-homed clients with multiple upstreams, an implementation must decide which one to use for a given PD relationship, but nothing in Section 17 makes that impossible:
+
+- You can have one DHCPv6 client instance per upstream interface, each using IA_PD and IA_NA as needed and sending via that interface.
+- For any given DHCPv6 transaction, the “interface for which configuration is being requested” in 17.1, and the “interface associated with the upstream router” in 17.2, are both well-defined per that client instance.
+
+The spec does not require impossible behavior such as using the same transaction for IAs bound to fundamentally different upstream links.
+
+---
+
+3. **Problem Classification**
+
+Given the above, Section 17:
+
+- Does **not** create a causal inconsistency. If implemented as written, messages for IA_NA and IA_PD are sent on interfaces whose links match what the server uses to determine address appropriateness and PD routing.
+- Does **not** leave an essential behavior undefined; the “purpose of prefix delegation” vs. “address assignment” split is operable and consistent with the rest of the document and with RFC 7084.
+
+The Router’s hypothesized failure mode—server inferring the wrong link and assigning inappropriate addresses/prefixes—results from **violating** the SHOULD in 17.1/17.2 (e.g., sending PD requests on a LAN interface), not from following the spec.
+
+So there is no *spec-induced* causal bug here.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the WG wanted to make the intent even more explicit (but not to fix a broken behavior), a small clarification could be added, e.g.:
+
+- In 17.2, explicitly note that for CE routers following RFC 7084, IA_NA and IA_PD options used to configure WAN/PD are expected to be carried in messages sent on the WAN/upstream interface.
+
+This would be editorial clarification, not a functional repair.
+
+---
+
+5. **Non-Issues**
+
+- The apparent tension between “different behavior depending on the purpose” in Section 17 and “single transaction for multiple IA options” in Section 18.1 is resolved by observing that, in typical deployments (especially RFC 7084 CEs), both purposes share the same upstream interface, so both 17.1 and 17.2 select that interface.
+- Any misbehavior where a server assigns prefixes routed toward the wrong link arises when a client *ignores* 17.1/17.2 and sends DHCPv6 messages on the wrong interface. That is an implementation/configuration error, not a flaw in the protocol rules as written.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 17 gives normative guidance to DHCPv6 clients on which *interface* to use when sending messages, distinguishing address-assignment traffic (IA_NA etc.) from prefix-delegation (IA_PD), and aligning PD behaviour with the WAN/upstream model of RFC 7084. Related sections (12.2, 18.1, 18.2.x) define how IAs are associated with interfaces and how transactions are structured per interface.
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - Title: Apparent ambiguity on interface selection for messages with multiple IAs is resolved by other normative text
+    - Description:  
+      Section 17.1 says that when sending to the All_DHCP_Relay_Agents_and_Servers multicast address, a client "SHOULD send the message through the interface for which configuration information (including the addresses) is being requested," with a MAY to use another interface in special cases.   Section 17.2 then says that when a client sends a DHCP message "for the purpose of prefix delegation, it SHOULD be sent on the interface associated with the upstream router," and explicitly that "This rule applies even in the case where a separate IA_PD is used for each downstream interface."   At first glance, this can look ambiguous when a message contains both IA_NA and IA_PD options, or when a client has multiple IAs and multiple interfaces. However, other normative text constrains the situation so that the apparent tension does not create a real deontic bug.  
+      Section 12.1 states that each IA_NA "must be associated with exactly one interface," and Section 18.1 adds that "a client SHOULD use a single transaction for all of the IA options required on an interface," not across multiple interfaces.   Combined, this effectively means that a given DHCP message’s IA set is intended to apply to a single interface, so 17.1’s phrase "the interface for which configuration information is being requested" is well-defined in practice. For PD, Section 12.2 clarifies that an IA_PD "can be associated with the client, with a set of interfaces, or with exactly one interface," and 17.2 explicitly states that even if you use a distinct IA_PD per downstream interface, the PD messages are still sent on the upstream interface.   This aligns with the CE-router model in RFC 7084, which requires the CE to act as a requesting router on the WAN and to use DHCPv6-PD there.    
+      For stateless configuration (Information-request), Section 18.2.6 already uses the wording "the first Information-request message from the client on the interface," clearly treating these exchanges as per-interface, which dovetails with 17.1’s interface-selection rule.   Thus, the normative structure is: per-interface transactions for IA_NA/other per-interface configuration, and upstream-interface transactions for IA_PD regardless of which downstream interfaces will use the delegated prefixes. While one could imagine exotic multi-upstream/multi-interface cases where the document gives only "SHOULD"‑level guidance and leaves some policy decisions (like mapping IA_PDs to multiple upstreams) to configuration, this is a design choice and not an internal contradiction or a missing necessary requirement for interoperability.
+    - KeyTextSnippets:
+      - "When a client sends a DHCP message to the All_DHCP_Relay_Agents_and_Servers multicast address, it SHOULD send the message through the interface for which configuration information (including the addresses) is being requested. However, the client MAY send the message through another interface..." (Section 17.1)  
+      - "When a client sends a DHCP message for the purpose of prefix delegation, it SHOULD be sent on the interface associated with the upstream router... This rule applies even in the case where a separate IA_PD is used for each downstream interface." (Section 17.2)  
+      - "Each such IA must be associated with exactly one interface." (Section 12.1, for IA_NA)  
+      - "A client SHOULD use a single transaction for all of the IA options required on an interface." (Section 18.1)  
+      - "One IA_PD can be associated with the client, with a set of interfaces, or with exactly one interface." (Section 12.2)  
+    - Impact: Because the surrounding sections constrain IA–interface associations and recommend per-interface transactions, implementers can consistently interpret Section 17.1 and 17.2 without conflicting obligations. The remaining flexibility (e.g., for multi-upstream designs) is clearly at the "SHOULD"-and-configuration level and does not create interoperability or security failures arising from contradictory or missing mandatory requirements.
+
+- IfNoRealIssue:
+  The router’s candidate concern about ambiguity in interface selection is understandable at a high level, but once Sections 12.1, 12.2, 18.1, and 18.2.x are taken into account, they collectively provide a coherent normative story: IA_NA usage and stateless options are per-interface and should be sent via the corresponding interface, while IA_PD exchanges are always done on the upstream interface regardless of how prefixes are later distributed. There is no internal MUST/SHOULD/MAY conflict or clear underspecification that would mislead a conformant implementer, so from a deontic standpoint this portion of the draft is sound.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 17 of the 8415bis draft describes which *interface* a DHCPv6 client uses when sending messages, distinguishing between address-assignment use (IA_NA) and prefix delegation (IA_PD). It references RFC 7084 to anchor the Customer Edge (CE) router model, where the requesting router function (prefix delegation) lives on the WAN/upstream interface. The rest of the draft (e.g., Sections 6.3, 6.4, 12.2, 18.1, 18.2) describes multi-IA behavior and CE-router behavior that must fit with both Section 17 and RFC 7084’s WAN-side requirements.
+
+- OverallCrossRFCLikelihood: Low
+
+- Issues: []
+
+- IfNoIssues:
+  - Comment:  
+    I do not see a concrete cross-RFC or cross-registry bug here; the text in Section 17 is broadly consistent with both the rest of 8415bis and with RFC 7084’s CE-router model.
+
+    Concretely:
+    * RFC 7084 says the CE router, on its WAN interface, MUST act as a host for SLAAC and DHCPv6 address assignment and MUST act as a requesting router for DHCPv6 prefix delegation (IA_PD) on that WAN link  .  
+      – Section 17.1 says that when requesting address assignment, the client SHOULD send the message on “the interface for which configuration information (including the addresses) is being requested.”  
+      – For an RFC 7084 CE, the address of interest on the WAN is indeed on the WAN interface, so messages are sent from that WAN interface.  
+    * RFC 7084 also requires the CE to support DHCPv6 prefix delegation as a requesting router on the WAN side (W-4, WPD-1, WPD-4) and expects PD to be driven from that WAN-facing role  .  
+      – Section 17.2 says that “when a client sends a DHCP message for the purpose of prefix delegation, it SHOULD be sent on the interface associated with the upstream router (typically, connected to an ISP network); see [RFC7084]. The upstream interface is typically determined by configuration.” This is aligned with RFC 7084’s assumption that the requesting router is on the WAN link.
+      – The sentence “This rule applies even in the case where a separate IA_PD is used for each downstream interface” is consistent with Section 12.2, which allows IA_PDs to be conceptually associated with different downstream interfaces, but does **not** say that DHCPv6 messages must be sent on those downstream interfaces. Section 17.2 removes that possible misinterpretation by explicitly stating that all PD-related DHCP traffic still goes out the upstream interface.
+    * Section 6.4 (“DHCP for Customer Edge Routers”) assumes “a single set of transactions between the client and server will assign or extend the client’s non-temporary addresses and delegated prefixes,” which fits the model where both IA_NA and IA_PD are requested in the same DHCPv6 exchange on the WAN-interface client, as encouraged by Section 18.1 (single transaction per interface for all IA options)  . That is compatible with both 17.1 and 17.2 for a CE: both address-assignment and PD configuration concern the WAN interface and are therefore legitimately sent on that same upstream interface.
+    * RFC 7084’s WAA-9 weak-host requirement (router may originate traffic on an interface using a source address from another interface if needed) does not contradict Section 17; Section 17 is about the **outgoing interface choice**, not the exact source address selection, and 8415bis already allows link-local or other mechanisms for choosing the source address (Section 5, Section 11)  .
+
+    Regarding the router’s hypothesis:
+
+    * I **partly agree** that there is some *generic* underspecification around complex multi-IA / multi-upstream scenarios (e.g., a node with multiple distinct upstream WAN links and separate IA_PD “families” attached to each). Section 17.2 just says “the upstream interface is typically determined by configuration” and does not normatively define how to map particular IA_PDs or IA_NAs to particular upstream interfaces in a multihomed design. However, RFC 7084 itself assumes a single WAN link and does not define that behavior either, so this is not a cross-RFC mismatch, merely an area left to implementation and deployment policy.
+    * The potential ambiguity that 17.1/17.2 talk about “a DHCP message” rather than per-IA behavior is mostly resolved by Section 18.1, which scopes the “single transaction” recommendation to “all of the IA options required on an **interface**,” not to the whole node. That fits quite naturally with the idea that each upstream interface can run its own independent DHCPv6 client instance and transaction set. Again, that’s design flexibility rather than a conflict with RFC 7084.
+
+    In short, Section 17’s rules for interface choice are consistent with RFC 7084’s CE-router WAN model and with the rest of 8415bis. There is some room for interpretation in multi-WAN, multi-IA_PD scenarios, but that is not in direct tension with any referenced RFCs or registries and therefore does not rise to a cross-RFC/registry bug.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 17 defines how a DHCPv6 client chooses the outgoing interface (and implicitly source address) for its messages, distinguishing between “address assignment” traffic (IA_NA etc.) and “prefix delegation” traffic (IA_PD). It must be read together with the IA model (§12), the “single transaction per interface” assumption (§18.1), and the CE-router model in RFC 7084 (referenced in §6.4 and §17.2). The key domain axes here are: multiple interfaces, multiple IAs (possibly of different types), and messages that might mix IA_NA and IA_PD.
+
+- OverallBoundaryBugLikelihood: Low
+
+- Findings:
+  - Finding-1:
+    - BugType: None
+    - ShortLabel: Interface selection when messages mix IAs and/or interfaces
+    - BoundaryAxis: Multiple interfaces and/or both IA_NA and IA_PD in a single DHCP message
+    - ExcerptEvidence:
+      - §17.1: client “SHOULD send the message through the interface for which configuration information (including the addresses) is being requested”, with exceptions for logical interfaces or when two interfaces are known to be on the same link.
+      - §17.2: for prefix delegation, the message “SHOULD be sent on the interface associated with the upstream router … This rule applies even in the case where a separate IA_PD is used for each downstream interface.”
+      - §12.1: each IA_NA is associated with exactly one interface; IAID MUST be unique per IA type on that client.
+      - §12.2: IA_PD is not required to be tied to a single interface; may be per client or per downstream interface.
+      - §18.1: the specification “assumes that a client SHOULD use a single transaction for all of the IA options required on an interface”.
+      - §13.1: the server determines “the link to which the client is attached” from the interface on which the message was received (or from relay link-address), i.e., one link per message.
+      - §6.4 / RFC 7084: CE model combines address assignment and PD, typically in a single set of transactions between client and server.
+    - Reasoning:
+      - A plausible edge case is a client that includes IAs for multiple physical interfaces (e.g., IA_NA for two different links) in one Solicit/Request/Renew/Rebind, or that includes both IA_NA and IA_PD whose semantics span different interfaces. §18.1 only says “SHOULD” use a single transaction per interface, so this multi-interface bundling is not syntactically forbidden.
+      - However, §13.1 and the relay model make a strong architectural assumption: a given client→server message is associated with exactly one link (derived from the receiving interface or relay link-address), and the server then chooses “addresses appropriate for the link to which the client is connected” for *all* IAs in that message. That effectively means that putting IAs for different links into one message is outside the model; if a client does so, it is violating the protocol’s structural assumptions, and the behavior is predictably wrong rather than underspecified.
+      - For prefix delegation, §17.2 explicitly resolves the CE-router corner case that might otherwise be confusing: even if a client associates a separate IA_PD with each downstream interface, all of those IA_PDs are still requested over the upstream (WAN) interface. That is consistent with §6.4 and RFC 7084, which assume PD is negotiated on the WAN link even when the delegated space is later split across LANs.
+      - For CE routers requesting both IA_NA and IA_PD from the ISP, the IA_NA used on the WAN and the IA_PD(s) are all logically associated with the same upstream link, so both §17.1 (“interface for which configuration … is being requested”) and §17.2 (“interface associated with the upstream router”) select the same outgoing interface; there is no real conflict when the IAs are scoped per link as intended.
+      - More exotic scenarios like a host that tries to use one DHCP exchange spanning multiple provisioning domains or links are already excluded by §6 (“communicating with the servers via a specific interface, belong to a single provisioning domain”) and by the per-link determination in §13.1, so the specification does not need to define interface selection for those cases.
+    - ImpactAssessment:
+      - In the normal and CE-router cases (single upstream per DHCP client instance, IA_NA and IA_PD associated with that link, separate transactions per link), the interface-selection rules are coherent and unambiguous. Implementations that deliberately violate §18.1’s per-interface transaction assumption by mixing IAs for different links into one message will misbehave, but that stems from ignoring an existing normative “SHOULD” rather than from a gap in §17. No interoperability or consistency bug arises for conformant implementations.
+
+- Notes:
+  - Not a bug, but worth noting: the spec does not give explicit interface-selection guidance for purely stateless Information-request exchanges in a multi-interface host. However, §17.1’s phrase “configuration information (including the addresses)” naturally covers “other configuration information” as well, and §6 assumes per-interface provisioning domains. This is enough to infer that Information-requests are also intended to be per-link, so different implementers will converge on compatible behavior.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+
+Vector Stores Used: vs_6958be89a44481918c2ddd280ca7a32c
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-14/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Unless otherwise specified in this document or in a document that
+   describes how IPv6 is carried over a specific type of link (for link
+   types that do not support multicast), a client sends DHC...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client uses multicast to reach all servers or an individual server.
+   An individual server is indicated by specifying that server's DUID in
+   a Server Identifier option (see Section 21.3) in th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DHCPv6 client MUST limit the rate of DHCP messages it transmits or
+   retransmits.  This will minimise the impact of prolonged message
+   bursts or loops, for example when a client rejects a serv...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This loop can repeat infinitely if there is not a quit/stop
+   mechanism.  Therefore, a client must not initiate transmissions too
+   frequently.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A recommended method for implementing the rate-limiting function is a
+   token bucket (see Appendix A of [RFC3290]), limiting the average rate
+   of transmission to a certain number in a certain ti...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3290
+  Reference Type: SECTION
+  Reference Value (keywords/section): Appendix A
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3290:
+  Looking for Section: 'Appendix A'
+  Match Type: Fuzzy match (score: 18.181818181818176)
+  Result: Matched to Section A
+  Section Title: Discussion of Token Buckets and Leaky Buckets
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   In certain cases, T1 and/or T2 values may be set to 0.  Currently,
+   there are two such cases:
+
+   1.  a client received an IA_NA option (see Section 21.4) with a zero
+       value
+
+   2.  a clien...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.4
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2
+
+Reference 4:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.21
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '1'
+  Match Type: Exact match
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.4'
+  Match Type: Exact match
+  Result: Matched to Section 21.4
+  Section Title: Identity Association for Non-temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '2'
+  Match Type: Exact match
+  Result: Matched to Section 2
+  Section Title: Requirements
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.21'
+  Match Type: Exact match
+  Result: Matched to Section 21.21
+  Section Title: Identity Association for Prefix Delegation Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This is an indication that the renew and rebind times are left to the
+   discretion of the client.  However, they are not completely
+   discretionary. 
+   When T1 and/or T2 values are set to 0, the...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 14.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '14.1'
+  Match Type: Exact match
+  Result: Matched to Section 14.1
+  Section Title: Rate Limiting
+---------------------------------------------------------------------------
+

@@ -1,0 +1,324 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-9/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In the absence of an application profile standard specifying
+   otherwise:
+
+   A TLS-compliant application MUST implement the TLS_AES_128_GCM_SHA256
+   [GCM ] cipher suite and SHOULD implement the ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: GCM
+  Reference Type: TEXT
+  Reference Value (keywords/section): Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8439
+  Reference Type: TEXT
+  Reference Value (keywords/section): ChaCha20 and Poly1305 for IETF Protocols
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): B.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8439:
+  Search Keywords: 'ChaCha20 and Poly1305 for IETF Protocols'
+  Result: Found in Section 6.2
+  Section Title: Informative References
+  Content Preview:    [AE ]       Bellare, M. and C. Namprempre, "Authenticated Encryption:
+              Relations amo...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: 'B.4'
+  Match Type: Exact match
+  Result: Matched to Section B.4
+  Section Title: Cipher Suites
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A TLS-compliant application MUST support digital signatures with
+   rsa_pkcs1_sha256 (for certificates), rsa_pss_rsae_sha256 (for
+   CertificateVerify and certificates), and ecdsa_secp256r1_sha256....
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7748
+  Reference Type: TEXT
+  Reference Value (keywords/section): X25519
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7748:
+  Search Keywords: 'X25519'
+  Result: Found in Section 5
+  Section Title: The X25519 and X448 Functions
+  Content Preview:    The "X25519" and "X448" functions perform scalar multiplication on
+   the Montgomery form of the ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   In the absence of an application profile standard specifying
+   otherwise, a TLS-compliant application MUST implement the following
+   TLS extensions:
+
+   *  Supported Versions ("supported_versions...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.1
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.2
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.3
+
+Reference 4:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.3
+
+Reference 5:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.7
+
+Reference 6:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.8
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.1
+  Section Title: Supported Versions
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.2
+  Section Title: Cookie
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.3
+  Section Title: Signature Algorithms
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.3
+  Section Title: Signature Algorithms
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.7'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.7
+  Section Title: Supported Groups
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.8'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.8
+  Section Title: Key Share
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Server Name Indication ("server_name"; Section 3 of [RFC6066])
+   All implementations MUST send and use these extensions when offering
+   applicable features:
+
+   *  "supported_versions" is REQU...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6066
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC6066
+  Reference Type: TEXT
+  Reference Value (keywords/section): Transport Layer Security (TLS) Extensions
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC6066:
+  Looking for Section: '3'
+  Match Type: Exact match
+  Result: Matched to Section 3
+  Section Title: Server Name Indication
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A client is considered to be attempting to negotiate using this
+   specification if the ClientHello contains a "supported_versions"
+   extension with 0x0304 contained in its body.  Such a ClientHel...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  If not containing a "pre_shared_key" extension, it MUST contain
+      both a "signature_algorithms" extension and a "supported_groups"
+      extension.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  If containing a "supported_groups" extension, it MUST also contain
+      a "key_share" extension, and vice versa.  An empty
+      KeyShare.client_shares list is permitted.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Servers receiving a ClientHello which does not conform to these
+   requirements MUST abort the handshake with a "missing_extension"
+   alert.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Additionally, all implementations MUST support the use of the
+   "server_name" extension with applications capable of using it.
+   Servers MAY require clients to send a valid "server_name" extensio...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This section describes invariants that TLS endpoints and middleboxes
+   MUST follow.  It also applies to earlier versions of TLS. 
+   TLS is designed to be securely and compatibly extensible.  Newe...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  A client sending a ClientHello MUST support all parameters
+      advertised in it.  Otherwise, the server may fail to interoperate
+      by selecting one of those parameters.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  A server receiving a ClientHello MUST correctly ignore all
+      unrecognized cipher suites, extensions, and other parameters.
+      Otherwise, it may fail to interoperate with newer clients.  I...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  A middlebox which terminates a TLS connection MUST behave as a
+      compliant TLS server (to the original client), including having a
+      certificate which the client is willing to accept, an...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      Note that TLS's protocol requirements and security analysis only
+      apply to the two connections separately.  Safely deploying a TLS
+      terminator requires additional security consideratio...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  A middlebox which forwards ClientHello parameters it does not
+      understand MUST NOT process any messages beyond that ClientHello.
+      It MUST forward all subsequent traffic unmodified.  Ot...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The design of TLS 1.3 was constrained by widely deployed non-
+   compliant TLS middleboxes (see Appendix E.4); however, it does not
+   relax the invariants.  Those middleboxes continue to be non-
+ ...
+################################################################################

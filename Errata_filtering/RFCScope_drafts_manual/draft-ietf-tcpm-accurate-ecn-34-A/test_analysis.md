@@ -1,0 +1,789 @@
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: The excerpt defines the Accurate ECN (AccECN) extensions for TCP, including capability negotiation during the three-way handshake, the ACE counter in the TCP header, optional AccECN TCP options, interaction with middleboxes and offload engines, and explicit updates to RFC 3168 and related TCP behavior.
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: HIGH - Many procedures depend on ordering of SYN/SYN-ACK/ACK, retransmissions, state transitions (SYN-RCVD vs ESTABLISHED), and ACE/option wrap-around and ACK loss handling.
+  - ActorDirectionality: HIGH - The spec distinguishes TCP Client vs Server and Data Sender vs Data Receiver, with asymmetric rules for each; correctness depends on “who does what when” (e.g., what each side infers from flags and options).
+  - Scope: HIGH - Rules differ per half-connection, per-role, and per-phase (handshake vs established), and there are specific modes (“AccECN mode”, “Not ECN mode”, “assume options unavailable”) whose scopes must not be confused.
+  - Causal: HIGH - Behavior is defined via cause→effect chains (how flags on SYN/SYN-ACK cause mode selection, how ACE increments drive congestion response, how mangling/zeroing tests affect later ECN use).
+  - Quantitative: MEDIUM - The design relies on exact bit widths (3-bit ACE, 24-bit option counters), allowed option lengths, and wrap-around behavior; these are consistent on first reading but worth a detailed check.
+  - Deontic: HIGH - There is dense use of MUST/SHOULD/MAY, including fallbacks and exceptions (e.g., when to disable ECN, when to still feed back ECN even if not sending ECT), and potential tension with older RFC 3168 and 7323 requirements.
+  - Structural: MEDIUM - Several figures and tables (e.g., Tables 2–5, Figures 2–4) interact tightly with the prose; there are places where names in text vs tables may diverge.
+  - CrossRFC: MEDIUM - The text explicitly “updates” sections of RFC 3168 and interacts with RFC 8311, 7323, 2018, 5681, etc.; correctness depends on accurately reflecting or deliberately updating those earlier definitions.
+  - Terminology: MEDIUM - The document defines several counters and roles; there appears to be at least one inconsistent counter name, and experts should check for any other naming slips that could mislead implementers.
+  - Boundary: HIGH - Many edge cases are covered (simultaneous open, SYN cookies, multiple SYN/SYN-ACKs, ACE/option wrap-around, ACK thinning, reordering, middlebox mangling/zeroing); subtle underspecification here could cause interoperability issues.
+
+Candidate Issues: 2
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Inconsistent counter name “r.ec0b” vs defined “r.e0b” / “r.e1b”
+    Relevant Dimensions: Terminology, Structural
+    Sketch: In Section 3.2.3.3 (“Usage of the AccECN TCP Option”), one bullet says: “It SHOULD always include an...
+
+  Issue 2:
+    Type: Both
+    Label: Possible misalignment with RFC 3168’s definition of “invalid” ECN field transitions
+    Relevant Dimensions: CrossRFC, Deontic, Scope, Causal
+    Sketch: Section 3.2.2.3 (“Testing for Mangling of the IP/ECN Field”) states: “Invalid transitions of the IP-...
+
+Response ID: resp_0f50b8456d446814006958c96f3a4c8190a33fac7df29c1e99
+
+================================================================================
+EXPERT ANALYSES
+================================================================================
+================================================================================
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary:  
+    The excerpt defines a fairly intricate temporal/state machine around AccECN negotiation in the TCP three‑way handshake, fallback across multiple SYN/SYN‑ACK transmissions, and then ongoing ACE/option feedback with rules for ACK timing, wrap‑around handling, and middlebox/path tests. Overall, the temporal sequencing is coherent and clearly tries to prevent divergent views of the negotiated feedback mode despite loss, reordering, retries, or middlebox interference.  
+    The main temporal risk comes from edge cases where optimization (LRO-style aggregation or offload) or late/duplicate handshake ACKs interact with ACE semantics and the “at most one wrap between ACKs” intuition. These are subtle and mostly affect the accuracy and robustness of congestion feedback rather than basic interoperability.  
+
+  OverallTemporalRisk: Low
+
+  CandidateIssues:
+    - Id: T1
+      Type: Both
+      ShortLabel: LRO / ACK aggregation vs “n ≤ 7 CE marks” bound
+      Description: |
+        The specification sets a clear temporal upper bound that an AccECN receiver MUST acknowledge after at most 7 additional CE-marked packets, in order to keep the 3‑bit ACE counter unambiguous between ACKs. However, the later guidance for implementations using Large Receive Offload (LRO) or similar aggregation explicitly allows treating a whole batch of received packets as a single “receive event” with only a single ACK at the end, even when that batch could contain many more than 7 CE-marked packets. This creates a tension between the normative “n MUST be no greater than 7” rule and the permitted optimization. It also undermines the safety reasoning that ACE cannot wrap more than once between ACKs if the receiver respects the n≤7 rule, leaving behavior in the high-aggregation case to sender-side heuristics only.
+      TemporalReasoning: |
+        The core ACE/ACK timeline is designed so that:
+        - The receiver continually repeats the 3 LSBs of its CE packet counter (r.cep) in the ACE field on ACKs.  
+        - To avoid ambiguity from the 3‑bit counter wrapping between ACKs, the receiver is constrained in how long it can delay ACKs, in terms of “number of newly CE-marked packets”.  
+        
+        This is formalized in Section 3.2.2.5.1:
+
+        - “Increment-Triggered ACKs: An AccECN receiver of a packet MUST emit an ACK if 'n' CE marks have arrived since the previous ACK. … In either case, 'n' MUST be no greater than 7.”
+
+        Given r.cep is incremented by 1 per CE-marked packet and ACE = r.cep mod 8, this “n ≤ 7” bound ensures at most one full wrap (0–7) can occur between ACKs (and with delayed ACKs plus change-triggered ACKs, usually fewer), which is the basis for the sender’s decoding algorithm in Section 3.2.2.5.2 and Appendix A.2.
+
+        However, the same subsection then discusses receivers that process multiple packets as a single event using LRO/GRO:
+
+        - “If the arrivals of a number of data packets are all processed as one event, e.g., using large receive offload (LRO) or generic receive offload (GRO), both the above rules SHOULD be interpreted as requiring multiple ACKs to be emitted back-to-back … If this is problematic for high performance, either rule can be interpreted as requiring just a single ACK at the end of the whole receive event.”
+
+        In that “single ACK per receive event” interpretation, a single coalesced receive event could include many more than 7 CE‑marked packets. That means r.cep might be incremented far more than 7 between successive ACKs, allowing ACE to wrap multiple times. The sender-side safety algorithm in Appendix A.2 is explicitly keyed to the number of newly acknowledged packets and assumes the receiver is not intentionally allowing unbounded numbers of CE-marks between ACKs; relaxing that assumption significantly increases ambiguity.
+
+        There is also earlier text in Section 2.3 that “The Data Receiver is not allowed to delay sending an ACK to such an extent that the ACE field would cycle,” but this is informal language (“is not allowed”) and is later superseded by the formal n≤7 bound plus the LRO “single ACK” escape clause.
+      KeyEvidence:
+        ExcerptPoints:
+          - “Increment-Triggered ACKs: An AccECN receiver of a packet MUST emit an ACK if 'n' CE marks have arrived since the previous ACK. … If there is unacknowledged data at the receiver, 'n' SHOULD be 2. … 'n' SHOULD be 3 and MUST be no less than 3. In either case, 'n' MUST be no greater than 7.” (Section 3.2.2.5.1)
+          - “If the arrivals of a number of data packets are all processed as one event, e.g., using large receive offload (LRO) or generic receive offload (GRO), both the above rules SHOULD be interpreted as requiring multiple ACKs to be emitted back-to-back … If this is problematic for high performance, either rule can be interpreted as requiring just a single ACK at the end of the whole receive event.” (Section 3.2.2.5.1)
+          - “The 3-bit ACE field can wrap fairly frequently. … The Data Receiver is not allowed to delay sending an ACK to such an extent that the ACE field would cycle.” (Section 2.3)
+          - Sender safety: “If the Data Sender has not received AccECN TCP Options… and it detects that the ACE field could have cycled, it SHOULD deem whether it cycled by taking the safest likely case under the prevailing conditions.” (Section 3.2.2.5.2) and algorithms in Appendix A.2.
+        ContextPoints: []
+      ImpactOnImplementations: |
+        Implementers of receive offload have two contradictory signals:
+
+        - The normative rule says “n MUST be no greater than 7” CE-marks between ACKs, implying they need to emit multiple ACKs (possibly back-to-back) in heavily marked bursts.
+        - The LRO-specific guidance then says they CAN (informally) emit “just a single ACK at the end of the whole receive event” for performance.
+
+        If they follow the single-ACK guidance literally, ACE might wrap multiple times between ACKs, and the sender’s decoding becomes heuristic. Different senders could then infer very different counts of CE marks for the same packet pattern, degrading the “accurate” aspect of AccECN, particularly under high ECN-marking or aggressive ACK thinning. This is likely to manifest as overly conservative congestion responses (too many inferred marks) or occasionally underreaction, not as wire-level interoperability failure, but it makes the temporal assumptions about ACK spacing and wrap protection much less clear.
+      AffectedArtifacts:
+        - "Section 3.2.2.5.1, 'Increment-Triggered ACKs' rules and LRO discussion"
+        - "Section 2.3, discussion of ACE wrap and delayed ACKs"
+        - "Section 3.2.2.5.2 and Appendix A.2, sender safety algorithms"
+      Severity: Medium
+
+    - Id: T2
+      Type: Underspecification
+      ShortLabel: Late/duplicate handshake ACKs vs ACE handshake encoding
+      Description: |
+        The ACK of the SYN/ACK uses an exceptional “handshake encoding” of the ACE field, different from the normal r.cep LSB encoding, and the client MUST also use this encoding on the ACK of any retransmitted SYN/ACK that confirms AccECN. The server, however, is only required to interpret ACE in handshake mode while it is in SYN-RCVD; once it has transitioned to ESTABLISHED it “need not” detect handshake encoding and may treat all SYN=0 packets as carrying the normal ACE counter. The specification relies on the sender’s “superseded ACK” logic to ensure that any such late or duplicate handshake ACKs (arriving after ESTABLISHED) are ignored. Because “superseded” is normatively referenced but only informally defined in an appendix, there is a temporal corner case where an alternative interpretation of “superseded” could cause handshake-encoded ACE on late ACKs to be misinterpreted as a counter value and spuriously increment s.cep.
+      TemporalReasoning: |
+        The intended handshake timeline for ACE is:
+
+        - Server in SYN-RCVD receives an AccECN SYN and sends a SYN/ACK that encodes the SYN’s arriving IP-ECN codepoint in (AE,CWR,ECE).  
+        - Client enters AccECN mode upon receiving that SYN/ACK, initializes r.cep = 5, and MUST send a pure ACK of the SYN/ACK using the handshake ACE encoding in Table 3, reflecting the SYN/ACK’s IP-ECN and setting r.cep to 5 or 6 accordingly.  
+        - While the server remains in SYN-RCVD, Section 3.2.2.1 says: “When an AccECN Server in SYN-RCVD state receives a pure ACK with SYN=0 and no SACK blocks, instead of treating the ACE field as a counter, it MUST infer the meaning … from Table 4.” That also sets s.cep and congestion response correctly.
+
+        After receiving this ACK, the server transitions to ESTABLISHED. The text then says:
+
+        - “Once the TCP Server transitions to ESTABLISHED state, it might later receive other pure ACK(s) with the handshake encoding … A Server MAY implement a test for such a case, but it is not required. Therefore, once in the ESTABLISHED state, it will be sufficient for the Server to consider the ACE field to be encoded as the normal ACE counter on all packets with SYN=0.”
+
+        Simultaneously, the client is required to use handshake encoding for the pure ACK “of any retransmitted SYN/ACK that confirms that the TCP Server supports AccECN.” Those retransmissions can overlap in time with the initial handshake ACK; due to loss and reordering, it is entirely possible for:
+
+        - One ACK of a (re)SYN/ACK to arrive and transition the server to ESTABLISHED.  
+        - Later, another pure ACK for a different retransmitted SYN/ACK (still using handshake encoding) to arrive after ESTABLISHED.
+
+        Section 3.2.2.2 attempts to avoid misinterpretation by requiring that “Whenever the Data Sender receives an ACK with SYN=0… it first checks whether it has already been superseded (defined in Appendix A.1) by another ACK in which case it ignores the ECN feedback.” Typically, a late duplicate ACK acknowledges no new data (newlyAckedB=0, newlyAckedT=0 in the example algorithms), so it will be treated as “superseded” and its ACE ignored, avoiding double-counting CE or mis-decoding handshake ACE values after ESTABLISHED.
+
+        However:
+        - “Superseded” is a critical temporal notion but is normatively only defined by reference to Appendix A.1, which the document labels as informative.  
+        - The main text does not give a precise normative rule such as “an ACK that advances neither the cumulative ACK nor any SACK block and does not differ in TSval MUST be treated as superseded and MUST NOT affect s.cep/s.*b.”
+
+        This leaves room for implementers to adopt different, potentially weaker, notions of “superseded” (e.g., still processing ACE on ACKs that don't advance the cumulative ACK but arrive later), in which case late handshake-encoded ACE values received after ESTABLISHED could erroneously be used as normal ACE counter values and cause spurious increments to s.cep and extra congestion responses.
+      KeyEvidence:
+        ExcerptPoints:
+          - “This shall be called the handshake encoding of the ACE field, and it is the only exception to the rule that the ACE field carries the 3 least significant bits of the r.cep counter on packets with SYN=0.” (Section 3.2.2.1)
+          - “The TCP Client MUST also use the handshake encoding for the pure ACK of any retransmitted SYN/ACK that confirms that the TCP Server supports AccECN.” (Section 3.2.2.1)
+          - “When an AccECN Server in SYN-RCVD state receives a pure ACK with SYN=0 and no SACK blocks, instead of treating the ACE field as a counter, it MUST infer the meaning of each possible value of the ACE field from Table 4.” (Section 3.2.2.1)
+          - “Once the TCP Server transitions to ESTABLISHED state, it might later receive other pure ACK(s) with the handshake encoding… A Server MAY implement a test for such a case, but it is not required. Therefore, once in the ESTABLISHED state, it will be sufficient for the Server to consider the ACE field to be encoded as the normal ACE counter on all packets with SYN=0.” (Section 3.2.2.2)
+          - “Whenever the Data Sender receives an ACK with SYN=0 … it first checks whether it has already been superseded (defined in Appendix A.1) by another ACK in which case it ignores the ECN feedback.” (Section 3.2.2.2)
+          - Example superseded-ACK logic in Appendix A.1/A.2.
+        ContextPoints: []
+      ImpactOnImplementations: |
+        If an implementation follows the suggested “superseded” test closely (e.g., only processing ACE when the ACK or SACK coverage advances), then in practice late handshake ACKs with handshake ACE encoding will be ignored after the server enters ESTABLISHED, and the temporal behavior is consistent.
+
+        However, because the definition of “superseded” is effectively in an informative appendix, some stacks might process more ACKs as “non-superseded” (e.g., reacting to any arriving pure ACK regardless of whether it advances the cumulative ACK). In these stacks, a handshake-encoded ACE arriving after ESTABLISHED could be decoded as if it were r.cep%8, leading to spurious jumps in s.cep and unnecessary congestion responses very early in the connection. This does not break mode negotiation or connection establishment, but it can cause transient misalignment of the sender’s CE counters and confusion for congestion control algorithms that depend on initial CE counts being accurate.
+
+        A simple fix would be to add a normative rule that once a Server has left SYN-RCVD, it MUST ignore the ACE field on any pure ACK that a) acknowledges only the SYN/ACK sequence space and b) does not advance any SACK coverage, or to make the “superseded” detection criteria normative in the body of the specification.
+      AffectedArtifacts:
+        - "Section 3.2.2.1, handshake ACE encoding on ACK of SYN/ACK"
+        - "Section 3.2.2.2, server decoding and comment on ESTABLISHED state"
+        - "Appendix A.1/A.2, superseded-ACK examples"
+      Severity: Low
+
+    - Id: T3
+      Type: Underspecification
+      ShortLabel: Irreversible “ignore AccECN Options” mode after zeroing detection
+      Description: |
+        The document defines two distinct “degraded” modes regarding AccECN Options: a mode that assumes incoming AccECN Options are not available (e.g., stripped by middleboxes) and a mode that ignores AccECN Options because their initial byte counters appear to have been zeroed by some interference. For the former, the text explicitly allows switching back out of this mode if valid options are later seen. For the latter, the text only describes entering a mode that “ignores AccECN Options” and does not specify any exit condition, leaving it unclear whether an implementation is expected ever to re-enable processing of options if conditions on the path change mid-connection. While this is mostly a policy decision, the temporal behavior of feedback (when the sender can start trusting option-based counters again) is not fully specified.
+      TemporalReasoning: |
+        The relevant sequence for “options absent” is:
+
+        - After successful negotiation of AccECN, if the Client does not receive an AccECN Option on the SYN/ACK, “the Client switches into a mode that assumes that the AccECN Option is not available for this half connection.”  
+        - Similarly for the Server: if it does not see an AccECN Option “on the first segment that acknowledges sequence space at least covering the ISN” it switches into that mode.  
+        - While in this mode, the host MUST use conservative ACE-only interpretation (Section 3.2.2.5) but “SHOULD continue to send AccECN Options itself” unless it knows they are blocked.  
+        - Crucially, “If a host is in the mode that assumes incoming AccECN Options are not available, but it receives an AccECN Option at any later point during the connection, … the AccECN endpoint MAY switch out of the mode that assumes AccECN Options are not available…”
+
+        In contrast, the sequence for “options zeroed” in Section 3.2.3.2.4 is:
+
+        - Sender MAY test the initial EE0B/EE1B fields on the first relevant ACK/SYN/ACK.  
+        - “If it runs a test and either initial value is zero, the [Client/Server] will switch into a mode that ignores AccECN Options for this half connection.”  
+        - “While a host is in the mode that ignores AccECN Options it MUST adopt the conservative interpretation of the ACE field discussed in Section 3.2.2.5.”
+
+        There is no text that says it MAY or SHOULD ever leave this “ignore options” mode if later options appear non-zero or otherwise pass integrity checks. In contrast with the “options not available” mode, this looks like a one-way state transition.
+
+        Temporally, this matters in scenarios where the initial zeroing behavior is transient or path-dependent (e.g., asymmetric routing where early segments traverse a normalizer that later packets bypass). Over the lifetime of the connection:
+
+        - If the first AccECN Option was zeroed by an on-path device but later options are unmodified and trustworthy, the current text suggests the endpoint will still ignore them for the rest of the half-connection.  
+        - There is no guidance on whether or how often a sender might re-test for zeroing, or whether it is specifically forbidden to re-enable option processing mid-connection.
+      KeyEvidence:
+        ExcerptPoints:
+          - “If the TCP Client has successfully negotiated AccECN but does not receive an AccECN Option on the SYN/ACK … it switches into a mode that assumes that the AccECN Option is not available for this half connection.” (Section 3.2.3.2.3)
+          - “If a host is in the mode that assumes incoming AccECN Options are not available, but it receives an AccECN Option at any later point during the connection… the AccECN endpoint MAY switch out of the mode that assumes AccECN Options are not available…” (Section 3.2.3.2.3)
+          - “If it runs a test and either initial value is zero, the Server will switch into a mode that ignores AccECN Options for this half connection.” (Server case, Section 3.2.3.2.4)
+          - “If it runs a test and either initial value is zero, the Client will switch into a mode that ignores AccECN Options for this half connection.” (Client case, Section 3.2.3.2.4)
+          - “While a host is in the mode that ignores AccECN Options it MUST adopt the conservative interpretation of the ACE field discussed in Section 3.2.2.5.” (Section 3.2.3.2.4)
+        ContextPoints: []
+      ImpactOnImplementations: |
+        Because treating zeroed options as untrustworthy is sensible, most implementations will probably consider the “ignore options” mode to be permanent for the lifetime of that half-connection. However, the asymmetry with the explicitly reversible “options not available” mode might confuse implementers trying to design a state machine and decide whether re-tests or re-enabling are allowed or forbidden.
+
+        In unusual but possible temporal patterns (e.g., path change mid-connection, or middlebox reconfiguration), this could mean a sender continues to operate in a degraded “ACE-only” feedback mode even after the path would have allowed reliable AccECN Options, with no clear guidance on whether it is permitted to notice and take advantage of that improvement. This is not an interoperability failure, but it is a temporal underspecification of when and whether an endpoint may change its interpretation of AccECN Options after zeroing has been detected.
+      AffectedArtifacts:
+        - "Section 3.2.3.2.3, 'Testing for Absence of the AccECN Option'"
+        - "Section 3.2.3.2.4, 'Test for Zeroing of the AccECN Option'"
+      Severity: Low
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## ActorDirectionality Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: >
+    The text defines AccECN for TCP, with clear roles for TCP Client vs
+    Server and for Data Sender vs Data Receiver on each half-connection.
+    It specifies who sets and interprets AE/CWR/ECE during the handshake,
+    who maintains which counters, who encodes feedback into ACE and AccECN
+    options, and what middleboxes/offload engines are allowed to modify.
+- OverallAssessment: NoBug
+
+- FindingsOnRoutedIssues:
+  - Note: >
+      No concrete `CandidateIssues` (Issue-1, Issue-2, etc.) were provided
+      in the prompt, so no routed issues could be assessed individually.
+
+- AdditionalActorIssues: []
+
+- IfNoActorIssues:
+  - Comment: >
+      No actor/direction/role problems detected in this excerpt. The
+      assignment of responsibilities and message directions is coherent:
+
+      • Roles are consistently distinguished:
+        – TCP Client/Server (initiator/responder) are only used for
+          handshake behavior (who sends SYN/SYN-ACK and which side encodes
+          ACE on the ACK of the SYN/ACK).
+        – Data Sender/Data Receiver are per–half-connection roles used for
+          maintaining and exchanging ECN counters (r.* at the Data Receiver,
+          s.* at the Data Sender), and are used consistently when specifying
+          who increments, encodes, or decodes which counters.
+
+      • Handshake directionality is consistent:
+        – Client sets (AE,CWR,ECE) = (1,1,1) on SYN to request AccECN;
+          an AccECN-enabled Server that receives this MUST set both half
+          connections into AccECN mode and uses the SYN/ACK flags from the
+          top block of Table 2 to feed back the SYN’s IP-ECN value.
+        – On the ACK of the SYN/ACK, only the Client encodes the SYN/ACK’s
+          IP-ECN value into ACE using the handshake encoding, and only the
+          Server in SYN-RCVD state decodes that ACE per Table 4. Once in
+          ESTABLISHED, both sides treat ACE as a 3-bit counter as specified.
+
+      • Feedback direction is correct and asymmetric where intended:
+        – Only the Data Receiver encodes counters into ACE and AccECN
+          options; only the Data Sender decodes them and updates s.*.
+        – The special-case handshake rules treat the SYN and SYN/ACK
+          directionally correctly: CE on the SYN affects Server’s TCP flags
+          but not its r.cep; CE on the SYN/ACK affects Client’s r.cep and
+          then Server’s s.cep via the pure ACK, in the correct S→C half-
+          connection.
+
+      • Mode and ECT-setting obligations attach to the right side:
+        – A host enters AccECN mode only via the cases described in
+          Section 3.1.1 and Table 2; subsequent bullets in Section 3.1.4
+          and 3.1.5 about not switching feedback mode are consistent with
+          that.
+        – The asymmetry where a Server in AccECN mode that ever sees
+          (AE,CWR,ECE) = (0,0,0) in the handshake MUST NOT set ECT for the
+          rest of the connection, but a Client in the analogous situation
+          MAY still set ECT, is explicitly called out and explained; it is
+          not a role inversion but an intentional difference.
+        – Hosts are consistently required to continue AccECN feedback in
+          their Data Receiver role even if, in their Data Sender role, they
+          disable ECT or choose not to respond to CE (e.g., when mangling
+          or zeroing is suspected).
+
+      • Middlebox and offload behavior is directionally sound:
+        – Transparent middleboxes are told to forward ACE and AccECN option
+          fields unchanged and not to alter them; normalizers may block but
+          not rewrite those fields, consistent with their role.
+        – Offload engines are described as operating in the transmit or
+          receive path (TSO/LRO); the text correctly describes how they
+          must treat the ACE field on segments produced or coalesced, with
+          no contradictions about who owns which field.
+
+      Overall, the excerpt is unusually careful about which side sends
+      which bits, which side reflects which ECN markings, and when a host
+      is acting as Data Sender vs Data Receiver. I do not see conflicting
+      statements about who must do what, reversed directions of feedback,
+      or misattribution of field origins in this text.
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary:  
+  The excerpt specifies how Accurate ECN (AccECN) is negotiated and used in TCP, including handshake semantics, per-half-connection feedback counters, ACE-field encoding, AccECN TCP options, and required behavior for endpoints, middleboxes, and offload engines, as well as the explicit update scope relative to RFC 3168 and other TCP RFCs.
+
+- ScopeModel:
+  - Targets:
+    - TCP endpoints, split into roles:
+      - TCP Client / TCP Server (handshake role).
+      - Data Sender / Data Receiver (per half-connection feedback role).
+    - Per-half-connection state:
+      - Feedback mode: AccECN mode vs Classic ECN vs Not ECN.
+      - Four counters at the Data Receiver (r.cep, r.ceb, r.e0b, r.e1b) and at the Data Sender (s.cep, s.ceb, s.e0b, s.e1b).
+    - Specific TCP header fields:
+      - AE/CWR/ECE flags:
+        - During handshake: used as AccECN capability and IP-ECN reflection bits (Table 2).
+        - After AccECN negotiation, and with SYN=0: interpreted as ACE, a 3‑bit CE-packet counter (Figure 3).
+      - AccECN TCP Options (Kinds 172, 174) and their internal fields (EE0B, EE1B, ECEB).
+    - Connection phases and states:
+      - "During the handshake" (unsynchronized states, SYN-SENT/SYN-RCVD).
+      - After AccECN mode is entered (ESTABLISHED and beyond, until TIME-WAIT/CLOSED, with explicit rules for post-handshake SYNs).
+    - Middleboxes and offload engines:
+      - TCP proxies (splitting connections vs end-to-end AccECN).
+      - Transparent middleboxes/normalizers that inspect and/or rewrite TCP headers and options.
+      - ACK filters.
+      - TSO/LRO offload hardware on hosts.
+  - Conditions:
+    - Negotiation / mode selection:
+      - Client sends SYN with (AE,CWR,ECE)=(1,1,1) to request AccECN.
+      - Server in turn chooses a response pattern from Table 2; result determines both endpoints’ feedback mode (AccECN, Classic ECN, Not ECN).
+      - AccECN mode is only entered via specific patterns on SYN and SYN/ACK (Section 3.1.1, 3.1.2, 3.1.3).
+      - Once a host has entered a feedback mode, it MUST NOT switch to a different mode within that connection, regardless of later SYN/SYN‑ACK variants (Section 3.1.5).
+    - Header-bit interpretation:
+      - During handshake:
+        - SYN and SYN/ACK use AE/CWR/ECE as capability and IP‑ECN reflection (Table 2).
+        - Pure ACK of SYN/ACK uses “handshake encoding” of ACE instead of CE-counter semantics, and only under the stated conditions (pure ACK, SYN=0, no SACK) and only while the Server is in SYN‑RCVD (Section 3.2.2.1).
+      - After successful AccECN negotiation:
+        - For any segment with SYN=0, both half-connections in AccECN mode: AE/CWR/ECE are interpreted as ACE, except for the special handshake-ACK case above (Section 3.2.2).
+        - AE/CWR/ECE MUST NOT be interpreted as ACE on any SYN=1 segment, or if AccECN negotiation is incomplete/failed.
+    - Counter semantics:
+      - r.cep is incremented for every Acceptable CE-marked packet, including CE-marked control packets and retransmissions, but excluding CE on SYN packets (SYN=1, ACK=0) (Section 3.2).
+      - Byte counters omit payload bytes on SYN=1, ACK=0, but include payload on other ECN-capable packets (Section 3.2, 3.2.3.1).
+      - Special handshake rules for counting CE on SYN and SYN/ACK ensure consistency between r.cep and s.cep without consuming extra initial ACE values (Section 3.2.2.2).
+    - Availability of AccECN Options:
+      - Hosts can be in one of several “modes” per half-connection:
+        - Normal AccECN Option use.
+        - “Assume incoming AccECN Options are not available” if no option observed on SYN/ACK or first ACK covering ISN (Section 3.2.3.2.3).
+        - “Ignore AccECN Options” if initial EE0B/EE1B are detected as zeroed (Section 3.2.3.2.4).
+      - In modes where incoming options are assumed unavailable or ignored, hosts MUST rely solely on ACE with conservative wrap handling (Section 3.2.2.5, 3.2.3.2.3–2.4).
+    - ECT usage and ECN response:
+      - Implementations in Not ECN feedback mode MUST NOT set ECT (Section 3.1.5).
+      - Data Senders in AccECN mode SHOULD set ECT, but MAY choose not to.
+      - A Server in AccECN mode that has seen a SYN or SYN/ACK with (AE,CWR,ECE)=(0,0,0) MUST NOT set ECT for the rest of the connection (Server-only asymmetry, Section 3.1.5).
+      - Hosts in AccECN mode are normatively obliged to respond appropriately to congestion feedback even if they themselves are not sending ECT, with some non-normative exceptions in mangling cases (Section 3.1.5, 3.2.2.3).
+    - Invalid ECN transitions and mangling:
+      - “Invalid transitions” of the IP‑ECN field are defined as:
+        - Not‑ECT changes.
+        - Either ECT(0/1) → Not‑ECT.
+        - CE changes (Section 3.2.2.3).
+      - These transitions are used by endpoints as signals of mangling; senders are then “advised” to change ECT usage and (in some cases) stop reacting to CE.
+  - NotedAmbiguities:
+    - The term “invalid transitions of the IP‑ECN field are defined in section 18 of [RFC3168] and repeated here” is slightly loose: the AccECN text then adds host-centric interpretation (“unsafe from a host’s viewpoint”), potentially broadening the semantics beyond the original router-focused context.
+    - Multiple “modes” around AccECN Options (assume unavailable vs ignore options) are per half-connection but are described in textually similar language; an implementer must track that these are logically distinct states with different exit conditions.
+    - The phrase “Any implementation that supports AccECN MUST NOT set ECT if it is in Not ECN feedback mode” coexists with softer language later (“advised not to respond to CE markings” when ACE/option fields appear zeroed). The distinction between strict and advisory behavior is clear but requires careful reading.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: Scope of “invalid IP-ECN transitions” and AccECN modes appears coherent with RFC 3168 and internal rules
+    - ScopeProblemType: None
+    - Evidence:
+      - AccECN explicitly constrains its update scope: “All aspects of RFC 3168 other than the TCP feedback scheme and its negotiation remain unchanged by this specification. In particular the definition of ECN at the IP layer is unaffected” (Introduction).
+      - Section 4 enumerates precisely which parts of RFC 3168 are updated, focusing on TCP initialization, sender/receiver feedback behavior, and acceptability tests, and explicitly *not* updating the prohibition on ECN-capable control packets and retransmissions.
+      - Section 3.2.2.3 states: “Invalid transitions of the IP-ECN field are defined in section 18 of [RFC3168] and repeated here…”, then adds a host-centric rationale: “RFC 3168 says that a router that changes ECT to not-ECT is invalid but safe. However, from a host's viewpoint, this transition is unsafe…”.
+      - Multiple sections strictly bound when AE/CWR/ECE are interpreted as ACE (SYN=0, both half-connections in AccECN mode, excluding the explicitly defined handshake exception) and when AccECN options are to be used or ignored (Sections 3.2.2, 3.2.2.1, 3.2.3.2.3–2.4).
+    - DetailedReasoning:
+      - The potential concern hinted by the router is that Section 3.2.2.3 might misrepresent or over-extend the “invalid transitions” defined in RFC 3168 Section 18, thereby causing a scope mismatch between the original IP-layer semantics and the new endpoint behavior.
+      - In the excerpt, however, the authors are careful: they *explicitly* state that ECN at the IP layer is unchanged and later bound their updates to specific TCP sections of RFC 3168 (Section 4). They do not redefine which on-path codepoint changes routers are allowed to make; instead they re-use RFC 3168’s classification as a diagnostic signal that endpoints can *interpret* to detect mangling.
+      - The bullets in 3.2.2.3 are presented as “invalid transitions… repeated here for convenience”, and the following paragraph clearly distinguishes the router’s perspective in RFC 3168 (“invalid but safe”) from the host’s perspective (“unsafe because could be the result of two transitions”). This is not a hidden semantic change in the IP ECN rules, but an explicit statement that hosts may reasonably adopt a more conservative stance when they see these transitions.
+      - That is, AccECN does not broaden the *network* scope of “invalid transitions” (what routers must or must not do); it merely clarifies how hosts in AccECN mode SHOULD interpret seeing such transitions end-to-end, which is squarely within the TCP feedback scope that this document updates.
+      - Similarly, other scoped behaviors—when AE/CWR/ECE bits are overloaded as ACE versus when they retain handshake meaning, what constitutes an “Acceptable” packet for counters, and when AccECN Options are believed absent or untrustworthy—are all stated with explicit role (Client/Server vs Data Sender/Receiver), phase (handshake vs established), and half-connection scope.
+      - I do not see conflicting normative instructions where one section requires behavior in a context that another section excludes; instead, the various modes (AccECN mode, Not ECN mode, “assume no options”, “ignore options”) and their obligations are consistently described per half-connection and per endpoint role.
+      - Because of this explicit separation of concerns—IP-layer ECN semantics vs TCP-layer feedback and diagnostics—there is no actionable scope inconsistency or underspecification here that would plausibly confuse a careful implementer.
+
+- ResidualUncertainties:
+  - The exact wording of RFC 3168 Section 18 is not included in the provided context, so the comparison of “invalid transitions” relies on the AccECN authors’ claim that they are repeating it. However, given that this document explicitly limits its update scope to TCP feedback and leaves IP ECN semantics unchanged, any minor editorial difference in how those transitions are summarized here would be a descriptive issue rather than a scope-changing protocol bug.
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following the text in §3.2.2.3 literally (including its definition of “invalid transitions” of the IP-ECN field) does not create a protocol that is unimplementable or that fundamentally breaks ECN/AccECN interoperability. The only substantial difference from RFC 3168 is that the draft treats ECT→Not‑ECT as “unsafe” from the host’s point of view and uses that to drive a conservative fallback. That conservatism may disable ECN on some paths where RFC 3168 considered the behavior “invalid but safe,” but it does not break correctness.
+
+---
+
+2. **Causal Analysis**
+
+**Where this appears**
+
+Section 3.2.2.3 defines “invalid transitions of the IP‑ECN field” for purposes of detecting mangling:
+
+> Invalid transitions of the IP-ECN field are defined in section 18 of the Classic ECN specification [RFC3168] and repeated here for convenience:
+> * the not-ECT codepoint changes;
+> * either ECT codepoint transitions to not-ECT;
+> * the CE codepoint changes.  
+
+It then notes:
+
+> RFC 3168 says that a router that changes ECT to not-ECT is invalid but safe. However, from a host's viewpoint, this transition is unsafe…  
+
+**What RFC 3168 actually does**
+
+Section 18 of RFC 3168 indeed enumerates these transitions as “invalid” behaviors of network devices, and explicitly calls ECT→Not‑ECT “invalid but safe” (i.e., it under-reports congestion but doesn’t mis-signal it). The draft’s bullet list matches that set; it doesn’t invent a new transition type, it just reuses the same three categories and then reinterprets one of them (ECT→Not‑ECT) as *operationally unsafe* from the standpoint of an endpoint trying to decide whether to rely on ECN.
+
+So strictly:
+
+- The **set** of “invalid transitions” is aligned with RFC 3168.
+- The **safety interpretation** of ECT→Not‑ECT (safe vs unsafe) is intentionally stricter than RFC 3168.
+
+**How the draft uses this definition**
+
+The “invalid transition” classification is not used to:
+- Reject packets on the wire, or
+- Declare the peer non-compliant, or
+- Change the ACE/option encoding rules.
+
+Instead, it is only used to drive **sender-side fallback heuristics**:
+
+1. During the handshake, each side compares:
+   - The ECN codepoint it set on SYN / SYN‑ACK, versus
+   - The codepoint value that comes back in the ECN feedback (on SYN‑ACK flags or ACE-in-ACK).    
+
+2. If this implies an “invalid transition” per the above list, then:
+   - The Data Sender is *advised* (non-normatively) to stop sending ECN-capable packets (set IP‑ECN=Not‑ECT) for the rest of the half-connection,
+   - But it **MUST remain in AccECN feedback mode** and **MUST continue to feed back any ECN markings** it sees.    
+
+3. The spec explicitly makes this guidance advisory (not MUST) because best strategies may depend on real-world mangling patterns:
+
+   > The above advice … is not stated normatively … because the best strategy might depend on experience of the most likely types of mangling…  
+
+So the only causal effect of classifying ECT→Not‑ECT as “unsafe” is: “on paths where this happens, senders are encouraged to behave more conservatively and not rely on ECN.”
+
+**Does this contradict RFC 3168 in a way that breaks anything?**
+
+RFC 3168’s “invalid but safe” label for ECT→Not‑ECT is a *network* view: the network is under-reporting congestion but not lying about CE. From an endpoint’s perspective:
+
+- If a boundary router always rewrites ECT to Not‑ECT (classic “bleaching”), the path **cannot use ECN as intended**.
+- Under the draft, such a path will be detected via invalid-transition test, and the endpoint will:
+  - Stop sending ECT, which is correct (ECN is unusable there).
+  - Still feed back any CE it might see (in case some mid-path node re-introduces ECN).    
+
+This is fully compatible with RFC 3168’s safety guarantees. The endpoint is simply choosing not to rely on a path whose ECN behavior appears nonstandard; no other node is required to change behavior.
+
+Similarly, in the more problematic scenario RFC 3168 calls out—ECT→CE followed by CE→Not‑ECT—ECN semantics are indeed compromised. The draft’s host-side rule (“treat ECT→Not‑ECT as unsafe; stop using ECN”) is exactly what you would *want* in this case.    
+
+Thus:
+
+- There is no state where following AccECN’s rules makes the protocol *internally inconsistent*.
+- There is no requirement that contradicts RFC 3168 in a way that makes compliant behavior impossible.
+- The result of the stricter interpretation is at worst a conservative fallback to Not‑ECT on paths already unsuitable for ECN.
+
+**Interoperability impact**
+
+On a path where:
+- The network only does ECT→Not‑ECT (e.g., ECN bleaching at ingress), and
+- No CE is ever marked,
+
+an AccECN endpoint will:
+
+- Detect an “invalid transition” on SYN / SYN‑ACK ECN bits.
+- Likely stop sending ECT.
+- Continue to send and understand AccECN feedback, but there will be no ECN-capable packets anyway.
+
+This does **not** produce differing views between endpoints about the feedback mode: both remain in AccECN mode per §3.1.5, but with ECN not used for congestion control due to path behavior.    
+
+Classic ECN-only endpoints on the same path would also get no usable ECN (their ECT bits would be cleared), so this behavior does not introduce a new interop failure; it just detects and reacts to it more explicitly.
+
+---
+
+3. **Problem Classification**
+
+- The Router’s “possible misalignment with RFC 3168’s definition of invalid transitions” is **not** a *causal inconsistency*: the protocol remains implementable and coherent.
+- At most, it is a **very minor editorial mismatch** in wording: “Invalid transitions … are defined in section 18” is slightly loose, because the draft then applies a stricter host-side safety interpretation to one of those transitions. But that does not change the enumeration itself.
+
+No observable wire behavior becomes undefined or contradictory due to this; the only effect is conservative fallback.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+If the authors wanted to avoid any impression of semantic misalignment with RFC 3168, a small wording tweak in §3.2.2.3 would suffice, e.g.:
+
+- Clarify that:
+  - “The following transitions are the ones RFC 3168 classifies as invalid; in addition, RFC 3168 treats ECT→Not‑ECT as ‘invalid but safe’ from a router’s perspective, whereas this specification treats it as unsafe from an endpoint’s perspective for the purpose of deciding whether to rely on ECN.”
+
+This would make the intentional conservatism explicit without altering any normative behavior.
+
+---
+
+5. **Non-Issues**
+
+- There is no requirement here that forces a sender to interpret ECN markings differently than a Classic ECN endpoint in a way that would cause mis-synchronized congestion control. The additional logic only decides whether to *use* ECN, not how to interpret a CE mark.
+- No state machine transitions, counter updates, or ACE/option encodings depend on the exact RFC 3168 “invalid but safe” vs “unsafe” classification; they only depend on whether a codepoint appears to have changed in an impermissible way, which is detected consistently.
+
+So, from a causal/protocol-behavior perspective, the candidate “misalignment” is benign.
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## Quantitative Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary:  
+  The excerpt defines the Accurate ECN (AccECN) extension for TCP, including: how three TCP header flags are repurposed into a 3‑bit ACE counter, the use of 24‑bit byte counters in TCP options, negotiation rules using specific AE/CWR/ECE combinations, initialization values, and wrap‑around / safety rules. It also specifies when and how these fields are sent, how they interact with delayed ACKs, offload engines, and middleboxes, and how this all updates RFC 3168.
+
+- Issues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: No quantitative issues found
+    - Description:  
+      The numerical and structural aspects of the AccECN specification in this excerpt appear internally consistent and sufficiently specified for interoperable implementation. Field widths, initial values, counter wrap logic, option lengths, and negotiation codepoints line up correctly with the described algorithms and behavior, and edge cases like zeroing, middlebox stripping, and SYN cookies are quantitatively covered.
+    - Evidence:  
+      - The ACE field is consistently defined as a 3‑bit counter overloading AE,CWR,ECE, with the layout in Figure 3 and explicit rules that it only applies when SYN=0 and AccECN has been negotiated. Initialization of r.cep and s.cep to 5, and special handshake encodings (Tables 2–4) are carefully tied together, including the one‑off increment to 6 for a CE‑marked SYN/ACK and the explicit exception that handshake ACE values do not follow the normal “LSBs of r.cep” rule.  
+      - The 24‑bit byte counters in the AccECN options are laid out as three 3‑octet fields, with Length values 11/8/5/2 in Table 5 that match the diagrams in Figure 4 (1 byte Kind + 1 byte Length + 3×3‑octet fields = 11 bytes, truncated variants removing one or two fields, and a 2‑byte empty option). Encoding/decoding uses modulo 2^24 arithmetic in Appendix A.1, consistent with the field size.  
+      - Wrap‑around safety is numerically consistent: the ACE field has 3 bits (range 0–7), and the receiver’s “Increment‑Triggered ACKs” rule enforces that no more than 7 new CE‑marked packets are allowed between ACKs (n MUST be no greater than 7), so the 3‑bit value cannot complete a full cycle between feedback emissions under compliant behavior. For the options, the requirement to include each byte counter at least once per 2^22 bytes, while the field holds 2^24 distinct values, provides a 4× safety margin against ambiguity.  
+      - The zeroing tests rely on non‑zero initial values: r.cep = 5, r.e0b = r.e1b = 1, and corresponding sender counters s.cep, s.e0b, s.e1b. The text explicitly excludes the handshake‑encoding case when interpreting a zero ACE value, and the tests for zeroed ACE/option fields are optional (MAY) and are acknowledged to have a small false‑positive probability if a legitimate wrap happens very early; this is treated as an acceptable trade‑off, not a hidden assumption that wrap “cannot” occur by then.  
+      - The negotiation table (Table 2) uses all 8 combinations of (AE,CWR,ECE) in a consistent way: three combinations are used on the SYN by existing schemes ((0,0,0) Not ECN, (0,1,1) Classic ECN, (1,1,1) AccECN), while the remaining five are reserved or repurposed, and Section 3.1.3 plus Appendix B.3 explicitly describe forward‑compatibility behavior for these “reserved” combinations. The mappings between IP‑ECN codepoints and ACE patterns on the SYN/ACK and ACK of SYN/ACK (Tables 2–4) are self‑consistent numerically and match the stated initial counter semantics.
+    - QuantitativeReasoning:  
+      - Bit widths and encodings: The 3‑bit ACE field and 24‑bit option fields are used with consistent modulo arithmetic: DIVACE = 2^3 and DIVOPT = 2^24 in the example algorithms, matching the field sizes. The examples (e.g., s.ceb = 33,554,433 and ECEB = 1461) compute modulo values correctly and demonstrate a valid delta calculation (< 2^24) under the “wrap at most once” assumption.  
+      - Wrap constraints: For ACE, if at most n CE‑marked packets are aggregated per ACK and n ≤ 7, then between two ACE observations there are < 8 increments, so a 3‑bit counter cannot wrap more than once; the sender’s ambiguity handling is then constrained to at most a “did it wrap 0 or 1 time” question, which the algorithms address. For the byte counters, including each counter at least once per 2^22 bytes when the field has 2^24 possible values ensures at least 4 feedback samples per full cycle, avoiding unresolved ambiguity in practice.  
+      - Option lengths: The allowed lengths (11, 8, 5, 2) correctly account for the Kind+Length (2 octets) plus zero to three 3‑octet fields; the forward‑compat rule (“use those whole 3‑octet fields that fit within the length and ignore the remainder as padding”) is numerically well‑defined even for odd lengths where (Length−2) is not a multiple of 3.  
+      - Initialization and zero‑tests: The counters’ initial values and the timing of zero‑tests are arranged so that, in normal TCP operation, it is practically impossible for a counter to legitimately wrap to zero before the first post‑handshake test (for options) or very early ACE tests; and the document explicitly treats the rare legitimate‑wrap cases as acceptable false positives and makes the tests optional.  
+      - Codepoint accounting: The document correctly counts the 8 possible AE/CWR/ECE combinations and reserves or assigns them in a way that is mutually consistent across the handshake (Table 2), handshake ACE encoding (Tables 3–4), forward‑compatibility rules (Section 3.1.3), and future‑extension discussion (Appendix B.3). There is no numeric mismatch, such as assigning the same 3‑bit pattern to incompatible semantics in different phases.
+    - Consequences:  
+      Given the above, an implementer following this excerpt has enough precise quantitative information to implement negotiation, ACE encoding/decoding, byte‑counter options, zeroing/mangling detection, and wrap‑around safety without running into contradictions or unimplementable corner cases. Different compliant implementations should agree on the on‑the‑wire formats and counter evolution, even in edge cases (retransmissions, SYN cookies, ACK reordering, or middlebox stripping), and there is no evident numeric or structural flaw that would systematically cause interoperability failures.
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: This text normatively specifies the Accurate ECN (AccECN) extensions for TCP, including how endpoints negotiate AccECN during the three-way handshake, when and how they enter “AccECN mode” vs Classic ECN vs Not-ECN, how ECN feedback counters are encoded in the ACE field and in AccECN options, and how middleboxes, offload engines, and proxies must treat these fields. It also states which parts of RFC 3168 are updated and how congestion-response obligations from RFC 3168/8311 interact with AccECN feedback.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: General obligation to react to AccECN feedback vs explicit “MUST NOT respond” in the ACE=0 handshake case
+    - Description:  
+      Section 3.1.5 gives a general normative requirement: “A host in AccECN mode … is obliged to respond appropriately to AccECN feedback that indicates there were ECN marks on packets it had previously sent … [and] is still obliged to respond appropriately to congestion feedback, even when it is solely sending non-ECN-capable packets (for rationale, some examples and some exceptions see Section 3.2.2.3, Section 3.2.2.4).” This is framed as a standing obligation for any host that has entered AccECN mode.  
+      However, in Section 3.2.2.1, Table 4 Note 1 creates a specific handshake case: “If the Server is in AccECN mode and in SYN-RCVD state, and if it receives a value of zero on a pure ACK with SYN=0 and no SACK blocks, for the rest of the connection the Server MUST NOT set ECT on outgoing packets and MUST NOT respond to AccECN feedback. Nonetheless, as a Data Receiver it MUST NOT disable AccECN feedback.” Here, the server is explicitly described as “in AccECN mode”, yet is told it “MUST NOT respond” to ECN feedback for the remainder of the connection.  
+      The two rules pull in opposite directions for the same subject and same condition (an AccECN-mode server receiving AccECN feedback): one says it is “obliged to respond appropriately” to ECN signals, the other that in a particular handshake outcome it MUST NOT respond at all. The general rule’s mention of “some exceptions” in Sections 3.2.2.3 and 3.2.2.4 does not reference this handshake-ACE=0 case, so the conflict is not clearly scoped as an explicit exception. Implementers following Section 3.1.5 literally would be required to react to CE feedback, while Section 3.2.2.1 simultaneously requires them never to do so in this case.  
+      Practically, implementers will likely give precedence to the more specific “MUST NOT respond” in Note 1, but the normative structure is inconsistent: the document should either clearly declare that this case is an exception to the general obligation or weaken the general statement so it no longer purports to apply unconditionally to all AccECN-mode hosts.
+    - KeyTextSnippets:
+      - “A host in AccECN mode:  
+        - is obliged to respond appropriately to AccECN feedback that indicates there were ECN marks on packets it had previously sent, where ‘appropriately’ is defined in Section 6.1 of [RFC3168] and updated by Sections 2.1 and 4.1 of [RFC8311];  
+        - is still obliged to respond appropriately to congestion feedback, even when it is solely sending non-ECN-capable packets (for rationale, some examples and some exceptions see Section 3.2.2.3, Section 3.2.2.4).”
+      - “{Note 1}: If the Server is in AccECN mode and in SYN-RCVD state, and if it receives a value of zero on a pure ACK with SYN=0 and no SACK blocks, for the rest of the connection the Server MUST NOT set ECT on outgoing packets and MUST NOT respond to AccECN feedback. Nonetheless, as a Data Receiver it MUST NOT disable AccECN feedback.”
+    - Impact: The contradiction leaves it unclear whether a server in this error-detected state is allowed (or required) to react to CE marks. Different implementers may resolve the tension differently (following the general rule vs. the specific one), leading to divergent congestion-control behaviour and uncertainty about the security model around mis-signalled ECN. The fix is conceptually small—clarify this case as a normative exception to the general obligation—but until that is done, the normative layer is self-contradictory.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - Title: Ambiguous normative status of sender behaviour under suspected ECN mangling and ACE/AccECN-option zeroing
+    - Description:  
+      Section 3.1.5 gives a strong normative baseline: a host in AccECN mode is “obliged to respond appropriately to congestion feedback, even when it is solely sending non-ECN-capable packets”, and is “still obliged” to do so even if SYN or SYN/ACK carried (AE,CWR,ECE)=(0,0,0). It then parenthetically points to “some exceptions” in Sections 3.2.2.3 and 3.2.2.4. Those sections cover important security-related edge cases: detection of invalid ECN transitions and of zeroed ACE fields.  
+      However, Sections 3.2.2.3 and 3.2.2.4 deliberately phrase their recommendations in non‑BCP 14 language: when mangling is suspected, “the Data Sender ought to send non-ECN-capable packets and it is advised not to respond to any feedback of CE markings”; when the first post‑handshake ACE is zero, “the Data Sender … ought to send non-ECN-capable packets and it is advised not to respond to any feedback of CE markings.” These paragraphs explicitly say this advice is “not stated normatively (in capitals), because the best strategy might depend on experience of the most likely types of mangling”.  
+      The result is that the only clearly normative statement is the general obligation to respond to ECN feedback; the “exceptions” pointed to by Section 3.1.5 are explicitly characterised as non‑normative advice. A fully compliant implementation can therefore legally choose either to continue reacting to CE despite strong evidence of mangling, or to follow the advice and ignore CE, and both behaviours are arguably consistent with the text. For such a central security and robustness issue—how to behave when feedback integrity is suspect—the specification leaves too much to implementer discretion without clearly defining at least a minimum required behaviour (e.g., MUST either disable ECN entirely, or follow one of a small set of allowed strategies).
+    - KeyTextSnippets:
+      - “A host in AccECN mode:  
+        - is still obliged to respond appropriately to congestion feedback, even when it is solely sending non-ECN-capable packets (for rationale, some examples and some exceptions see Section 3.2.2.3, Section 3.2.2.4).”
+      - “If continuous CE-marking is detected, for the remainder of the half-connection, the Data Sender ought to send non-ECN-capable packets and it is advised not to respond to any feedback of CE markings. … The above advice on switching to sending non-ECN-capable packets but still responding to CE-markings unless they become continuous is not stated normatively (in capitals), because the best strategy might depend on experience of the most likely types of mangling, which can only be known at the time of deployment.”
+      - “If AccECN has been successfully negotiated, the Data Sender MAY check the value of the ACE counter in the first feedback packet … If the value of this ACE field is found to be zero (0b000), for the remainder of the half-connection the Data Sender ought to send non-ECN-capable packets and it is advised not to respond to any feedback of CE markings. … This advice is not stated normatively (in capitals)…”
+    - Impact: Because the handling of bogus or mangled ECN feedback is only “advice”, two compliant but differently-chosen behaviours can significantly diverge in congestion response under adversarial or pathological conditions (e.g., one host slows down drastically based on false CE, another ignores such marks). This weakens the security and robustness properties that the rest of the specification appears to rely on, and undermines the clarity of the “obliged to respond” baseline in Section 3.1.5. Tightening the normative status of at least one safe fallback behaviour (or explicitly permitting a bounded set of strategies) would improve interoperability and predictability.
+
+  - Issue-3:
+    - BugType: None
+    - Title: “Invalid transitions” of the IP-ECN field — potential cross‑RFC mismatch cannot be confirmed from provided context
+    - Description:  
+      Section 3.2.2.3 states: “Invalid transitions of the IP-ECN field are defined in section 18 of the Classic ECN specification [RFC3168] and repeated here for convenience:” and then lists three bullets defining which transitions are “invalid”. The router’s hint suggests that these bullets might not exactly match the list in RFC 3168 section 18. However, the actual text of RFC 3168 section 18 is not included in the provided context, so it is not possible within this review to verify whether the list here is in fact a faithful repetition or an inadvertent change.  
+      Within this document, there is no internal inconsistency: these bullets serve as the operative definition of “invalid transitions” for AccECN’s own logic, and the following explanation about host‑perceived safety is coherent with those bullets. Any divergence from RFC 3168’s original list would be a genuine cross‑RFC issue, but that cannot be established from the excerpt alone.
+    - KeyTextSnippets:
+      - “Invalid transitions of the IP-ECN field are defined in section 18 of the Classic ECN specification [RFC3168] and repeated here for convenience:  
+        *  the not-ECT codepoint changes;  
+        *  either ECT codepoint transitions to not-ECT;  
+        *  the CE codepoint changes.”
+    - Impact: If the bullets do differ from RFC 3168, then this document is implicitly updating RFC 3168’s classification of invalid transitions while simultaneously claiming to merely “repeat” it, which would be a specification bug. Because the referenced RFC text is not available in the supplied context, this cannot be confirmed here, so I do not treat it as a proven deontic error in this review.
+
+- IfNoRealIssue: Not applicable (at least two substantive normative-structure issues have been identified).
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: The excerpt defines the AccECN TCP wire protocol, including the ACE counter field, AccECN TCP options, negotiation logic, and sender/receiver counters, with several interlinked tables and examples.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Undefined receiver counters “r.ec0b” / “r.ec1b” instead of defined “r.e0b” / “r.e1b”
+    - LocationHint: Section 3.2.3.3, “Usage of the AccECN TCP Option” (bullet under “Continual Repetition”)
+    - Evidence:
+      - Snippet1: In Section 3.2.3.3: “It SHOULD always include an AccECN Option if the r.ceb counter is incrementing and it MAY include an AccECN Option if r.ec0b or r.ec1b is incrementing”.
+      - Snippet2: In Section 3.2: “Each Data Receiver of each half connection maintains four counters, r.cep, r.ceb, r.e0b and r.e1b”; and in Section 3.2.1: “it initializes its counters to r.cep = 5, r.e0b = r.e1b = 1 and r.ceb = 0,” and in Section 3.2.3.1: “it MUST encode the 24 least significant bits of the current value of the associated counter into the field (respectively r.ceb, r.e0b, r.e1b).”
+    - TechnicalExplanation: |
+        The normative definition of the receiver’s byte counters establishes the names r.ceb, r.e0b, and r.e1b as the only valid identifiers for the CE-, ECT(0)-, and ECT(1)-byte counters, respectively. These names are used consistently throughout the protocol specification (initialization, option encoding/decoding, and algorithms). In Section 3.2.3.3, the text suddenly refers to r.ec0b and r.ec1b, which are never defined anywhere in the document and do not correspond to any field in the AccECN option diagrams (which use EE0B/EE1B and map to r.e0b/r.e1b). This creates a structural inconsistency between the prose (which appears to reference non‑existent state variables) and the formal counter definitions and option formats. While an implementer can infer that r.ec0b/r.ec1b are typographical errors for r.e0b/r.e1b, as written the specification is internally inconsistent and could lead to confusion or misimplementation of the “when to include an AccECN option” rules.
+    - PatchSuggestion: |
+        Replace the incorrect counter names in Section 3.2.3.3 so they match the defined counters. For example, change the bullet under “Continual Repetition” from:
+        
+          “It SHOULD always include an AccECN Option if the r.ceb counter is incrementing and it MAY include an AccECN Option if r.ec0b or r.ec1b is incrementing”
+        
+        to:
+        
+          “It SHOULD always include an AccECN Option if the r.ceb counter is incrementing and it MAY include an AccECN Option if r.e0b or r.e1b is incrementing.”
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: The AccECN draft defines new TCP ECN-feedback semantics (ACE field and options), a negotiation procedure that updates RFC 3168’s TCP/ECN handshake, specific middlebox/TSO/LRO behavior, and an explicit mapping of which parts of RFC 3168 are updated, while also referencing RFC 8311, SACK and related TCP/ECN work.
+- OverallCrossRFCLikelihood: Low
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Mis-citing RFC 3168’s definition of “invalid” ECN transitions
+    - Description: In Section 3.2.2.3, the AccECN draft states that “Invalid transitions of the IP-ECN field are defined in section 18 of the Classic ECN specification [RFC3168] and repeated here for convenience” and then lists three bullets (“the not-ECT codepoint changes; either ECT codepoint transitions to not-ECT; the CE codepoint changes”). RFC 3168 Section 18, however, does not define a single, explicit set of “invalid transitions” with that wording; instead it analyzes several distinct classes of ECN-field tampering: erasing CE (CE→ECT or CE→Not‑ECT), falsely reporting congestion (ECT→CE), disabling ECN capability (ECT→Not‑ECT), and falsely indicating ECN capability (Not‑ECT→ECT), each in separate subsections . The three bullets in AccECN are clearly derived from these classes, and the subsequent text even notes that RFC 3168 considers ECT→Not‑ECT “invalid but safe” while AccECN treats it as unsafe from a host’s viewpoint, which is a design choice rather than a contradiction. Nonetheless, saying that these particular three bullets “are defined in section 18” overstates what RFC 3168 actually does (security analysis vs. a formal invalid-transition set) and could mislead readers who go back to RFC 3168 expecting to find that precise classification. This is primarily an editorial cross-RFC mis-citation; it does not appear likely to cause interoperability failures, because treating all of those transitions as “invalid” and reacting conservatively is consistent with RFC 3168’s threat analysis and with later guidance in RFC 8311 on ECN experiments .
+    - EntitiesInvolved: ["AccECN draft Section 3.2.2.3", "RFC 3168 Section 18.1.x (erasure, false congestion, disabling ECN, false ECN-capability)", "IP ECN codepoints Not-ECT, ECT(0), ECT(1), CE"]
+    - CrossRefsUsed: ["RFC3168.txt sections 18.1.1–18.1.4 (tampering classes) ", "RFC8311.txt discussion of ECN experimentation and middlebox treatment "]
+    - Confidence: Medium
+- IfNoIssues:
+  - Comment: Aside from the minor mis-citation above, the excerpt appears broadly consistent with the external RFCs and registries it references. The updates to RFC 3168 (handshake rules in 6.1.1, sender/receiver behavior in 6.1.2–6.1.6, and out-of-window handling in 6.1.5) are described in a way that matches the original text and explicitly defers congestion-response semantics to RFC 3168 as relaxed by RFC 8311 . The IANA actions (renaming TCP header bit 7 from NS to AE and allocating option kinds 172 and 174) are aligned with the existing TCP Header Flags and TCP Option Kind Numbers registries, and the draft is careful to say it does not change RFC 3168’s prohibitions on setting ECT on control packets or retransmissions, only how AccECN reflects markings should other experimental specs (e.g., ECN++ ) choose to use them.
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## Terminology Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: Undeclared counters “r.ec0b” / “r.ec1b” instead of defined “r.e0b” / “r.e1b”
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 3.2 (definition of receiver counters):  
+          “Each Data Receiver of each half connection maintains four counters, r.cep, r.ceb, r.e0b and r.e1b…”
+        - Section 3.2.1 (initialization):  
+          “it initializes its counters to r.cep = 5, r.e0b = r.e1b = 1 and r.ceb = 0,”
+        - Section 3.2.3.3, bullet under “Continual Repetition”:  
+          “*  It SHOULD always include an AccECN Option if the r.ceb counter  
+             is incrementing and it MAY include an AccECN Option if r.ec0b  
+             or r.ec1b is incrementing”
+      - ContextSnippets:
+        - Section 3.2.3.1 (mapping option fields to receiver counters):  
+          “whenever the Data Receiver includes any of the counter fields (ECEB, EE0B, EE1B) in an AccECN Option, it MUST encode the 24 least significant bits of the current value of the associated counter into the field (respectively r.ceb, r.e0b, r.e1b).”
+        - Section 3.2.3.2.4 (initialization of byte counters):  
+          “Section 3.2.1 required the Data Receiver to initialize the r.e0b and r.e1b counters to a non-zero value.”
+    - Reasoning:
+      - The only receiver byte counters defined in the normative specification are r.ceb, r.e0b, and r.e1b. There is no definition anywhere of r.ec0b or r.ec1b.
+      - In the cited bullet, “r.ec0b or r.ec1b” appears in the same context where r.e0b and r.e1b are uniformly used elsewhere to denote the ECT(0)- and ECT(1)-byte counters.
+      - This creates a terminological inconsistency: the bullet is giving normative guidance (“SHOULD” / “MAY”) in terms of variables that are not otherwise defined. An implementer reading literally could be left unsure whether r.ec0b/r.ec1b are new, distinct counters (e.g., some mix of ECT and CE) or simply mis-typed forms of r.e0b/r.e1b.
+      - Given the surrounding text (especially the clear triad r.ceb, r.e0b, r.e1b everywhere else), the only plausible interpretation is that “ec0b” and “ec1b” are typographical errors for “e0b” and “e1b”. However, because this appears in normative text and introduces nonexistent names, it is a real specification defect appropriate for an erratum.
+    - PatchSuggestion:
+      - In Section 3.2.3.3, in the bullet under “Continual Repetition” that currently reads:
+        - “It SHOULD always include an AccECN Option if the r.ceb counter is incrementing and it MAY include an AccECN Option if r.ec0b or r.ec1b is incrementing”
+      - Replace with:
+        - “It SHOULD always include an AccECN Option if the r.ceb counter is incrementing and it MAY include an AccECN Option if r.e0b or r.e1b is incrementing”
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - Severity: Low
+    - ShortLabel: Misnamed option field “EEB0” vs defined “EE0B”
+    - Evidence:
+      - ExcerptSnippets:
+        - Figure 4 (definition of AccECN option fields):  
+          “Order 0 provides the 24 least significant bits of the r.e0b, r.ceb and r.e1b counters, respectively.”  
+          The fields are labelled “EE0B field”, “ECEB field”, and “EE1B field”.
+        - Table 5 (option lengths):  
+          “Length 11, Order 0: EE0B, ECEB, EE1B …”
+        - Section 3.2.3.3, second example paragraph:  
+          “As a second example, if the first packet to arrive happens to be CE-marked, the Data Receiver will have to arbitrarily choose whether to precede the ECEB field with an EE0B field or an EE1B field.  If it chooses, say, EEB0 but it turns out never to receive ECT(0), it can start sending EE1B and ECEB instead - it does not have to include the EE0B field if the r.e0b counter has never changed during the connection.”
+      - ContextSnippets:
+        - Throughout Section 3.2.3 and Appendix A.1, the three option fields are consistently named “ECEB”, “EE0B”, and “EE1B”; there is no “EEB0” field defined.
+    - Reasoning:
+      - The defined field names in the AccECN TCP options are EE0B (for ECT(0) bytes), ECEB (for CE bytes), and EE1B (for ECT(1) bytes). This naming is consistently used in the figures, tables, and normative mapping text.
+      - In the narrative example in Section 3.2.3.3, the text first correctly refers to “an EE0B field or an EE1B field”, but then gives “EEB0” as the example choice. “EEB0” is not a defined field name anywhere in the document; given the immediately preceding correct name “EE0B”, this is clearly a transposition/typo, not a new concept.
+      - This is an inconsistency in terminology. While a careful reader will readily infer that “EEB0” was meant to be “EE0B”, the presence of a non-existent field name in an example can confuse readers searching for its definition or attempting to correlate field names with IANA-registered identifiers and implementation code.
+      - Because this occurs in an informative example rather than core normative text, and the intent is obvious from context, the risk of misimplementation is low, but it is still a specification defect that merits a minor editorial erratum.
+    - PatchSuggestion:
+      - In Section 3.2.3.3, in the sentence:
+        - “If it chooses, say, EEB0 but it turns out never to receive ECT(0)…”
+      - Replace “EEB0” with “EE0B”:
+        - “If it chooses, say, EE0B but it turns out never to receive ECT(0)…”
+      - No other changes are needed, since the rest of the paragraph already consistently uses “EE0B”.
+
+- Notes:
+  - UsedRouterIssues: Confirmed the router’s CandidateIssue about the inconsistent counter names (r.ec0b/r.ec1b). Additionally, identified a separate minor misnaming of the EE0B field as “EEB0” in an example.
+  - NewIssuesFromExpert: true
+  - Limitations:
+    - The analysis is based solely on the provided excerpt; I did not cross-check against an independent copy of draft-ietf-tcpm-accurate-ecn-34. It is assumed that these snippets accurately reflect the draft text. If the “EEB0” spelling was introduced only during transcription into the prompt, then Issue-2 would not apply to the actual draft.
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  The excerpt specifies Accurate ECN (AccECN) for TCP: how endpoints negotiate capabilities via the three-way handshake using the AE/CWR/ECE flag triple, how they enter/retain a “feedback mode”, how the ACE field (3‑bit CE packet counter) and optional AccECN options (24‑bit byte counters) are initialized, encoded, decoded, and protected against wrap, and how to behave under multiple SYNs, retransmissions, ACK loss, ACK thinning, middlebox mangling/zeroing, and offload hardware. The domain includes: all 8 flag combinations on SYN/SYN‑ACK, 3‑bit ACE counters with wrap, 24‑bit byte counters with wrap, initial non‑zero counter values, cases with and without options, and both data and control packets (including SYN/SYN‑ACK, retransmissions, pure ACKs).
+
+- OverallBoundaryBugLikelihood: Low
+
+- Findings:
+  - Finding-1:
+    - BugType: None
+    - ShortLabel: No boundary/exceptional-case bugs detected
+    - BoundaryAxis:  
+      - Handshake flag combinations (all 8 AE/CWR/ECE values on SYN/SYN‑ACK, including simultaneous open, multiple SYN/SYN‑ACKs, TIME‑WAIT reuses).  
+      - Mode selection and non‑switching (AccECN vs Classic ECN vs Not‑ECN) when multiple/late handshake packets arrive, including retransmissions and fall-back.  
+      - Counter initialization and zeroing (initial non‑zero r.* and s.* counters; ACE and AccECN option zero tests; SYN-cookie cases).  
+      - ACE and byte-counter wrap and ACK loss/ACK thinning (3‑bit ACE cycling, 24‑bit option fields, presence/absence of options).  
+      - Optional AccECN Options (absent, stripped, zeroed, ignored; transitions into and out of “options not available” or “ignore options” modes).  
+      - ECN mangling tests and continuous CE detection.  
+    - ExcerptEvidence (representative points):
+      - Negotiation and mode fixing:  
+        * AccECN negotiation rules and Table 2, including fall-back to Classic ECN or Not‑ECN and the “Broken” case, plus explicit rules that once a host chooses a feedback mode it MUST NOT switch, regardless of later SYN/SYN‑ACKs of different types (Section 3.1.2, 3.1.4, 3.1.5).  
+        * Explicit handling of simultaneous open and in-window SYN during TIME‑WAIT (Section 3.1.2).  
+      - Counter initialization and zeroing:  
+        * r.cep initialized to 5; r.e0b, r.e1b to 1; r.ceb to 0; same for s.* (Section 3.2.1).  
+        * Special handshake ACE encodings on SYN‑ACK and ACK‑of‑SYN‑ACK (Tables 2–4, Sections 3.1.1, 3.2.2.1–3.2.2.2).  
+        * ACE field zero tests after the handshake and their scope (Section 3.2.2.4) vs. the explicit exception for handshake encoding and the special treatment of ACE=0 on ACK of the SYN‑ACK while in SYN‑RCVD (Note 1 to Table 4).  
+        * AccECN option zero tests and “ignore options” mode, with explicit statement that only zero is tested, not any specific initial value (Section 3.2.3.2.4).  
+      - Wrap and ACK loss/ACK thinning:  
+        * ACE safety rules at receiver (change‑triggered and increment‑triggered ACKs, including ACKs of ACKs and constraints on ‘n’) and sender heuristics to detect possible ACE wrap, including reference to Appendix A.2 (Section 3.2.2.5).  
+        * Byte counters defined as 24 bits with explicit design rationale on why multiple wraps between ACKs are considered infeasible, and sender-side delta computation that assumes at most one wrap (Section 3.2.3.1, Appendix A.1).  
+      - Options absent/stripped/blocked:  
+        * Handshake testing of AccECN options, recommended inclusion on SYN‑ACK and first ACK/first data, and fall-back strategies if SYN‑ACK or first data with option time out (Section 3.2.3.2.1–3.2.3.2.2).  
+        * “Mode that assumes incoming AccECN Options are not available” with clear entry condition (no option on SYN‑ACK / first ACK covering ISN) and exit condition (option subsequently received), and requirement in that mode to adopt conservative ACE interpretation (Section 3.2.3.2.3).  
+        * Distinct “mode that ignores AccECN Options” for zeroed EE0B/EE1B, which is clearly separated from the “assume not available” mode, and requires relying on ACE only with conservative interpretation (Section 3.2.3.2.4).  
+      - Mangling and continuous CE:  
+        * Defined tests for IP‑ECN mangling on SYN and SYN‑ACK using reflected values via flags / ACE, with explicit classification of “invalid transitions” and non‑normative advice on switching to Not‑ECT and on whether to continue responding to CE (Section 3.2.2.3).  
+        * Clear statement that these strategies are advisory, not normative, and that in all cases the receiver MUST continue to mechanistically reflect ECN markings once in AccECN mode (Sections 2.5, 3.1.5, 3.2.2.3).  
+    - Reasoning:  
+      - I walked through the main state and value spaces:  
+        • Handshake flag patterns on SYN/SYN‑ACK, including reserved and “broken” combinations, simultaneous open, and multiple SYN/SYN‑ACKs (retransmissions, fall-back).  
+        • Entry into, and non‑switching of, feedback modes (AccECN/Classic/Not‑ECN) even in the presence of reordered or duplicated handshake packets.  
+        • Initialization of all counters (r.* and s.*), and the special handshake encodings that temporarily override the normal ACE-as-counter semantics only for the pure ACK of the SYN‑ACK, with precise conditions (SYN=0, no SACK blocks, SYN‑RCVD).  
+        • Behavior when ACE or option counters are unexpectedly zeroed, and when options are missing, stripped, or malformed (shorter/longer length than nominal).  
+        • ACE wrap handling and ACK thinning, including “change-triggered ACKs” and “increment-triggered ACKs”, and corresponding sender heuristics to bound the plausible number of wraps based on bytes acknowledged.  
+      - For each of these, the document either:  
+        • Gives explicit, actionable rules (often with rationale and examples) that cover the corner case; or  
+        • Intentionally relegates behavior to local policy with clear indication that it is non-normative (e.g., strategies under detected mangling or continuous CE), in domains where divergent sender behavior affects only congestion-control response, not on-the-wire protocol correctness.  
+      - Potentially tricky interactions—such as:  
+        • Clients that do not send a pure ACK of the SYN‑ACK (and thus do not use the handshake ACE encoding).  
+        • SYN-cookie servers that have forgotten AccECN mode at the time they receive the ACK of the SYN‑ACK.  
+        • Servers that send both AccECN and (later) Not‑ECN SYN‑ACKs during fall-back.  
+        • Hosts changing their decision about sending ECT after seeing (AE,CWR,ECE)=(0,0,0).  
+        are all explicitly contemplated, and there are clear rules assigning a definitive feedback mode and ECT-sending policy. In each case, hosts are required not to switch feedback mode once chosen, to continue mechanistic ECN reflection while in AccECN mode, and to treat ambiguous fields conservatively.  
+      - I looked for genuine contradictions (e.g., two sections mandating incompatible wire behavior in the same condition) and for reachable states where the spec leaves behavior unspecified in a way that would create ambiguity in what bits appear on the wire or how received bits are to be decoded. For the boundary conditions above, I do not find such conflicts or gaps; differences left to implementer discretion are about congestion-response heuristics, not about encoding/decoding or negotiation semantics.
+    - ImpactAssessment:  
+      - Given the thorough treatment of handshake combinations, retransmission/fall-back, zeroing tests, and wrap-around, different conformant implementations will interpret the same packets in the same way at the wire-protocol level.  
+      - Any remaining degrees of freedom are intentionally about local congestion-control policy under anomalous paths (mangling, continuous CE, option blocking), not about the AccECN signaling itself, so they do not create interoperability or security problems in the sense targeted by this review.
+
+- Notes:
+  - Not a bug – handshake ACE vs mangling tests:  
+    The text in Section 3.2.2.3 informally states that “the value of the ACE field on the last ACK of the three-way handshake indicates the value of the IP‑ECN field when the SYN/ACK arrived”, which is strictly true only if the client has used the handshake ACE encoding on a pure ACK without SACK blocks as recommended in Section 3.2.2.1. The specification explicitly allows an implementation (in limited environments) to omit this pure ACK and handshake encoding, meaning that in those cases ACE on the “last ACK” is just the low bits of r.cep and does not encode IP‑ECN. However, all behavior based on this mangling test is non-normative (“advised”), and the mandatory requirements in the same section (and in 3.1.5) are solely about continuing mechanistic feedback, not about whether to disable ECT or how to respond to CE. Thus, while the descriptive sentence is slightly over-general, it does not create wire-level ambiguity or divergent decoding behavior and so does not rise to a specification bug under the criteria used here.
+
+[Used vector stores: vs_6958be564fdc81918f6c87dec1d36632]
+
+
+Vector Stores Used: vs_6958be564fdc81918f6c87dec1d36632

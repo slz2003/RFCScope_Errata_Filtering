@@ -1,0 +1,417 @@
+[
+  {
+    "tag": "F3411",
+    "text": "ASTM International, \"Standard Specification for Remote ID and Tracking\", ASTM F3411-22A, DOI 10.1520/F3411-22A, July 2022, <https://www.astm.org/f3411-22a.html >.",
+    "links": [
+      {
+        "text": "https://www.astm.org/f3411-22a.html",
+        "address": "https://www.astm.org/f3411-22a.html"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "ISO3166-1",
+    "text": "ISO, \"Codes for the representation of names of countries and their subdivisions - Part 1: Country code\", ISO 3166-1:2020, August 2020, <https://www.iso.org/standard/72482.html >.",
+    "links": [
+      {
+        "text": "https://www.iso.org/standard/72482.html",
+        "address": "https://www.iso.org/standard/72482.html"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC2119",
+    "text": "Bradner, S., \"Key words for use in RFCs to Indicate Requirement Levels\", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <https://www.rfc-editor.org/info/rfc2119>.",
+    "links": [
+      {
+        "text": "BCP 14",
+        "address": "./bcp14"
+      },
+      {
+        "text": "RFC 2119",
+        "address": "./rfc2119"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc2119",
+        "address": "https://www.rfc-editor.org/info/rfc2119"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC4648",
+    "text": "Josefsson, S., \"The Base16, Base32, and Base64 Data Encodings\", RFC 4648, DOI 10.17487/RFC4648, October 2006, <https://www.rfc-editor.org/info/rfc4648>.",
+    "links": [
+      {
+        "text": "RFC 4648",
+        "address": "./rfc4648"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4648",
+        "address": "https://www.rfc-editor.org/info/rfc4648"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC8174",
+    "text": "Leiba, B., \"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words\", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <https://www.rfc-editor.org/info/rfc8174>.",
+    "links": [
+      {
+        "text": "RFC 2119",
+        "address": "./rfc2119"
+      },
+      {
+        "text": "BCP 14",
+        "address": "./bcp14"
+      },
+      {
+        "text": "RFC 8174",
+        "address": "./rfc8174"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8174",
+        "address": "https://www.rfc-editor.org/info/rfc8174"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC8949",
+    "text": "Bormann, C. and P. Hoffman, \"Concise Binary Object Representation (CBOR)\", STD 94, RFC 8949, DOI 10.17487/RFC8949, December 2020, <https://www.rfc-editor.org/info/rfc8949>.",
+    "links": [
+      {
+        "text": "RFC 8949",
+        "address": "./rfc8949"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8949",
+        "address": "https://www.rfc-editor.org/info/rfc8949"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC9374",
+    "text": "Moskowitz, R., Card, S., Wiethuechter, A., and A. Gurtov, \"DRIP Entity Tag (DET) for Unmanned Aircraft System Remote ID (UAS RID)\", RFC 9374, DOI 10.17487/RFC9374, March 2023, <https://www.rfc-editor.org/info/rfc9374>.",
+    "links": [
+      {
+        "text": "RFC 9374",
+        "address": "./rfc9374"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9374",
+        "address": "https://www.rfc-editor.org/info/rfc9374"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "BCP237",
+    "text": "Best Current Practice 237, <https://www.rfc-editor.org/info/bcp237>. At the time of writing, this BCP comprises the following: Hoffman, P., \"DNS Security Extensions (DNSSEC)\", BCP 237,RFC 9364, DOI 10.17487/RFC9364, February 2023, <https://www.rfc-editor.org/info/rfc9364>.",
+    "links": [
+      {
+        "text": "https://www.rfc-editor.org/info/bcp237",
+        "address": "https://www.rfc-editor.org/info/bcp237"
+      },
+      {
+        "text": "BCP 237",
+        "address": "./bcp237"
+      },
+      {
+        "text": "RFC 9364",
+        "address": "./rfc9364"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9364",
+        "address": "https://www.rfc-editor.org/info/rfc9364"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "drip-dki ",
+    "text": "Moskowitz, R. and S. W. Card, \"The DRIP DET public Key Infrastructure\", Work in Progress, Internet-Draft, draft- ietf-drip-dki-09, 20 October 2025, <https://datatracker.ietf.org/doc/html/draft-ietf-drip-dki-09>.",
+    "links": [
+      {
+        "text": "https://datatracker.ietf.org/doc/html/draft-ietf-drip-dki-09",
+        "address": "https://datatracker.ietf.org/doc/html/draft-ietf-drip-dki-09"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5280",
+    "text": "Cooper, D., Santesson, S., Farrell, S., Boeyen, S., Housley, R., and W. Polk, \"Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile\", RFC 5280, DOI 10.17487/RFC5280, May 2008, <https://www.rfc-editor.org/info/rfc5280>.",
+    "links": [
+      {
+        "text": "RFC 5280",
+        "address": "./rfc5280"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5280",
+        "address": "https://www.rfc-editor.org/info/rfc5280"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6841",
+    "text": "Ljunggren, F., Eklund Lowinder, AM., and T. Okubo, \"A Framework for DNSSEC Policies and DNSSEC Practice Statements\", RFC 6841, DOI 10.17487/RFC6841, January 2013, <https://www.rfc-editor.org/info/rfc6841>.",
+    "links": [
+      {
+        "text": "RFC 6841",
+        "address": "./rfc6841"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6841",
+        "address": "https://www.rfc-editor.org/info/rfc6841"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8005",
+    "text": "Laganier, J., \"Host Identity Protocol (HIP) Domain Name System (DNS) Extension\", RFC 8005, DOI 10.17487/RFC8005, October 2016, <https://www.rfc-editor.org/info/rfc8005>.",
+    "links": [
+      {
+        "text": "RFC 8005",
+        "address": "./rfc8005"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8005",
+        "address": "https://www.rfc-editor.org/info/rfc8005"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8126",
+    "text": "Cotton, M., Leiba, B., and T. Narten, \"Guidelines for Writing an IANA Considerations Section in RFCs\", BCP 26,RFC 8126, DOI 10.17487/RFC8126, June 2017, <https://www.rfc-editor.org/info/rfc8126>.",
+    "links": [
+      {
+        "text": "BCP 26",
+        "address": "./bcp26"
+      },
+      {
+        "text": "RFC 8126",
+        "address": "./rfc8126"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8126",
+        "address": "https://www.rfc-editor.org/info/rfc8126"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8610",
+    "text": "Birkholz, H., Vigano, C., and C. Bormann, \"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures\", RFC 8610, DOI 10.17487/RFC8610, June 2019, <https://www.rfc-editor.org/info/rfc8610>.",
+    "links": [
+      {
+        "text": "RFC 8610",
+        "address": "./rfc8610"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8610",
+        "address": "https://www.rfc-editor.org/info/rfc8610"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9153",
+    "text": "Card, S., Ed., Wiethuechter, A., Moskowitz, R., and A. Gurtov, \"Drone Remote Identification Protocol (DRIP) Requirements and Terminology\", RFC 9153, DOI 10.17487/RFC9153, February 2022, <https://www.rfc-editor.org/info/rfc9153>.",
+    "links": [
+      {
+        "text": "RFC 9153",
+        "address": "./rfc9153"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9153",
+        "address": "https://www.rfc-editor.org/info/rfc9153"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9434",
+    "text": "Card, S., Wiethuechter, A., Moskowitz, R., Zhao, S., Ed., and A. Gurtov, \"Drone Remote Identification Protocol (DRIP) Architecture\", RFC 9434, DOI 10.17487/RFC9434, July 2023, <https://www.rfc-editor.org/info/rfc9434>.",
+    "links": [
+      {
+        "text": "RFC 9434",
+        "address": "./rfc9434"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9434",
+        "address": "https://www.rfc-editor.org/info/rfc9434"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9575",
+    "text": "Wiethuechter, A., Ed., Card, S., and R. Moskowitz, \"DRIP Entity Tag (DET) Authentication Formats and Protocols for Broadcast Remote Identification (RID)\", RFC 9575, DOI 10.17487/RFC9575, June 2024, <https://www.rfc-editor.org/info/rfc9575>.",
+    "links": [
+      {
+        "text": "RFC 9575",
+        "address": "./rfc9575"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9575",
+        "address": "https://www.rfc-editor.org/info/rfc9575"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "STD13",
+    "text": "Internet Standard 13, <https://www.rfc-editor.org/info/std13>. At the time of writing, this STD comprises the following: Mockapetris, P., \"Domain names - concepts and facilities\", STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987, <https://www.rfc-editor.org/info/rfc1034>. Mockapetris, P., \"Domain names - implementation and specification\", STD 13, RFC 1035, DOI 10.17487/RFC1035, November 1987, <https://www.rfc-editor.org/info/rfc1035>.",
+    "links": [
+      {
+        "text": "https://www.rfc-editor.org/info/std13",
+        "address": "https://www.rfc-editor.org/info/std13"
+      },
+      {
+        "text": "RFC 1034",
+        "address": "./rfc1034"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc1034",
+        "address": "https://www.rfc-editor.org/info/rfc1034"
+      },
+      {
+        "text": "RFC 1035",
+        "address": "./rfc1035"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc1035",
+        "address": "https://www.rfc-editor.org/info/rfc1035"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "STD69",
+    "text": "Internet Standard 69, <https://www.rfc-editor.org/info/std69>. At the time of writing, this STD comprises the following: Hollenbeck, S., \"Extensible Provisioning Protocol (EPP)\", STD 69, RFC 5730, DOI 10.17487/RFC5730, August 2009, <https://www.rfc-editor.org/info/rfc5730>. Hollenbeck, S., \"Extensible Provisioning Protocol (EPP) Domain Name Mapping\", STD 69, RFC 5731, DOI 10.17487/RFC5731, August 2009, <https://www.rfc-editor.org/info/rfc5731>. Hollenbeck, S., \"Extensible Provisioning Protocol (EPP) Host Mapping\", STD 69, RFC 5732, DOI 10.17487/RFC5732, August 2009, <https://www.rfc-editor.org/info/rfc5732>. Hollenbeck, S., \"Extensible Provisioning Protocol (EPP) Contact Mapping\", STD 69, RFC 5733, DOI 10.17487/RFC5733, August 2009, <https://www.rfc-editor.org/info/rfc5733>. Hollenbeck, S., \"Extensible Provisioning Protocol (EPP) Transport over TCP\", STD 69, RFC 5734, DOI 10.17487/RFC5734, August 2009, <https://www.rfc-editor.org/info/rfc5734>.",
+    "links": [
+      {
+        "text": "https://www.rfc-editor.org/info/std69",
+        "address": "https://www.rfc-editor.org/info/std69"
+      },
+      {
+        "text": "RFC 5730",
+        "address": "./rfc5730"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5730",
+        "address": "https://www.rfc-editor.org/info/rfc5730"
+      },
+      {
+        "text": "RFC 5731",
+        "address": "./rfc5731"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5731",
+        "address": "https://www.rfc-editor.org/info/rfc5731"
+      },
+      {
+        "text": "RFC 5732",
+        "address": "./rfc5732"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5732",
+        "address": "https://www.rfc-editor.org/info/rfc5732"
+      },
+      {
+        "text": "RFC 5733",
+        "address": "./rfc5733"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5733",
+        "address": "https://www.rfc-editor.org/info/rfc5733"
+      },
+      {
+        "text": "RFC 5734",
+        "address": "./rfc5734"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5734",
+        "address": "https://www.rfc-editor.org/info/rfc5734"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "STD88",
+    "text": "Internet Standard 88, <https://www.rfc-editor.org/info/std88>. At the time of writing, this STD comprises the following: Thomson, S., Huitema, C., Ksinant, V., and M. Souissi, \"DNS Extensions to Support IP Version 6\", STD 88,RFC 3596, DOI 10.17487/RFC3596, October 2003, <https://www.rfc-editor.org/info/rfc3596>.",
+    "links": [
+      {
+        "text": "https://www.rfc-editor.org/info/std88",
+        "address": "https://www.rfc-editor.org/info/std88"
+      },
+      {
+        "text": "RFC 3596",
+        "address": "./rfc3596"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3596",
+        "address": "https://www.rfc-editor.org/info/rfc3596"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "STD95",
+    "text": "Internet Standard 95, <https://www.rfc-editor.org/info/std95>. At the time of writing, this STD comprises the following: Newton, A., Ellacott, B., and N. Kong, \"HTTP Usage in the Registration Data Access Protocol (RDAP)\", STD 95,RFC 7480, DOI 10.17487/RFC7480, March 2015, <https://www.rfc-editor.org/info/rfc7480>. Hollenbeck, S. and N. Kong, \"Security Services for the Registration Data Access Protocol (RDAP)\", STD 95,RFC 7481, DOI 10.17487/RFC7481, March 2015, <https://www.rfc-editor.org/info/rfc7481>. Hollenbeck, S. and A. Newton, \"Registration Data Access Protocol (RDAP) Query Format\", STD 95, RFC 9082, DOI 10.17487/RFC9082, June 2021, <https://www.rfc-editor.org/info/rfc9082>. Hollenbeck, S. and A. Newton, \"JSON Responses for the Registration Data Access Protocol (RDAP)\", STD 95,RFC 9083, DOI 10.17487/RFC9083, June 2021, <https://www.rfc-editor.org/info/rfc9083>. Blanchet, M., \"Finding the Authoritative Registration Data Access Protocol (RDAP) Service\", STD 95, RFC 9224, DOI 10.17487/RFC9224, March 2022, <https://www.rfc-editor.org/info/rfc9224>.",
+    "links": [
+      {
+        "text": "https://www.rfc-editor.org/info/std95",
+        "address": "https://www.rfc-editor.org/info/std95"
+      },
+      {
+        "text": "RFC 7480",
+        "address": "./rfc7480"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7480",
+        "address": "https://www.rfc-editor.org/info/rfc7480"
+      },
+      {
+        "text": "RFC 7481",
+        "address": "./rfc7481"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7481",
+        "address": "https://www.rfc-editor.org/info/rfc7481"
+      },
+      {
+        "text": "RFC 9082",
+        "address": "./rfc9082"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9082",
+        "address": "https://www.rfc-editor.org/info/rfc9082"
+      },
+      {
+        "text": "RFC 9083",
+        "address": "./rfc9083"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9083",
+        "address": "https://www.rfc-editor.org/info/rfc9083"
+      },
+      {
+        "text": "RFC 9224",
+        "address": "./rfc9224"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9224",
+        "address": "https://www.rfc-editor.org/info/rfc9224"
+      }
+    ],
+    "type": "informative"
+  }
+]

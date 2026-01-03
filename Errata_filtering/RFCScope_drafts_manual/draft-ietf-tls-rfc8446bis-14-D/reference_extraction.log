@@ -1,0 +1,140 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-D/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   To align with the names used this document, the following terms from
+   [RFC5246] are renamed:
+
+   *  The master secret, computed in Section 8.1 of [RFC5246], is
+      renamed to the main secret.  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5246
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5246
+  Reference Type: TEXT
+  Reference Value (keywords/section): master secret renamed to main secret
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC5246:
+  Looking for Section: '8.1'
+  Match Type: Exact match
+  Result: Matched to Section 8.1
+  Section Title: Computing the Master Secret
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5246:
+  Search Keywords: 'master secret renamed to main secret'
+  Result: Found in Section 8.1
+  Section Title: Computing the Master Secret
+  Content Preview:    For all key exchange methods, the same algorithm is used to convert
+   the pre_master_secret into...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  The PreMasterSecret and EncryptedPreMasterSecret structures,
+      defined in Section 7.4.7.1 of [RFC5246], are renamed to
+      PreliminarySecret and EncryptedPreliminarySecret, respectively.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5246
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.4.7.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5246
+  Reference Type: TEXT
+  Reference Value (keywords/section): PreMasterSecret and EncryptedPreMasterSecret structures
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC5246:
+  Looking for Section: '7.4.7.1'
+  Match Type: Exact match
+  Result: Matched to Section 7.4.7.1
+  Section Title: RSA-Encrypted Premaster Secret Message
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5246:
+  Search Keywords: 'PreMasterSecret and EncryptedPreMasterSecret structures'
+  Result: Found in Section 7.4.7.1
+  Section Title: RSA-Encrypted Premaster Secret Message
+  Content Preview:    Meaning of this message:
+
+      If RSA is being used for key agreement and authentication, the
+  ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Correspondingly, the extension defined in [RFC7627] is renamed to the
+   "Extended Main Secret" extension.  The extension code point is
+   renamed to "extended_main_secret".  The label parameter to...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7627
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7627
+  Reference Type: TEXT
+  Reference Value (keywords/section): Extended Main Secret extension
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7627:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: The Extended Master Secret
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7627:
+  Search Keywords: 'Extended Main Secret extension'
+  Result: Found in Section 5.1
+  Section Title: Extension Definition
+  Content Preview:    This document defines a new TLS extension, "extended_master_secret"
+   (with extension type 0x001...
+---------------------------------------------------------------------------
+

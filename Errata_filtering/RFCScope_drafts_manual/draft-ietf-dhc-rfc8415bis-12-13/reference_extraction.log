@@ -1,0 +1,273 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-13/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A server selects addresses to be assigned to an IA_NA according to
+   the address assignment policies determined by the server
+   administrator and the specific information the server determines
+  ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+      -  If the server receives the message directly from the client and
+         the source address in the IP datagram in which the message was
+         received is a link-local address, then the cli...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+      -  If the server receives the message from a forwarding relay
+         agent, then the client is on the same link as the one to which
+         the interface, identified by the link-address field...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6221
+  Reference Type: TEXT
+  Reference Value (keywords/section): link-address field
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6221:
+  Search Keywords: 'link-address field'
+  Result: Found in Section 3
+  Section Title: Terminology
+  Content Preview:    Access Node               A device that combines many interfaces onto
+                           ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Other information in options supplied by the client, e.g., IA
+      Address options (see Section 21.6) that include the client's
+      requests for specific addresses.
+
+   *  Other information i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.6'
+  Match Type: Exact match
+  Result: Matched to Section 21.6
+  Section Title: IA Address Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   By default, DHCP server implementations SHOULD NOT generate
+   predictable addresses (see Section 4.7 of [RFC7721]).  Server
+   implementers are encouraged to review [RFC8981], [RFC7824],
+   [RFC77...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7721
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.7
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7707
+  Reference Type: TEXT
+  Reference Value (keywords/section): Network Reconnaissance in IPv6 Networks
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7824
+  Reference Type: TEXT
+  Reference Value (keywords/section): Privacy Considerations for DHCPv6
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC7943
+  Reference Type: TEXT
+  Reference Value (keywords/section): A Method for Generating Semantically Opaque Interface Identifiers
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC8981
+  Reference Type: TEXT
+  Reference Value (keywords/section): Temporary Address Extensions for Stateless Address Autoconfiguration in IPv6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC7721:
+  Looking for Section: '4.7'
+  Match Type: Exact match
+  Result: Matched to Section 4.7
+  Section Title: DHCPv6 Generation of IIDs
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7707:
+  Search Keywords: 'Network Reconnaissance in IPv6 Networks'
+  Result: Found in Section 6
+  Section Title: Conclusions
+  Content Preview:    This document explores the topic of network reconnaissance in IPv6
+   networks.  It analyzes the ...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7824:
+  Search Keywords: 'Privacy Considerations for DHCPv6'
+  Result: Found in Section 7
+  Section Title: Privacy Considerations
+  Content Preview:    This document in its entirety discusses privacy considerations in
+   DHCPv6.  As such, no dedicat...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7943:
+  Search Keywords: 'A Method for Generating Semantically Opaque Interface Identifiers'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    The benefits of stable IPv6 addresses are discussed in [RFC7721].
+   Providing address stability ...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8981:
+  Search Keywords: 'Temporary Address Extensions for Stateless Address Autoconfiguration in IPv6'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    [RFC4862] specifies Stateless Address Autoconfiguration (SLAAC) for
+   IPv6, which typically resu...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A server MUST NOT assign an address that is otherwise reserved for
+   some other purpose.  For example, a server MUST NOT assign addresses
+   that use a reserved IPv6 Interface Identifier [RFC5453]...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-RESERVED-IID
+  Reference Type: TEXT
+  Reference Value (keywords/section): Reserved IPv6 Interface Identifiers
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5453
+  Reference Type: TEXT
+  Reference Value (keywords/section): Reserved IPv6 Interface Identifiers
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7136
+  Reference Type: TEXT
+  Reference Value (keywords/section): Significance of IPv6 Interface Identifiers
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC7969
+  Reference Type: TEXT
+  Reference Value (keywords/section): Customizing DHCP Configuration on the Basis of Network Topology
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5453:
+  Search Keywords: 'Reserved IPv6 Interface Identifiers'
+  Result: Found in Section 3
+  Section Title: IANA Considerations
+  Content Preview:    This document creates an IANA registry for reserved IPv6 interface
+   identifiers.  Initial value...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7136:
+  Search Keywords: 'Significance of IPv6 Interface Identifiers'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    IPv6 unicast addresses consist of a prefix followed by an Interface
+   Identifier (IID).  The IID...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7969:
+  Search Keywords: 'Customizing DHCP Configuration on the Basis of Network Topology'
+  Result: Found in Section 3
+  Section Title: Identifying Client's Location by DHCP Servers
+  Content Preview:    Figure 1 illustrates a small hierarchy of network links with Link D
+   serving as a backbone to w...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The mechanism through which the server selects prefix(es) for
+   delegation is not specified in this document.  Examples of ways in
+   which the server might select prefix(es) for a client include ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3162
+  Reference Type: TEXT
+  Reference Value (keywords/section): Framed-IPv6-Prefix option
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3162:
+  Search Keywords: 'Framed-IPv6-Prefix option'
+  Result: Found in Section 2.3
+  Section Title: Framed-IPv6-Prefix
+  Content Preview:    Description
+
+      This Attribute indicates an IPv6 prefix (and corresponding route)
+      to be ...
+---------------------------------------------------------------------------
+

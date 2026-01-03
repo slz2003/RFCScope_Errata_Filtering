@@ -1,0 +1,989 @@
+[
+  {
+    "tag": "BCP145",
+    "text": "Best Current Practice 145, <https://www.rfc-editor.org/info/bcp145>. At the time of writing, this BCP comprises the following: Eggert, L., Fairhurst, G., and G. Shepherd, \"UDP Usage Guidelines\", BCP 145, RFC 8085, DOI 10.17487/RFC8085, March 2017, <https://www.rfc-editor.org/info/rfc8085>.",
+    "links": [
+      {
+        "text": "https://www.rfc-editor.org/info/bcp145",
+        "address": "https://www.rfc-editor.org/info/bcp145"
+      },
+      {
+        "text": "BCP 145",
+        "address": "./bcp145"
+      },
+      {
+        "text": "RFC 8085",
+        "address": "./rfc8085"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8085",
+        "address": "https://www.rfc-editor.org/info/rfc8085"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC0768",
+    "text": "Postel, J., \"User Datagram Protocol\", STD 6, RFC 768, DOI 10.17487/RFC0768, August 1980, <https://www.rfc-editor.org/info/rfc768>.",
+    "links": [
+      {
+        "text": "RFC 768",
+        "address": "./rfc768"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc768",
+        "address": "https://www.rfc-editor.org/info/rfc768"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC1035",
+    "text": "Mockapetris, P., \"Domain names - implementation and specification\", STD 13, RFC 1035, DOI 10.17487/RFC1035, November 1987, <https://www.rfc-editor.org/info/rfc1035>.",
+    "links": [
+      {
+        "text": "RFC 1035",
+        "address": "./rfc1035"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc1035",
+        "address": "https://www.rfc-editor.org/info/rfc1035"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC2119",
+    "text": "Bradner, S., \"Key words for use in RFCs to Indicate Requirement Levels\", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997, <https://www.rfc-editor.org/info/rfc2119>.",
+    "links": [
+      {
+        "text": "BCP 14",
+        "address": "./bcp14"
+      },
+      {
+        "text": "RFC 2119",
+        "address": "./rfc2119"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc2119",
+        "address": "https://www.rfc-editor.org/info/rfc2119"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC4291",
+    "text": "Hinden, R. and S. Deering, \"IP Version 6 Addressing Architecture\", RFC 4291, DOI 10.17487/RFC4291, February 2006, <https://www.rfc-editor.org/info/rfc4291>.",
+    "links": [
+      {
+        "text": "RFC 4291",
+        "address": "./rfc4291"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4291",
+        "address": "https://www.rfc-editor.org/info/rfc4291"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC4861",
+    "text": "Narten, T., Nordmark, E., Simpson, W., and H. Soliman, \"Neighbor Discovery for IP version 6 (IPv6)\", RFC 4861, DOI 10.17487/RFC4861, September 2007, <https://www.rfc-editor.org/info/rfc4861>.",
+    "links": [
+      {
+        "text": "RFC 4861",
+        "address": "./rfc4861"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4861",
+        "address": "https://www.rfc-editor.org/info/rfc4861"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC4862",
+    "text": "Thomson, S., Narten, T., and T. Jinmei, \"IPv6 Stateless Address Autoconfiguration\", RFC 4862, DOI 10.17487/RFC4862, September 2007, <https://www.rfc-editor.org/info/rfc4862>.",
+    "links": [
+      {
+        "text": "RFC 4862",
+        "address": "./rfc4862"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4862",
+        "address": "https://www.rfc-editor.org/info/rfc4862"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC6221",
+    "text": "Miles, D., Ed., Ooghe, S., Dec, W., Krishnan, S., and A. Kavanagh, \"Lightweight DHCPv6 Relay Agent\", RFC 6221, DOI 10.17487/RFC6221, May 2011, <https://www.rfc-editor.org/info/rfc6221>.",
+    "links": [
+      {
+        "text": "RFC 6221",
+        "address": "./rfc6221"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6221",
+        "address": "https://www.rfc-editor.org/info/rfc6221"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC6355",
+    "text": "Narten, T. and J. Johnson, \"Definition of the UUID-Based DHCPv6 Unique Identifier (DUID-UUID)\", RFC 6355, DOI 10.17487/RFC6355, August 2011, <https://www.rfc-editor.org/info/rfc6355>.",
+    "links": [
+      {
+        "text": "RFC 6355",
+        "address": "./rfc6355"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6355",
+        "address": "https://www.rfc-editor.org/info/rfc6355"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC7227",
+    "text": "Hankins, D., Mrugalski, T., Siodelski, M., Jiang, S., and S. Krishnan, \"Guidelines for Creating New DHCPv6 Options\",BCP 187, RFC 7227, DOI 10.17487/RFC7227, May 2014, <https://www.rfc-editor.org/info/rfc7227>.",
+    "links": [
+      {
+        "text": "BCP 187",
+        "address": "./bcp187"
+      },
+      {
+        "text": "RFC 7227",
+        "address": "./rfc7227"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7227",
+        "address": "https://www.rfc-editor.org/info/rfc7227"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC7934",
+    "text": "Colitti, L., Cerf, V., Cheshire, S., and D. Schinazi, \"Host Address Availability Recommendations\", BCP 204,RFC 7934, DOI 10.17487/RFC7934, July 2016, <https://www.rfc-editor.org/info/rfc7934>.",
+    "links": [
+      {
+        "text": "BCP 204",
+        "address": "./bcp204"
+      },
+      {
+        "text": "RFC 7934",
+        "address": "./rfc7934"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7934",
+        "address": "https://www.rfc-editor.org/info/rfc7934"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC8174",
+    "text": "Leiba, B., \"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words\", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017, <https://www.rfc-editor.org/info/rfc8174>.",
+    "links": [
+      {
+        "text": "RFC 2119",
+        "address": "./rfc2119"
+      },
+      {
+        "text": "BCP 14",
+        "address": "./bcp14"
+      },
+      {
+        "text": "RFC 8174",
+        "address": "./rfc8174"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8174",
+        "address": "https://www.rfc-editor.org/info/rfc8174"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC8200",
+    "text": "Deering, S. and R. Hinden, \"Internet Protocol, Version 6 (IPv6) Specification\", STD 86, RFC 8200, DOI 10.17487/RFC8200, July 2017, <https://www.rfc-editor.org/info/rfc8200>.",
+    "links": [
+      {
+        "text": "RFC 8200",
+        "address": "./rfc8200"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8200",
+        "address": "https://www.rfc-editor.org/info/rfc8200"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "RFC8213",
+    "text": "Volz, B. and Y. Pal, \"Security of Messages Exchanged between Servers and Relay Agents\", RFC 8213, DOI 10.17487/RFC8213, August 2017, <https://www.rfc-editor.org/info/rfc8213>.",
+    "links": [
+      {
+        "text": "RFC 8213",
+        "address": "./rfc8213"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8213",
+        "address": "https://www.rfc-editor.org/info/rfc8213"
+      }
+    ],
+    "type": "normative"
+  },
+  {
+    "tag": "IANA-HARDWARE-TYPES ",
+    "text": "IANA, \"Hardware Types\", <https://www.iana.org/assignments/arp-parameters >.",
+    "links": [
+      {
+        "text": "https://www.iana.org/assignments/arp-parameters",
+        "address": "https://www.iana.org/assignments/arp-parameters"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "IANA-OPTION-DETAILS ",
+    "text": "IANA, \"Option Codes\", <https://www.iana.org/assignments/dhcpv6-parameters >.",
+    "links": [
+      {
+        "text": "https://www.iana.org/assignments/dhcpv6-parameters",
+        "address": "https://www.iana.org/assignments/dhcpv6-parameters"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "IANA-PEN ",
+    "text": "IANA, \"Private Enterprise Numbers\", <https://www.iana.org/assignments/enterprise-numbers >.",
+    "links": [
+      {
+        "text": "https://www.iana.org/assignments/enterprise-numbers",
+        "address": "https://www.iana.org/assignments/enterprise-numbers"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "IANA-RESERVED-IID ",
+    "text": "IANA, \"Reserved IPv6 Interface Identifiers\", <https://www.iana.org/assignments/ipv6-interface-ids >.",
+    "links": [
+      {
+        "text": "https://www.iana.org/assignments/ipv6-interface-ids",
+        "address": "https://www.iana.org/assignments/ipv6-interface-ids"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "IEEE-802.1x ",
+    "text": "IEEE, \"IEEE Standard for Local and metropolitan area networks--Port-Based Network Access Control\", IEEE 802.1X- 2010, DOI 10.1109/IEEESTD.2010.5409813, <https://ieeexplore.ieee.org/servlet/ opac?punumber=5409757>.",
+    "links": [
+      {
+        "text": "https://ieeexplore.ieee.org/servlet/",
+        "address": "https://ieeexplore.ieee.org/servlet/"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC2131",
+    "text": "Droms, R., \"Dynamic Host Configuration Protocol\",RFC 2131, DOI 10.17487/RFC2131, March 1997, <https://www.rfc-editor.org/info/rfc2131>.",
+    "links": [
+      {
+        "text": "RFC 2131",
+        "address": "./rfc2131"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc2131",
+        "address": "https://www.rfc-editor.org/info/rfc2131"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC2464",
+    "text": "Crawford, M., \"Transmission of IPv6 Packets over Ethernet Networks\", RFC 2464, DOI 10.17487/RFC2464, December 1998, <https://www.rfc-editor.org/info/rfc2464>.",
+    "links": [
+      {
+        "text": "RFC 2464",
+        "address": "./rfc2464"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc2464",
+        "address": "https://www.rfc-editor.org/info/rfc2464"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC3162",
+    "text": "Aboba, B., Zorn, G., and D. Mitton, \"RADIUS and IPv6\",RFC 3162, DOI 10.17487/RFC3162, August 2001, <https://www.rfc-editor.org/info/rfc3162>.",
+    "links": [
+      {
+        "text": "RFC 3162",
+        "address": "./rfc3162"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3162",
+        "address": "https://www.rfc-editor.org/info/rfc3162"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC3290",
+    "text": "Bernet, Y., Blake, S., Grossman, D., and A. Smith, \"An Informal Management Model for Diffserv Routers\", RFC 3290, DOI 10.17487/RFC3290, May 2002, <https://www.rfc-editor.org/info/rfc3290>.",
+    "links": [
+      {
+        "text": "RFC 3290",
+        "address": "./rfc3290"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3290",
+        "address": "https://www.rfc-editor.org/info/rfc3290"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC3629",
+    "text": "Yergeau, F., \"UTF-8, a transformation format of ISO 10646\", STD 63, RFC 3629, DOI 10.17487/RFC3629, November 2003, <https://www.rfc-editor.org/info/rfc3629>.",
+    "links": [
+      {
+        "text": "RFC 3629",
+        "address": "./rfc3629"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3629",
+        "address": "https://www.rfc-editor.org/info/rfc3629"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC3646",
+    "text": "Droms, R., Ed., \"DNS Configuration options for Dynamic Host Configuration Protocol for IPv6 (DHCPv6)\", RFC 3646, DOI 10.17487/RFC3646, December 2003, <https://www.rfc-editor.org/info/rfc3646>.",
+    "links": [
+      {
+        "text": "RFC 3646",
+        "address": "./rfc3646"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3646",
+        "address": "https://www.rfc-editor.org/info/rfc3646"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC3769",
+    "text": "Miyakawa, S. and R. Droms, \"Requirements for IPv6 Prefix Delegation\", RFC 3769, DOI 10.17487/RFC3769, June 2004, <https://www.rfc-editor.org/info/rfc3769>.",
+    "links": [
+      {
+        "text": "RFC 3769",
+        "address": "./rfc3769"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc3769",
+        "address": "https://www.rfc-editor.org/info/rfc3769"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC4193",
+    "text": "Hinden, R. and B. Haberman, \"Unique Local IPv6 Unicast Addresses\", RFC 4193, DOI 10.17487/RFC4193, October 2005, <https://www.rfc-editor.org/info/rfc4193>.",
+    "links": [
+      {
+        "text": "RFC 4193",
+        "address": "./rfc4193"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4193",
+        "address": "https://www.rfc-editor.org/info/rfc4193"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC4477",
+    "text": "Chown, T., Venaas, S., and C. Strauf, \"Dynamic Host Configuration Protocol (DHCP): IPv4 and IPv6 Dual-Stack Issues\", RFC 4477, DOI 10.17487/RFC4477, May 2006, <https://www.rfc-editor.org/info/rfc4477>.",
+    "links": [
+      {
+        "text": "RFC 4477",
+        "address": "./rfc4477"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4477",
+        "address": "https://www.rfc-editor.org/info/rfc4477"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC4704",
+    "text": "Volz, B., \"The Dynamic Host Configuration Protocol for IPv6 (DHCPv6) Client Fully Qualified Domain Name (FQDN) Option\", RFC 4704, DOI 10.17487/RFC4704, October 2006, <https://www.rfc-editor.org/info/rfc4704>.",
+    "links": [
+      {
+        "text": "RFC 4704",
+        "address": "./rfc4704"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4704",
+        "address": "https://www.rfc-editor.org/info/rfc4704"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC4943",
+    "text": "Roy, S., Durand, A., and J. Paugh, \"IPv6 Neighbor Discovery On-Link Assumption Considered Harmful\",RFC 4943, DOI 10.17487/RFC4943, September 2007, <https://www.rfc-editor.org/info/rfc4943>.",
+    "links": [
+      {
+        "text": "RFC 4943",
+        "address": "./rfc4943"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4943",
+        "address": "https://www.rfc-editor.org/info/rfc4943"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC4957",
+    "text": "Krishnan, S., Ed., Montavont, N., Njedjou, E., Veerepalli, S., and A. Yegin, Ed., \"Link-Layer Event Notifications for Detecting Network Attachments\", RFC 4957, DOI 10.17487/RFC4957, August 2007, <https://www.rfc-editor.org/info/rfc4957>.",
+    "links": [
+      {
+        "text": "RFC 4957",
+        "address": "./rfc4957"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4957",
+        "address": "https://www.rfc-editor.org/info/rfc4957"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC4994",
+    "text": "Zeng, S., Volz, B., Kinnear, K., and J. Brzozowski, \"DHCPv6 Relay Agent Echo Request Option\", RFC 4994, DOI 10.17487/RFC4994, September 2007, <https://www.rfc-editor.org/info/rfc4994>.",
+    "links": [
+      {
+        "text": "RFC 4994",
+        "address": "./rfc4994"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc4994",
+        "address": "https://www.rfc-editor.org/info/rfc4994"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5007",
+    "text": "Brzozowski, J., Kinnear, K., Volz, B., and S. Zeng, \"DHCPv6 Leasequery\", RFC 5007, DOI 10.17487/RFC5007, September 2007, <https://www.rfc-editor.org/info/rfc5007>.",
+    "links": [
+      {
+        "text": "RFC 5007",
+        "address": "./rfc5007"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5007",
+        "address": "https://www.rfc-editor.org/info/rfc5007"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5453",
+    "text": "Krishnan, S., \"Reserved IPv6 Interface Identifiers\",RFC 5453, DOI 10.17487/RFC5453, February 2009, <https://www.rfc-editor.org/info/rfc5453>.",
+    "links": [
+      {
+        "text": "RFC 5453",
+        "address": "./rfc5453"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5453",
+        "address": "https://www.rfc-editor.org/info/rfc5453"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5612",
+    "text": "Eronen, P. and D. Harrington, \"Enterprise Number for Documentation Use\", RFC 5612, DOI 10.17487/RFC5612, August 2009, <https://www.rfc-editor.org/info/rfc5612>.",
+    "links": [
+      {
+        "text": "RFC 5612",
+        "address": "./rfc5612"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5612",
+        "address": "https://www.rfc-editor.org/info/rfc5612"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5905",
+    "text": "Mills, D., Martin, J., Ed., Burbank, J., and W. Kasch, \"Network Time Protocol Version 4: Protocol and Algorithms Specification\", RFC 5905, DOI 10.17487/RFC5905, June 2010, <https://www.rfc-editor.org/info/rfc5905>.",
+    "links": [
+      {
+        "text": "RFC 5905",
+        "address": "./rfc5905"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5905",
+        "address": "https://www.rfc-editor.org/info/rfc5905"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC5908",
+    "text": "Gayraud, R. and B. Lourdelet, \"Network Time Protocol (NTP) Server Option for DHCPv6\", RFC 5908, DOI 10.17487/RFC5908, June 2010, <https://www.rfc-editor.org/info/rfc5908>.",
+    "links": [
+      {
+        "text": "RFC 5908",
+        "address": "./rfc5908"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc5908",
+        "address": "https://www.rfc-editor.org/info/rfc5908"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6059",
+    "text": "Krishnan, S. and G. Daley, \"Simple Procedures for Detecting Network Attachment in IPv6\", RFC 6059, DOI 10.17487/RFC6059, November 2010, <https://www.rfc-editor.org/info/rfc6059>.",
+    "links": [
+      {
+        "text": "RFC 6059",
+        "address": "./rfc6059"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6059",
+        "address": "https://www.rfc-editor.org/info/rfc6059"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6422",
+    "text": "Lemon, T. and Q. Wu, \"Relay-Supplied DHCP Options\",RFC 6422, DOI 10.17487/RFC6422, December 2011, <https://www.rfc-editor.org/info/rfc6422>.",
+    "links": [
+      {
+        "text": "RFC 6422",
+        "address": "./rfc6422"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6422",
+        "address": "https://www.rfc-editor.org/info/rfc6422"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6603",
+    "text": "Korhonen, J., Ed., Savolainen, T., Krishnan, S., and O. Troan, \"Prefix Exclude Option for DHCPv6-based Prefix Delegation\", RFC 6603, DOI 10.17487/RFC6603, May 2012, <https://www.rfc-editor.org/info/rfc6603>.",
+    "links": [
+      {
+        "text": "RFC 6603",
+        "address": "./rfc6603"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6603",
+        "address": "https://www.rfc-editor.org/info/rfc6603"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6879",
+    "text": "Jiang, S., Liu, B., and B. Carpenter, \"IPv6 Enterprise Network Renumbering Scenarios, Considerations, and Methods\", RFC 6879, DOI 10.17487/RFC6879, February 2013, <https://www.rfc-editor.org/info/rfc6879>.",
+    "links": [
+      {
+        "text": "RFC 6879",
+        "address": "./rfc6879"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6879",
+        "address": "https://www.rfc-editor.org/info/rfc6879"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC6939",
+    "text": "Halwasia, G., Bhandari, S., and W. Dec, \"Client Link-Layer Address Option in DHCPv6\", RFC 6939, DOI 10.17487/RFC6939, May 2013, <https://www.rfc-editor.org/info/rfc6939>.",
+    "links": [
+      {
+        "text": "RFC 6939",
+        "address": "./rfc6939"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc6939",
+        "address": "https://www.rfc-editor.org/info/rfc6939"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7084",
+    "text": "Singh, H., Beebee, W., Donley, C., and B. Stark, \"Basic Requirements for IPv6 Customer Edge Routers\", RFC 7084, DOI 10.17487/RFC7084, November 2013, <https://www.rfc-editor.org/info/rfc7084>.",
+    "links": [
+      {
+        "text": "RFC 7084",
+        "address": "./rfc7084"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7084",
+        "address": "https://www.rfc-editor.org/info/rfc7084"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7136",
+    "text": "Carpenter, B. and S. Jiang, \"Significance of IPv6 Interface Identifiers\", RFC 7136, DOI 10.17487/RFC7136, February 2014, <https://www.rfc-editor.org/info/rfc7136>.",
+    "links": [
+      {
+        "text": "RFC 7136",
+        "address": "./rfc7136"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7136",
+        "address": "https://www.rfc-editor.org/info/rfc7136"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7341",
+    "text": "Sun, Q., Cui, Y., Siodelski, M., Krishnan, S., and I. Farrer, \"DHCPv4-over-DHCPv6 (DHCP 4o6) Transport\",RFC 7341, DOI 10.17487/RFC7341, August 2014, <https://www.rfc-editor.org/info/rfc7341>.",
+    "links": [
+      {
+        "text": "RFC 7341",
+        "address": "./rfc7341"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7341",
+        "address": "https://www.rfc-editor.org/info/rfc7341"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7368",
+    "text": "Chown, T., Ed., Arkko, J., Brandt, A., Troan, O., and J. Weil, \"IPv6 Home Networking Architecture Principles\",RFC 7368, DOI 10.17487/RFC7368, October 2014, <https://www.rfc-editor.org/info/rfc7368>.",
+    "links": [
+      {
+        "text": "RFC 7368",
+        "address": "./rfc7368"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7368",
+        "address": "https://www.rfc-editor.org/info/rfc7368"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7513",
+    "text": "Bi, J., Wu, J., Yao, G., and F. Baker, \"Source Address Validation Improvement (SAVI) Solution for DHCP\",RFC 7513, DOI 10.17487/RFC7513, May 2015, <https://www.rfc-editor.org/info/rfc7513>.",
+    "links": [
+      {
+        "text": "RFC 7513",
+        "address": "./rfc7513"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7513",
+        "address": "https://www.rfc-editor.org/info/rfc7513"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7598",
+    "text": "Mrugalski, T., Troan, O., Farrer, I., Perreault, S., Dec, W., Bao, C., Yeh, L., and X. Deng, \"DHCPv6 Options for Configuration of Softwire Address and Port-Mapped Clients\", RFC 7598, DOI 10.17487/RFC7598, July 2015, <https://www.rfc-editor.org/info/rfc7598>.",
+    "links": [
+      {
+        "text": "RFC 7598",
+        "address": "./rfc7598"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7598",
+        "address": "https://www.rfc-editor.org/info/rfc7598"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7610",
+    "text": "Gont, F., Liu, W., and G. Van de Velde, \"DHCPv6-Shield: Protecting against Rogue DHCPv6 Servers\", BCP 199,RFC 7610, DOI 10.17487/RFC7610, August 2015, <https://www.rfc-editor.org/info/rfc7610>.",
+    "links": [
+      {
+        "text": "BCP 199",
+        "address": "./bcp199"
+      },
+      {
+        "text": "RFC 7610",
+        "address": "./rfc7610"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7610",
+        "address": "https://www.rfc-editor.org/info/rfc7610"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7707",
+    "text": "Gont, F. and T. Chown, \"Network Reconnaissance in IPv6 Networks\", RFC 7707, DOI 10.17487/RFC7707, March 2016, <https://www.rfc-editor.org/info/rfc7707>.",
+    "links": [
+      {
+        "text": "RFC 7707",
+        "address": "./rfc7707"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7707",
+        "address": "https://www.rfc-editor.org/info/rfc7707"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7721",
+    "text": "Cooper, A., Gont, F., and D. Thaler, \"Security and Privacy Considerations for IPv6 Address Generation Mechanisms\",RFC 7721, DOI 10.17487/RFC7721, March 2016, <https://www.rfc-editor.org/info/rfc7721>.",
+    "links": [
+      {
+        "text": "RFC 7721",
+        "address": "./rfc7721"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7721",
+        "address": "https://www.rfc-editor.org/info/rfc7721"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7824",
+    "text": "Krishnan, S., Mrugalski, T., and S. Jiang, \"Privacy Considerations for DHCPv6\", RFC 7824, DOI 10.17487/RFC7824, May 2016, <https://www.rfc-editor.org/info/rfc7824>.",
+    "links": [
+      {
+        "text": "RFC 7824",
+        "address": "./rfc7824"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7824",
+        "address": "https://www.rfc-editor.org/info/rfc7824"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7844",
+    "text": "Huitema, C., Mrugalski, T., and S. Krishnan, \"Anonymity Profiles for DHCP Clients\", RFC 7844, DOI 10.17487/RFC7844, May 2016, <https://www.rfc-editor.org/info/rfc7844>.",
+    "links": [
+      {
+        "text": "RFC 7844",
+        "address": "./rfc7844"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7844",
+        "address": "https://www.rfc-editor.org/info/rfc7844"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7943",
+    "text": "Gont, F. and W. Liu, \"A Method for Generating Semantically Opaque Interface Identifiers (IIDs) with the Dynamic Host Configuration Protocol for IPv6 (DHCPv6)\", RFC 7943, DOI 10.17487/RFC7943, September 2016, <https://www.rfc-editor.org/info/rfc7943>.",
+    "links": [
+      {
+        "text": "RFC 7943",
+        "address": "./rfc7943"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7943",
+        "address": "https://www.rfc-editor.org/info/rfc7943"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC7969",
+    "text": "Lemon, T. and T. Mrugalski, \"Customizing DHCP Configuration on the Basis of Network Topology\", RFC 7969, DOI 10.17487/RFC7969, October 2016, <https://www.rfc-editor.org/info/rfc7969>.",
+    "links": [
+      {
+        "text": "RFC 7969",
+        "address": "./rfc7969"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc7969",
+        "address": "https://www.rfc-editor.org/info/rfc7969"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8168",
+    "text": "Li, T., Liu, C., and Y. Cui, \"DHCPv6 Prefix-Length Hint Issues\", RFC 8168, DOI 10.17487/RFC8168, May 2017, <https://www.rfc-editor.org/info/rfc8168>.",
+    "links": [
+      {
+        "text": "RFC 8168",
+        "address": "./rfc8168"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8168",
+        "address": "https://www.rfc-editor.org/info/rfc8168"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8357",
+    "text": "Shen, N. and E. Chen, \"Generalized UDP Source Port for DHCP Relay\", RFC 8357, DOI 10.17487/RFC8357, March 2018, <https://www.rfc-editor.org/info/rfc8357>.",
+    "links": [
+      {
+        "text": "RFC 8357",
+        "address": "./rfc8357"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8357",
+        "address": "https://www.rfc-editor.org/info/rfc8357"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8415",
+    "text": "Mrugalski, T., Siodelski, M., Volz, B., Yourtchenko, A., Richardson, M., Jiang, S., Lemon, T., and T. Winters, \"Dynamic Host Configuration Protocol for IPv6 (DHCPv6)\",RFC 8415, DOI 10.17487/RFC8415, November 2018, <https://www.rfc-editor.org/info/rfc8415>.",
+    "links": [
+      {
+        "text": "RFC 8415",
+        "address": "./rfc8415"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8415",
+        "address": "https://www.rfc-editor.org/info/rfc8415"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8947",
+    "text": "Volz, B., Mrugalski, T., and CJ. Bernardos, \"Link-Layer Address Assignment Mechanism for DHCPv6\", RFC 8947, DOI 10.17487/RFC8947, December 2020, <https://www.rfc-editor.org/info/rfc8947>.",
+    "links": [
+      {
+        "text": "RFC 8947",
+        "address": "./rfc8947"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8947",
+        "address": "https://www.rfc-editor.org/info/rfc8947"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8981",
+    "text": "Gont, F., Krishnan, S., Narten, T., and R. Draves, \"Temporary Address Extensions for Stateless Address Autoconfiguration in IPv6\", RFC 8981, DOI 10.17487/RFC8981, February 2021, <https://www.rfc-editor.org/info/rfc8981>.",
+    "links": [
+      {
+        "text": "RFC 8981",
+        "address": "./rfc8981"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8981",
+        "address": "https://www.rfc-editor.org/info/rfc8981"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC8987",
+    "text": "Farrer, I., Kottapalli, N., Hunek, M., and R. Patterson, \"DHCPv6 Prefix Delegating Relay Requirements\", RFC 8987, DOI 10.17487/RFC8987, February 2021, <https://www.rfc-editor.org/info/rfc8987>.",
+    "links": [
+      {
+        "text": "RFC 8987",
+        "address": "./rfc8987"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc8987",
+        "address": "https://www.rfc-editor.org/info/rfc8987"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9096",
+    "text": "Gont, F., \u017dor\u017e, J., Patterson, R., and B. Volz, \"Improving the Reaction of Customer Edge Routers to IPv6 Renumbering Events\", BCP 234, RFC 9096, DOI 10.17487/RFC9096, August 2021, <https://www.rfc-editor.org/info/rfc9096>.",
+    "links": [
+      {
+        "text": "BCP 234",
+        "address": "./bcp234"
+      },
+      {
+        "text": "RFC 9096",
+        "address": "./rfc9096"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9096",
+        "address": "https://www.rfc-editor.org/info/rfc9096"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9243",
+    "text": "Farrer, I., Ed., \"A YANG Data Model for DHCPv6 Configuration\", RFC 9243, DOI 10.17487/RFC9243, June 2022, <https://www.rfc-editor.org/info/rfc9243>.",
+    "links": [
+      {
+        "text": "RFC 9243",
+        "address": "./rfc9243"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9243",
+        "address": "https://www.rfc-editor.org/info/rfc9243"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "RFC9686",
+    "text": "Kumari, W., Krishnan, S., Asati, R., Colitti, L., Linkova, J., and S. Jiang, \"Registering Self-Generated IPv6 Addresses Using DHCPv6\", RFC 9686, DOI 10.17487/RFC9686, December 2024, <https://www.rfc-editor.org/info/rfc9686>.",
+    "links": [
+      {
+        "text": "RFC 9686",
+        "address": "./rfc9686"
+      },
+      {
+        "text": "https://www.rfc-editor.org/info/rfc9686",
+        "address": "https://www.rfc-editor.org/info/rfc9686"
+      }
+    ],
+    "type": "informative"
+  },
+  {
+    "tag": "TR-187",
+    "text": "Broadband Forum, \"TR-187 - IPv6 for PPP Broadband Access\", February 2013, <https://www.broadband- forum.org/technical/download/TR-187_Issue-2.pdf >.",
+    "links": [
+      {
+        "text": "https://www.broadband-",
+        "address": "https://www.broadband-"
+      }
+    ],
+    "type": "informative"
+  }
+]

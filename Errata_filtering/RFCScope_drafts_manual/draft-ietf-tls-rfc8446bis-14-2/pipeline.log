@@ -1,0 +1,815 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section 2
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section 2
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/corpus.json
+
+Extracting references from section 2 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/reference_extraction.log
+Focusing on section 2 and its children.
+Processing section 2. Protocol Overview
+Splitting content into chunks:   0%|          | 0/15 [00:00<?, ?it/s]Splitting content into chunks:  13%|█▎        | 2/15 [00:02<00:17,  1.32s/it]Splitting content into chunks:  40%|████      | 6/15 [00:09<00:14,  1.58s/it]Splitting content into chunks:  47%|████▋     | 7/15 [00:11<00:13,  1.69s/it]Splitting content into chunks:  53%|█████▎    | 8/15 [00:13<00:12,  1.72s/it]Splitting content into chunks:  60%|██████    | 9/15 [00:15<00:10,  1.75s/it]Splitting content into chunks:  73%|███████▎  | 11/15 [01:37<01:12, 18.16s/it]Splitting content into chunks:  80%|████████  | 12/15 [01:39<00:42, 14.32s/it]Splitting content into chunks:  87%|████████▋ | 13/15 [01:41<00:22, 11.30s/it]Splitting content into chunks: 100%|██████████| 15/15 [01:42<00:00,  6.99s/it]Splitting content into chunks: 100%|██████████| 15/15 [01:42<00:00,  6.86s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The cryptographic parameters used by the secure channel are produced
+   by the TLS handshake protocol.  This sub-protocol of TLS is used by
+   the client and server when first communicating with ea...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A failure of the handshake or other protocol error triggers the
+   termination of the connection, optionally preceded by an alert
+   message (Section 6).
+
+   TLS supports three basic key exchange m...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '6'
+  Match Type: Exact match
+  Result: Matched to Section 6
+  Section Title: Alert Protocol
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+Key  ^ ClientHello
+Exch | + key_share*
+     | + signature_algorithms*
+     | + psk_key_exchange_modes*
+     v + pre_shared_key*         -------->
+                                                      ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Key Exchange: Establish shared keying material and select the
+      cryptographic parameters.  Everything after this phase is
+      encrypted.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Server Parameters: Establish other handshake parameters (whether
+      the client is authenticated, application-layer protocol support,
+      etc.).
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Authentication: Authenticate the server (and, optionally, the
+      client) and provide key confirmation and handshake integrity. 
+   In the Key Exchange phase, the client sends the ClientHello
+...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.8
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.1.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.1.2
+  Section Title: Client Hello
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.8'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.8
+  Section Title: Key Share
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.11'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.11
+  Section Title: Pre-Shared Key Extension
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The server processes the ClientHello and determines the appropriate
+   cryptographic parameters for the connection.  It then responds with
+   its own ServerHello (Section 4.1.3), which indicates th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.1.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.1.3
+  Section Title: Server Hello
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   EncryptedExtensions:  responses to ClientHello extensions that are
+      not required to determine the cryptographic parameters, other than
+      those that are specific to individual certificates....
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.3.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.3.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.3.1
+  Section Title: Encrypted Extensions
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   CertificateRequest:  if certificate-based client authentication is
+      desired, the desired parameters for that certificate.  This
+      message is omitted if client authentication is not desired...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.3.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.3.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.3.2
+  Section Title: Certificate Request
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Finally, the client and server exchange Authentication messages.  TLS
+   uses the same set of messages every time that certificate-based
+   authentication is needed.  (PSK-based authentication happ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Certificate:  The certificate of the endpoint and any per-certificate 
+      extensions.  This message is omitted by the server if not
+      authenticating with a certificate and by the client if t...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7250
+  Reference Type: TEXT
+  Reference Value (keywords/section): raw public keys
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7924
+  Reference Type: TEXT
+  Reference Value (keywords/section): cached information extension
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.4.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.4.2
+  Section Title: Certificate
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7250:
+  Search Keywords: 'raw public keys'
+  Result: Found in Section 6
+  Section Title: Security Considerations
+  Content Preview:    The transmission of raw public keys, as described in this document,
+   provides benefits by lower...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7924:
+  Search Keywords: 'cached information extension'
+  Result: Found in Section 4
+  Section Title: Exchange Specification
+  Content Preview:    Clients supporting this extension MAY include the "cached_info"
+   extension in the (extended) Cl...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   CertificateVerify:  A signature over the entire handshake using the
+      private key corresponding to the public key in the Certificate
+      message.  This message is omitted if the endpoint is n...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.4.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.4.3
+  Section Title: Certificate Verify
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Finished:  A MAC (Message Authentication Code) over the entire
+      handshake.  This message provides key confirmation for the shared
+      secrets established in the handshake binds the endpoint'...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.4.4'
+  Match Type: Exact match
+  Result: Matched to Section 4.4.4
+  Section Title: Finished
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Upon receiving the server's messages, the client responds with its
+   Authentication messages, namely Certificate and CertificateVerify (if
+   requested), and Finished.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   At this point, the handshake is complete, and the client and server
+   derive the keying material required by the record layer to exchange
+   application-layer data protected through authenticated ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '2.3'
+  Match Type: Exact match
+  Result: Matched to Section 2.3
+  Section Title: 0-RTT Data
+---------------------------------------------------------------------------
+
+Warning: Section 2 not found. Processing all sections.
+Processing section 2.1. Incorrect DHE Share
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 218.49it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If the client has not provided a sufficient "key_share" extension
+   (e.g., it includes only DHE or ECDHE groups unacceptable to or
+   unsupported by the server), the server corrects the mismatch w...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+            ClientHello
+            + key_share             -------->
+                                                      HelloRetryRequest
+                                    <--------             ...
+################################################################################
+Processing section 2.2. Resumption and Pre-Shared Key (PSK)
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks:  20%|██        | 1/5 [00:03<00:13,  3.32s/it]Splitting content into chunks: 100%|██████████| 5/5 [01:23<00:00, 17.47s/it]Splitting content into chunks: 100%|██████████| 5/5 [01:23<00:00, 16.62s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Although TLS PSKs can be established externally, PSKs can also be
+   established in a previous connection and then used to establish a new
+   connection ("session resumption" or "resuming" with a P...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.6.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5077
+  Reference Type: TEXT
+  Reference Value (keywords/section): Transport Layer Security (TLS) Session Resumption without Server-Side State
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.6.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.6.1
+  Section Title: New Session Ticket Message
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Initial Handshake:
+          ClientHello
+          + key_share               -------->
+                                                          ServerHello
+                                        ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+
+   Subsequent Handshake:
+          ClientHello
+          + key_share*
+          + psk_key_exchange_modes
+          + pre_shared_key          -------->
+                                                ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   As the server is authenticating via a PSK, it does not send a
+   Certificate or a CertificateVerify message.  When a client offers
+   resumption via a PSK, it SHOULD also supply a "key_share" exten...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Note:  When using an externally provisioned pre-shared secret, a
+      critical consideration is using sufficient entropy during the key
+      generation, as discussed in [RFC4086].  Deriving a sha...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC4086
+  Reference Type: TEXT
+  Reference Value (keywords/section): entropy during the key generation
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4086:
+  Search Keywords: 'entropy during the key generation'
+  Result: Found in Section 3.6
+  Section Title: Non-hardware Sources of Randomness
+  Content Preview:    The best source of input entropy would be a hardware-based random
+   source such as ring oscillat...
+---------------------------------------------------------------------------
+
+Processing section 2.3. 0-RTT Data
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks:  80%|████████  | 4/5 [00:03<00:00,  1.12it/s]Splitting content into chunks: 100%|██████████| 5/5 [00:05<00:00,  1.19s/it]Splitting content into chunks: 100%|██████████| 5/5 [00:05<00:00,  1.12s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   When clients and servers share a PSK (either obtained externally or
+   via a previous handshake), TLS 1.3 allows clients to send data on the
+   first flight ("early data").  The client uses the PSK...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   As shown in Figure 4, the 0-RTT data is just added to the 1-RTT
+   handshake in the first flight.  The rest of the handshake uses the
+   same messages as for a 1-RTT handshake with PSK resumption. ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+            ClientHello
+            + early_data
+            + key_share*
+            + psk_key_exchange_modes
+            + pre_shared_key
+            (Application Data*)     -------->
+              ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   1.  The protocol does not provide any forward secrecy guarantees for
+       this data.  The server's behavior determines what forward secrecy
+       guarantees, if any, apply (see Section 8.1).  Th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8.1
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '8.1'
+  Match Type: Exact match
+  Result: Matched to Section 8.1
+  Section Title: Single-Use Tickets
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '2'
+  Match Type: Exact match
+  Result: Matched to Section 2
+  Section Title: Protocol Overview
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   0-RTT data cannot be duplicated within a connection (i.e., the server
+   will not process the same data twice for the same connection), and an
+   attacker will not be able to make 0-RTT data appear...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 8
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '8'
+  Match Type: Exact match
+  Result: Matched to Section 8
+  Section Title: 0-RTT and Anti-Replay
+---------------------------------------------------------------------------
+
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 2 only.
+Focusing on section 2 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/section_dependencies.json
+
+Creating prompts for section 2...
+Creating expert prompt for section 2 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/focus_section_2_prompt_expert.md
+Expert prompt token count: 75,298 tokens
+Creating router prompt for section 2...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/focus_section_2_prompt_router.md
+Router prompt token count: 68,220 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958cda3dae081919bf20a5fc7c770d1
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section 2
+================================================================================
+2026-01-03 03:15:58,402 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:15:58,412 - __main__ - INFO - Router prompt length: 341936 chars
+2026-01-03 03:15:58,412 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:15:58,412 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:15:58,412 - __main__ - INFO - ================================================================================
+2026-01-03 03:15:58,538 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:15:58,539 - __main__ - INFO - User prompt length: 341936 chars
+2026-01-03 03:17:22,566 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:17:22,709 - __main__ - INFO - Router analysis complete. Bug likelihood: Low
+2026-01-03 03:17:22,709 - __main__ - INFO - Using existing vector store(s): vs_6958cda3dae081919bf20a5fc7c770d1
+2026-01-03 03:17:22,709 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:17:22,709 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:17:22,709 - __main__ - INFO - ================================================================================
+2026-01-03 03:17:22,710 - __main__ - INFO - 
+Invoking expert: Temporal (HIGH)
+2026-01-03 03:17:22,860 - __main__ - INFO - Invoking expert Temporal with manual prompt...
+2026-01-03 03:17:22,860 - __main__ - INFO - User prompt length: 346237 chars
+2026-01-03 03:17:22,860 - __main__ - INFO - Vector stores: vs_6958cda3dae081919bf20a5fc7c770d1
+2026-01-03 03:18:33,633 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:18:33,662 - __main__ - INFO - Expert Temporal analysis complete
+2026-01-03 03:18:33,662 - __main__ - INFO - 
+Invoking expert: ActorDirectionality (HIGH)
+2026-01-03 03:18:33,770 - __main__ - INFO - Invoking expert ActorDirectionality with manual prompt...
+2026-01-03 03:18:33,771 - __main__ - INFO - User prompt length: 342580 chars
+2026-01-03 03:18:33,771 - __main__ - INFO - Vector stores: vs_6958cda3dae081919bf20a5fc7c770d1
+2026-01-03 03:19:18,232 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:19:18,238 - __main__ - INFO - Expert ActorDirectionality analysis complete
+2026-01-03 03:19:18,238 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 03:19:18,372 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 03:19:18,372 - __main__ - INFO - User prompt length: 342633 chars
+2026-01-03 03:19:18,372 - __main__ - INFO - Vector stores: vs_6958cda3dae081919bf20a5fc7c770d1
+2026-01-03 03:20:59,660 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:20:59,663 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 03:20:59,663 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 03:20:59,771 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 03:20:59,772 - __main__ - INFO - User prompt length: 346276 chars
+2026-01-03 03:20:59,772 - __main__ - INFO - Vector stores: vs_6958cda3dae081919bf20a5fc7c770d1
+2026-01-03 03:21:59,072 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:21:59,074 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 03:21:59,074 - __main__ - INFO - 
+Invoking expert: Deontic (HIGH)
+2026-01-03 03:21:59,180 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 03:21:59,180 - __main__ - INFO - User prompt length: 346251 chars
+2026-01-03 03:21:59,180 - __main__ - INFO - Vector stores: vs_6958cda3dae081919bf20a5fc7c770d1
+2026-01-03 03:22:48,458 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:22:48,462 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 03:22:48,462 - __main__ - INFO - 
+Invoking expert: Structural (MEDIUM)
+2026-01-03 03:22:48,591 - __main__ - INFO - Invoking expert Structural with manual prompt...
+2026-01-03 03:22:48,591 - __main__ - INFO - User prompt length: 342592 chars
+2026-01-03 03:22:48,592 - __main__ - INFO - Vector stores: vs_6958cda3dae081919bf20a5fc7c770d1
+2026-01-03 03:23:56,184 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:23:56,186 - __main__ - INFO - Expert Structural analysis complete
+2026-01-03 03:23:56,187 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 03:23:56,294 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 03:23:56,294 - __main__ - INFO - User prompt length: 342625 chars
+2026-01-03 03:23:56,294 - __main__ - INFO - Vector stores: vs_6958cda3dae081919bf20a5fc7c770d1
+2026-01-03 03:25:18,605 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:25:18,609 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 03:25:18,613 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/test_analysis.md
+2026-01-03 03:25:18,619 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2/test_analysis.json
+2026-01-03 03:25:18,619 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-2
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 2 gives an informal protocol overview of the TLS 1.3 handshake, HelloRetryRequest, PSK/resumption, and 0‑RTT, with message‑flow diagrams, and some 2119 requirements about when application data may be sent. The surrounding sections (4.x, A.x) define the formal handshake behavior and state machines that these diagrams summarize.
+Overall Bug Likelihood: Low
+
+Dimensions:
+  - Temporal: HIGH - The section is largely about handshake phases, message ordering, HelloRetryRequest sequencing, and 0‑RTT vs 1‑RTT flows.
+  - ActorDirectionality: HIGH - It distinguishes client vs server responsibilities (who sends which message when, especially for resumption and 0‑RTT).
+  - Scope: MEDIUM - The overview applies to TLS 1.3 only, but touches on behaviors that are tightened or specialized later (e.g., PSK, 0‑RTT), so scope alignment with later sections matters.
+  - Causal: MEDIUM - Implementers might follow the overview’s MUSTs literally; need to see whether that leads to behavior that diverges from the more detailed rules in Section 4.
+  - Quantitative: LOW - There are essentially no size/range/limit calculations in this portion.
+  - Deontic: HIGH - Section 2 uses RFC 2119 terms (“MUST NOT send Application Data …”) that need to be consistent with the detailed normative rules later.
+  - Structural: MEDIUM - The diagrams in Figures 1–4 need to align with the formal message definitions and the state machines in Section 4 and Appendix A.
+  - CrossRFC: LOW - References to RFC 5077, 4086, etc. are high‑level and not central to correctness of Section 2.
+  - Terminology: LOW - Terminology (“PSK”, “0‑RTT”, “session resumption”) appears consistent with later sections and existing RFCs; no obvious naming conflicts.
+  - Boundary: MEDIUM - 0‑RTT replay, HRR corner cases, and “server may send Application Data before client authentication” are all edge situations that need to match the detailed rules.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: Underspecification
+    Label: Possible ambiguity between Section 2 and Section 4.4.4 on when a client may start sending Application Data
+    Relevant Dimensions: Deontic, Temporal, Causal
+    Sketch: Section 2 says: “Application Data MUST NOT be sent prior to sending the Finished message, except as ...
+
+Response ID: resp_03ecc2160a1e5c37006958d03f8b2c819381ae20663d808f52
+
+## Temporal Expert Analysis
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: Section 2 informally sketches when Application Data can be sent, while Section 4.4.4 gives the formal gating condition in terms of Finished messages plus explicit exceptions. The two sections are logically compatible given the mandated handshake message ordering, but the overview text in Section 2 is weaker and could be misread as a complete normative rule. This creates a modest risk of misinterpretation about when a client is allowed to start sending 1‑RTT ...
+
+## ActorDirectionality Expert Analysis
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary: The excerpt describes the TLS 1.3 handshake and variants (full handshake, HelloRetryRequest, PSK resumption, and 0‑RTT), detailing which side (client or server) sends which handshake, alert, and extension messages, how encryption keys are derived and applied, and how extensions are negotiated in specific directions (request vs response).
+- OverallAssessment: NoBug
+
+- FindingsOnRoutedIssues:
+  # No routed IssueIds were provided in the prompt, so no rou...
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary:  
+  Section 2 gives an informal but partially normative overview of TLS 1.3 handshakes (full, HRR, PSK/resumption, and 0‑RTT), including when Application Data may be sent. Later sections (notably 4.2.11) give the formal rules for PSKs and their associated hash algorithms, key schedule, early data, and state machines.  
+  The main scope issue is a normative conflict between the overview’s requirements on externally provisioned PSKs and the detailed PSK rules.
+
+- S...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following Section 2 literally does not produce any behavior that conflicts with the more detailed rules in Section 4.4.4. The apparent discrepancy disappears once you track the actual handshake message order; the conditions “must have sent Finished” and “must have sent Finished and received peer’s Finished” become equivalent for the client at the point when it could reasonably start sending 1‑RTT application data.
+
+---
+
+2. **Causal Analysis**
+
+Let’s restate the two pieces of text...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 2 gives an informal/narrative overview of the TLS 1.3 handshake, including a single BCP14 requirement about when application data may be sent. Later sections (notably 4.4.4) give the formal normative rules for when each side may send application data, including 0‑RTT and the server’s ability to send data before client authentication. The question is whether Section 2’s wording is normatively inconsistent with (or dangerously weaker than) Section 4.4.4.
+...
+
+## Structural Expert Analysis
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: I compared the Section 2 handshake overview (Figures 1–4, prose around HelloRetryRequest, PSK/resumption, and 0‑RTT) against the formal handshake structures, key schedule, and state machines in Sections 4 and Appendix A, plus the TLS presentation language in Section 3 and related external RFC text.
+- OverallBugLikelihood: None
+
+Issues:
+  - Issue-1:
+    - BugType: None
+    - ShortLabel: "No structural or syntactic inconsistencies between overview and formal defi...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 2 informally describes the TLS 1.3 handshake variants (full, HRR, PSK/resumption, 0‑RTT) and includes a small number of 2119 requirements, especially about when application data may be sent. The surrounding sections (4.x, A.x) give the formal definitions: exact message sequences, state machines, and precise rules for early data, HRR, and Finished/application‑data timing. The question is whether the overview’s normative text or diagrams introduce ...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Low
+Experts: ✓ 7 invoked
+  Dimensions: Temporal, ActorDirectionality, Scope, Causal, Deontic, Structural, Boundary
+Vector Stores: vs_6958cda3dae081919bf20a5fc7c770d1
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section 2
+################################################################################
+

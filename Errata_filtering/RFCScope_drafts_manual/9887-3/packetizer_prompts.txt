@@ -1,0 +1,386 @@
+================================================================================
+SYSTEM PROMPT
+================================================================================
+
+You are ErrataPacketizer.
+Input: an analyzer output containing router analysis and multiple expert analyses.
+Task: produce deduplicated errata reports as structured JSON.
+
+Constraints:
+- Read the ENTIRE analysis carefully from start to finish. Do not skip any sections.
+- Extract ALL issues mentioned anywhere in the analysis, including:
+  * candidate issues (even if marked as "candidate" or "potential")
+  * Expert-identified issues (even if experts conclude "no issue" or "editorial only")
+  * Issues discussed in expert reasoning sections, even if not in formal issue lists
+  * Any inconsistencies, ambiguities, or problems mentioned in any part of the text
+  * Issues labeled as "potential", "candidate", "may cause", "underspecification", or similar
+- Only use information present in the input text.
+- Labels must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (include specific terms, values, or section references when relevant).
+- Evidence snippets (5a) must be copied verbatim from the input text (without quotes). Snippets must be complete and sufficient - include all relevant context needed to understand and verify the issue. Do not use partial snippets.
+- Evidence summary (5b) must be derived ONLY from the evidence snippets E1..En and must cite (E#) per bullet.
+- Deduplicate: merge issues that refer to the same underlying erratum and list all experts.
+- Severity/Confidence: prefer explicit expert values; otherwise infer conservatively and state "inferred".
+
+================================================================================
+USER PROMPT
+================================================================================
+
+Read the ENTIRE analyzer output below carefully from start to finish. Extract ALL issues, problems, inconsistencies, or ambiguities mentioned anywhere in the text.
+
+Include ALL issues mentioned in the analysis:
+- Router candidate issues (even if marked "candidate" or "potential")
+- Expert-identified issues (check all expert sections: Scope, Causal, Quantitative, Structural, CrossRFC, Terminology, etc.)
+- Issues discussed in expert reasoning/analysis sections, even if not in formal issue lists
+- Any inconsistencies, ambiguities, underspecifications, or problems mentioned anywhere
+- Issues labeled as "potential", "candidate", "may cause", "editorial", "underspecification", or similar
+- Do NOT skip issues just because an expert concludes "no issue" or "editorial only" - if it's discussed, include it
+
+Produce deduplicated errata reports as JSON.
+
+Each errata report MUST contain exactly these fields:
+1) label: Errata short Label (must be explicit and descriptive - readers should understand the problem at a glance, e.g., "Misnamed LDAP/X.509 CA certificate attribute ("caCertificate" vs "cACertificate")")
+2) bug_type: Bug Type
+3) explanation: Concise Explanation (1-2 sentences, neutral)
+4) justification: Justification (array of bullets, must be supported by Evidence snippets)
+5) evidence: Object with:
+   - snippets: Array of {id: "E1", text: "..."} (verbatim, complete and sufficient excerpts, no quotes around text)
+   - summary: Array of strings, each citing (E1), (E2), etc.
+6) fix_direction: Fix Direction if exists, else null
+7) severity: Low | Medium | High | Unspecified
+8) severity_basis: Basis for severity
+9) confidence: High | Medium | Low | Unspecified
+10) experts: Array of "ExpertName: issue_id" strings
+
+Constraints:
+- Label must be explicit and descriptive - clearly state what the problem is so readers understand it at a glance (e.g., include specific terms, section references, or conflicting values when relevant).
+- Evidence snippets must be verbatim from input (format: text directly, no quotes).
+- Evidence snippets must be complete and sufficient - include all relevant context needed to understand the issue.
+- Evidence summary must cite (E1), (E2), ... and contain no new facts beyond snippets.
+- Keep each errata report concise.
+
+Analyzer output:
+<<<
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Temporal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    The excerpt defines a clear temporal sequence: TCP connect → immediate TLS 1.3 handshake → mutual authentication and certificate validation → TACACS+ message exchange over TLS application data → TACACS+ session completion → TCP/TLS connection closure (with different behavior depending on Single Connection Mode) → optional TLS resumption using tickets. Most ordering rules are coherent and align with RFC 8907 and TLS 1.3. The main temporal risks are (1) underspecified behavior for revocation checking across time when using TLS resumption and (2) ambiguous connection‑lifetime behavior, specifically in Single Connection Mode, after TAC_PLUS_UNENCRYPTED_FLAG violations.
+  OverallTemporalRisk: Low
+  CandidateIssues:
+    - Id: T1
+      Type: Underspecification
+      ShortLabel: "Revocation checking semantics across TLS resumption"
+      Description: |
+        Section 3.6 requires certificate revocation checks "when processing TLS resumption", specifically "during the period since the last NewSessionTicket Message", but does not clarify how that is to be implemented given TLS 1.3's PSK-based resumption model, in which no certificates are typically re-sent or re-validated during a resumption handshake. The text leaves unclear at what exact time(s) revocation is supposed to be re-checked, and how implementations should treat long-lived tickets vs. revocation events occurring between the original full handshake and a later resumption. This can lead to divergent interpretations of when and how often revocation must be checked in relation to ticket issuance and reuse.
+      TemporalReasoning: |
+        - Base flow:
+          - Initial full TLS 1.3 handshake with mutual certificate authentication:
+            - Client TCP connects to the TLS TACACS+ port and immediately starts TLS negotiation; no TACACS+ data is sent yet (Section 3.2).
+            - During this initial handshake, each peer "MUST validate the certificate path of its remote peer, including revocation checking" as per Section 3.4 and 3.4.1.
+            - After handshake success, TACACS+ packets are exchanged over TLS application data.
+          - At some point after the handshake, the server sends one or more NewSessionTicket messages, from which the client extracts tickets for later resumption (Section 3.6, plus RFC 8446 Section 4.6.1).
+        - Resumption flow:
+          - Later, the client initiates a new TLS connection and, if it "holds a valid unused ticket from the TLS TACACS+ server", it "SHOULD use resumption" by offering the PSK identity bound to that ticket (Section 3.6).
+          - The server may accept resumption (PSK) or "MAY still choose to require a full handshake. In this case, the negotiation proceeds as if the session was a new authentication" (Section 3.6).
+        - Revocation requirement text:
+          - Section 3.4 already mandates revocation checking during the original certificate-based handshake.
+          - Section 3.6 then adds: "When processing TLS resumption, certificates must be verified to check for revocation during the period since the last NewSessionTicket Message."
+        - Temporal ambiguity:
+          - In a normal PSK resumption handshake under TLS 1.3, the server does not send its certificate again and the client does not run a full path validation at T1 (the resumption time); both sides rely on the security of the previous handshake and the ticket/key derivation.
+          - The quoted sentence appears to demand some additional revocation-related check "when processing TLS resumption", i.e., at T1, but does not say:
+            - Whether the implementation must perform an entirely new certificate-path validation at resumption time (despite no certificates being exchanged).
+            - Or instead, whether it must ensure that the original revocation check performed at T0 (when the ticket was issued) remains valid throughout the ticket_lifetime, possibly by constraining ticket lifetimes or by tying ticket invalidation to revocation feeds.
+          - Furthermore, it speaks of "during the period since the last NewSessionTicket Message", which suggests continuous or incremental checking between T0 and T1, but gives no concrete algorithm: e.g., whether every resumption should trigger a fresh OCSP/CRL fetch, or whether revocation events should invalidate existing tickets server-side asynchronously.
+        - This creates an implementation‑time question: at what time(s) relative to T0 (ticket issuance) and T1 (resumption) must revocation be consulted, and what specific behavior is required if a certificate becomes revoked after T0 but before or during a later resumption?
+      KeyEvidence:
+        ExcerptPoints:
+          - "Each peer MUST validate the certificate path of its remote peer, including revocation checking, as described in Section 3.4.1." (Section 3.4)
+          - "The implementation of certificate-based mutual authentication MUST support certificate path validation as described in Section 6 of [RFC5280]." (Section 3.4.1)
+          - "TLS Resumption [RFC8446] can minimize the number of round trips required during the handshake process." (Section 3.6)
+          - "When processing TLS resumption, certificates must be verified to check for revocation during the period since the last NewSessionTicket Message." (Section 3.6)
+          - "The resumption ticket_lifetime SHOULD be configurable, including a zero seconds lifetime. Refer to Section 4.6.1 of [RFC8446] for guidance on ticket lifetime." (Section 3.6)
+        ContextPoints:
+          - TLS 1.3 resumption model based on PSKs and NewSessionTicket (RFC 8446 Section 4.6.1).
+      ImpactOnImplementations: |
+        Implementers must decide, without clear guidance, whether:
+        - To attempt some form of certificate revocation check *at resumption time* (even though no certificate is renegotiated), which may not map cleanly onto existing TLS library APIs; or
+        - To interpret the text as purely operational guidance (e.g., keep ticket lifetimes shorter than expected revocation-detection latency, or invalidate tickets server-side when revocation is learned), which is not spelled out.
+        Different interpretations will yield different temporal behaviors for when a revoked certificate becomes effectively unusable for resumption, leading to inconsistent security properties across deployments and potential false assumptions about how long a revoked certificate might still be honored via existing tickets.
+      AffectedArtifacts:
+        - "Section 3.4: TLS Certificate-Based Authentication"
+        - "Section 3.4.1: TLS Certificate Path Verification"
+        - "Section 3.6: TLS Resumption"
+      Severity: Low
+
+    - Id: T2
+      Type: Underspecification
+      ShortLabel: "Connection handling after TAC_PLUS_UNENCRYPTED_FLAG errors in Single Connection Mode"
+      Description: |
+        Section 4 defines new semantics for TAC_PLUS_UNENCRYPTED_FLAG on TLS connections: the client on TLS MUST set the flag to 1, and a server receiving a packet with the flag not set to 1 over TLS MUST return an ERROR and "terminate the session." However, for connections operating in Single Connection Mode per RFC 8907, multiple TACACS+ sessions can be multiplexed over a single TCP/TLS connection, and RFC 8907 gives special rules about what to do with the connection after certain ERROR conditions. The new text does not specify how to handle the underlying TLS/TCP connection after this specific ERROR in Single Connection Mode—whether to drop the entire connection immediately, to disallow future sessions on that connection once existing sessions complete, or to treat it as a per-session error only. This leaves the timeline and lifetimes of connections vs. sessions ambiguous in this error path.
+      TemporalReasoning: |
+        - Base state machine for Single Connection Mode (SCM) from RFC 8907:
+          - TCP connection established.
+          - First client TACACS+ packet may set TAC_PLUS_SINGLE_CONNECT_FLAG to request SCM, and server's first reply may confirm it. This negotiation must complete in the first two TACACS+ packets on the connection; if SCM is not established, "both the client and the server close the connection at the end of the first session." (Section 4.3 of RFC 8907).
+          - Once SCM is established, multiple TACACS+ sessions can be multiplexed over the same TCP connection. Section 4.3 requires the server to time out a long-lived SCM connection after a period of inactivity.
+          - On session completion (PASS/FAIL/ERROR), Section 4.4 describes connection behavior, including a special case: "If Single Connection Mode was enabled, but an ERROR occurred due to connection issues (such as an incorrect secret (see Section 4.5)), then any further new sessions MUST NOT be accepted on the connection... Once all active sessions are completed, then the connection MUST be closed."
+        - New TLS semantics for TAC_PLUS_UNENCRYPTED_FLAG:
+          - Under non-TLS RFC 8907, TAC_PLUS_UNENCRYPTED_FLAG=1 indicates a non-obfuscated body and "A request MUST be dropped if TAC_PLUS_UNENCRYPTED_FLAG is set to true", and best practices say servers "MUST reject connections that have TAC_PLUS_UNENCRYPTED_FLAG set" (Section 4.5 and 10.5.2 of RFC 8907).
+          - RFC 9887 flips the meaning for TLS: "A TACACS+ client initiating a TACACS+ TLS connection MUST set the TAC_PLUS_UNENCRYPTED_FLAG bit... All subsequent packets MUST have the TAC_PLUS_UNENCRYPTED_FLAG bit set to 1." (Section 4)
+          - "A TLS TACACS+ server that receives a packet with the TAC_PLUS_UNENCRYPTED_FLAG bit not set to 1 over a TLS connection MUST return an error of ... and terminate the session. This behavior corresponds to that defined in Section 4.5 of [RFC8907] regarding data obfuscation for TAC_PLUS_UNENCRYPTED_FLAG or key mismatches." (Section 4)
+          - For non-SCM TLS connections, Section 3.2 says: "For connections not operating in Single Connection Mode ..., the TCP session SHALL be closed upon completion of the associated TACACS+ session." So in non-SCM, an ERROR that "terminates the session" necessarily leads to connection closure immediately afterward.
+        - Ambiguity in SCM:
+          - In SCM over TLS, a single TCP/TLS connection can host multiple TACACS+ sessions. An ERROR from a bad UNENCRYPTED_FLAG could occur:
+            - While other sessions are active, or
+            - On the start of a new session while others are idle or active.
+          - RFC 9887 says "terminate the session" but is silent on:
+            - Whether the underlying TLS/TCP connection must be closed immediately upon this ERROR (even if other sessions exist).
+            - Whether new sessions MUST NOT be started on that connection after such an ERROR (as in the "incorrect secret" example in RFC 8907 Section 4.4).
+            - Whether the behavior should mirror RFC 8907 Section 4.4's special rule (no new sessions, close after existing sessions complete) or instead treat this merely as a single-session protocol error while leaving the connection and other sessions untouched.
+          - The reference "corresponds to that defined in Section 4.5 of [RFC8907]" points to non-TLS obfuscation/key-mismatch behavior, which in turn ties into "connection issues" semantics in Section 4.4 and best practices (10.5.2) that say the server MUST not accept new sessions and MUST close the connection after previously valid sessions are done; but RFC 9887 does not state that this mapping applies in SCM-over-TLS.
+        - Timelines therefore diverge under different plausible interpretations:
+          - Interpretation A: Treat bad UNENCRYPTED_FLAG over TLS as a fatal per-connection condition in SCM (no new sessions, close the TLS connection after active sessions complete).
+          - Interpretation B: Treat it as a per-session error only; after sending ERROR and terminating that TACACS+ session, other sessions and future sessions on the same TLS connection are allowed to continue.
+          - The spec text does not resolve which ordering/closure behavior is required.
+      KeyEvidence:
+        ExcerptPoints:
+          - "A TACACS+ client initiating a TACACS+ TLS connection MUST set the TAC_PLUS_UNENCRYPTED_FLAG bit... All subsequent packets MUST have the TAC_PLUS_UNENCRYPTED_FLAG bit set to 1." (Section 4, RFC 9887)
+          - "A TLS TACACS+ server that receives a packet with the TAC_PLUS_UNENCRYPTED_FLAG bit not set to 1 over a TLS connection MUST return an error ... and terminate the session. This behavior corresponds to that defined in Section 4.5 of [RFC8907] regarding data obfuscation for TAC_PLUS_UNENCRYPTED_FLAG or key mismatches." (Section 4, RFC 9887)
+          - "For connections not operating in Single Connection Mode ... the TCP session SHALL be closed upon completion of the associated TACACS+ session. Connections operating in Single Connection Mode MAY persist for a longer duration..." (Section 3.2, RFC 9887)
+          - "If Single Connection Mode has not been established in the first two packets of a TCP connection, then both the client and the server close the connection at the end of the first session." (Section 4.3, RFC 8907)
+          - "If Single Connection Mode was enabled, but an ERROR occurred due to connection issues (such as an incorrect secret (see Section 4.5)), then any further new sessions MUST NOT be accepted on the connection. If there are any sessions that have already been established, then they MAY be completed. Once all active sessions are completed, then the connection MUST be closed." (Section 4.4, RFC 8907)
+        ContextPoints:
+          - Section 4.5 and 10.5.2 of RFC 8907 on obfuscation errors and invalid shared secrets and their impact on subsequent sessions and connection closure.
+      ImpactOnImplementations: |
+        Implementations of TLS TACACS+ with Single Connection Mode may make different choices about connection lifetime after a UNENCRYPTED_FLAG-related ERROR:
+        - Some may immediately close the entire TLS connection, aborting any concurrent sessions.
+        - Others may allow other current sessions to finish and then close the connection, disallowing new sessions.
+        - Still others might leave the connection open and continue accepting new sessions, treating the error as confined to one session.
+        These behaviors are all consistent with a literal reading of RFC 9887 Section 4 but have different temporal and resource-management consequences, and they could interact differently with client retry logic and load-balancing expectations. Clarifying the required ordering (e.g., "in SCM, no new sessions MUST be accepted and the connection MUST be closed after active sessions complete") would make the state machine more deterministic.
+      AffectedArtifacts:
+        - "Section 3.2: TLS Connection"
+        - "Section 4: Obsolescence of TACACS+ Obfuscation" (RFC 9887)
+        - "Section 4.3: Single Connection Mode" (RFC 8907)
+        - "Section 4.4: Session Completion" (RFC 8907)
+      Severity: Low
+
+[Used vector stores: vs_6958c1299d1881919236f07c8d11bc8e]
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 3 of RFC 9887 defines how TACACS+ is run over TLS 1.3, including port separation, mandatory mutual authentication, certificate and PSK authentication options, certificate validation and identity verification (via RFC 9525/5280/etc.), and TLS resumption behavior. Several subsections also talk about operational/security practices such as wildcard use in server identities and resumption revocation checking.
+
+- ScopeModel:
+  - Targets:
+    - TACACS+ over TLS “peers” (clients and servers) implementing the variant defined in RFC 9887 (Section 3, esp. 3.1–3.3).
+    - TLS TACACS+ servers and non-TLS TACACS+ servers as distinct entities, each bound to specific TCP ports (3.1, 5.2).
+    - TLS authentication mechanisms:
+      - Certificate-based mutual authentication (mandatory to implement) (3.3–3.4).
+      - External PSK authentication (optional) (3.3, 3.5).
+      - RPK-based authentication (optional, details out of scope) (3.3).
+    - Certificates used for:
+      - TLS TACACS+ server identity as validated by clients (3.4.2).
+      - Client identity as validated by TLS TACACS+ servers (3.4.2).
+    - Wildcard identities in TLS certificates for TACACS+ servers (3.4.2, 5.1.6).
+    - TLS resumption using NewSessionTicket-based PSKs (3.6).
+  - Conditions:
+    - TLS vs non-TLS:
+      - TLS connections MUST start with an immediate TLS 1.3 (or higher) handshake; no upgrade-from-clear mechanisms allowed (3.1, 3.2).
+      - TLS and non-TLS services MUST use distinct TCP ports; defaults are 49 (non-TLS) and 300 (TLS) when not overridden (3.1, 5.2).
+    - Authentication modes:
+      - All implementations MUST support certificate-based mutual auth; PSKs and RPKs are optional alternatives (3.3–3.4, 3.5).
+      - Certificate validation and path checking MUST follow RFC 5280; identity matching MUST follow RFC 9525 (3.4.1, 3.4.2).
+    - Wildcards:
+      - In 3.4.2: client-side validation of TLS TACACS+ server identities MUST follow RFC 9525; wildcard guidelines in RFC 9525 Section 6.3 MUST be followed, and the wildcard “SHOULD be confined to a subdomain dedicated solely to TACACS+ servers.”
+      - In 5.1.6: wildcard use in TLS server identities MUST follow RFC 9525 Section 7.1, and operators MUST ensure the wildcard is limited to a subdomain dedicated solely to TLS TACACS+ servers.
+    - Resumption:
+      - TLS resumption uses tickets from NewSessionTicket; server MAY accept or reject resumption; clients SHOULD use valid unused tickets (3.6).
+      - “When processing TLS resumption, certificates must be verified to check for revocation during the period since the last NewSessionTicket Message” (3.6) — with no explicit restriction to certificate-based authentication deployments.
+  - NotedAmbiguities:
+    - The required scope of the wildcard-subdomain rule differs (SHOULD vs MUST) between 3.4.2 and 5.1.6, and the text partly targets implementations and partly operators, blurring who is supposed to enforce what.
+    - The resumption revocation requirement in 3.6 is phrased as if it applies to all TLS resumption, but TACACS+ is allowed to operate purely with external PSKs and no certificates; it is unclear what “certificates must be verified” means in that case.
+    - Section 3.4.2 cites RFC 9525 Section 6.3 for wildcard guidelines, while 5.1.6 cites Section 7.1, without clarifying that they are talking about different aspects (matching rules vs deployment guidance).
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Both
+    - ShortLabel: Inconsistent and mis-scoped requirements on wildcard TACACS+ server identities (SHOULD vs MUST, implementation vs operator)
+    - ScopeProblemType: Conflicting normative level and unclear target (implementation vs deployment) for wildcard subdomain scoping
+    - Evidence:
+      - Section 3.4.2 (TLS Certificate Identification):  
+        “For the client-side validation of presented TLS TACACS+ server identities, implementations MUST follow the validation techniques defined in [RFC9525]… Wildcards in TLS TACACS+ server identities … To address these risks, the guidelines in Section 6.3 of [RFC9525] MUST be followed, and the wildcard SHOULD be confined to a subdomain dedicated solely to TACACS+ servers.”
+      - Section 5.1.6 (Server Identity Wildcards):  
+        “The use of wildcards in TLS server identities creates a single point of failure… Their use MUST follow the recommendations of Section 7.1 of [RFC9525]. Operators MUST ensure that the wildcard is limited to a subdomain dedicated solely to TLS TACACS+ servers.”
+    - DetailedReasoning:
+      - Section 3.4.2 is explicitly scoped to “client-side validation of presented TLS TACACS+ server identities” and starts with a requirement on implementations: they MUST follow RFC 9525’s identity validation techniques. It then adds a wildcard-specific sentence that includes two requirements: (1) a MUST to follow RFC 9525 Section 6.3, and (2) a SHOULD that “the wildcard SHOULD be confined to a subdomain dedicated solely to TACACS+ servers.”
+      - That wildcard-subdomain clause is written as a generic statement about how wildcards “should be confined,” but it appears in a paragraph whose subject is implementations and client-side validation. An implementation, however, cannot in general determine whether a given DNS subdomain is “dedicated solely to TACACS+ servers”; that is an operational property of the deployment, not of the certificate or handshake. This makes the scope of the SHOULD unclear: is it a requirement on implementers (impossible to enforce automatically), on operators, or both?
+      - Section 5.1.6 reintroduces wildcard guidance in the Security Considerations, but with different scope and strength: it says operators “MUST ensure that the wildcard is limited to a subdomain dedicated solely to TLS TACACS+ servers.” Here, the target is clearly operators, and the normative level is elevated from SHOULD to MUST for essentially the same subdomain-scoping rule.
+      - Thus, for the same design choice (restricting wildcard domains to a TACACS+-only subdomain), the document simultaneously says “SHOULD” (in Section 3.4.2) and “MUST” (in Section 5.1.6). That creates a normative inconsistency about whether this behavior is mandatory or merely recommended.
+      - Additionally, the two sections cite different parts of RFC 9525: 3.4.2 references Section 6.3 (which defines wildcard matching rules in the DNS-ID context), while 5.1.6 references Section 7.1 (operational guidance on wildcard use). The document does not clarify that these are complementary (algorithmic versus operational) requirements, which can mislead implementers about which RFC 9525 material they must implement vs which is for operational policy.
+      - From a scope standpoint, the problem has two facets: (1) the wildcard-subdomain constraint is partly stated in an implementation-focused context (3.4.2) even though it is an operator/deployment decision, and (2) the same constraint is given two different normative strengths. An implementer attempting to be strictly compliant might incorrectly infer that client code is supposed to reject any wildcard certificate not confined to such a subdomain, despite having no reliable way to determine that property; conversely, an operator might point to the earlier SHOULD to justify not following the later MUST.
+      - A clearer and consistent specification would limit client-side/implementation requirements to following RFC 9525’s matching rules (Section 6.3) and move all subdomain-scoping and deployment-topology constraints into operator-facing text (like 5.1.6), with a single normative level (almost certainly MUST) and clear scoping to “operators / deployments,” not “implementations.” This would remove both the normative conflict (SHOULD vs MUST) and the mis-targeted requirement in 3.4.2.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - ShortLabel: TLS resumption revocation check not scoped to certificate-based authentication, despite PSK-only mode being allowed
+    - ScopeProblemType: Requirement applied globally where it only makes sense for certificate-authenticated sessions
+    - Evidence:
+      - Section 3.3 (TLS Authentication Options):  
+        “Implementations MUST support certificate-based mutual authentication… In addition to certificate-based TLS authentication, implementations MAY support the following alternative authentication mechanisms: * Pre-Shared Keys (PSKs)… * Raw Public Keys (RPKs).”
+      - Section 3.5 (TLS PSK Authentication):  
+        “As an alternative to certificate-based authentication, implementations MAY support PSKs, also known as external PSKs in TLS 1.3 [RFC8446]. These should not be confused with resumption PSKs.”
+      - Section 3.6 (TLS Resumption):  
+        Describes use of tickets from NewSessionTicket. Then states:  
+        “When processing TLS resumption, certificates must be verified to check for revocation during the period since the last NewSessionTicket Message.”
+    - DetailedReasoning:
+      - The specification explicitly allows deployments to use external PSKs “as an alternative to certificate-based authentication” (3.5). In a pure-PSK deployment, the TLS handshake need not involve certificates at all, even though the implementation still has to support certificate-based auth in principle.
+      - Section 3.6 defines TLS resumption in terms of TLS 1.3 tickets: a client “holds a ticket previously extracted from a NewSessionTicket message from the TLS TACACS+ server” and can use the PSK identity tied to that ticket to resume. In TLS 1.3, NewSessionTicket can be used both after certificate-authenticated handshakes and after PSK-authenticated handshakes.
+      - The normative sentence in 3.6, “When processing TLS resumption, certificates must be verified to check for revocation…”, is written without any conditioning on the authentication mode. A literal reading applies this requirement to all resumption handshakes, including those where:
+        - The original (ticket-issuing) connection authenticated peers solely via external PSKs and did not use any certificates, or
+        - The resumed connection is likewise PSK-only and does not present any certificate chain.
+      - In such cases, there are no certificates to verify, so the requirement is either vacuous or ambiguous: it is unclear whether the implementation is expected to do nothing, to attempt to validate some cached certificate state from a prior certificate-based session (not clearly specified), or to treat resumption as non-compliant and fall back to a full handshake. The text does not specify the intended behavior in PSK-only deployments.
+      - This is a scope error: the revocation-check requirement is only meaningful for sessions whose authentication actually relied on X.509 certificates (either in the original or resumed handshake). The spec fails to constrain the rule to that domain and instead expresses it as a global requirement about “TLS resumption.”
+      - This ambiguity can lead to divergent implementations: one might interpret the sentence as applying only when a certificate chain is present in the resumption context; another might incorrectly try to enforce a revocation check in PSK-only flows and, finding nothing to check, either log spurious errors or avoid resumption altogether.
+      - A more precise formulation would limit this requirement to resumption of certificate-authenticated sessions, e.g., “When processing TLS resumption of a session that was originally authenticated using certificates, the certificate chains used for authentication MUST be revalidated for revocation status covering the period since the last NewSessionTicket.” Optionally, the document could explicitly state that in external-PSK-only deployments, this particular revocation requirement does not apply because no certificates are involved.
+      - Without such scoping clarification, the current text leaves part of the behavior in PSK-only scenarios undefined and imposes a requirement (“certificates must be verified”) in contexts where the referenced objects may not exist, which is precisely a scope-related underspecification.
+
+- ResidualUncertainties:
+  - The excerpts from RFC 9525 included here cover Section 6 but not Section 7.x. It is likely that 6.3 is the algorithmic wildcard-matching rule and 7.1 is higher-level advice. While that supports an interpretation of “two complementary scopes” (matching vs deployment), the main RFC 9887 text still mixes implementation- and operator-scoped guidance in 3.4.2, which remains problematic even if the external references are themselves coherent.
+  - The document allows RPK-based authentication but declares the details out of scope, and then makes several generic statements about “certificates” in resumption and revocation contexts. It is not fully clear whether those generic “certificates” requirements are intended to apply to RPK deployments as well, or only to X.509-based authentication.
+
+[Used vector stores: vs_6958c1299d1881919236f07c8d11bc8e]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 3 of RFC 9887 normatively defines how TACACS+ must run over TLS 1.3, including mandatory mutual authentication, certificate validation (using RFC 9525/5280), optional PSK/RPK authentication, TLS 1.3-only transport, and resumption behavior. Later Security Considerations sections further constrain TLS usage, especially around prohibiting non‑TLS fallback and tightening wildcard-certificate usage. The main normative tension is in the treatment of wildcard server identities.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Conflicting requirement levels for wildcard subdomain scoping
+    - Description: The document gives two different requirement strengths for the same behavior: confining wildcard certificates to a dedicated subdomain for TACACS+ servers. In Section 3.4.2, after noting the risks of wildcard certificates, it states that “the wildcard SHOULD be confined to a subdomain dedicated solely to TACACS+ servers,” making this a strong recommendation but permitting exceptions in principle. Later, Section 5.1.6 revisits wildcard use and says “Operators MUST ensure that the wildcard is limited to a subdomain dedicated solely to TLS TACACS+ servers,” upgrading the same constraint to a non‑negotiable requirement. Because RFC 2119/8174 “SHOULD” explicitly allows for well‑understood exceptions while “MUST” does not, having both on the same condition within a single specification is deontically inconsistent: one part of the spec says exceptions are allowed with care; another says exceptions are forbidden. An implementer who reads only Section 3.4.2 could conclude that carefully justified violations are permitted, whereas a reader of Section 5.1.6 must conclude that they are not, with no explicit statement that the later text supersedes or tightens the earlier guidance. The cross‑reference change (Section 3.4.2 pointing to RFC 9525 §6.3 and Section 5.1.6 to RFC 9525 §7.1) is not itself contradictory, but it reinforces that the two sections are addressing the same wildcard‑risk space while imposing different requirement levels on subdomain confinement.
+    - KeyTextSnippets:
+      - “Wildcards in TLS TACACS+ server identities … To address these risks, the guidelines in Section 6.3 of [RFC9525] MUST be followed, and the wildcard SHOULD be confined to a subdomain dedicated solely to TACACS+ servers.” (Section 3.4.2)
+      - “The use of wildcards in TLS server identities creates a single point of failure… Their use MUST follow the recommendations of Section 7.1 of [RFC9525]. Operators MUST ensure that the wildcard is limited to a subdomain dedicated solely to TLS TACACS+ servers.” (Section 5.1.6)
+    - Impact: This inconsistency can mislead implementers and operators about whether there are any acceptable circumstances in which wildcard certificates may span broader namespaces than a TACACS+-dedicated subdomain. Some will treat the constraint as a recommendation that they can override with local risk assessment (per the SHOULD in Section 3.4.2), while others will treat it as compulsory (per the MUST in Section 5.1.6), leading to divergent deployments and undermining the intended security posture around wildcard use. A minimal fix would be to align Section 3.4.2’s “SHOULD be confined” with the later “MUST ensure that the wildcard is limited,” or to mark the Security Considerations text as an intentional tightening that overrides the earlier guidance.
+
+[Used vector stores: vs_6958c1299d1881919236f07c8d11bc8e]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 3 of RFC 9887 specifies TACACS+ over TLS 1.3, including mandatory mutual authentication, allowed authentication methods (certs, external PSKs, RPKs), identity verification rules via RFC 9525 and related PKIX material, and TLS resumption behavior. It cross-references RFC 9525 for service identity, RFC 5425 and 5280 for certificate matching details, RFC 6066 for SNI, RFC 7250/7924 for RPK and cached-info, RFC 9257 for PSKs, RFC 8446 for TLS 1.3, and RFC 9325/REQ‑TLS13 for best practices.
+
+- OverallCrossRFCLikelihood: Medium
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Conflicting strength of wildcard subdomain requirement vs RFC 9525 guidance
+    - Description: Section 3.4.2 of RFC 9887 discusses wildcard TLS TACACS+ server identities and says “the guidelines in Section 6.3 of [RFC9525] MUST be followed, and the wildcard SHOULD be confined to a subdomain dedicated solely to TACACS+ servers.” Section 6.3 of RFC 9525 defines how to match DNS-IDs (including wildcard syntax and constraints) but does not impose any “dedicated subdomain” scoping requirement; that scoping advice appears instead in the security considerations (Section 7.1) of RFC 9525, where it is phrased as guidance, not a hard requirement. By contrast, RFC 9887 Section 5.1.6 later says: “Their use MUST follow the recommendations of Section 7.1 of [RFC9525]. Operators MUST ensure that the wildcard is limited to a subdomain dedicated solely to TLS TACACS+ servers.”     This creates an internal inconsistency: in one place, confining the wildcard to a TACACS+-only subdomain is a “SHOULD” (permissible to violate in some circumstances), while later it is a “MUST” (no exceptions). Cross‑RFC, the references themselves are consistent (6.3 for wildcard matching behavior; 7.1 for wildcard security recommendations), but RFC 9887 escalates 9525’s largely advisory wildcard guidance into a strict requirement in one section and a recommendation in another. Implementers trying to reconcile these sections might reasonably disagree on whether non‑subdomain wildcard certificates (e.g., *.example.com) are ever allowed, leading to divergent acceptance policies and potential interoperability differences in certificate provisioning and validation. I partly agree with the router’s hypothesis: the real issue is the inconsistent strength of the subdomain requirement within RFC 9887, not a fundamentally wrong registry or RFC reference.
+    - EntitiesInvolved: ["RFC 9887 Section 3.4.2", "RFC 9887 Section 5.1.6", "RFC 9525 Section 6.3", "RFC 9525 Section 7.1 (wildcard security guidance)"]
+    - CrossRefsUsed: ["RFC 9887 text around wildcard TACACS+ server identities", "RFC 9525 Section 6.3 wildcard matching rules"]
+    - Confidence: Medium
+
+- IfNoIssues:
+  - Comment: Other cross‑RFC uses in the excerpt — such as service identity rules via RFC 9525 (DNS‑ID/IP‑ID/SRV‑ID and non‑use of URI‑ID), certificate path validation via RFC 5280, network‑address‑based client identity via RFC 5425, SNI behavior via RFC 6066, PSK identity and length guidance via RFC 9257 and RFC 8446, and TLS 1.3 cipher‑suite and version requirements via RFC 8446 and RFC 9325 — are consistent or intentionally stricter, not contradictory.
+
+[Used vector stores: vs_6958c1299d1881919236f07c8d11bc8e]
+
+## Boundary Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 3 of RFC 9887 defines how TACACS+ must run over TLS 1.3: separate TCP ports for TLS vs non‑TLS, immediate TLS handshakes, mandatory mutual authentication, and removal of TACACS+ obfuscation. It then specifies authentication mechanisms (certificates, optional external PSKs, optional RPKs), certificate validation and identity rules (via RFC 5280, 9525, 5425, etc.), and TLS resumption behavior on top of the TACACS+ transport and session model from RFC 8907. The key “state space” here includes: TLS handshake modes (certificate vs external PSK vs resumption PSK), presence/absence of certificates, NewSessionTicket issuance and ticket lifetimes, and coexistence with non‑TLS TACACS+.
+
+- OverallBoundaryBugLikelihood: Medium
+
+- Findings:
+
+  - Finding-1:
+    - BugType: Underspecification
+    - ShortLabel: TLS resumption revocation rule assumes certificates even when PSK‑only handshakes are allowed
+    - BoundaryAxis: TLS 1.3 resumption after an initial handshake that used only external PSK (no certificates), and more generally “resumption where no certificates are available”
+    - ExcerptEvidence:
+      - RFC 9887 explicitly allows external PSK authentication in addition to certificate-based TLS: “In addition to certificate-based TLS authentication, implementations MAY support the following alternative authentication mechanisms: * Pre-Shared Keys (PSKs)… also known as external PSKs in TLS 1.3”  .
+      - TLS 1.3 itself states: “When authenticating via a certificate, the server will send the Certificate … In TLS 1.3 as defined by this document, either a PSK or a certificate is always used, but not both.”  
+      - RFC 9887’s resumption section states unconditionally: “When processing TLS resumption, certificates must be verified to check for revocation during the period since the last NewSessionTicket Message.”  
+    - Reasoning:
+      - The protocol space explicitly includes external‑PSK–only deployments: 3.3 permits implementations to support external PSKs as an alternative to certificate-based authentication, and nothing in the document forbids configuring a deployment to use only PSKs in the TLS handshake  .
+      - In TLS 1.3, a full handshake uses either certificates or PSK, but “not both”  ; a PSK-only handshake (using external PSKs as in 3.5) therefore has no certificates at all on the wire or in the negotiated security context.
+      - Nevertheless, 3.6 places an unconditional requirement: “When processing TLS resumption, certificates must be verified to check for revocation…”, without conditioning this on the original handshake actually having used certificates  .
+      - For a perfectly valid state (initial and resumed handshakes both using only external PSKs), there are no certificates available to “verify … to check for revocation”, so the normative requirement as written is impossible to satisfy in that branch of the state space.
+      - Even when the original session was certificate-based, the text does not say *how* or *by whom* this revocation check is to be done on resumption (e.g., is the client required to re-check the cached server chain, is the server required to re-check the client chain, and what if OCSP/CRL is unreachable or shows revocation? Should resumption be rejected and a full handshake attempted, or must the connection be aborted?).
+      - Because TLS 1.3 resumption handshakes normally do not carry certificates, all such checking must be out-of-band against cached certificate state, but 9887 does not define a concrete behavior or failure mode there, leaving different implementations free to make incompatible choices (e.g., silently accept, silently reject resumption, or abort the connection) in the face of the same revocation condition.
+    - ImpactAssessment:
+      - For PSK‑only deployments, the spec’s unconditional “certificates must be verified” is unsatisfiable and forces implementers either to treat it as a no‑op (contradicting the “must”) or to disable/avoid resumption in those configurations; different interpretations affect both security (whether resumption is allowed) and performance (extra full handshakes).
+      - For certificate-based deployments, the lack of specified behavior on revocation/reachability during resumption can lead to divergent server and client behavior regarding when to accept or reject resumption tickets, with security‑relevant differences that are not interoperably specified.
+
+  - Finding-2:
+    - BugType: None
+    - ShortLabel: SNI and IP‑only deployments
+    - BoundaryAxis: Deployments where TACACS+ servers are addressed only by IP and authenticated via IP-ID, with no DNS name
+    - ExcerptEvidence:
+      - Server identity verification “MUST follow the validation techniques defined in [RFC9525]” and may use DNS-ID, IP-ID, or SRV-ID; “TLS TACACS+ does not use URI-IDs”  .
+      - Separately: “Implementations MUST support the TLS Server Name Indication (SNI) extension … TLS TACACS+ clients MUST support the ability to configure the TLS TACACS+ server’s domain name, so that it may be included in the SNI ‘server_name’ extension… (This is distinct from the IP Address or hostname configuration used for the TCP connection).”  
+      - RFC 6066 requires SNI HostName to be a DNS name and explicitly forbids literal IP addresses in that field  .
+    - Reasoning:
+      - The domain of concern is: client knows the server only by IP address and uses an IP-ID certificate (iPAddress SAN) per RFC 5280 section 4.2.1.6; in that case, RFC 6066 prohibits putting the IP address into SNI.
+      - RFC 9887 requires implementations to *support* SNI and to support configuration of a domain name “so that it may be included” in SNI, but it never requires that SNI *must* be sent on every connection or that such a name must always be configured  .
+      - Thus, for IP-only deployments, a compliant client can simply omit SNI (consistent with RFC 6066’s “MAY include” language) while still validating the server via IP-ID per RFC 9525; there is no normative conflict forcing an illegal HostName containing an IP address.
+      - Implementations must merely offer the capability to configure and send a DNS SNI when a DNS-based identity (DNS-ID/SRV-ID) is used; they remain conformant if operators choose not to configure a domain name in IP-only environments.
+    - ImpactAssessment:
+      - Because the spec stops at “MUST support” and “MUST support the ability to configure”, implementers can handle the IP-only boundary case by not sending SNI; there is no interop hazard or logical contradiction, so this is not a specification bug.
+
+- Notes:
+  - Not a bug: Coexistence of TLS and non-TLS TACACS+ servers on different ports, and the prohibition on STARTTLS-style upgrades, appears consistent across sections 3.1, 5.1.1, 5.2, and 5.3; the text carefully constrains downgrade risks by requiring distinct ports and by forbidding TLS clients from falling back to non-TLS.
+  - Not a bug: The requirement that peers “MUST apply mutual authentication” together with mandatory-to-implement certificate-based mutual authentication and optional external PSKs is consistent with TLS 1.3’s model—mutual authentication can be achieved via either client certificates or PSKs; nothing in the excerpt creates an impossible or contradictory combination on that axis.
+
+[Used vector stores: vs_6958c1299d1881919236f07c8d11bc8e]
+
+
+Vector Stores Used: vs_6958c1299d1881919236f07c8d11bc8e
+>>>
+
+Return JSON array of errata reports:
+{
+  "reports": [
+    {
+      "label": "...",
+      "bug_type": "...",
+      "explanation": "...",
+      "justification": ["...", "..."],
+      "evidence": {
+        "snippets": [
+          {"id": "E1", "text": "..."}
+        ],
+        "summary": ["(E1) ...", "(E2) ..."]
+      },
+      "fix_direction": "..." or null,
+      "severity": "...",
+      "severity_basis": "...",
+      "confidence": "...",
+      "experts": ["..."]
+    }
+  ]
+}

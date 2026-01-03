@@ -1,0 +1,775 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section C
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section C
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/corpus.json
+
+Extracting references from section C only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/reference_extraction.log
+Focusing on section C and its children.
+Processing section C. Implementation Notes
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [10:36<00:00, 636.68s/it]Splitting content into chunks: 100%|██████████| 1/1 [10:36<00:00, 636.69s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The TLS protocol cannot prevent many common security mistakes.  This
+   appendix provides several recommendations to assist implementors.
+   [RFC8448] provides test vectors for TLS 1.3 handshakes.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: TEXT
+  Reference Value (keywords/section): recommendations to assist implementors
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8448
+  Reference Type: TEXT
+  Reference Value (keywords/section): test vectors for TLS 1.3 handshakes
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-tls-rfc8446bis-14:
+  Search Keywords: 'recommendations to assist implementors'
+  Result: Found in Section 9
+  Section Title: Compliance Requirements
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8448:
+  Search Keywords: 'test vectors for TLS 1.3 handshakes'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    TLS 1.3 [TLS13] defines a new key schedule and a number of new
+   cryptographic operations.  This...
+---------------------------------------------------------------------------
+
+Warning: Section C not found. Processing all sections.
+Processing section C.1. Random Number Generation and Seeding
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 1/3 [02:17<04:34, 137.09s/it]Splitting content into chunks: 100%|██████████| 3/3 [02:54<00:00, 49.54s/it] Splitting content into chunks: 100%|██████████| 3/3 [02:54<00:00, 58.29s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   TLS requires a cryptographically secure pseudorandom number generator
+   (CSPRNG).  A performant and appropriately-secure CSPRNG is provided
+   by most operating systems or can be sourced from a cr...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: CHECKOWAY
+  Reference Type: TEXT
+  Reference Value (keywords/section): CSPRNG internal state
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: DSA-1571-1
+  Reference Type: TEXT
+  Reference Value (keywords/section): predictable random number generator
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC4086
+  Reference Type: TEXT
+  Reference Value (keywords/section): generation of random values
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4086:
+  Search Keywords: 'generation of random values'
+  Result: Found in Section 3.2
+  Section Title: Existing Hardware Can Be Used For Randomness
+  Content Preview:    As described below, many computers come with hardware that can, with
+   care, be used to generate...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Implementations can provide extra security against this form of
+   attack by using separate CSPRNGs to generate public and private
+   values.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   [RFC8937] describes a way for security protocol implementations to
+   augment their (pseudo)random number generators using a long-term
+   private key and a deterministic signature function.  This i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8937
+  Reference Type: TEXT
+  Reference Value (keywords/section): security protocol implementations augment random number generators
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8937:
+  Search Keywords: 'security protocol implementations augment random number generators'
+  Result: Found in Section 10.2
+  Section Title: Informative References
+  Content Preview:    [DebianBug ]
+              Yilek, S., Rescorla, E., Shacham, H., Enright, B., and S.
+            ...
+---------------------------------------------------------------------------
+
+Processing section C.2. Certificates and Authentication
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:00<00:00,  1.07it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00,  2.13it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Implementations are responsible for verifying the integrity of
+   certificates and should generally support certificate revocation
+   messages.  Absent a specific indication from an application pro...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: DOI 10.1145/359340.359342
+  Reference Type: TEXT
+  Reference Value (keywords/section): RSA
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Note that it is common practice in some protocols to use the same
+   certificate in both client and server modes.  This setting has not
+   been extensively analyzed and it is the responsibility of ...
+################################################################################
+Processing section C.3. Implementation Pitfalls
+Splitting content into chunks:   0%|          | 0/9 [00:00<?, ?it/s]Splitting content into chunks:  22%|██▏       | 2/9 [00:41<02:24, 20.71s/it]Splitting content into chunks:  44%|████▍     | 4/9 [00:44<00:46,  9.31s/it]Splitting content into chunks:  67%|██████▋   | 6/9 [00:55<00:23,  7.76s/it]Splitting content into chunks:  89%|████████▉ | 8/9 [01:01<00:05,  5.80s/it]Splitting content into chunks: 100%|██████████| 9/9 [03:32<00:00, 37.64s/it]Splitting content into chunks: 100%|██████████| 9/9 [03:32<00:00, 23.56s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Implementation experience has shown that certain parts of earlier TLS
+   specifications are not easy to understand and have been a source of
+   interoperability and security problems.  Many of thes...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Do you correctly handle handshake messages that are fragmented to
+      multiple TLS records (see Section 5.1)?  Do you correctly handle
+      corner cases like a ClientHello that is split into ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8879
+  Reference Type: TEXT
+  Reference Value (keywords/section): Certificate compression
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): E
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '5.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.1
+  Section Title: Record Layer
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8879:
+  Search Keywords: 'Certificate compression'
+  Result: Found in Section 4
+  Section Title: Compressed Certificate Message
+  Content Preview:    If the peer has indicated that it supports compression, server and
+   client MAY compress their c...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: 'E'
+  Match Type: Exact match
+  Result: Matched to Section E
+  Section Title: Backward Compatibility
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Have you ensured that all support for SSL, RC4, EXPORT ciphers,
+      and MD5 (via the "signature_algorithms" extension) is completely
+      removed from all possible configurations that support...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  When the server has requested a client certificate but no suitable
+      certificate is available, do you correctly send an empty
+      Certificate message, instead of omitting the whole message...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.4.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.4.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.4.2
+  Section Title: Certificate
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  When processing the plaintext fragment produced by AEAD-Decrypt
+      and scanning from the end for the ContentType, do you avoid
+      scanning past the start of the cleartext in the event that...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Do you properly ignore unrecognized cipher suites (Section 4.1.2),
+      hello extensions (Section 4.2), named groups (Section 4.2.7), key
+      shares (Section 4.2.8), supported versions (Secti...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.1.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.7
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.8
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.1
+
+Reference 6:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.1.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.1.2
+  Section Title: Client Hello
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2'
+  Match Type: Exact match
+  Result: Matched to Section 4.2
+  Section Title: Extensions
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2.7'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.7
+  Section Title: Supported Groups
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2.8'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.8
+  Section Title: Key Share
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.1
+  Section Title: Supported Versions
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.3
+  Section Title: Signature Algorithms
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  As a server, do you send a HelloRetryRequest to clients which
+      support a compatible (EC)DHE group but do not predict it in the
+      "key_share" extension?  As a client, do you correctly ha...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  What countermeasures do you use to prevent timing attacks
+      [TIMING ]?
+   *  When using Diffie-Hellman key exchange, do you correctly preserve
+      leading zero bytes in the negotiated key ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.4.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.8.1
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: Boneh.2003
+  Reference Type: TEXT
+  Reference Value (keywords/section): Remote Timing Attacks Are Practical
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '7.4.1'
+  Match Type: Exact match
+  Result: Matched to Section 7.4.1
+  Section Title: Finite Field Diffie-Hellman
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.2.8.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.8.1
+  Section Title: Diffie-Hellman Parameters
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Do you use a strong and, most importantly, properly seeded random
+      number generator (see Appendix C.1) when generating Diffie-Hellman
+      private values, the ECDSA "k" parameter, and othe...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.2.8.1
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.4.1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC6979
+  Reference Type: TEXT
+  Reference Value (keywords/section): deterministic ECDSA
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: FW15
+  Reference Type: TEXT
+  Reference Value (keywords/section): Factoring RSA Keys With TLS Perfect Forward Secrecy
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.2.8.1'
+  Match Type: Exact match
+  Result: Matched to Section 4.2.8.1
+  Section Title: Diffie-Hellman Parameters
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '7.4.1'
+  Match Type: Exact match
+  Result: Matched to Section 7.4.1
+  Section Title: Finite Field Diffie-Hellman
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6979:
+  Search Keywords: 'deterministic ECDSA'
+  Result: Found in Section 3
+  Section Title: Deterministic DSA and ECDSA
+  Content Preview:    Deterministic (EC)DSA is the process of generating an (EC)DSA
+   signature over an input message ...
+---------------------------------------------------------------------------
+
+Processing section C.4. Client and Server Tracking Prevention
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks:  20%|██        | 1/5 [00:01<00:05,  1.27s/it]Splitting content into chunks:  40%|████      | 2/5 [00:02<00:03,  1.11s/it]Splitting content into chunks:  80%|████████  | 4/5 [00:05<00:01,  1.58s/it]Splitting content into chunks: 100%|██████████| 5/5 [00:07<00:00,  1.47s/it]Splitting content into chunks: 100%|██████████| 5/5 [00:07<00:00,  1.44s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Clients SHOULD NOT reuse a ticket for multiple connections.  Reuse of
+   a ticket allows passive observers to correlate different connections.
+   Servers that issue tickets SHOULD offer at least as...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9112
+  Reference Type: TEXT
+  Reference Value (keywords/section): HTTP/1.1
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Offering a ticket to a server additionally allows the server to
+   correlate different connections.  This is possible independent of
+   ticket reuse.  Client applications SHOULD NOT offer tickets a...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: FETCH
+  Reference Type: TEXT
+  Reference Value (keywords/section): network partition keys
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Clients and Servers SHOULD NOT reuse a key share for multiple
+   connections.  Reuse of a key share allows passive observers to
+   correlate different connections.  Reuse of a client key share to t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   It is RECOMMENDED that the labels for external identities be selected
+   so that they do not provide additional information about the identity
+   of the user.  For instance, if the label includes a...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-esni
+  Reference Type: TEXT
+  Reference Value (keywords/section): Encrypted Client Hello
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-tls-esni:
+  Search Keywords: 'Encrypted Client Hello'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If an external PSK identity is used for multiple connections, then it
+   will generally be possible for an external observer to track clients
+   and/or servers across connections.  Use of the Encry...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-esni
+  Reference Type: TEXT
+  Reference Value (keywords/section): Encrypted Client Hello
+================================================================================
+
+Processing section C.5. Unauthenticated Operation
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:53<00:53, 53.82s/it]Splitting content into chunks: 100%|██████████| 2/2 [01:34<00:00, 45.89s/it]Splitting content into chunks: 100%|██████████| 2/2 [01:34<00:00, 47.08s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Previous versions of TLS offered explicitly unauthenticated cipher
+   suites based on anonymous Diffie-Hellman.  These modes have been
+   deprecated in TLS 1.3.  However, it is still possible to ne...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7250
+  Reference Type: TEXT
+  Reference Value (keywords/section): Raw public keys
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7250:
+  Search Keywords: 'Raw public keys'
+  Result: Found in Section 6
+  Section Title: Security Considerations
+  Content Preview:    The transmission of raw public keys, as described in this document,
+   provides benefits by lower...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Either technique used alone is vulnerable to man-in-the-middle
+   attacks and therefore unsafe for general use.  However, it is also
+   possible to bind such connections to an external authenticati...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5929
+  Reference Type: TEXT
+  Reference Value (keywords/section): channel bindings
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5929:
+  Search Keywords: 'channel bindings'
+  Result: Found in Section 9
+  Section Title: IANA Considerations
+  Content Preview:    IANA updated three existing channel binding type registrations.  See
+   the rest of this document...
+---------------------------------------------------------------------------
+
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section C only.
+Focusing on section C and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/section_dependencies.json
+
+Creating prompts for section C...
+Creating expert prompt for section C with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/focus_section_C_prompt_expert.md
+Expert prompt token count: 167,779 tokens
+Creating router prompt for section C...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/focus_section_C_prompt_router.md
+Router prompt token count: 67,130 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958ce993c388191a7c9f32559e3b152
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section C
+================================================================================
+2026-01-03 04:07:21,477 - __main__ - INFO - Loading router user prompt...
+2026-01-03 04:07:21,479 - __main__ - INFO - Router prompt length: 534303 chars
+2026-01-03 04:07:21,479 - __main__ - INFO - 
+================================================================================
+2026-01-03 04:07:21,480 - __main__ - INFO - TESTING ROUTER
+2026-01-03 04:07:21,480 - __main__ - INFO - ================================================================================
+2026-01-03 04:07:21,615 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 04:07:21,615 - __main__ - INFO - User prompt length: 534303 chars
+2026-01-03 04:08:01,211 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 04:08:01,344 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 04:08:01,345 - __main__ - INFO - Using existing vector store(s): vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 04:08:01,345 - __main__ - INFO - 
+================================================================================
+2026-01-03 04:08:01,345 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 04:08:01,345 - __main__ - INFO - ================================================================================
+2026-01-03 04:08:01,348 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/test_analysis.md
+2026-01-03 04:08:01,355 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C/test_analysis.json
+2026-01-03 04:08:01,355 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-C
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Appendix C gives non-normative implementation advice for TLS 1.3, covering random number generation, certificate handling, common pitfalls, tracking prevention, and unauthenticated operation, with references to other RFCs and research.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - Mostly static guidance, not about event ordering beyond restating existing handshake rules.
+  - ActorDirectionality: LOW - Mentions client/server roles only in high-level advice, no new directionality rules.
+  - Scope: LOW - Advice is clearly scoped as implementation guidance; it does not redefine protocol semantics.
+  - Causal: LOW - Guidance describes potential failure modes but does not introduce new normative algorithms that could break implementations.
+  - Quantitative: LOW - Contains example key sizes and “100 bits a minute / 10,000 bits a second” style text, but these are illustrative, not normative limits.
+  - Deontic: LOW - Uses some MUST/SHOULD in a purely advisory appendix; these are consistent with the main spec’s normative text.
+  - Structural: LOW - No new formal grammars or structures beyond references to existing ones; nothing to compare against prose.
+  - CrossRFC: LOW - References to RFC4086, RFC8937, RFC8448, RFC8879, RFC7250, RFC6979, etc., appear correct and aligned with their intended use.
+  - Terminology: LOW - Uses existing TLS 1.3 terms consistently (e.g., ClientHello.random, legacy_record_version, etc.).
+  - Boundary: LOW - Notes edge cases (e.g., malformed all-zero padding, weak RNG) but only as implementation cautions; no new edge-case behavior is specified.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No substantive inconsistencies or underspecification found in Appendix C
+    Relevant Dimensions: 
+    Sketch: Appendix C is largely explanatory and advisory, reinforcing requirements already normatively stated ...
+
+Response ID: resp_0751a9740d89e895006958dc4abc308197aab3aff311fe89e3
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958ce993c388191a7c9f32559e3b152
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section C
+################################################################################
+

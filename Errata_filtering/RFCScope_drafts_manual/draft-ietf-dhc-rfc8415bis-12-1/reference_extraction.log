@@ -1,0 +1,276 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-1/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This document specifies DHCP for IPv6 (DHCPv6), a client/server
+   protocol that provides managed configuration of devices.  The basic
+   operation of DHCPv6 provides configuration for clients conn...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCPv6 can provide a device with addresses assigned by a DHCPv6
+   server and other configuration information; this data is carried in
+   options.  DHCPv6 can be extended through the definition of ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCPv6 also supports a mechanism for automated delegation of IPv6
+   prefixes.  Through this mechanism, a server can delegate prefixes to
+   clients.  Use of this mechanism is specified as part of ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7084
+  Reference Type: TEXT
+  Reference Value (keywords/section): requesting router
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7084
+  Reference Type: TEXT
+  Reference Value (keywords/section): delegating router
+
+Reference 3:
+  Document Type: EXTERNAL
+  Document Tag: TR-187
+  Reference Type: TEXT
+  Reference Value (keywords/section): requesting router
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: TR-187
+  Reference Type: TEXT
+  Reference Value (keywords/section): delegating router
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7084:
+  Search Keywords: 'requesting router'
+  Result: Found in Section 4.2
+  Section Title: WAN-Side Configuration
+  Content Preview:    The IPv6 CE router will need to support connectivity to one or more
+   access network architectur...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7084:
+  Search Keywords: 'delegating router'
+  Result: Found in Section 4.3
+  Section Title: LAN-Side Configuration
+  Content Preview:    The IPv6 CE router distributes configuration information obtained
+   during WAN interface provisi...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP can also be used just to provide other configuration options
+   (i.e., no addresses or prefixes).  That implies that the server does
+   not have to track any state; thus, this mode is called "...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   [RFC8415] provided a unified, corrected, and cleaned-up definition of
+   DHCPv6 that also covered all applicable errata filed against older
+   RFCs.  It also obsoleted a small number of mechanisms:...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): unified, corrected, and cleaned-up definition of DHCPv6
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): applicable errata filed against older RFCs
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'unified, corrected, and cleaned-up definition of DHCPv6'
+  Result: Found in Section A
+  Section Title: Summary of Changes
+  Content Preview:    This appendix provides a summary of the significant changes made to
+   this updated DHCPv6 specif...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'applicable errata filed against older RFCs'
+  Result: Found in Section 26.1
+  Section Title: Normative References
+  Content Preview:    [RFC768]   Postel, J., "User Datagram Protocol", STD 6, RFC 768,
+              DOI 10.17487/RFC07...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This document obsoletes [RFC8415] by applying all applicable errata
+   and obsoleting two features that have not been widely implemented -
+   the assignment of temporary addresses using the IA_TA o...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): differences
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '7.2'
+  Match Type: Exact match
+  Result: Matched to Section 7.2
+  Section Title: UDP Ports
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'differences'
+  Result: Found in Section 7.3
+  Section Title: DHCP Message Types
+  Content Preview:    DHCP defines the following message types.  The formats of these
+   messages are provided in Secti...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This document specifies the DHCPv6 protocol behavior.  The server
+   policy, such as what options to assign to which clients, which
+   subnets or pools of resources to use, which clients' requests ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Server configuration, operation and management are also out of scope.
+   An approach to manage DHCPv6 relays and servers is specified in
+   [RFC9243].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9243
+  Reference Type: TEXT
+  Reference Value (keywords/section): manage DHCPv6 relays and servers
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9243:
+  Search Keywords: 'manage DHCPv6 relays and servers'
+  Result: Found in Section 4.3
+  Section Title: DHCPv6 Relay YANG Module
+  Content Preview:    This module imports typedefs from [RFC6991] and modules defined in
+   [RFC8341] and [RFC8343].
+
+ ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Merging DHCPv4 [RFC2131] and DHCPv6 configuration is out of scope for
+   this document.  [RFC4477] discusses some issues and possible
+   strategies for running DHCPv4 and DHCPv6 services together. ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC2131
+  Reference Type: TEXT
+  Reference Value (keywords/section): Merging DHCPv4 and DHCPv6 configuration
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC4477
+  Reference Type: TEXT
+  Reference Value (keywords/section): issues and possible strategies for running DHCPv4 and DHCPv6 services together
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7341
+  Reference Type: TEXT
+  Reference Value (keywords/section): transport mechanism to carry DHCPv4 messages using the DHCPv6 protocol
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC2131:
+  Search Keywords: 'Merging DHCPv4 and DHCPv6 configuration'
+  Result: Found in Section 3.1
+  Section Title: Client-server interaction - allocating a network address
+  Content Preview:    The following summary of the protocol exchanges between clients and
+   servers refers to the DHCP...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4477:
+  Search Keywords: 'issues and possible strategies for running DHCPv4 and DHCPv6 services together'
+  Result: Found in Section 4.1
+  Section Title: Separate DHCP Servers
+  Content Preview:    One solution is to run separate DHCP and DHCPv6 servers.  These may
+   or may not be run on the s...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7341:
+  Search Keywords: 'transport mechanism to carry DHCPv4 messages using the DHCPv6 protocol'
+  Result: Found in Section 5
+  Section Title: Architecture Overview
+  Content Preview:    The architecture described here addresses a typical use case, where a
+   DHCP client's uplink sup...
+---------------------------------------------------------------------------
+

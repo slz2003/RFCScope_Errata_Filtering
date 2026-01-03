@@ -1,0 +1,302 @@
+[
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-dhc-rfc8415bis-12",
+    "reference_type": "SECTION",
+    "reference_value": "21.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-dhc-rfc8415bis-12",
+    "reference_type": "SECTION",
+    "reference_value": "21.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "RFC",
+    "document_tag": "6939",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "RFC",
+    "document_tag": "7844",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-dhc-rfc8415bis-12",
+    "reference_type": "SECTION",
+    "reference_value": "11.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "RFC",
+    "document_tag": "7844",
+    "reference_type": "SECTION",
+    "reference_value": "3.9",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "6355",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "6355",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "2464",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "IANA-HARDWARE-TYPES",
+    "reference_type": "TEXT",
+    "reference_value": "Hardware Types",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://www.iana.org/assignments/arp-parameters",
+    "reference_text": "IANA, \"Hardware Types\", <https://www.iana.org/assignments/arp-parameters >.",
+    "reference_summary": "The \"Hardware Types\" registry within the IANA \"Address Resolution Protocol (ARP) Parameters\" document enumerates various hardware types used in ARP messages. Each hardware type is assigned a unique numerical identifier and, in some cases, references to relevant standards or documents. This registry facilitates the correct interpretation and processing of ARP messages across different hardware implementations.\n\nThe registry includes hardware types such as Ethernet (10Mb), Experimental Ethernet (3Mb), Amateur Radio AX.25, Proteon ProNET Token Ring, Chaos, IEEE 802 Networks, ARCNET, Hyperchannel, Lanstar, Autonet Short Address, LocalTalk, LocalNet (IBM PCNet or SYTEK LocalNET), Ultra link, SMDS, Frame Relay, Asynchronous Transmission Mode (ATM), HDLC, Fibre Channel, Serial Line, MIL-STD-188-220, Metricom, IEEE 1394.1995, MAPOS, Twinaxial, EUI-64, HIPARP, IP and ARP over ISO 7816-3, ARPSec, IPsec tunnel, InfiniBand (TM), TIA-102 Project 25 Common Air Interface (CAI), Wiegand Interface, Pure IP, HW_EXP1, HFI, Unified Bus (UB), HW_EXP2, and AEthernet.\n\nFor a comprehensive list of hardware types and their corresponding numerical identifiers, please refer to the IANA \"Address Resolution Protocol (ARP) Parameters\" document.  "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11.3"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "IANA-PEN",
+    "reference_type": "TEXT",
+    "reference_value": "Private Enterprise Numbers",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://www.iana.org/assignments/enterprise-numbers",
+    "reference_text": "IANA, \"Private Enterprise Numbers\", <https://www.iana.org/assignments/enterprise-numbers >.",
+    "reference_summary": "Private Enterprise Numbers (PENs) are unique identifiers assigned by the Internet Assigned Numbers Authority (IANA) to organizations for use in various network protocols, such as SNMP and LDAP, where an ASN.1 object identifier (OID) is appropriate. Each PEN is a decimal number that, when prefixed with \"1.3.6.1.4.1\", forms a unique OID for the organization. ([iana.org](https://www.iana.org/assignments/enterprise-numbers/?utm_source=openai))\n\nThe IANA maintains a comprehensive registry of these numbers, listing each assigned PEN along with the corresponding organization, contact person, and email address. For example, IBM is assigned PEN 2, and Cisco Systems is assigned PEN 9. ([iana.org](https://www.iana.org/assignments/enterprise-numbers/?utm_source=openai))\n\nOrganizations can request a new PEN or modify an existing assignment through IANA's registration forms. The registration procedure follows a \"First Come First Served\" policy. ([iana.org](https://www.iana.org/assignments/enterprise-numbers/?utm_source=openai))\n\nThe full list of assigned Private Enterprise Numbers, along with detailed information and registration forms, is available on IANA's website. ([iana.org](https://www.iana.org/assignments/enterprise-numbers/?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11.3"
+    },
+    "document_type": "RFC",
+    "document_tag": "5612",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "2464",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11.4"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "IANA-HARDWARE-TYPES",
+    "reference_type": "TEXT",
+    "reference_value": "Hardware Types",
+    "importance": "informative",
+    "updates": false,
+    "url": "https://www.iana.org/assignments/arp-parameters",
+    "reference_text": "IANA, \"Hardware Types\", <https://www.iana.org/assignments/arp-parameters >.",
+    "reference_summary": "The \"Hardware Types\" registry within the IANA \"Address Resolution Protocol (ARP) Parameters\" document enumerates various hardware types used in ARP messages. Each hardware type is assigned a unique numerical identifier and, in some cases, references to relevant standards or documents. This registry facilitates the correct interpretation and processing of ARP messages across different hardware implementations.\n\nThe registry includes hardware types such as Ethernet (10Mb), Experimental Ethernet (3Mb), Amateur Radio AX.25, Proteon ProNET Token Ring, Chaos, IEEE 802 Networks, ARCNET, Hyperchannel, Lanstar, Autonet Short Address, LocalTalk, LocalNet (IBM PCNet or SYTEK LocalNET), Ultra link, SMDS, Frame Relay, Asynchronous Transmission Mode (ATM), HDLC, Fibre Channel, Serial Line, MIL-STD-188-220, Metricom, IEEE 1394.1995, MAPOS, Twinaxial, EUI-64, HIPARP, IP and ARP over ISO 7816-3, ARPSec, IPsec tunnel, InfiniBand (TM), TIA-102 Project 25 Common Air Interface (CAI), Wiegand Interface, Pure IP, HW_EXP1, HFI, Unified Bus (UB), HW_EXP2, and AEthernet.\n\nFor a comprehensive list of hardware types and their corresponding numerical identifiers, please refer to the IANA \"Address Resolution Protocol (ARP) Parameters\" document.  "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "6355",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "RFC",
+    "document_tag": "7844",
+    "reference_type": "SECTION",
+    "reference_value": "2.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "RFC",
+    "document_tag": "6939",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "RFC",
+    "document_tag": "6939",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "RFC",
+    "document_tag": "7844",
+    "reference_type": "SECTION",
+    "reference_value": "4.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "11"
+    },
+    "document_type": "RFC",
+    "document_tag": "7844",
+    "reference_type": "SECTION",
+    "reference_value": "2.6",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

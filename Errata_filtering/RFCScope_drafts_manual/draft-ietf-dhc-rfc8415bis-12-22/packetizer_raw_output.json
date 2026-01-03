@@ -1,0 +1,37 @@
+{
+  "reports": [
+    {
+      "label": "Implementation-status Section Marked for Removal",
+      "bug_type": "Informational",
+      "explanation": "The analysis notes that Section 22 is an RFC 7942‐style Implementation Status section that is purely informational and is explicitly marked for removal by the RFC Editor, indicating no protocol errata.",
+      "justification": [
+        "The excerpt summary states that Section 22 lists known DHCPv6 implementations and is marked for removal (E1).",
+        "Candidate Issue 1 clearly describes that the Implementation-status section is purely informational and marked for removal (E2)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Excerpt Summary: Section 22 is an RFC 7942-style “Implementation Status” section listing known DHCPv6 implementations and explicitly marked for removal by the RFC Editor before publication."
+          },
+          {
+            "id": "E2",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: Implementation-status section is purely informational and marked for removal; no protocol errata implied\n    Relevant Dimensions: \n    Sketch: Section 22 conforms to the RFC 7942 pattern: it explains the purpose of the implementation status, g..."
+          }
+        ],
+        "summary": [
+          "(E1) Section 22 is described as an RFC 7942-style 'Implementation Status' section marked for removal.",
+          "(E2) Issue 1 identifies the section as purely informational with no protocol errata implications."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "The issue is non-normative as the section is meta information and is scheduled for removal, having no impact on protocol behavior.",
+      "confidence": "High",
+      "experts": [
+        "RouterAnalysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-dhc-rfc8415bis-12-22-1"
+    }
+  ]
+}

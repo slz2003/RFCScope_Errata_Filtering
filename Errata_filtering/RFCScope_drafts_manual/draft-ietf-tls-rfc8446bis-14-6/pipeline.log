@@ -1,0 +1,694 @@
+################################################################################
+Processing: Draft draft-ietf-tls-rfc8446bis-14, Section 6
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tls-rfc8446bis-14, Section 6
+================================================================================
+Preparing IETF draft draft-ietf-tls-rfc8446bis-14 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/corpus.json
+
+Extracting references from section 6 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/reference_extraction.log
+Focusing on section 6 and its children.
+Processing section 6. Alert Protocol
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 3/6 [00:02<00:02,  1.15it/s]Splitting content into chunks:  67%|██████▋   | 4/6 [00:05<00:03,  1.61s/it]Splitting content into chunks: 100%|██████████| 6/6 [00:05<00:00,  1.04it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   TLS provides an Alert content type to indicate closure information
+   and errors.  Like other messages, alert messages are encrypted as
+   specified by the current connection state.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Alert messages convey a description of the alert and a legacy field
+   that conveyed the severity level of the message in previous versions
+   of TLS.  Alerts are divided into two classes: closure ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Error alerts indicate abortive closure of the connection (see Section 6.2).  Upon receiving an error alert, the TLS implementation
+   SHOULD indicate an error to the application and MUST NOT allow ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '6.2'
+  Match Type: Exact match
+  Result: Matched to Section 6.2
+  Section Title: Error Alerts
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   All the alerts listed in Section 6.2 MUST be sent with
+   AlertLevel=fatal and MUST be treated as error alerts when received
+   regardless of the AlertLevel in the message.  Unknown Alert types
+   ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '6.2'
+  Match Type: Exact match
+  Result: Matched to Section 6.2
+  Section Title: Error Alerts
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '6'
+  Match Type: Exact match
+  Result: Matched to Section 6
+  Section Title: Alert Protocol
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      enum {
+          close_notify(0),
+          unexpected_message(10),
+          bad_record_mac(20),
+          record_overflow(22),
+          handshake_failure(40),
+          bad_certificate(42),
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          AlertLevel level;
+          AlertDescription description;
+      } Alert;
+################################################################################
+Warning: Section 6 not found. Processing all sections.
+Processing section 6.1. Closure Alerts
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 6/6 [00:00<00:00, 401.82it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The client and the server must share knowledge that the connection is
+   ending in order to avoid a truncation attack.
+
+   close_notify:  This alert notifies the recipient that the sender will
+    ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   user_canceled:  This alert notifies the recipient that the sender is
+      canceling the handshake for some reason unrelated to a protocol
+      failure.  If a user cancels an operation after the h...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Either party MAY initiate a close of its write side of the connection
+   by sending a "close_notify" alert.  If a transport-level close is
+   received prior to a "close_notify", the receiver cannot...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Each party MUST send a "close_notify" alert before closing its write
+   side of the connection, unless it has already sent some error alert.
+   This does not have any effect on its read side of the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Application protocols MAY choose to flush their send buffers and
+   immediately send a close_notify upon receiving a close_notify, but
+   this allows an attacker to influence the data that the peer...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If the application protocol using TLS provides that any data may be
+   carried over the underlying transport after the TLS connection is
+   closed, the TLS implementation MUST receive a "close_noti...
+################################################################################
+Processing section 6.2. Error Alerts
+Splitting content into chunks:   0%|          | 0/20 [00:00<?, ?it/s]Splitting content into chunks:  10%|█         | 2/20 [00:01<00:15,  1.18it/s]Splitting content into chunks:  65%|██████▌   | 13/20 [07:08<04:01, 34.51s/it]Splitting content into chunks:  80%|████████  | 16/20 [07:23<01:47, 26.93s/it]Splitting content into chunks:  85%|████████▌ | 17/20 [07:39<01:17, 25.70s/it]Splitting content into chunks: 100%|██████████| 20/20 [07:41<00:00, 17.77s/it]Splitting content into chunks: 100%|██████████| 20/20 [07:41<00:00, 23.07s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Error handling in TLS is very simple.  When an error is detected, the
+   detecting party sends a message to its peer.  Upon transmission or
+   receipt of a fatal alert message, both parties MUST im...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Whenever an implementation encounters a fatal error condition, it
+   SHOULD send an appropriate fatal alert and MUST close the connection
+   without sending or receiving any additional data.  Throu...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '6'
+  Match Type: Exact match
+  Result: Matched to Section 6
+  Section Title: Alert Protocol
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   unexpected_message:  An inappropriate message (e.g., the wrong
+      handshake message, premature Application Data, etc.) was received.
+      This alert should never be observed in communication be...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   bad_record_mac:  This alert is returned if a record is received which
+      cannot be deprotected.  Because AEAD algorithms combine decryption
+      and verification, and also to avoid side-channel...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   record_overflow:  A TLSCiphertext record was received that had a 
+      length more than 2^14 + 256 bytes, or a record decrypted to a
+      TLSPlaintext record with more than 2^14 bytes (or some ot...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   handshake_failure:  Receipt of a "handshake_failure" alert message
+      indicates that the sender was unable to negotiate an acceptable
+      set of security parameters given the options available...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   illegal_parameter:  A field in the handshake was incorrect or
+      inconsistent with other fields.  This alert is used for errors
+      which conform to the formal protocol syntax but are otherwis...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   unknown_ca:  A valid certificate chain or partial chain was received,
+      but the certificate was not accepted because the CA certificate
+      could not be located or could not be matched with a...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   access_denied:  A valid certificate or PSK was received, but when
+      access control was applied, the sender decided not to proceed with
+      negotiation.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   decode_error:  A message could not be decoded because some field was
+      out of the specified range or the length of the message was
+      incorrect.  This alert is used for errors where the mess...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   decrypt_error:  A handshake (not record layer) cryptographic
+      operation failed, including being unable to correctly verify a
+      signature or validate a Finished message or a PSK binder. 
+  ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   insufficient_security:  Returned instead of "handshake_failure" when
+      a negotiation has failed specifically because the server requires
+      parameters more secure than those supported by the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   internal_error:  An internal error unrelated to the peer or the
+      correctness of the protocol (such as a memory allocation failure)
+      makes it impossible to continue.
+
+   inappropriate_fall...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: TEXT
+  Reference Value (keywords/section): internal error
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: TEXT
+  Reference Value (keywords/section): inappropriate fallback
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7507
+  Reference Type: TEXT
+  Reference Value (keywords/section): invalid connection retry attempt
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-tls-rfc8446bis-14:
+  Search Keywords: 'internal error'
+  Result: Found in Section 6
+  Section Title: Alert Protocol
+  Content Preview:    TLS provides an Alert content type to indicate closure information
+   and errors.  Like other mes...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-tls-rfc8446bis-14:
+  Search Keywords: 'inappropriate fallback'
+  Result: Found in Section F.1
+  Section Title: Handshake
+  Content Preview:    The TLS handshake is an Authenticated Key Exchange (AKE) protocol
+   which is intended to provide...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7507:
+  Search Keywords: 'invalid connection retry attempt'
+  Result: Found in Section 4
+  Section Title: Client Behavior
+  Content Preview:    The TLS_FALLBACK_SCSV cipher suite value is meant for use by clients
+   that repeat a connection ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   missing_extension:  Sent by endpoints that receive a handshake
+      message not containing an extension that is mandatory to send for
+      the offered TLS version or other negotiated parameters.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   unsupported_extension:  Sent by endpoints receiving any handshake
+      message containing an extension in a ServerHello,
+      HelloRetryRequest, EncryptedExtensions, or Certificate not first
+    ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   unrecognized_name:  Sent by servers when no server exists identified
+      by the name provided by the client via the "server_name" extension
+      (see [RFC6066]).
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6066
+  Reference Type: TEXT
+  Reference Value (keywords/section): server_name extension
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6066:
+  Search Keywords: 'server_name extension'
+  Result: Found in Section 3
+  Section Title: Server Name Indication
+  Content Preview:    TLS does not provide a mechanism for a client to tell a server the
+   name of the server it is co...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   bad_certificate_status_response:  Sent by clients when an invalid or
+      unacceptable OCSP response is provided by the server via the
+      "status_request" extension (see [RFC6066]).
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6066
+  Reference Type: TEXT
+  Reference Value (keywords/section): status_request extension
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6066:
+  Search Keywords: 'status_request extension'
+  Result: Found in Section 8
+  Section Title: Certificate Status Request
+  Content Preview:    Constrained clients may wish to use a certificate-status protocol
+   such as OCSP [RFC2560] to ch...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   unknown_psk_identity:  Sent by servers when PSK key establishment is
+      desired but no acceptable PSK identity is provided by the client.
+      Sending this alert is OPTIONAL; servers MAY instea...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   general_error:  Sent to indicate an error condition in cases when
+      either no more specific error is available or the senders wishes
+      to conceal the specific error code.  Implementations S...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   no_application_protocol:  Sent by servers when a client
+      "application_layer_protocol_negotiation" extension advertises only
+      protocols that the server does not support (see [RFC7301]). 
+ ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 11
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7301
+  Reference Type: TEXT
+  Reference Value (keywords/section): Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '11'
+  Match Type: Exact match
+  Result: Matched to Section 11
+  Section Title: IANA Considerations
+---------------------------------------------------------------------------
+
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 6 only.
+Focusing on section 6 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/section_dependencies.json
+
+Creating prompts for section 6...
+Creating expert prompt for section 6 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/focus_section_6_prompt_expert.md
+Expert prompt token count: 76,930 tokens
+Creating router prompt for section 6...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/focus_section_6_prompt_router.md
+Router prompt token count: 67,573 tokens
+
+IETF draft draft-ietf-tls-rfc8446bis-14 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958ce993c388191a7c9f32559e3b152
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tls-rfc8446bis-14, Section 6
+================================================================================
+2026-01-03 03:35:10,787 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:35:10,789 - __main__ - INFO - Router prompt length: 349643 chars
+2026-01-03 03:35:10,789 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:35:10,789 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:35:10,789 - __main__ - INFO - ================================================================================
+2026-01-03 03:35:10,908 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:35:10,908 - __main__ - INFO - User prompt length: 349643 chars
+2026-01-03 03:36:31,576 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:36:31,894 - __main__ - INFO - Router analysis complete. Bug likelihood: Medium
+2026-01-03 03:36:31,894 - __main__ - INFO - Using existing vector store(s): vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:36:31,894 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:36:31,895 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:36:31,895 - __main__ - INFO - ================================================================================
+2026-01-03 03:36:31,896 - __main__ - INFO - 
+Invoking expert: Temporal (MEDIUM)
+2026-01-03 03:36:32,053 - __main__ - INFO - Invoking expert Temporal with manual prompt...
+2026-01-03 03:36:32,053 - __main__ - INFO - User prompt length: 350762 chars
+2026-01-03 03:36:32,053 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:37:48,940 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:37:48,971 - __main__ - INFO - Expert Temporal analysis complete
+2026-01-03 03:37:48,971 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 03:37:49,112 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 03:37:49,112 - __main__ - INFO - User prompt length: 354293 chars
+2026-01-03 03:37:49,113 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:39:12,563 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:39:12,566 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 03:39:12,566 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 03:39:12,730 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 03:39:12,730 - __main__ - INFO - User prompt length: 350825 chars
+2026-01-03 03:39:12,730 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:40:42,188 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:40:42,191 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 03:40:42,192 - __main__ - INFO - 
+Invoking expert: Deontic (HIGH)
+2026-01-03 03:40:42,301 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 03:40:42,301 - __main__ - INFO - User prompt length: 354280 chars
+2026-01-03 03:40:42,301 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:42:28,799 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:42:28,803 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 03:42:28,803 - __main__ - INFO - 
+Invoking expert: CrossRFC (MEDIUM)
+2026-01-03 03:42:29,006 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 03:42:29,006 - __main__ - INFO - User prompt length: 354261 chars
+2026-01-03 03:42:29,006 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:44:03,153 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:44:03,156 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 03:44:03,156 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 03:44:03,341 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 03:44:03,341 - __main__ - INFO - User prompt length: 354249 chars
+2026-01-03 03:44:03,341 - __main__ - INFO - Vector stores: vs_6958ce993c388191a7c9f32559e3b152
+2026-01-03 03:45:55,910 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:45:55,913 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 03:45:55,917 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/test_analysis.md
+2026-01-03 03:45:55,923 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6/test_analysis.json
+2026-01-03 03:45:55,923 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-6
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 6 of the draft defines the TLS 1.3 Alert protocol: alert structure, alert types, their semantics (closure vs error), required AlertLevel usage, and how endpoints should behave on sending/receiving these alerts, with some changes vs RFC 8446 (notably for `user_canceled` and the new `general_error` alert).
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: MEDIUM - Behavior depends on ordering of alerts vs subsequent data (e.g., what happens after `user_canceled` and/or `close_notify`), and handshake-vs-post-handshake timing.
+  - ActorDirectionality: LOW - Roles (client/server) do not materially affect alert semantics here beyond symmetric requirements.
+  - Scope: MEDIUM - There is a distinction between TLS 1.3 vs earlier versions, closure vs error alerts, and which alerts are in Section 6.1 vs 6.2; mis-scoping could cause inconsistencies.
+  - Causal: MEDIUM - Literal implementation of the rules (e.g., “MUST ignore any data after a closure alert” vs “SHOULD continue to read data until close_notify”) affects whether connections can complete cleanly and how applications see EOF/error.
+  - Quantitative: LOW - No significant numeric limits or size calculations in this section.
+  - Deontic: HIGH - Many MUST/SHOULD/MUST NOTs around AlertLevel, treatment of unknown alerts, and required follow-on behavior; subtle inconsistencies or conflicts are plausible.
+  - Structural: LOW - The enum and struct definitions appear straightforward; no obvious ABNF/YANG-style formalism mismatch here.
+  - CrossRFC: MEDIUM - This text updates/overlays RFC 8446 and interacts with RFC 5246 alert behavior; alignment and backward-compatibility expectations matter.
+  - Terminology: LOW - Terms like “closure alert”, “error alert”, “fatal”, “warning” are used, but the main risk is normative, not naming.
+  - Boundary: MEDIUM - Edge cases include: alerts during handshake vs after completion, data after alerts, unknown/RESERVED alerts from older peers.
+
+Candidate Issues: 2
+
+  Issue 1:
+    Type: Underspecification
+    Label: Semantics and treatment of `user_canceled` vs generic “closure alert” rules
+    Relevant Dimensions: Deontic, Temporal, Causal, Scope, Boundary, CrossRFC
+    Sketch: In Section 6.1, `user_canceled` is classified as a closure alert and the text says:...
+
+  Issue 2:
+    Type: Underspecification
+    Label: Treatment of unknown / RESERVED alerts vs earlier-version peers
+    Relevant Dimensions: Deontic, Scope, CrossRFC, Boundary
+    Sketch: Section 6 says: “All the alerts listed in Section 6.2 MUST be sent with AlertLevel=fatal and MUST be...
+
+Response ID: resp_01ed1a825b920b01006958d4bfe3d08194b762c59f186742dc
+
+## Temporal Expert Analysis
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: Section 6 in rfc8446bis-14 defines the alert protocol and clarifies semantics for `close_notify`, `user_canceled`, and error alerts. The main ordering rules (when to send alerts, when the connection is considered closed, and how to process data before/after alerts) are largely coherent and consistent with the handshake and record-layer rules. The only subtle temporal concern is a small residual ambiguity about how strictly receivers must “ignore” `user_cance...
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 6 defines the TLS 1.3 Alert protocol: the Alert structure, the classification of alerts into closure vs error, level handling, and the required behavior on sending/receiving each alert type, with updated semantics for `user_canceled` and the new `general_error` alert.
+- ScopeModel:
+  - Targets:
+    - TLS 1.3 connections (and implementations) using the Alert content type.
+    - Specific alert descriptions: `close_notify` and `user_canceled` as “closure ale...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following Section 6 of this draft literally yields a coherent, implementable alert and closure model. The special handling of `user_canceled` remains consistent with the general “closure vs error” split, and the new `general_error` alert also fits cleanly into the error-alert rules. There is no fundamental interoperability or security breakage if the text is implemented as written.
+
+---
+
+2. **Causal Analysis**
+
+### 2.1. Global alert semantics
+
+Section 6 defines two classes of ale...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 6 defines the TLS 1.3 Alert protocol: the structure and semantics of alerts, the distinction between closure and error alerts, required alert levels, and required behaviors when sending and receiving alerts. It also adds a new `general_error` alert and tightens some behaviors (e.g., `user_canceled` and `close_notify`) relative to RFC 8446.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: `general_error` vs...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 6 of rfc8446bis-14 defines the TLS 1.3 alert protocol: the Alert structure, the classification into closure vs error alerts, the requirement that all Section 6.2 alerts and unknown alerts be treated as fatal in TLS 1.3, the special handling of `close_notify` and `user_canceled`, and the addition of the new `general_error(117)` alert and its IANA registration.
+- OverallCrossRFCLikelihood: Low
+- Issues: []
+- IfNoIssues:
+  - Comment:  
+    Cross-checking th...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding:  
+  Section 6 defines the TLS 1.3 Alert protocol: the Alert structure, the AlertDescription enum, the division into closure vs error alerts, and required behavior when sending or receiving alerts. In TLS 1.3, severity is no longer taken from the level field; instead the description value (and its section, 6.1 vs 6.2) determines whether the alert is a closure or an error, and all 6.2 alerts and unknown codes are fatal. The section also tightens behavior f...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Medium
+Experts: ✓ 6 invoked
+  Dimensions: Temporal, Scope, Causal, Deontic, CrossRFC, Boundary
+Vector Stores: vs_6958ce993c388191a7c9f32559e3b152
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tls-rfc8446bis-14, Section 6
+################################################################################
+

@@ -1,0 +1,362 @@
+################################################################################
+Processing: Draft draft-ietf-tcpm-accurate-ecn-34, Section 6
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-tcpm-accurate-ecn-34, Section 6
+================================================================================
+Preparing IETF draft draft-ietf-tcpm-accurate-ecn-34 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/corpus.json
+
+Extracting references from section 6 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/reference_extraction.log
+Focusing on section 6 and its children.
+Processing section 6. Summary: Protocol Properties
+Splitting content into chunks:   0%|          | 0/14 [00:00<?, ?it/s]Splitting content into chunks:   7%|▋         | 1/14 [02:49<36:40, 169.28s/it]Splitting content into chunks: 100%|██████████| 14/14 [02:49<00:00,  8.66s/it]Splitting content into chunks: 100%|██████████| 14/14 [02:49<00:00, 12.10s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This section is informative not normative.  It describes how well the
+   protocol satisfies the agreed requirements for a more Accurate ECN
+   feedback protocol [RFC7560].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tcpm-accurate-ecn-34
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7560
+  Reference Type: TEXT
+  Reference Value (keywords/section): Accurate ECN feedback protocol
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tcpm-accurate-ecn-34:
+  Looking for Section: '1'
+  Match Type: Exact match
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7560:
+  Search Keywords: 'Accurate ECN feedback protocol'
+  Result: Found in Section 4
+  Section Title: Requirements
+  Content Preview:    The requirements of the accurate ECN feedback protocol are to have
+   fairly accurate (not necess...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Accuracy:  From each ACK, the Data Sender can infer the number of new
+      CE marked segments since the previous ACK.  This provides better
+      accuracy on CE feedback than Classic ECN.  In addi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Overhead:  The AccECN scheme is divided into two parts.  The
+      essential feedback part reuses the 3 flags already assigned to ECN
+      in the TCP header.  The supplementary feedback part adds ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Ordering:  The order in which marks arrive at the Data Receiver is
+      preserved in AccECN feedback, because the Data Receiver is
+      expected to send an ACK immediately whenever a different ma...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Timeliness:  While the same ECN markings are arriving continually at 
+      the Data Receiver, it can defer ACKs as TCP does normally, but it
+      will immediately send an ACK as soon as a differe...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Timeliness vs Overhead:  Change-Triggered ACKs are intended to enable
+      latency-sensitive uses of ECN feedback by capturing the timing of
+      transitions but not wasting resources while the s...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Resilience:  All information is provided based on counters.
+      Therefore if ACKs are lost, the counters on the first ACK
+      following the losses allows the Data Sender to immediately recover
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Resilience against Bias:  Because feedback is based on repetition of
+      counters, random losses do not remove any information, they only
+      delay it.  Therefore, even though some ACKs are cha...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Resilience vs Overhead:  If space is limited in some segments
+      (e.g., because more options are needed on some segments, such as
+      the SACK option after loss), the Data Receiver can send Ac...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Resilience vs Timeliness and Ordering:  Ordering information and the
+      timing of transitions cannot be communicated in three cases: i)
+      during ACK loss; ii) if something on the path strips...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Complexity:  An AccECN implementation solely involves simple counter
+      increments, some modulo arithmetic to communicate the least
+      significant bits and allow for wrap, and some heuristics...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Backward Compatibility:  If only one endpoint supports the AccECN
+      scheme, it will fall-back to the most advanced ECN feedback scheme
+      supported by the other end.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      If AccECN Options are stripped by a middlebox, AccECN still
+      provides basic congestion feedback in the ACE field.  Further,
+      AccECN can be used to detect mangling of the IP ECN field;
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Forward Compatibility:  The behaviour of endpoints and middleboxes is
+      carefully defined for all reserved or currently unused codepoints
+      in the scheme.  Then, the designers of security d...
+################################################################################
+Warning: Section 6 not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 6 only.
+Focusing on section 6 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/section_dependencies.json
+
+Creating prompts for section 6...
+Creating expert prompt for section 6 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/focus_section_6_prompt_expert.md
+Expert prompt token count: 43,006 tokens
+Creating router prompt for section 6...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/focus_section_6_prompt_router.md
+Router prompt token count: 39,868 tokens
+
+IETF draft draft-ietf-tcpm-accurate-ecn-34 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be564fdc81918f6c87dec1d36632
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-tcpm-accurate-ecn-34, Section 6
+================================================================================
+2026-01-03 02:16:17,148 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:16:17,168 - __main__ - INFO - Router prompt length: 177151 chars
+2026-01-03 02:16:17,169 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:16:17,169 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:16:17,169 - __main__ - INFO - ================================================================================
+2026-01-03 02:16:17,648 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:16:17,648 - __main__ - INFO - User prompt length: 177151 chars
+2026-01-03 02:17:04,349 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:17:04,999 - __main__ - INFO - Router analysis complete. Bug likelihood: Medium
+2026-01-03 02:17:05,034 - __main__ - INFO - Using existing vector store(s): vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:17:05,034 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:17:05,034 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:17:05,034 - __main__ - INFO - ================================================================================
+2026-01-03 02:17:05,035 - __main__ - INFO - 
+Invoking expert: Temporal (MEDIUM)
+2026-01-03 02:17:05,397 - __main__ - INFO - Invoking expert Temporal with manual prompt...
+2026-01-03 02:17:05,397 - __main__ - INFO - User prompt length: 183376 chars
+2026-01-03 02:17:05,397 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:18:12,231 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:18:12,337 - __main__ - INFO - Expert Temporal analysis complete
+2026-01-03 02:18:12,338 - __main__ - INFO - 
+Invoking expert: Causal (HIGH)
+2026-01-03 02:18:12,660 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 02:18:12,660 - __main__ - INFO - User prompt length: 183386 chars
+2026-01-03 02:18:12,660 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:18:59,559 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:18:59,562 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 02:18:59,563 - __main__ - INFO - 
+Invoking expert: Quantitative (MEDIUM)
+2026-01-03 02:19:00,090 - __main__ - INFO - Invoking expert Quantitative with manual prompt...
+2026-01-03 02:19:00,090 - __main__ - INFO - User prompt length: 180820 chars
+2026-01-03 02:19:00,090 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:19:50,780 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:19:50,782 - __main__ - INFO - Expert Quantitative analysis complete
+2026-01-03 02:19:50,782 - __main__ - INFO - 
+Invoking expert: Deontic (MEDIUM)
+2026-01-03 02:19:51,039 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 02:19:51,039 - __main__ - INFO - User prompt length: 177759 chars
+2026-01-03 02:19:51,040 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:21:03,564 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:21:03,567 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 02:21:03,567 - __main__ - INFO - 
+Invoking expert: CrossRFC (MEDIUM)
+2026-01-03 02:21:04,142 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 02:21:04,143 - __main__ - INFO - User prompt length: 183392 chars
+2026-01-03 02:21:04,143 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:21:48,611 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:21:48,613 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 02:21:48,614 - __main__ - INFO - 
+Invoking expert: Boundary (HIGH)
+2026-01-03 02:21:48,989 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 02:21:48,989 - __main__ - INFO - User prompt length: 183362 chars
+2026-01-03 02:21:48,989 - __main__ - INFO - Vector stores: vs_6958be564fdc81918f6c87dec1d36632
+2026-01-03 02:22:46,002 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:22:46,005 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 02:22:46,009 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/test_analysis.md
+2026-01-03 02:22:46,015 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6/test_analysis.json
+2026-01-03 02:22:46,015 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-6
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 6 is an informative summary of AccECN’s properties (accuracy, resilience, overhead, ordering, timeliness, compatibility, etc.) relative to the requirements in RFC 7560. It characterizes what the protocol “provides” or “ensures” based on the normative mechanisms defined earlier.
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: MEDIUM - Claims about “within about one RTT” timeliness and change-triggered ACKs interact with ACK timing rules and delayed ACK heuristics.
+  - ActorDirectionality: LOW - Sender/receiver roles are clear here and largely recapitulate earlier sections without new directional logic.
+  - Scope: LOW - Section 6 is a high-level, global characterization; scope problems are unlikely beyond over-generalization already captured under Causal/Boundary.
+  - Causal: HIGH - The issues hinge on what actually happens under ACK loss / wrap (can the sender still reconstruct counts? do random losses “only delay” info?).
+  - Quantitative: MEDIUM - The correctness of the claims depends on counter width (3‑bit ACE, 24‑bit option fields) vs. number of marks/ACKs lost.
+  - Deontic: MEDIUM - While Section 6 is “informative”, it makes absolute-sounding claims that conflict with the conservative normative behavior earlier.
+  - Structural: LOW - No new formal syntax or diagrams are introduced here beyond summaries.
+  - CrossRFC: MEDIUM - Section 6 explicitly claims satisfaction of RFC 7560 requirements (resilience, bias, ordering), so misalignment with those goals should be checked.
+  - Terminology: LOW - Terms (CE, ACK, AccECN Option, etc.) are consistent with earlier sections and RFC 7560.
+  - Boundary: HIGH - The potential issues appear in edge cases (long runs of ACK loss, severe ACK filtering, wrap-around of small counters).
+
+Candidate Issues: 2
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Section 6 overstates resilience and unbiasedness of feedback under long ACK loss vs. earlier normative text
+    Relevant Dimensions: Causal, Boundary, Quantitative, Temporal, CrossRFC
+    Sketch: Focus on the “Resilience” and “Resilience against Bias” paragraphs in Section 6 versus Sections 3.2....
+
+  Issue 2:
+    Type: Inconsistency
+    Label: Section 6 implies guaranteed ordering/timeliness that the normative rules only recommend
+    Relevant Dimensions: Temporal, Causal, Boundary, CrossRFC
+    Sketch: Compare the “Ordering” and “Timeliness” bullets in Section 6 with the actual ACK-generation rules in...
+
+Response ID: resp_08f922602456e151006958c24444f0819593e7d01f73ad17cd
+
+## Temporal Expert Analysis
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    The normative parts of AccECN carefully qualify how much ordering, timeliness, and resilience the sender can rely on, especially when only the 3‑bit ACE field is available or when change‑triggered ACKs are relaxed. Section 6, although informative, occasionally states these properties in unconditional terms that conflict with those normative caveats. The main risks are overstatements about (a) the ability to fully recover congestion information after AC...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. Summary
+
+Following the normative text (Sections 3.x, A.2, 8) yields a coherent, implementable protocol. Section 6’s “properties” bullets do overstate resilience, lack of bias, and ordering/timeliness compared to what the core ACE/option algorithms can actually guarantee, but these overclaims are in an informative section and don’t create an unimplementable or self‑contradictory state machine. They are best viewed as misleading summary text, not as causal inconsistencies in the protocol behavi...
+
+## Quantitative Expert Analysis
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary: Section 6 is an *informative* summary of AccECN’s properties (accuracy, resilience, bias, overhead, ordering, timeliness, compatibility), expressed in high-level, qualitative terms. Earlier sections give the quantitative mechanics: a 3‑bit ACE counter and 24‑bit byte counters in options, plus algorithms for handling ACK loss, wrap‑around, and ambiguous cases.
+
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Overstated resilience and u...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 6 is an informative summary claiming what AccECN “provides” in terms of accuracy, resilience, ordering, timeliness, overhead, bias, and (backward/forward) compatibility, relative to the requirements in RFC 7560. Earlier sections give the actual normative rules for counters, ACK generation, wrap‑handling, and fallbacks when options are missing or fields are mangled.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    -...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 6 is an informative summary that claims how AccECN meets the requirements from RFC 7560 (accuracy, resilience, ordering, timeliness, overhead, lack of bias, compatibility, etc.), based on the normative mechanisms defined earlier in the draft. The question is whether these claimed properties are consistent with the actual normative text in this draft and with the requirement language in RFC 7560.
+
+- OverallCrossRFCLikelihood: Medium
+
+- Issues:
+  - Issue-1...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 6 is an *informative* “properties” summary of AccECN relative to RFC 7560’s requirements (accuracy, resilience, timeliness, lack of bias, overhead, etc.), based on the normative mechanisms defined in Section 3. The mechanisms most relevant here are the 3‑bit ACE counter, the 24‑bit byte counters in the AccECN options, and the ACK‑generation rules under delayed ACKs, ACK loss, ACK filtering, and LRO/GRO. The key boundary space involves long runs o...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Medium
+Experts: ✓ 6 invoked
+  Dimensions: Temporal, Causal, Quantitative, Deontic, CrossRFC, Boundary
+Vector Stores: vs_6958be564fdc81918f6c87dec1d36632
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-tcpm-accurate-ecn-34, Section 6
+################################################################################
+

@@ -1,0 +1,724 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tls-rfc8446bis-14-5/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The TLS record protocol takes messages to be transmitted, fragments
+   the data into manageable blocks, protects the records, and transmits
+   the result.  Received data is verified, decrypted, rea...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   TLS records are typed, which allows multiple higher-level protocols
+   to be multiplexed over the same record layer.  This document
+   specifies four content types: handshake, application_data, ale...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   An implementation may receive an unencrypted record of type
+   change_cipher_spec consisting of the single byte value 0x01 at any
+   time after the first ClientHello message has been sent or receiv...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Implementations MUST NOT send record types not defined in this
+   document unless negotiated by some extension.  If a TLS
+   implementation receives an unexpected record type, it MUST terminate
+   ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '11'
+  Match Type: Exact match
+  Result: Matched to Section 11
+  Section Title: IANA Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The record layer fragments information blocks into TLSPlaintext
+   records carrying data in chunks of 2^14 bytes or less.  Message
+   boundaries are handled differently depending on the underlying
+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Handshake messages MAY be coalesced into a single TLSPlaintext record
+   or fragmented across several records, provided that:
+   *  Handshake messages MUST NOT be interleaved with other record
+    ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   *  Handshake messages MUST NOT span key changes.  Implementations
+      MUST verify that all messages immediately preceding a key change
+      align with a record boundary; if not, then they MUST t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Alert messages (Section 6) MUST NOT be fragmented across records, and
+   multiple alert messages MUST NOT be coalesced into a single
+   TLSPlaintext record.  In other words, a record with an Alert ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '6'
+  Match Type: Exact match
+  Result: Matched to Section 6
+  Section Title: Alert Protocol
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '6'
+  Match Type: Exact match
+  Result: Matched to Section 6
+  Section Title: Alert Protocol
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Application Data messages contain data that is opaque to TLS.
+   Application Data messages are always protected.  Zero-length
+   fragments of Application Data (i.e., TLSInnerPlaintext records of
+  ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      enum {
+          invalid(0),
+          change_cipher_spec(20),
+          alert(21),
+          handshake(22),
+          application_data(23),
+          (255)
+      } ContentType;
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          ContentType type;
+          ProtocolVersion legacy_record_version;
+          uint16 length;
+          opaque fragment[TLSPlaintext.length];
+      } TLSPlaintext;
+
+   type:  Th...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   legacy_record_version:  MUST be set to 0x0303 for all records 
+      generated by a TLS 1.3 implementation other than an initial
+      ClientHello (i.e., one not generated after a HelloRetryRequest...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   length:  The length (in bytes) of the following
+      TLSPlaintext.fragment.  The length MUST NOT exceed 2^14 bytes.  An
+      endpoint that receives a record that exceeds this length MUST
+      te...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   fragment  The data being transmitted.  This value is transparent and
+      is treated as an independent block to be dealt with by the higher-
+      level protocol specified by the type field.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   This document describes TLS 1.3, which uses the version 0x0304.  This
+   version value is historical, deriving from the use of 0x0301 for TLS
+   1.0 and 0x0300 for SSL 3.0.  To maximize backward co...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1.0
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '1.0'
+  Match Type: Fuzzy match (score: 80.0)
+  Result: Matched to Section 10
+  Section Title: Security Considerations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   When record protection has not yet been engaged, TLSPlaintext
+   structures are written directly onto the wire.  Once record
+   protection has started, TLSPlaintext records are protected and sent
+ ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '2'
+  Match Type: Exact match
+  Result: Matched to Section 2
+  Section Title: Protocol Overview
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The record protection functions translate a TLSPlaintext structure
+   into a TLSCiphertext structure.  The deprotection functions reverse
+   the process.  In TLS 1.3, as opposed to previous version...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5116
+  Reference Type: TEXT
+  Reference Value (keywords/section): Authenticated Encryption with Associated Data
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5116:
+  Search Keywords: 'Authenticated Encryption with Associated Data'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    Authenticated encryption [BN00] is a form of encryption that, in
+   addition to providing confide...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      struct {
+          ContentType opaque_type = application_data; /* 23 */
+          ProtocolVersion legacy_record_version = 0x0303; /* TLS v1.2 */
+          uint16 length;
+          opaque encrypt...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   content:  The TLSPlaintext.fragment value, containing the byte
+      encoding of a handshake or an alert message, or the raw bytes of
+      the application's data to send.
+
+   type:  The TLSPlainte...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   zeros:  An arbitrary-length run of zero-valued bytes may appear in
+      the cleartext after the type field.  This provides an opportunity
+      for senders to pad any TLS record by a chosen amount...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '5.4'
+  Match Type: Exact match
+  Result: Matched to Section 5.4
+  Section Title: Record Padding
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   opaque_type:  The outer opaque_type field of a TLSCiphertext record
+      is always set to the value 23 (application_data) for outward
+      compatibility with middleboxes accustomed to parsing pre...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   legacy_record_version:  The legacy_record_version field is always
+      0x0303.  TLS 1.3 TLSCiphertexts are not generated until after TLS
+      1.3 has been negotiated, so there are no historical c...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   length:  The length (in bytes) of the following
+      TLSCiphertext.encrypted_record, which is the sum of the lengths of
+      the content and the padding, plus one for the inner content type,
+    ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   AEAD algorithms take as input a single key, a nonce, a plaintext, and
+   "additional data" to be included in the authentication check, as
+   described in Section 2.1 of [RFC5116].  The key is eithe...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC5116
+  Reference Type: TEXT
+  Reference Value (keywords/section): Authenticated Encryption
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '2.1'
+  Match Type: Exact match
+  Result: Matched to Section 2.1
+  Section Title: Incorrect DHE Share
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '5.3'
+  Match Type: Exact match
+  Result: Matched to Section 5.3
+  Section Title: Per-Record Nonce
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5116:
+  Search Keywords: 'Authenticated Encryption'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    Authenticated encryption [BN00] is a form of encryption that, in
+   addition to providing confide...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+      additional_data = TLSCiphertext.opaque_type ||
+                        TLSCiphertext.legacy_record_version ||
+                        TLSCiphertext.length
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The plaintext input to the AEAD algorithm is the encoded
+   TLSInnerPlaintext structure.  Derivation of traffic keys is defined
+   in Section 7.3.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '7.3'
+  Match Type: Exact match
+  Result: Matched to Section 7.3
+  Section Title: Traffic Key Calculation
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The AEAD output consists of the ciphertext output from the AEAD
+   encryption operation.  The length of the plaintext is greater than
+   the corresponding TLSPlaintext.length due to the inclusion o...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   To decrypt and verify, the cipher takes as input the key, nonce,
+   additional data, and the AEADEncrypted value.  The output is either
+   the plaintext or an error indicating that the decryption f...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   If the decryption fails, the receiver MUST terminate the connection
+   with a "bad_record_mac" alert. 
+   An AEAD algorithm used in TLS 1.3 MUST NOT produce an expansion
+   greater than 255 octets....
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '1'
+  Match Type: Exact match
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   A 64-bit sequence number is maintained separately for reading and
+   writing records.  The appropriate sequence number is incremented by
+   one after reading or writing each record.  Each sequence ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Because the size of sequence numbers is 64-bit, they should not wrap.
+   If a TLS implementation would need to wrap a sequence number, it MUST
+   either rekey (Section 4.6.3) or terminate the conne...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.6.3
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4.6.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.6.3
+  Section Title: Key and Initialization Vector Update
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Each AEAD algorithm will specify a range of possible lengths for the
+   per-record nonce, from N_MIN bytes to N_MAX bytes of input [RFC5116].
+   The length of the TLS per-record nonce (iv_length) i...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8446
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC5116
+  Reference Type: TEXT
+  Reference Value (keywords/section): Authenticated Encryption
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '4'
+  Match Type: Exact match
+  Result: Matched to Section 4
+  Section Title: Handshake Protocol
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '1'
+  Match Type: Exact match
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8446:
+  Looking for Section: '2'
+  Match Type: Exact match
+  Result: Matched to Section 2
+  Section Title: Protocol Overview
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   All encrypted TLS records can be padded to inflate the size of the
+   TLSCiphertext.  This allows the sender to hide the size of the
+   traffic from an observer. 
+   When generating a TLSCiphertext...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Application Data records may contain a zero-length
+   TLSInnerPlaintext.content if the sender desires.  This permits
+   generation of plausibly sized cover traffic in contexts where the
+   presence...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The padding sent is automatically verified by the record protection
+   mechanism; upon successful decryption of a
+   TLSCiphertext.encrypted_record, the receiving implementation scans
+   the field ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Implementations MUST limit their scanning to the cleartext returned
+   from the AEAD decryption.  If a receiving implementation does not
+   find a non-zero octet in the cleartext, it MUST terminate...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   The presence of padding does not change the overall record size
+   limitations: the full encoded TLSInnerPlaintext MUST NOT exceed 2^14
+   + 1 octets.  If the maximum fragment length is reduced -- ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: TEXT
+  Reference Value (keywords/section): padding
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8449
+  Reference Type: SECTION
+  Reference Value (keywords/section): 
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-tls-rfc8446bis-14:
+  Search Keywords: 'padding'
+  Result: Found in Section 5.4
+  Section Title: Record Padding
+  Content Preview:    All encrypted TLS records can be padded to inflate the size of the
+   TLSCiphertext.  This allows...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8449:
+  Looking for Section: ''
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   Selecting a padding policy that suggests when and how much to pad is
+   a complex topic and is beyond the scope of this specification.  If
+   the application-layer protocol on top of TLS has its ow...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   There are cryptographic limits on the amount of plaintext which can
+   be safely encrypted under a given set of keys.  [AEAD-LIMITS ]
+   provides an analysis of these limits under the assumption th...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-tls-rfc8446bis-14
+  Reference Type: SECTION
+  Reference Value (keywords/section): 4.6.3
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: AEAD-LIMITS
+  Reference Type: TEXT
+  Reference Value (keywords/section): Limits on Authenticated Encryption Use in TLS
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-tls-rfc8446bis-14:
+  Looking for Section: '4.6.3'
+  Match Type: Exact match
+  Result: Matched to Section 4.6.3
+  Section Title: Key and Initialization Vector Update
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tls-rfc8446bis-14 EXCERPT:
+################################################################################
+   For AES-GCM, up to 2^24.5 full-size records (about 24 million) may be
+   encrypted on a given connection while keeping a safety margin of
+   approximately 2^-57 for Authenticated Encryption (AE) se...
+################################################################################

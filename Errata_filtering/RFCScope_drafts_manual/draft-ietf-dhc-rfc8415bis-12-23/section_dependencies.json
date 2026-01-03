@@ -1,0 +1,377 @@
+[
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-dhc-rfc8415bis-12",
+    "reference_type": "SECTION",
+    "reference_value": "24",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "8415",
+    "reference_type": "SECTION",
+    "reference_value": "24",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8415",
+    "reference_type": "SECTION",
+    "reference_value": "21.24",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8415",
+    "reference_type": "SECTION",
+    "reference_value": "21.25",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-dhc-rfc8415bis-12",
+    "reference_type": "SECTION",
+    "reference_value": "23.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "8213",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-dhc-rfc8415bis-12",
+    "reference_type": "SECTION",
+    "reference_value": "23.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.3"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-dhc-rfc8415bis-12",
+    "reference_type": "SECTION",
+    "reference_value": "20.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.4"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "IEEE.802.1x",
+    "reference_type": "TEXT",
+    "reference_value": "Port-Based Network Access Control",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "IEEE 802.1X is a standard for port-based network access control, designed to enhance security by authenticating devices before granting them access to a network. It operates at the data link layer and is applicable to both wired and wireless networks.\n\n**Key Components:**\n\n- **Supplicant:** The device (e.g., a computer or smartphone) seeking access to the network.\n- **Authenticator:** The network device (such as a switch or access point) that controls access to the network.\n- **Authentication Server:** A server (commonly using RADIUS protocol) that verifies the credentials of the supplicant.\n\n**Operational Overview:**\n\n1. **Initialization:** When a supplicant connects to a network port, the authenticator sets the port to an \"unauthorized\" state, allowing only authentication-related traffic.\n2. **Authentication Process:** The supplicant provides credentials, which the authenticator forwards to the authentication server.\n3. **Access Control:** If authentication is successful, the authenticator changes the port state to \"authorized,\" permitting normal network traffic. If authentication fails, the port remains in the \"unauthorized\" state, blocking access.\n\n**Authentication Methods:**\n\nIEEE 802.1X utilizes the Extensible Authentication Protocol (EAP) to support various authentication methods, including:\n\n- **EAP-MD5:** A simple challenge-response method.\n- **EAP-TLS:** Uses client and server certificates for mutual authentication.\n- **EAP-TTLS:** Requires a server certificate and can use various inner authentication methods.\n- **PEAP:** Similar to EAP-TTLS but encapsulates EAP within a TLS tunnel.\n\n**Security Enhancements:**\n\nTo further secure communications, IEEE 802.1X can integrate with:\n\n- **MACsec (IEEE 802.1AE):** Provides data confidentiality and integrity on LANs.\n- **MKA (MACsec Key Agreement):** Facilitates the establishment of secure associations for MACsec.\n\nBy implementing IEEE 802.1X, organizations can effectively control network access, ensuring that only authenticated and authorized devices can communicate over the network, thereby mitigating risks such as unauthorized access and data breaches. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.4"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-dhc-rfc8415bis-12",
+    "reference_type": "SECTION",
+    "reference_value": "24",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "7513",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23.4"
+    },
+    "document_type": "RFC",
+    "document_tag": "7610",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7824",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "8213",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7610",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "8213",
+    "reference_type": "SECTION",
+    "reference_value": "1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7824",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "8213",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7610",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7610",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7513",
+    "reference_type": "SECTION",
+    "reference_value": "4.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7844",
+    "reference_type": "SECTION",
+    "reference_value": "4.3",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7513",
+    "reference_type": "SECTION",
+    "reference_value": "8.2",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7824",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-dhc-rfc8415bis-12",
+      "section_id": "23"
+    },
+    "document_type": "RFC",
+    "document_tag": "7610",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

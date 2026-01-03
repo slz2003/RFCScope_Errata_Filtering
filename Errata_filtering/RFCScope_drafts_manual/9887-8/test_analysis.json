@@ -1,0 +1,66 @@
+{
+  "routing_summary": {
+    "excerpt_summary": "Section 8 is an acknowledgments section that credits individuals and notes prior RFCs used as models for TLS usage, TLS resumption, and PSK recommendations.",
+    "overall_bug_likelihood": "None",
+    "dimensions": {
+      "Temporal": {
+        "relevance": "LOW",
+        "explanation": "No sequencing, timers, or state transitions are specified here."
+      },
+      "ActorDirectionality": {
+        "relevance": "LOW",
+        "explanation": "Only general acknowledgments; no sender/receiver roles or behaviors are defined."
+      },
+      "Scope": {
+        "relevance": "LOW",
+        "explanation": "No normative rules whose scope could be misapplied; just descriptive text."
+      },
+      "Causal": {
+        "relevance": "LOW",
+        "explanation": "No cause-effect protocol behavior is described; nothing implementable depends on this section."
+      },
+      "Quantitative": {
+        "relevance": "LOW",
+        "explanation": "No numeric limits, sizes, or ranges are given."
+      },
+      "Deontic": {
+        "relevance": "LOW",
+        "explanation": "No RFC 2119 keywords or normative requirements appear here."
+      },
+      "Structural": {
+        "relevance": "LOW",
+        "explanation": "No ABNF, YANG, diagrams, or field formats are present."
+      },
+      "CrossRFC": {
+        "relevance": "LOW",
+        "explanation": "Other RFCs are only mentioned as sources of inspiration in acknowledgments; minor inaccuracies here would not affect interoperability."
+      },
+      "Terminology": {
+        "relevance": "LOW",
+        "explanation": "Only informal descriptive terms; no protocol terminology is defined or constrained."
+      },
+      "Boundary": {
+        "relevance": "LOW",
+        "explanation": "No edge cases or exceptional behaviors are discussed."
+      }
+    },
+    "candidate_issues": [
+      {
+        "bug_type": "None",
+        "short_label": "",
+        "relevant_dimensions": [],
+        "sketch_for_experts": ""
+      }
+    ]
+  },
+  "expert_analyses": {},
+  "vector_store_ids": [
+    "vs_6958c1299d1881919236f07c8d11bc8e"
+  ],
+  "metadata": {
+    "model": "gpt-5.1",
+    "router_reasoning_effort": "medium",
+    "expert_reasoning_effort": "medium",
+    "test_mode": "manual"
+  }
+}

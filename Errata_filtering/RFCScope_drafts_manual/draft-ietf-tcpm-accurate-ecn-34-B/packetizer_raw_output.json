@@ -1,0 +1,32 @@
+{
+  "reports": [
+    {
+      "label": "Candidate Issue 1: Missing Details in ECN Header Flags Design Rationale",
+      "bug_type": "Candidate/Underspecified",
+      "explanation": "The analysis output lists a candidate issue (Issue 1) with no descriptive label or details, suggesting that the documentation may be underspecified regarding the design rationale for ECN-related TCP header flags.",
+      "justification": [
+        "The analysis explicitly states 'Candidate Issues: 1' followed by 'Issue 1:' with fields such as Type, Label, Relevant Dimensions, and Sketch left empty (E1).",
+        "This incomplete entry indicates a potential oversight in documenting the candidate issue, even though the overall bug likelihood is noted as None."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The analysis output includes a candidate issue (Issue 1) with missing descriptive details."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "All dimensions in the analysis are rated LOW and the overall bug likelihood is None, so the impact of this underspecification is minimal.",
+      "confidence": "High",
+      "experts": [
+        "resp_0391c51db16e59e3006958c98896908190804a54a53b40ce1a: Issue 1"
+      ],
+      "report_id": "draft-ietf-tcpm-accurate-ecn-34-B-1"
+    }
+  ]
+}

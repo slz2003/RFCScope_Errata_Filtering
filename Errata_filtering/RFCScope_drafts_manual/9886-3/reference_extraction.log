@@ -1,0 +1,313 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-3/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   [RFC9374] defines the Hierarchical Host Identity Tags (HHIT) and
+   further specifies an instance of them used for UAS RID called DET.
+   The DET is a 128-bit value that is an IPv6 address intended...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9374
+  Reference Type: SECTION
+  Reference Value (keywords/section): TEXT
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9374
+  Reference Type: SECTION
+  Reference Value (keywords/section): Figure 2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9374:
+  Looking for Section: 'TEXT'
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9374:
+  Looking for Section: 'Figure 2'
+  Match Type: Fuzzy match (score: 22.22222222222222)
+  Result: Matched to Section 2
+  Section Title: Terms and Definitions
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+    +-------------+--------------+---------------+-------------+
+    | IPv6 Prefix | Hierarchy ID | HHIT Suite ID | ORCHID Hash |
+    | (28 bits)   | (28 bits)    | (8 bits)      | (64 bits)   |
+    +...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   [RFC9374] assigns the IPv6 prefix 2001:30::/28 for DETs.  Its
+   corresponding domain name for reverse lookups is
+   3.0.0.1.0.0.2.ip6.arpa.. The IAB has administrative control of this
+   domain na...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9374
+  Reference Type: TEXT
+  Reference Value (keywords/section): IPv6 prefix 2001:30::/28 for DETs
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9374:
+  Search Keywords: 'IPv6 prefix 2001:30::/28 for DETs'
+  Result: Found in Section 8.2.1
+  Section Title: HHIT Prefixes
+  Content Preview:    Initially, for DET use, one 28-bit prefix has been assigned out of
+   the IANA IPv6 Special Purpo...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Due to the nature of the hierarchy split and its relationship to
+   nibble reversing of the IPv6 address (Section 2.5 of RFC 3596   [STD88]), the upper level of the hierarchy (i.e., Registered
+   A...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3596
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.5
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: STD88
+  Reference Type: TEXT
+  Reference Value (keywords/section): DNS Extensions to Support IP Version 6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3596:
+  Looking for Section: '2.5'
+  Match Type: Exact match
+  Result: Matched to Section 2.5
+  Section Title: IP6.ARPA Domain
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC88:
+  Search Keywords: 'DNS Extensions to Support IP Version 6'
+  Result: Found in Section G
+  Section Title: Field Definitions
+  Content Preview:    Name*           Meaning                 Length (bits)
+   _____           _______                 ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   This document preallocates a subset of RAAs based on the ISO 3166-1
+   Numeric Nation Code [ISO3166-1].  This is to support the initial use
+   case of DETs in UAS RID on an international level.  Se...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2.1
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: ISO3166-1
+  Reference Type: TEXT
+  Reference Value (keywords/section): Codes for the representation of names of countries and their subdivisions
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '6.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 6.2.1
+  Section Title: DRIP RAA Allocations
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The HDA values of 0, 4096, 8192, and 12288 are reserved for
+   operational use of an RAA (a by-product of the above mentioned
+   borrowing of bits), in particular to specify when to register with
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The administration, management, and policy for the operation of a
+   DIME at any level in the hierarchy (Apex, RAA or HDA) is out of scope
+   for this document.  For RAAs or DETs allocated on a per...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   DRIP relies on the DNS and as such roughly follows the registrant-
+   registrar-registry model.  In the UAS ecosystem, the registrant would
+   be the end user who owns/controls the Unmanned Aircraf...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The registry maintains a database of the registered domain names and
+   their related metadata such as the contact details for domain name
+   holder and the relevant registrar.  The registry provid...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: STD95
+  Reference Type: TEXT
+  Reference Value (keywords/section): Registration Data Access Protocol (RDAP)
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC95:
+  Search Keywords: 'Registration Data Access Protocol (RDAP)'
+  Result: No matches found
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Registrants have contracts with registrars who in turn have contracts
+   with registries.  Payments follow this model too: the registrant buys
+   services from a registrar who pays for services pro...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   By definition, there can only be one registry for a domain name.  A
+   registry can have an arbitrary number of registrars who compete with
+   each other on price, service, and customer support.
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+     Apex
+     Registry/Registrar
+     (IANA)
+                              +=========================+
+                              | 3.0.0.1.0.0.2.ip6.arpa. |
+                              +=======...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   While the registrant-registrar-registry model is mature and well
+   understood, it may not be appropriate for DRIP registrations in some
+   circumstances.  It could add costs and complexity to deve...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Another approach could be to handle DRIP registrations in a
+   comparable way to how IP address space gets provisioned.  Here,
+   blocks of addresses get delegated to a "trusted" third party,
+   ty...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9374
+  Reference Type: SECTION
+  Reference Value (keywords/section): TEXT
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9374
+  Reference Type: SECTION
+  Reference Value (keywords/section): HHIT records
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9374:
+  Looking for Section: 'TEXT'
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9374:
+  Looking for Section: 'HHIT records'
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Dynamic DRIP registration is another possible solution, for example
+   when the operator of a UAS device registers its corresponding HHIT
+   record and other resources before a flight and deletes t...
+################################################################################
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Registration policies (pricing, renewals, registrar, and registrant
+   agreements, etc.) will need to be developed.  These considerations
+   should be determined by the CAA, perhaps in consultation...
+################################################################################

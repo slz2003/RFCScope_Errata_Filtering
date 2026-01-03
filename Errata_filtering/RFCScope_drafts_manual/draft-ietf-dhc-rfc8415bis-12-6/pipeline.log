@@ -1,0 +1,910 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section 6
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section 6
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/corpus.json
+
+Extracting references from section 6 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/reference_extraction.log
+Focusing on section 6 and its children.
+Processing section 6. Operational Models
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 522.26it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This section describes some of the current most common DHCP
+   operational models.  The described models are not mutually exclusive
+   and are sometimes used together.  For example, a device may st...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP may be extended to support additional stateful services that may
+   interact with one or more of the models described below.  Such
+   interaction should be considered and documented as part of...
+################################################################################
+Warning: Section 6 not found. Processing all sections.
+Processing section 6.1. Stateless DHCP
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 618.31it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Stateless DHCP can be used at any time, typically when a node
+   requires some missing or expired configuration information that is
+   available via DHCP.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This is the simplest and most basic operation for DHCP and requires a
+   client (and a server) to support only two messages --
+   Information-request and Reply.  Note that DHCP servers and relay
+  ...
+################################################################################
+Processing section 6.2. DHCP for Non-temporary Address Assignment
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks:  80%|████████  | 4/5 [00:06<00:01,  1.67s/it]Splitting content into chunks: 100%|██████████| 5/5 [00:15<00:00,  3.50s/it]Splitting content into chunks: 100%|██████████| 5/5 [00:15<00:00,  3.06s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This model of operation was the original motivation for DHCP.  It is
+   appropriate for situations where stateless address autoconfiguration
+   alone is insufficient or impractical, e.g., because o...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  The server is provided with prefixes from which it may assign
+      addresses to clients, as well as any related network topology
+      information as to which prefixes are present on which link...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  A client requests a non-temporary address to be assigned by the
+      server.  The server allocates an address or addresses appropriate
+      for the link on which the client is connected.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  The server returns the allocated address or addresses to the
+      client. 
+   Each address has associated preferred and valid lifetimes (see Section 12.1), which constitute an agreement about t...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 12.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '12.1'
+  Match Type: Exact match
+  Result: Matched to Section 12.1
+  Section Title: Identity Associations for Address Assignment
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Typically, clients request other configuration parameters, such as
+   the DNS name server addresses and domain search lists, when
+   requesting addresses.
+
+   Clients can also request more than one...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.5
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 12
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '6.5'
+  Match Type: Exact match
+  Result: Matched to Section 6.5
+  Section Title: Multiple Addresses and Prefixes
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '12'
+  Match Type: Exact match
+  Result: Matched to Section 12
+  Section Title: Identity Association
+---------------------------------------------------------------------------
+
+Processing section 6.3. DHCP for Prefix Delegation
+Splitting content into chunks:   0%|          | 0/11 [00:00<?, ?it/s]Splitting content into chunks:   9%|▉         | 1/11 [08:20<1:23:23, 500.33s/it]Splitting content into chunks:  18%|█▊        | 2/11 [08:25<31:20, 208.91s/it]  Splitting content into chunks:  36%|███▋      | 4/11 [08:30<09:16, 79.56s/it] Splitting content into chunks:  82%|████████▏ | 9/11 [11:04<01:31, 45.88s/it]Splitting content into chunks:  91%|█████████ | 10/11 [12:17<00:50, 50.34s/it]Splitting content into chunks: 100%|██████████| 11/11 [13:23<00:00, 53.34s/it]Splitting content into chunks: 100%|██████████| 11/11 [13:23<00:00, 73.06s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The prefix delegation mechanism is another stateful mode of operation
+   and was originally intended for simple delegation of prefixes from a
+   DHCP server to DHCP clients (typically routers).  It...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3769
+  Reference Type: TEXT
+  Reference Value (keywords/section): requirements for prefix delegation
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7084
+  Reference Type: TEXT
+  Reference Value (keywords/section): basic requirements for IPv6 customer edge routers
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7368
+  Reference Type: TEXT
+  Reference Value (keywords/section): IPv6 home networking architecture principles
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3769:
+  Search Keywords: 'requirements for prefix delegation'
+  Result: Found in Section 3
+  Section Title: Requirements for Prefix Delegation
+  Content Preview:    The purpose of the prefix delegation mechanism is to delegate and
+   manage prefixes to the CPE a...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7084:
+  Search Keywords: 'basic requirements for IPv6 customer edge routers'
+  Result: Found in Section 4.2
+  Section Title: WAN-Side Configuration
+  Content Preview:    The IPv6 CE router will need to support connectivity to one or more
+   access network architectur...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7368:
+  Search Keywords: 'IPv6 home networking architecture principles'
+  Result: Found in Section 3
+  Section Title: Homenet Architecture Principles
+  Content Preview:    The aim of this text is to outline how to construct advanced IPv6-
+   based home networks involvi...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP prefix delegation itself does not require that the client
+   forward IP packets not addressed to itself and thus does not require
+   that the client (or server) be a router as defined in [RFC8...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8200
+  Reference Type: TEXT
+  Reference Value (keywords/section): Internet Protocol, Version 6 (IPv6) Specification
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '18'
+  Match Type: Exact match
+  Result: Matched to Section 18
+  Section Title: DHCP Configuration Exchanges
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  The server chooses prefix(es) for delegation and responds with
+      prefix(es) to the client. 
+   *  The client is then responsible for the delegated prefix(es).  For
+      example, the client ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each prefix has an associated preferred lifetime and valid lifetime
+   (see Section 12.2), which constitute an agreement about the length of
+   time over which the client is allowed to use the pref...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 12.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '12.2'
+  Match Type: Exact match
+  Result: Matched to Section 12.2
+  Section Title: Identity Associations for Prefix Delegation
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+                      ______________________         \
+                     /                      \         \
+                    |    ISP core network    |         \
+                     \__________...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   In this example, the server (in the ISP core network or integrated in
+   the aggregation device) is configured with a set of prefixes to be
+   used for assignment to customers at the time of each c...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The client subnets the delegated prefix and assigns the longer
+   prefixes to links in the subscriber's network.  In a typical scenario
+   based on the network shown in Figure 1, the client subnets...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The prefix delegation options can be used in conjunction with other
+   DHCP options carrying other configuration information to the client.
+   The client may, in turn, provide DHCP service to nodes...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the client uses a delegated prefix to configure addresses on
+   interfaces on itself or other nodes behind it, the preferred and
+   valid lifetimes of those addresses MUST be no longer than the
+...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC4862
+  Reference Type: TEXT
+  Reference Value (keywords/section): stateless address autoconfiguration
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4862:
+  Search Keywords: 'stateless address autoconfiguration'
+  Result: Found in Section 3
+  Section Title: Design Goals
+  Content Preview:    Stateless autoconfiguration is designed with the following goals in
+   mind:
+
+   o  Manual config...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client that has delegated any of the address space received through
+   DHCP Prefix Delegation MUST NOT issue a DHCP Release on the relevant
+   delegated prefix while any of the address space is o...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9096
+  Reference Type: TEXT
+  Reference Value (keywords/section): Requirement WPD-9
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9096:
+  Search Keywords: 'Requirement WPD-9'
+  Result: Found in Section 2
+  Section Title: Requirements Language
+  Content Preview:    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "R...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   [RFC9096] section 3.3 further provides more guidance on coordination
+   of lifetimes between WAN (DHCPv6-PD client) and LAN (DHCPv6-PD
+   server) sides.
+
+   Several problems related to Prefix Deleg...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9096
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8987
+  Reference Type: TEXT
+  Reference Value (keywords/section): Prefix Delegation and Relay Agents
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9096:
+  Looking for Section: '3.3'
+  Match Type: Exact match
+  Result: Matched to Section 3.3
+  Section Title: Interface between the WAN Side and LAN Side
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8987:
+  Search Keywords: 'Prefix Delegation and Relay Agents'
+  Result: Found in Section 4.1
+  Section Title: General Requirements
+  Content Preview:    G-1:  The delegating relay MUST forward messages bidirectionally
+         between the client and ...
+---------------------------------------------------------------------------
+
+Processing section 6.4. DHCP for Customer Edge Routers
+Splitting content into chunks:   0%|          | 0/1 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 1/1 [01:42<00:00, 102.08s/it]Splitting content into chunks: 100%|██████████| 1/1 [01:42<00:00, 102.08s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The DHCP requirements and network architecture for Customer Edge
+   Routers are described in [RFC7084], with improvements for renumbering
+   described in [RFC9096].  This model of operation combine...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 6.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC7084
+  Reference Type: TEXT
+  Reference Value (keywords/section): Basic Requirements for IPv6 Customer Edge Routers
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC9096
+  Reference Type: TEXT
+  Reference Value (keywords/section): Improving the Reaction of Customer Edge Routers to IPv6 Renumbering Events
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '6.2'
+  Match Type: Exact match
+  Result: Matched to Section 6.2
+  Section Title: DHCP for Non-temporary Address Assignment
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '6.3'
+  Match Type: Exact match
+  Result: Matched to Section 6.3
+  Section Title: DHCP for Prefix Delegation
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7084:
+  Search Keywords: 'Basic Requirements for IPv6 Customer Edge Routers'
+  Result: Found in Section 4.2
+  Section Title: WAN-Side Configuration
+  Content Preview:    The IPv6 CE router will need to support connectivity to one or more
+   access network architectur...
+---------------------------------------------------------------------------
+
+Processing section 6.5. Multiple Addresses and Prefixes
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks:  25%|██▌       | 1/4 [00:03<00:11,  3.99s/it]Splitting content into chunks:  50%|█████     | 2/4 [01:08<01:19, 39.80s/it]Splitting content into chunks:  75%|███████▌  | 3/4 [01:11<00:23, 23.02s/it]Splitting content into chunks: 100%|██████████| 4/4 [01:15<00:00, 15.17s/it]Splitting content into chunks: 100%|██████████| 4/4 [01:15<00:00, 18.76s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP allows a client to receive multiple addresses.  During typical
+   operation, a client sends one instance of an IA_NA option and the
+   server assigns at most one address from each prefix assig...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.4
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.4'
+  Match Type: Exact match
+  Result: Matched to Section 21.4
+  Section Title: Identity Association for Non-temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   To meet the recommendations of [RFC7934], a client can explicitly
+   request multiple addresses by sending multiple IA_NA options.  A
+   client can send multiple IA_NA options in its initial transm...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC7934
+  Reference Type: TEXT
+  Reference Value (keywords/section): Host Address Availability Recommendations
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7934:
+  Search Keywords: 'Host Address Availability Recommendations'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    In most aspects, the IPv6 protocol is very similar to IPv4.  This
+   similarity can create a tend...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The same principle also applies to prefix delegation.  In principle,
+   DHCP allows a client to request new prefixes to be delegated by
+   sending additional IA_PD options (see Section 21.21).  How...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.21
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.21'
+  Match Type: Exact match
+  Result: Matched to Section 21.21
+  Section Title: Identity Association for Prefix Delegation Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The exact behavior of the server (whether to grant additional
+   addresses and prefixes or not) is up to the server policy and is out
+   of scope for this document.
+
+   For more information on how ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 12
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '12'
+  Match Type: Exact match
+  Result: Matched to Section 12
+  Section Title: Identity Association
+---------------------------------------------------------------------------
+
+Processing section 6.6. Registering Self-generated Addresses
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [01:06<01:06, 66.42s/it]Splitting content into chunks: 100%|██████████| 2/2 [02:14<00:00, 67.33s/it]Splitting content into chunks: 100%|██████████| 2/2 [02:14<00:00, 67.19s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   [RFC9686] introduces a method for devices to register their self-
+   generated or statically configured addresses in the DHCPv6 servers.
+   The general idea is that devices would notify the server ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9686
+  Reference Type: TEXT
+  Reference Value (keywords/section): method for devices to register their self-generated or statically configured addresses
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9686:
+  Search Keywords: 'method for devices to register their self-generated or statically configured addresses'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    It is very common operational practice, especially in enterprise
+   networks, to use IPv4 DHCP lo...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The major specificity of this mechanism is that the address selection
+   is not done by the DHCP server, but by the device itself.  The most
+   of the lifecycle remains the same in principle: a lea...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9686
+  Reference Type: TEXT
+  Reference Value (keywords/section): different message types ADDR-REG-INFORM ADDR-REG-REPLY source address requirements
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9686:
+  Search Keywords: 'different message types ADDR-REG-INFORM ADDR-REG-REPLY source address requirements'
+  Result: Found in Section 4.2.1
+  Section Title: Server Message Processing
+  Content Preview:    Servers MUST discard any ADDR-REG-INFORM messages that meet any of
+   the following conditions:
+
+...
+---------------------------------------------------------------------------
+
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 6 only.
+Focusing on section 6 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/section_dependencies.json
+
+Creating prompts for section 6...
+Creating expert prompt for section 6 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/focus_section_6_prompt_expert.md
+Expert prompt token count: 91,362 tokens
+Creating router prompt for section 6...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/focus_section_6_prompt_router.md
+Router prompt token count: 64,790 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section 6
+================================================================================
+2026-01-03 02:42:08,717 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:42:08,739 - __main__ - INFO - Router prompt length: 420930 chars
+2026-01-03 02:42:08,739 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:42:08,739 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:42:08,739 - __main__ - INFO - ================================================================================
+2026-01-03 02:42:09,064 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:42:09,064 - __main__ - INFO - User prompt length: 420930 chars
+2026-01-03 02:43:09,020 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:43:09,441 - __main__ - INFO - Router analysis complete. Bug likelihood: Low
+2026-01-03 02:43:09,441 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:43:09,441 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:43:09,441 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:43:09,441 - __main__ - INFO - ================================================================================
+2026-01-03 02:43:09,443 - __main__ - INFO - 
+Invoking expert: Temporal (MEDIUM)
+2026-01-03 02:43:09,935 - __main__ - INFO - Invoking expert Temporal with manual prompt...
+2026-01-03 02:43:09,935 - __main__ - INFO - User prompt length: 421506 chars
+2026-01-03 02:43:09,935 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:44:31,693 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:44:31,747 - __main__ - INFO - Expert Temporal analysis complete
+2026-01-03 02:44:31,747 - __main__ - INFO - 
+Invoking expert: ActorDirectionality (MEDIUM)
+2026-01-03 02:44:32,113 - __main__ - INFO - Invoking expert ActorDirectionality with manual prompt...
+2026-01-03 02:44:32,113 - __main__ - INFO - User prompt length: 421529 chars
+2026-01-03 02:44:32,113 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:45:16,994 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:45:16,997 - __main__ - INFO - Expert ActorDirectionality analysis complete
+2026-01-03 02:45:16,997 - __main__ - INFO - 
+Invoking expert: Scope (HIGH)
+2026-01-03 02:45:17,249 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 02:45:17,249 - __main__ - INFO - User prompt length: 421550 chars
+2026-01-03 02:45:17,249 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:47:00,203 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:47:00,206 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 02:47:00,206 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 02:47:00,445 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 02:47:00,445 - __main__ - INFO - User prompt length: 424751 chars
+2026-01-03 02:47:00,445 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:47:45,262 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:47:45,345 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 02:47:45,345 - __main__ - INFO - 
+Invoking expert: Deontic (MEDIUM)
+2026-01-03 02:47:45,513 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 02:47:45,513 - __main__ - INFO - User prompt length: 421581 chars
+2026-01-03 02:47:45,513 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:48:58,765 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:48:58,768 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 02:48:58,769 - __main__ - INFO - 
+Invoking expert: CrossRFC (MEDIUM)
+2026-01-03 02:48:59,040 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 02:48:59,041 - __main__ - INFO - User prompt length: 424683 chars
+2026-01-03 02:48:59,041 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:49:53,709 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:49:53,712 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 02:49:53,712 - __main__ - INFO - 
+Invoking expert: Terminology (MEDIUM)
+2026-01-03 02:49:53,927 - __main__ - INFO - Invoking expert Terminology with manual prompt...
+2026-01-03 02:49:53,927 - __main__ - INFO - User prompt length: 424680 chars
+2026-01-03 02:49:53,927 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:50:22,056 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:50:22,059 - __main__ - INFO - Expert Terminology analysis complete
+2026-01-03 02:50:22,059 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 02:50:22,188 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 02:50:22,188 - __main__ - INFO - User prompt length: 421541 chars
+2026-01-03 02:50:22,188 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:51:49,258 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:51:49,261 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 02:51:49,265 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/test_analysis.md
+2026-01-03 02:51:49,271 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6/test_analysis.json
+2026-01-03 02:51:49,271 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-6
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 6 describes operational models for DHCPv6: stateless DHCP, non-temporary address assignment, prefix delegation (including CE-router behavior and renumbering considerations), use of multiple IA_NA/IA_PD instances, and registration of self-generated addresses per RFC 9686.
+Overall Bug Likelihood: Low
+
+Dimensions:
+  - Temporal: MEDIUM - Lifetimes, renewal/rebind timing, and constraints about when Release may be sent depend on time and state.
+  - ActorDirectionality: MEDIUM - Clear role separation (client, server, PD client vs downstream clients) is important for Release behavior and prefix/address use.
+  - Scope: HIGH - Text mixes global vs delegated prefixes, WAN vs LAN lifetimes, and multiple IA instances; correctness depends on scoping each rule to the right context.
+  - Causal: MEDIUM - Instructions about not releasing PD while space is “outstanding”, and constraints on derived address lifetimes, can affect whether downstream hosts lose connectivity or violate BCP 9096.
+  - Quantitative: LOW - Lifetimes are involved but no tricky numeric ranges; mostly qualitative “must not exceed” relations.
+  - Deontic: MEDIUM - Several strong MUST/MUST NOT requirements (e.g., no Release while space is outstanding; lifetime constraints) that could conflict with other sections or external RFCs if misphrased.
+  - Structural: LOW - No ABNF/YANG/etc. in this section; structure is mostly prose.
+  - CrossRFC: MEDIUM - Behavior is explicitly tied to RFC 7084, 7368, 3769, 9096, 8987, 7934, and 9686; consistency with those specs matters.
+  - Terminology: MEDIUM - Uses defined terms “lease”, “binding”, and “delegated prefix”; minor misuse could cause confusion for implementers.
+  - Boundary: MEDIUM - Text addresses edge conditions (valid lifetime expiry, “outstanding” sub-allocations, self-generated addresses) where behavior must be clear.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Misuse of “lease” terminology for self-generated address registration (RFC 9686 model)
+    Relevant Dimensions: Terminology, Causal, CrossRFC
+    Sketch: In Section 4, this draft defines “lease” as a contract by which the server *grants* use of an addres...
+
+Response ID: resp_022b4f1d735f8442006958c853635c8194bcfc7ed6429159f6
+
+## Temporal Expert Analysis
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    Section 6 is mostly descriptive, laying out operational “models” that are then normatively defined later (Sections 12, 14, 18, 21) or in external RFCs (9096, 9686, 7934). The basic time-related behaviors—address/prefix lifetimes, T1/T2, renew/rebind, and release—are controlled elsewhere and generally consistent. The main temporal risks in Section 6 are not hard contradictions but spots where the prose could be read as implying behaviors that are unders...
+
+## ActorDirectionality Expert Analysis
+--------------------------------------------------------------------------------
+ActorDirectionalityReport:
+- ExcerptSummary:  
+  Section 6 describes several DHCPv6 operational models (stateless configuration, stateful IA_NA address assignment, IA_PD prefix delegation, combined CE‑router behavior, multiple IA_NA/IA_PD instances, and registration of self‑generated addresses). The primary actors are DHCPv6 clients (including CE routers acting as clients upstream), servers, and in the registration case, devices that self‑select addresses and inform servers.
+
+- OverallAssessment...
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 6 describes several DHCPv6 operational models (stateless, IA_NA, IA_PD, CE router, multiple IA_NA/IA_PD, RFC 9686 registration) and gives some cross-cutting lifecycle constraints, especially around prefix delegation and use of delegated space downstream.
+
+- ScopeModel:
+  - Targets:
+    - DHCPv6 clients in general, on a given interface, assumed to interact with servers from a single provisioning domain (Section 6).
+    - IA_NA-based non-temporary address a...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. Summary
+
+Section 6.6’s use of “lease” for RFC 9686 address registration is terminologically loose relative to the earlier definition, but it does not create a concrete protocol failure. If an implementer follows 8415bis plus RFC 9686 literally, behavior is coherent and interoperable; the server still only logs and tracks self-generated addresses rather than “assigning” them in the DHCP sense.
+
+2. Causal Analysis
+
+Walk through what actually happens for self-generated address registration:
+
+- A...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 6 normatively describes DHCPv6 operational models, especially (a) non‑temporary address assignment, (b) prefix delegation and its interaction with SLAAC, DHCPv6 servers on the LAN side, and CE routers, and (c) the conditions under which a PD client may send a Release. It also references external BCPs (RFC 7084, RFC 9096, RFC 7934, RFC 9686) to align lifetime coordination and CE‑router behavior.
+
+- OverallDeonticRisk: None
+
+- Issues:
+  - Issue-1:
+    - B...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 6 presents several DHCPv6 operational models (stateless, IA_NA address assignment, prefix delegation, CE-router behavior, multiple IA_NA/IA_PD, and RFC 9686 registration). It references external RFCs for CE-router requirements, renumbering behavior, prefix‑delegation practices, and registration of self-generated addresses. Two cross-RFC issues arise: a misattributed normative reference to RFC 9096 WPD‑9 and a potentially misleading reuse of the term “lea...
+
+## Terminology Expert Analysis
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - Severity: Medium
+    - ShortLabel: Misuse of “lease” terminology for RFC 9686 self‑generated address registration
+    - Evidence:
+      - ExcerptSnippets:
+        - Definition of “lease” in Section 4.2 (DHCP Terminology):  
+          “lease  A contract by which the server grants the use of an address or delegated prefix to the client for a specified period of time.”
+        - Section 6.6...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 6 describes several operational “modes” over the same base DHCPv6 machinery: pure stateless use (Information‑request only), non‑temporary address assignment via IA_NA, prefix delegation via IA_PD including CE-router/LAN behavior and renumbering, the combined CE model, use of multiple IA_NA/IA_PD instances to get multiple addresses/prefixes, and a pointer to the ADDR‑REG‑INFORM/ADDR‑REG‑REPLY registration model from RFC 9686. The relevant state sp...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Low
+Experts: ✓ 8 invoked
+  Dimensions: Temporal, ActorDirectionality, Scope, Causal, Deontic, CrossRFC, Terminology, Boundary
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section 6
+################################################################################
+

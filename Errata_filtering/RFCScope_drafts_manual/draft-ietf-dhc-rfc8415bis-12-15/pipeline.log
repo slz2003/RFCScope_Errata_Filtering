@@ -1,0 +1,450 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section 15
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section 15
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/corpus.json
+
+Extracting references from section 15 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/reference_extraction.log
+Focusing on section 15 and its children.
+Processing section 15. Reliability of Client-Initiated Message Exchanges
+Splitting content into chunks:   0%|          | 0/12 [00:00<?, ?it/s]Splitting content into chunks:   8%|▊         | 1/12 [00:03<00:39,  3.55s/it]Splitting content into chunks:  17%|█▋        | 2/12 [00:05<00:25,  2.59s/it]Splitting content into chunks:  33%|███▎      | 4/12 [00:10<00:21,  2.64s/it]Splitting content into chunks:  42%|████▏     | 5/12 [00:15<00:22,  3.18s/it]Splitting content into chunks: 100%|██████████| 12/12 [00:15<00:00,  1.27s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP clients are responsible for reliable delivery of messages in the
+   client-initiated message exchanges described in Section 18.  If a
+   DHCP client fails to receive an expected response from ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '18'
+  Match Type: Exact match
+  Result: Matched to Section 18
+  Section Title: DHCP Configuration Exchanges
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Note that the procedure described in this section is slightly
+   modified when used with the Solicit message.  The modified procedure
+   is described in Section 18.2.1.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '18.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 18.2.1
+  Section Title: Creation and Transmission of Solicit Messages
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The client begins the message exchange by transmitting a message to
+   the server.  The message exchange terminates when either (1) the
+   client successfully receives the appropriate response or r...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The client MUST update an "elapsed-time" value within an Elapsed Time
+   option (see Section 21.9) in the retransmitted message.  In some
+   cases, the client may also need to modify values in IA A...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.9
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.6
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.22
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.9'
+  Match Type: Exact match
+  Result: Matched to Section 21.9
+  Section Title: Elapsed Time Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.6'
+  Match Type: Exact match
+  Result: Matched to Section 21.6
+  Section Title: IA Address Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.22'
+  Match Type: Exact match
+  Result: Matched to Section 21.22
+  Section Title: IA Prefix Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Specific values for each of these parameters relevant to the various
+   messages are given in the subsections of Section 18.2, using values
+   defined in Table 1 in Section 7.6.  The algorithm for ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.2
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '18.2'
+  Match Type: Exact match
+  Result: Matched to Section 18.2
+  Section Title: Client Behavior
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '7.6'
+  Match Type: Exact match
+  Result: Matched to Section 7.6
+  Section Title: Transmission and Retransmission Parameters
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   With each message transmission or retransmission, the client sets RT
+   according to the rules given below.  If RT expires before the message
+   exchange terminates, the client recomputes RT and re...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each of the computations of a new RT includes a randomization factor
+   (RAND), which is a random number chosen with a uniform distribution
+   between -0.1 and +0.1.  The randomization factor is in...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The algorithm for choosing a random number does not need to be
+   cryptographically sound.  The algorithm SHOULD produce a different
+   sequence of random numbers from each invocation of the DHCP c...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   MRT specifies an upper bound on the value of RT (disregarding the
+   randomization added by the use of RAND).  If MRT has a value of 0,
+   there is no upper limit on the value of RT.  Otherwise:
+
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   MRC specifies an upper bound on the number of times a client may
+   retransmit a message.  Unless MRC is zero, the message exchange fails
+   once the client has transmitted the message MRC times.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   MRD specifies an upper bound on the length of time a client may
+   retransmit a message.  Unless MRD is zero, the message exchange fails
+   once MRD seconds have elapsed since the client first tran...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client is not expected to listen for a response during the entire
+   RT period and may turn off listening capabilities after waiting at
+   least the shorter of RT and MAX_WAIT_TIME due to power c...
+################################################################################
+Warning: Section 15 not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 15 only.
+Focusing on section 15 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/section_dependencies.json
+
+Creating prompts for section 15...
+Creating expert prompt for section 15 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/focus_section_15_prompt_expert.md
+Expert prompt token count: 62,808 tokens
+Creating router prompt for section 15...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/focus_section_15_prompt_router.md
+Router prompt token count: 63,134 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section 15
+================================================================================
+2026-01-03 03:07:32,610 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:07:32,632 - __main__ - INFO - Router prompt length: 291715 chars
+2026-01-03 03:07:32,632 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:07:32,632 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:07:32,632 - __main__ - INFO - ================================================================================
+2026-01-03 03:07:32,752 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:07:32,752 - __main__ - INFO - User prompt length: 291715 chars
+2026-01-03 03:08:16,816 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:08:17,123 - __main__ - INFO - Router analysis complete. Bug likelihood: Medium
+2026-01-03 03:08:17,123 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:08:17,123 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:08:17,123 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:08:17,123 - __main__ - INFO - ================================================================================
+2026-01-03 03:08:17,124 - __main__ - INFO - 
+Invoking expert: Temporal (MEDIUM)
+2026-01-03 03:08:17,284 - __main__ - INFO - Invoking expert Temporal with manual prompt...
+2026-01-03 03:08:17,284 - __main__ - INFO - User prompt length: 292271 chars
+2026-01-03 03:08:17,284 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:11:04,736 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:11:04,767 - __main__ - INFO - Expert Temporal analysis complete
+2026-01-03 03:11:04,768 - __main__ - INFO - 
+Invoking expert: Causal (HIGH)
+2026-01-03 03:11:04,886 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 03:11:04,886 - __main__ - INFO - User prompt length: 293963 chars
+2026-01-03 03:11:04,886 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:11:45,246 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:11:45,251 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 03:11:45,252 - __main__ - INFO - 
+Invoking expert: Quantitative (HIGH)
+2026-01-03 03:11:45,360 - __main__ - INFO - Invoking expert Quantitative with manual prompt...
+2026-01-03 03:11:45,361 - __main__ - INFO - User prompt length: 293972 chars
+2026-01-03 03:11:45,361 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:12:52,125 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:12:52,127 - __main__ - INFO - Expert Quantitative analysis complete
+2026-01-03 03:12:52,127 - __main__ - INFO - 
+Invoking expert: Deontic (MEDIUM)
+2026-01-03 03:12:52,245 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 03:12:52,245 - __main__ - INFO - User prompt length: 293981 chars
+2026-01-03 03:12:52,245 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:13:33,691 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:13:33,694 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 03:13:33,694 - __main__ - INFO - 
+Invoking expert: Terminology (MEDIUM)
+2026-01-03 03:13:33,806 - __main__ - INFO - Invoking expert Terminology with manual prompt...
+2026-01-03 03:13:33,807 - __main__ - INFO - User prompt length: 293971 chars
+2026-01-03 03:13:33,807 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:14:31,780 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:14:31,783 - __main__ - INFO - Expert Terminology analysis complete
+2026-01-03 03:14:31,783 - __main__ - INFO - 
+Invoking expert: Boundary (MEDIUM)
+2026-01-03 03:14:31,894 - __main__ - INFO - Invoking expert Boundary with manual prompt...
+2026-01-03 03:14:31,894 - __main__ - INFO - User prompt length: 292338 chars
+2026-01-03 03:14:31,894 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:15:32,869 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:15:32,872 - __main__ - INFO - Expert Boundary analysis complete
+2026-01-03 03:15:32,875 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/test_analysis.md
+2026-01-03 03:15:32,880 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15/test_analysis.json
+2026-01-03 03:15:32,880 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-15
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 15 defines the generic retransmission algorithm for all client‑initiated DHCPv6 exchanges (RT/IRT/MRT/MRD/MRC/RAND), including how elapsed time and timeouts are computed and when a message exchange is deemed to have failed.
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: MEDIUM - Timeouts, backoff, and termination conditions are central, but the logic itself is straightforward and consistent with other sections.
+  - ActorDirectionality: LOW - Only the client’s behavior is described; no role confusion or bidirectional flows here.
+  - Scope: LOW - The scope (client‑initiated exchanges as per Section 18) is clearly stated and not obviously misapplied.
+  - Causal: HIGH - The RT/IRT/MRT/MRD/MRC rules directly determine when clients stop retransmitting, so any ambiguity here changes concrete behavior.
+  - Quantitative: HIGH - Definitions involve counts of retransmissions and timer values; a subtle off‑by‑one or range interpretation error is exactly in this space.
+  - Deontic: MEDIUM - There are MUST/SHOULD requirements for how to use these parameters, but the main concern is semantic clarity rather than conflicting MUST/SHOULDs.
+  - Structural: LOW - No ABNF/YANG/etc.; just prose algorithm, so little structural risk.
+  - CrossRFC: LOW - This largely mirrors RFC 8415; any issue is internal wording/semantics, not external registry or reference mismatch.
+  - Terminology: MEDIUM - The use of “retransmit”, “transmit”, “retransmission count” all for MRC is slightly inconsistent and can cause interpretation confusion.
+  - Boundary: MEDIUM - Edge conditions (MRC=0, MRD=0, very long exchanges) are explicitly discussed and generally covered, but how “maximum retransmission count” is applied at the boundary is exactly where ambiguity appears.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: Underspecification
+    Label: Ambiguous interpretation of MRC (maximum retransmission count) vs total transmissions
+    Relevant Dimensions: Quantitative, Causal, Terminology, Deontic
+    Sketch: Section 15 defines MRC as “Maximum retransmission count” and states: “MRC specifies an upper bound o...
+
+Response ID: resp_037d4907ef1800b4006958ce462e048197aab06c6e2eef8984
+
+## Temporal Expert Analysis
+--------------------------------------------------------------------------------
+TemporalAnalysis:
+  HighLevelSummary: |
+    Section 15 defines a generic per‑message retransmission timeline (RT/IRT/MRT/MRD/MRC/RAND) that is then instantiated for each client‑initiated exchange in Section 18 using the constants of Section 7.6 and elapsed‑time semantics of Section 21.9. The overall temporal model is coherent and lines up with the per‑message descriptions (Request, Renew, Confirm, etc.), including special handling for Solicit and for T1/T2‑bound renewals.  
+    The main temporal...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Following Section 15 literally gives a well‑defined, executable retransmission algorithm. The only real issue in the cited text is a small wording inconsistency around MRC that can be read in two ways, but either reading only changes the number of retries by one and does not break interoperability or correctness in any fundamental way.
+
+---
+
+2. **Causal Analysis**
+
+Section 15 defines:
+
+- `MRC` = *Maximum retransmission count*  
+- “MRC specifies an upper bound on the number of tim...
+
+## Quantitative Expert Analysis
+--------------------------------------------------------------------------------
+QuantitativeAnalysis:
+- ExcerptSummary: Section 15 defines a generic retransmission algorithm for client‑initiated DHCPv6 exchanges, parameterized by timers (IRT, RT, MRT, MRD), a maximum retry counter (MRC), and a randomization factor (RAND). These parameters are then instantiated with concrete numeric defaults for each message type in Table 1 and the per‑message subsections of Section 18. The core numeric question is how many times a client is required/permitted to send a given message before ...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: Section 15 defines the generic client retransmission algorithm and the semantics of the control parameters RT, IRT, MRT, MRD, MRC, and RAND, including when a client-initiated exchange is deemed to have failed.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Ambiguous and conflicting semantics for MRC (maximum retransmission count)
+    - Description:  
+      Section 15 normatively defines MRC as “Maximum retransmi...
+
+## Terminology Expert Analysis
+--------------------------------------------------------------------------------
+TerminologyAnalysis:
+- OverallBugLikelihood: Medium
+- Issues:
+  - Issue-1:
+    - BugType: Underspecification
+    - Severity: Medium
+    - ShortLabel: Ambiguous meaning of MRC (maximum retransmission count) vs total transmissions
+    - Evidence:
+      - ExcerptSnippets:
+        - Section 15 (variable definitions):  
+          “The client retransmission behavior is controlled and described by the following variables:  
+          …  
+          MRC        Maximum retransmission count”
+        - Sect...
+
+## Boundary Expert Analysis
+--------------------------------------------------------------------------------
+BoundaryAnalysis:
+- ExcerptUnderstanding: Section 15 defines a generic, parameterized retransmission algorithm for all client‑initiated DHCPv6 exchanges, driven by variables RT, IRT, MRT, MRC, MRD, and RAND. Defaults and per‑message values for these variables are given in Table 1 and the per‑exchange subsections of 18.2. The section also ties into the Elapsed Time option and MAX_WAIT_TIME, and defines when a message exchange is considered to have failed.
+
+- OverallBoundaryBugLikelihood: Medium
+
+...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Medium
+Experts: ✓ 6 invoked
+  Dimensions: Temporal, Causal, Quantitative, Deontic, Terminology, Boundary
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section 15
+################################################################################
+

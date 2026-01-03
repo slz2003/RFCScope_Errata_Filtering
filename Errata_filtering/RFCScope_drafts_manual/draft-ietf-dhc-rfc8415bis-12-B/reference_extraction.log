@@ -1,0 +1,84 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-B/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The following tables indicate with a "*" the options that are allowed
+   in each DHCP message type.
+
+   These tables are informational.  If they conflict with text earlier
+   in this document, that...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+           Client Server                         Elap. Relay
+             ID     ID   IA_NA IA_PD  ORO   Pref Time   Msg. Auth.
+   Solicit   *             *     *     *           *
+   Advert.   *     ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   NOTE: The Server Identifier option (see Section 21.3) is only
+   included in Information-request messages that are sent in response to
+   a Reconfigure (see Section 18.2.6). 
+                      ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.2.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '18.2.6'
+  Match Type: Exact match
+  Result: Matched to Section 18.2.6
+  Section Title: Creation and Transmission of Information-request Messages
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+           SOL_MAX_RT  INF_MAX_RT
+   Solicit
+   Advert.    *
+   Request
+   Confirm
+   Renew
+   Rebind
+   Decline
+   Release
+   Reply      *           *
+   Reconf.
+   Inform.
+   R-forw.
+   R-repl.
+################################################################################

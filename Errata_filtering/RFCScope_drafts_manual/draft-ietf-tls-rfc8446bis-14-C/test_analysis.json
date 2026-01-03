@@ -1,0 +1,66 @@
+{
+  "routing_summary": {
+    "excerpt_summary": "Appendix C gives non-normative implementation advice for TLS 1.3, covering random number generation, certificate handling, common pitfalls, tracking prevention, and unauthenticated operation, with references to other RFCs and research.",
+    "overall_bug_likelihood": "None",
+    "dimensions": {
+      "Temporal": {
+        "relevance": "LOW",
+        "explanation": "Mostly static guidance, not about event ordering beyond restating existing handshake rules."
+      },
+      "ActorDirectionality": {
+        "relevance": "LOW",
+        "explanation": "Mentions client/server roles only in high-level advice, no new directionality rules."
+      },
+      "Scope": {
+        "relevance": "LOW",
+        "explanation": "Advice is clearly scoped as implementation guidance; it does not redefine protocol semantics."
+      },
+      "Causal": {
+        "relevance": "LOW",
+        "explanation": "Guidance describes potential failure modes but does not introduce new normative algorithms that could break implementations."
+      },
+      "Quantitative": {
+        "relevance": "LOW",
+        "explanation": "Contains example key sizes and “100 bits a minute / 10,000 bits a second” style text, but these are illustrative, not normative limits."
+      },
+      "Deontic": {
+        "relevance": "LOW",
+        "explanation": "Uses some MUST/SHOULD in a purely advisory appendix; these are consistent with the main spec’s normative text."
+      },
+      "Structural": {
+        "relevance": "LOW",
+        "explanation": "No new formal grammars or structures beyond references to existing ones; nothing to compare against prose."
+      },
+      "CrossRFC": {
+        "relevance": "LOW",
+        "explanation": "References to RFC4086, RFC8937, RFC8448, RFC8879, RFC7250, RFC6979, etc., appear correct and aligned with their intended use."
+      },
+      "Terminology": {
+        "relevance": "LOW",
+        "explanation": "Uses existing TLS 1.3 terms consistently (e.g., ClientHello.random, legacy_record_version, etc.)."
+      },
+      "Boundary": {
+        "relevance": "LOW",
+        "explanation": "Notes edge cases (e.g., malformed all-zero padding, weak RNG) but only as implementation cautions; no new edge-case behavior is specified."
+      }
+    },
+    "candidate_issues": [
+      {
+        "bug_type": "None",
+        "short_label": "No substantive inconsistencies or underspecification found in Appendix C",
+        "relevant_dimensions": [],
+        "sketch_for_experts": "Appendix C is largely explanatory and advisory, reinforcing requirements already normatively stated elsewhere (record version handling, fragmentation rules, ignoring unknown extensions, etc.) and recommending best practices (separate RNGs, deterministic ECDSA, RSA-CRT hardening). Cross-checks against the referenced sections (e.g., RFC8446/8446bis core text, RFC8879 for certificate compression, RFC6979 for deterministic ECDSA) show no contradictions or obvious omissions that would materially affect interoperability or security."
+      }
+    ]
+  },
+  "expert_analyses": {},
+  "vector_store_ids": [
+    "vs_6958ce993c388191a7c9f32559e3b152"
+  ],
+  "metadata": {
+    "model": "gpt-5.1",
+    "router_reasoning_effort": "medium",
+    "expert_reasoning_effort": "medium",
+    "test_mode": "manual"
+  }
+}

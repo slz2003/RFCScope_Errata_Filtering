@@ -1,0 +1,159 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section 2
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section 2
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/corpus.json
+
+Extracting references from section 2 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/reference_extraction.log
+Focusing on section 2 and its children.
+Processing section 2. Requirements
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [01:06<01:06, 66.70s/it]Splitting content into chunks: 100%|██████████| 2/2 [01:06<00:00, 33.35s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as d...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC2119
+  Reference Type: TEXT
+  Reference Value (keywords/section): key words interpretation
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8174
+  Reference Type: TEXT
+  Reference Value (keywords/section): uppercase lowercase ambiguity
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8174:
+  Search Keywords: 'uppercase lowercase ambiguity'
+  Result: Found in Section 2
+  Section Title: Clarifying Capitalization of Key Words
+  Content Preview:    The following change is made to [RFC2119]:
+
+   === OLD ===
+   In many standards track documents s...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This document also makes use of internal conceptual variables to
+   describe protocol behavior and external variables that an
+   implementation must allow system administrators to change.  The
+   s...
+################################################################################
+Warning: Section 2 not found. Processing all sections.
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 2 only.
+Focusing on section 2 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/section_dependencies.json
+
+Creating prompts for section 2...
+Creating expert prompt for section 2 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/focus_section_2_prompt_expert.md
+Expert prompt token count: 63,033 tokens
+Creating router prompt for section 2...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/focus_section_2_prompt_router.md
+Router prompt token count: 62,388 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section 2
+================================================================================
+2026-01-03 02:09:09,509 - __main__ - INFO - Loading router user prompt...
+2026-01-03 02:09:09,520 - __main__ - INFO - Router prompt length: 292605 chars
+2026-01-03 02:09:09,520 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:09:09,521 - __main__ - INFO - TESTING ROUTER
+2026-01-03 02:09:09,521 - __main__ - INFO - ================================================================================
+2026-01-03 02:09:09,903 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 02:09:09,904 - __main__ - INFO - User prompt length: 292605 chars
+2026-01-03 02:09:23,748 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 02:09:24,487 - __main__ - INFO - Router analysis complete. Bug likelihood: None
+2026-01-03 02:09:24,488 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 02:09:24,488 - __main__ - INFO - 
+================================================================================
+2026-01-03 02:09:24,488 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 02:09:24,488 - __main__ - INFO - ================================================================================
+2026-01-03 02:09:24,505 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/test_analysis.md
+2026-01-03 02:09:24,507 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2/test_analysis.json
+2026-01-03 02:09:24,507 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-2
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 2 defines how RFC 2119 / RFC 8174 key words are to be interpreted (BCP 14 boilerplate) and explains that named variables in the spec are conceptual, not mandated implementation artifacts, as long as external behavior matches.
+Overall Bug Likelihood: None
+
+Dimensions:
+  - Temporal: LOW - No ordering, timers, or sequencing rules are defined here.
+  - ActorDirectionality: LOW - No client/server role behavior or directionality is being specified beyond generic “implementation” language.
+  - Scope: LOW - The scope of the BCP 14 language and variables is clear and standard; nothing suggests scope confusion.
+  - Causal: LOW - This is high-level interpretive text; no algorithmic or behavioral instructions whose cause/effect could be wrong.
+  - Quantitative: LOW - No numeric ranges, lengths, or counts are involved.
+  - Deontic: LOW - The BCP 14 boilerplate is exactly the recommended text from RFC 8174; no conflicting requirements are introduced.
+  - Structural: LOW - No ABNF/YANG/diagrams or other formalisms in this section.
+  - CrossRFC: LOW - References to RFC 2119 and RFC 8174 as BCP 14 appear correct and aligned with the quoted boilerplate.
+  - Terminology: LOW - Terms like “internal conceptual variables” vs “external variables” are clearly distinguished; no naming collision with protocol fields.
+  - Boundary: LOW - No edge-case behaviors or boundary conditions are described here.
+
+Candidate Issues: 1
+
+  Issue 1:
+    Type: None
+    Label: No plausible issues in Section 2 “Requirements”
+    Relevant Dimensions: 
+    Sketch: Section 2 uses the exact BCP 14 boilerplate from RFC 8174 and adds a standard clarification about co...
+
+Response ID: resp_057864440ac3a595006958c099671081959346bbae8ceda8a2
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: None
+Experts: - Not tested
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section 2
+################################################################################
+

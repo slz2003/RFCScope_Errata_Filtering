@@ -1,0 +1,66 @@
+{
+  "routing_summary": {
+    "excerpt_summary": "Section D normatively renames TLS 1.2 terms from RFC 5246 and RFC 7627 (e.g., “master secret” → “main secret”, “extended_master_secret” extension → “extended_main_secret”), while explicitly keeping the on-the-wire PRF label strings unchanged for compatibility. It is a terminology and registry-update section, not a new protocol mechanism.",
+    "overall_bug_likelihood": "None",
+    "dimensions": {
+      "Temporal": {
+        "relevance": "LOW",
+        "explanation": "No sequencing, timers, or state-machine changes are introduced here."
+      },
+      "ActorDirectionality": {
+        "relevance": "LOW",
+        "explanation": "No sender/receiver role logic is affected; only names of secrets and structures."
+      },
+      "Scope": {
+        "relevance": "LOW",
+        "explanation": "The scope (“TLS 1.2 terminology and the RFC 7627 extension”) is clear and constrained; no subtle per-context rules."
+      },
+      "Causal": {
+        "relevance": "LOW",
+        "explanation": "Renames are explicitly stated as non-changing for PRF labels, so implementing this section literally does not alter protocol behavior."
+      },
+      "Quantitative": {
+        "relevance": "LOW",
+        "explanation": "No numeric ranges, lengths, or counts are modified."
+      },
+      "Deontic": {
+        "relevance": "LOW",
+        "explanation": "There are no new or conflicting MUST/SHOULD behavior requirements; the text is descriptive/renaming."
+      },
+      "Structural": {
+        "relevance": "LOW",
+        "explanation": "No new ABNF/YANG/ASN.1/struct definitions affecting encodings; only names of existing structs/variables are being conceptually renamed."
+      },
+      "CrossRFC": {
+        "relevance": "LOW",
+        "explanation": "References to RFC 5246 §8.1 and §7.4.7.1 and RFC 7627 §4 are correct and consistent with their contents; IANA rename for the extension is also mirrored in §11.1."
+      },
+      "Terminology": {
+        "relevance": "LOW",
+        "explanation": "This section is purely about terminology alignment; the “master”→“main” vs. PRF label “master secret” mismatch is explicitly called out as intentional for compatibility."
+      },
+      "Boundary": {
+        "relevance": "LOW",
+        "explanation": "No edge-case protocol behaviors or limits are affected."
+      }
+    },
+    "candidate_issues": [
+      {
+        "bug_type": "None",
+        "short_label": "No substantive protocol or interoperability error in TLS 1.2 update/renaming text",
+        "relevant_dimensions": [],
+        "sketch_for_experts": "Section D only renames the TLS 1.2 “master/premaster” terminology and the RFC 7627 extension name and registry label, while explicitly preserving the PRF label strings (“master secret”, “extended master secret”) for compatibility. The referenced RFC 5246 and RFC 7627 sections match what is described, and the IANA action in §11.1 is consistent with the extension rename. There is an acknowledged and intentional textual mismatch between variable names (“main secret”) and PRF label strings (“master secret”), but this is documented elsewhere in the draft and does not change wire behavior or algorithm semantics. No plausible inconsistency or underspecification that would change protocol behavior or break interoperability is evident."
+      }
+    ]
+  },
+  "expert_analyses": {},
+  "vector_store_ids": [
+    "vs_6958ce993c388191a7c9f32559e3b152"
+  ],
+  "metadata": {
+    "model": "gpt-5.1",
+    "router_reasoning_effort": "medium",
+    "expert_reasoning_effort": "medium",
+    "test_mode": "manual"
+  }
+}

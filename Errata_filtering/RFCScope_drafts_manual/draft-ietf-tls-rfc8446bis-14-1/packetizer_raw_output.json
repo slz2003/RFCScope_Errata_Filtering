@@ -1,0 +1,58 @@
+{
+  "reports": [
+    {
+      "label": "Unspecified Candidate Issue without Detailed Information",
+      "bug_type": "Candidate/Placeholder",
+      "explanation": "A candidate issue is noted in the analysis with no explicit details, label, or relevant dimensions provided.",
+      "justification": [
+        "The analysis lists 'Candidate Issues: 1' followed by 'Issue 1' with Type: None, an empty Label, and an empty Relevant Dimensions field, indicating a placeholder candidate. (E1)"
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The candidate issue is mentioned as a placeholder with no further details."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "All dimensions in the analysis are rated LOW and the candidate issue entry provides no information that suggests a higher-impact problem.",
+      "confidence": "High",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-tls-rfc8446bis-14-1-1"
+    },
+    {
+      "label": "Editorial Terminology Change: 'master' to 'main'",
+      "bug_type": "Editorial",
+      "explanation": "The analysis flags an editorial change where 'master' has been renamed to 'main', which could be ambiguous to some readers despite being a stylistic update.",
+      "justification": [
+        "The Terminology dimension states that definitions are standard but explicitly notes the 'master'→'main' renaming as an editorial/terminological change. (E2)"
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E2",
+            "text": "- Terminology: LOW - Definitions of “client”, “server”, “handshake”, etc. are standard and used consistently; the “master”→“main” renaming is clearly flagged as editorial/terminological."
+          }
+        ],
+        "summary": [
+          "(E2) The editorial note on the renaming of 'master' to 'main' is mentioned as a low-severity terminology issue."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "Editorial changes generally have low impact on technical correctness, and the analysis rates this under a LOW severity dimension.",
+      "confidence": "High",
+      "experts": [
+        "Router Analysis: Terminology"
+      ],
+      "report_id": "draft-ietf-tls-rfc8446bis-14-1-2"
+    }
+  ]
+}

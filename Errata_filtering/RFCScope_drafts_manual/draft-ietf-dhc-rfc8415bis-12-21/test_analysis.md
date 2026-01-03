@@ -1,0 +1,357 @@
+================================================================================
+COMPLETE ANALYSIS RESULT
+================================================================================
+
+RFC: Unknown
+Section: Unknown
+Model: gpt-5.1
+
+================================================================================
+ROUTER ANALYSIS
+================================================================================
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 21 defines the base DHCPv6 option formats and semantics (Client/Server IDs, IA_NA/IA_PD, IA Address/Prefix, ORO, status codes, timers, vendor options, etc.), plus some surrounding text that constrains their use.
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: LOW - Option definitions mostly concern static format/semantics; no sequencing or timers beyond basic lifetimes/T1/T2 already specified elsewhere.
+  - ActorDirectionality: LOW - Roles (client/server/relay) are clear for each option; no evident sender/receiver inversions within section 21.
+  - Scope: MEDIUM - There are subtle distinctions between “top-level” vs encapsulated options and per-interface vs global parameters that affect how ORO and some options are supposed to apply.
+  - Causal: MEDIUM - If implementers follow some of the normative text literally (especially around ORO), some widely deployed behaviors become non‑conformant and could break client expectations.
+  - Quantitative: LOW - Lengths and field sizes in the option formats are internally consistent; no obvious off‑by‑N or range errors.
+  - Deontic: HIGH - There is at least one clear tension between “MUST/MAY” requirements in different sections (especially around whether servers may send unsolicited options).
+  - Structural: MEDIUM - One clear intra‑document cross‑reference error involving a section 21 option, plus structural interaction between option scoping and RFC 7227 / IANA guidance.
+  - CrossRFC: MEDIUM - Behavior of IAADDR and some ORO guidance interacts with RFC 5007, RFC 6603, RFC 7227, and the IANA option registry; worth a careful cross‑check.
+  - Terminology: LOW - Terminology around IA/IA_NA/IA_PD, “top-level option”, “encapsulated option”, etc., is fairly consistent; issues are more about cross‑section references than naming.
+  - Boundary: LOW - Edge cases (e.g., T1/T2=0, infinity values) are already carefully constrained; section 21 just references those rules.
+
+Candidate Issues: 2
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Conflict between ORO semantics in Section 21.7 and server behavior allowed in Section 18.3
+    Relevant Dimensions: Deontic, Structural, Scope, Causal, CrossRFC
+    Sketch: Section 21.7 says:  
+      > “Other top-level option codes MUST appear in the Option Request option ...
+
+  Issue 2:
+    Type: Inconsistency
+    Label: Mispointed cross-reference for IA Address as “encapsulated option” (points to Section 21.5 instead of 21.6)
+    Relevant Dimensions: Structural, CrossRFC
+    Sketch: In Section 4.2 (“encapsulated option”), the text says:  
+      > “For example, the IA Address option...
+
+Response ID: resp_00f38045f4dc0b35006958d48c5fe081959dc2649707fa1676
+
+================================================================================
+EXPERT ANALYSES
+================================================================================
+================================================================================
+REASONING EXPERT ANALYSES
+================================================================================
+
+## Scope Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 21.7 defines the Option Request option (ORO), including which option codes may/must appear in it and how that controls what options servers send. Section 18.3 describes general server behavior when replying, including whether servers may send options beyond those explicitly requested in the ORO.
+
+- ScopeModel:
+  - Targets:
+    - DHCPv6 top-level options in server-to-client replies (e.g., DNS options, SOL_MAX_RT/INF_MAX_RT, Vendor options).
+    - The Option Request option (OPTION_ORO) carried in client Solicit/Request/Renew/Rebind/Information-request messages.
+    - Encapsulated options inside container options (e.g., IA_NA/IA_PD, Vendor-specific, Softwire containers).
+    - Server behavior in constructing Advertise/Reply messages (Section 18.3).
+  - Conditions:
+    - When a client includes an Option Request option in Solicit/Request/Renew/Rebind/Information-request, it “informs the server about options the client wants the server to send to the client.”  
+    - Section 21.7 lists specific option codes that MUST NOT appear in the Option Request option (ClientID, ServerID, IA_NA, IA_PD, IAADDR, Authentication, Status Code, etc.).  
+    - For all “other top-level option codes”, 21.7 states they “MUST appear in the Option Request option or they will not be sent by the server. Only top-level option codes MAY appear in the Option Request option.”  
+    - Section 18.3 says: if the client includes an ORO, the server must send options for all codes in the ORO that it is configured to return, and “The server MAY return additional options to the client if it has been configured to do so.”  
+    - Section 21.7 also says: “Option codes encapsulated in a container option SHOULD NOT appear in an Option Request option; however, options MAY be defined that specify exceptions … e.g., Prefix Exclude option [RFC6603]. See [IANA-OPTION-DETAILS] for the authoritative list of which option codes are required, permitted or forbidden.”  
+  - NotedAmbiguities:
+    - Whether ORO is intended to be an absolute filter on *all* top-level options (servers MUST NOT send any unrequested top-level option), or just the normal mechanism to control which options are *guaranteed* to be sent while still allowing servers to send some unsolicited options.
+    - The phrase “Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server” is global, but the IANA “Client ORO” registry (referenced via [IANA-OPTION-DETAILS]) supports per-option semantics (MUST/MAY/MUST-NOT in ORO). The interaction between this global rule and per-option registry flags is not spelled out.
+    - The scope of “additional options” in 18.3 is not restricted (e.g., to encapsulated options or to options already requested), so the most natural reading includes additional *top-level* options, which collides with 21.7’s wording.
+
+- CandidateIssues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: Conflicting scope of ORO: 21.7 forbids unsolicited top-level options while 18.3 permits them
+    - ScopeProblemType: Inconsistent server option-sending scope (top-level options vs those listed in ORO)
+    - Evidence:
+      - Section 21.7 (Option Request option) after listing codes that MUST NOT appear in ORO:  
+        “Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server. Only top-level option codes MAY appear in the Option Request option.”    
+        It then points to [IANA-OPTION-DETAILS] for which codes are “required, permitted or forbidden.”
+      - Section 18.3 (Server Behavior):  
+        “If the client included an Option Request option (see Section 21.7) in its message, the server includes options in the response message containing configuration parameters for all of the options identified in the Option Request option that the server has been configured to return to the client. **The server MAY return additional options to the client if it has been configured to do so.**”  
+    - DetailedReasoning:
+      1. Section 21.7 explicitly scopes all “other top-level option codes” (i.e., every top-level option except those explicitly forbidden in ORO, like ClientID, ServerID, IA_NA, IA_PD, etc.). For this entire class, it states a MUST-level requirement: such codes MUST appear in the client’s ORO “or they will not be sent by the server.”  
+      2. That sentence is not phrased as a mere description of typical behavior; it normatively constrains server behavior (“will not be sent by the server”) across all these options. The natural reading is: a conformant server MUST NOT send any other top-level option unless its code appears in the ORO.
+      3. Section 18.3, however, defines a different scope for server behavior: after saying that servers MUST send all requested options (for codes present in ORO that they are configured for), it explicitly broadens the permitted behavior via “The server MAY return additional options to the client if it has been configured to do so.”  
+      4. “Additional options” are not limited to encapsulated or IA-specific options, nor restricted to options already requested; by ordinary reading it covers *any* DHCP options the server chooses to add, including top-level options that were not in the client’s ORO.
+      5. Thus, 21.7 and 18.3 impose contradictory constraints on the same target: 21.7 says other top-level options *will not* be sent unless requested (effectively MUST NOT be sent unrequested), while 18.3 says the server *MAY* send additional options beyond those requested.
+      6. This is a pure scope conflict: is the ORO meant to fully determine the *set* of permitted top-level options (strict filter), or only the set the server is obligated to send (while still allowing unsolicited extras)? Implementers cannot satisfy both readings simultaneously.
+      7. The IANA “Option Codes” registry, referenced from 21.7 via [IANA-OPTION-DETAILS], includes a “Client ORO” column indicating per-option whether it MUST/MAY/MUST-NOT appear in ORO. That registry is understood in practice to regulate *whether* a client should or may request a given option, not to categorically forbid servers from ever sending an option unless requested.
+      8. For commonly deployed options such as DNS Recursive Name Server (OPTION_DNS_SERVERS) and Domain Search List (OPTION_DOMAIN_LIST), current practice (and 18.3’s text) allow servers to send these even when a client omits them from ORO, whereas the literal 21.7 rule would prohibit that behavior.
+      9. Because 21.7 is scoped specifically to “top-level option codes” while 18.3 is global, one could attempt to interpret “additional options” in 18.3 as only encapsulated or IA-level options, but nothing in 18.3’s language supports such a restriction; it just says “additional options”.
+      10. If an implementer follows 21.7 literally, their server must *not* send any unrequested top-level options, thereby violating 18.3’s explicit MAY and diverging from widely deployed behavior and expectations based on RFC 7227’s guidance that servers may send additional options beyond those in ORO.
+      11. Conversely, if an implementer follows 18.3 and allows extra top-level options to be sent when configured, they will be in direct violation of 21.7’s normative “MUST appear … or they will not be sent” statement.
+      12. This conflict will lead to divergent implementations and interoperability differences, especially for options that clients may omit from ORO but servers routinely send (e.g., DNS, NTP, vendor options), and it makes it impossible to implement both sections as currently written.
+      13. A consistent resolution would require either narrowing the scope of 21.7 (e.g., to “are normally only sent if requested,” or to options whose IANA “Client ORO” entry is “MUST”) or narrowing 18.3’s “additional options” to exclude unrequested top-level options. As written, the two sections are not scope-consistent.
+
+- ResidualUncertainties:
+  - The intended interaction between 21.7 and the IANA “Client ORO” registry is not fully explicit; it is unclear whether the authors meant to change long-standing semantics (forbid all unsolicited top-level options) or only to codify the *typical* pattern while still allowing specific exceptions. Clarifying which of these is intended would guide how 21.7 or 18.3 should be corrected.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Causal Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Section 21.7 and Section 18.3 give slightly different stories about whether a server may send top‑level options that the client did *not* request in ORO. This is a real normative tension, but it does *not* make the protocol unimplementable or cause inherent state‑machine failure. If everyone follows the text strictly in the same way, the protocol still works; the main risk is ambiguity and loss of backwards‑compatible behavior, not fundamental breakage.
+
+---
+
+2. **Causal Analysis**
+
+**What the two sections say**
+
+- **§18.3 (Server Behavior)**
+
+  > “If the client included an Option Request option … the server includes options … for all of the options identified in the Option Request option that the server has been configured to return to the client. **The server MAY return additional options to the client if it has been configured to do so.**”
+
+  The natural reading (and long‑standing practice) is:  
+  – server **must** send requested options it is configured to support, and  
+  – server **may** also send *other* options (typically top‑level, like DNS, NTP, etc.), even if the client did not list them in ORO.
+
+- **§21.7 (Option Request Option)**
+
+  > “Other top‑level option codes **MUST** appear in the Option Request option or they will not be sent by the server. Only top‑level option codes MAY appear in the Option Request option. … See [IANA‑OPTION‑DETAILS] for the authoritative list of which option codes are required, permitted or forbidden.”
+
+  Taken literally, this says: for any top‑level option that is not on the “MUST NOT appear in ORO” list, the server **must not send it** unless the client explicitly listed its code in ORO.
+
+**Can an implementer obey both?**
+
+Consider a top‑level option `X` that is not in the excluded list (e.g., a standard configuration option like DNS servers).
+
+- For a message where `X` is **not** in the client’s ORO:
+  - §21.7: “MUST appear … or they will not be sent” ⇒ do **not** send `X`.
+  - §18.3: “MAY return additional options” is a *permission*, not a requirement; choosing **not** to send any additional options is always compliant.
+
+So a server that never sends unsolicited top‑level options (i.e., only sends what is in ORO, plus encapsulated options and the explicitly exempted identifiers, status, etc.) satisfies **both** sections. In other words, there is no logical impossibility or forced misbehavior; the “MUST” in 21.7 simply constrains how the “MAY” in 18.3 can be used.
+
+**What actually happens if everyone follows 21.7 literally?**
+
+- **New, spec‑conformant clients**:
+  - §21.7: “A client MUST include an Option Request option in a Solicit, Request, Renew, Rebind, or Information-request message…”
+  - Each individual option spec (DNS, NTP, SOL_MAX_RT, INF_MAX_RT, etc.) tells the client to request that option in ORO if it needs it.
+  - With strictly ORO‑driven servers:
+    - Clients get all the options they explicitly requested.
+    - They *don’t* get options they did not request.
+    - This is mechanically consistent and interoperable as long as clients obey the “MUST include ORO and request what you need” rule.
+
+- **Existing/legacy clients (not following this spec)**:
+  - Some older DHCPv6 clients either:
+    - omit ORO, or
+    - include ORO but forget to request some options they nonetheless rely on (e.g., DNS).
+  - Those clients are **already non‑conformant** to the -bis text, but they are widely deployed.
+  - A server that faithfully implements 21.7 (no unsolicited top‑level options) may now return **fewer options** than such clients historically received:
+    - These clients may lose DNS/NTP/etc. configuration and behave as if DHCPv6 “isn’t working”, even though both sides are operating per the new spec.
+    - This is backwards‑compatibility breakage, but not a state‑machine or cryptographic failure.
+
+**Is there a strict internal contradiction?**
+
+- 21.7’s “MUST appear in the Option Request option or they will not be sent” is effectively a **MUST NOT** on servers sending unrequested top‑level options.
+- 18.3’s “MAY return additional options” is only a **permission**, so it can be interpreted as:
+  - “The server may send more options, *subject to other constraints in this document*.”  
+  When those other constraints (21.7) say “you must not send unrequested top‑level options”, the “additional options” are simply limited to:
+    - options the client *did* request in ORO (e.g., multiple instances where allowed), and/or
+    - encapsulated or context‑specific options not covered by the “top‑level code must be in ORO” rule.
+
+Thus, there is **normative tension**—18.3 looks like it’s allowing unsolicited options, 21.7 sharply restricts them—but there is no inherent impossibility in implementing a server that satisfies both.
+
+---
+
+3. **Problem Classification**
+
+- **Primary issue**: *Causal Underspecification / Normative Ambiguity*, not a hard causal inconsistency.
+  - The spec does not clearly state which rule is intended to dominate:
+    - Is 21.7 intended as a hard prohibition on unsolicited top‑level options?  
+    - Or is 18.3’s “MAY return additional options” meant to preserve the RFC 3315 / 8415 behavior of allowing unsolicited options (with ORO only being a hint)?
+  - Different implementers can (and likely will) make different choices, leading to divergent server behavior.
+
+- **Consequences**:
+  - Within the universe of fully -bis‑conformant clients and servers, the protocol remains implementable, and nothing fundamental breaks.
+  - But:
+    - Some servers will continue to send unsolicited options per 18.3’s natural reading (and long‑standing practice).
+    - Others will suppress them per 21.7.
+    - Clients that assume one behavior and encounter the other may observe missing configuration—even though both peers are “following the text” as they understand it.
+
+So this is primarily an interoperability and clarity defect, not a core algorithmic failure.
+
+---
+
+4. **Minimal Fix Shape (Optional)**
+
+To make the cause–effect chain unambiguous and align with intended behavior, the spec needs a small, local clarification:
+
+- **Option 1: Preserve legacy behavior (allow unsolicited top‑level options)**  
+  - Soften 21.7, e.g.:
+
+    > “For most top‑level options, a server **normally only sends the option if its code appears in the client’s Option Request option**. Servers **MAY** send additional top‑level options beyond those requested, as described in Section 18.3, subject to the per‑option rules in the IANA ‘Client ORO’ registry ([IANA‑OPTION‑DETAILS]).”
+
+  - Or explicitly tie the strict “MUST appear in ORO” to those options whose IANA “Client ORO” column is “MUST”, and treat others as “MAY”.
+
+- **Option 2: Intentionally forbid unsolicited top‑level options**  
+  - Keep 21.7’s strict requirement but adjust 18.3 to say explicitly:
+
+    > “The server MAY return additional options **only to the extent permitted elsewhere in this document (e.g., it MUST NOT send top‑level options whose codes do not appear in the client’s Option Request option, per Section 21.7).**”
+
+In either case, explicitly referencing the IANA “Client ORO” registry and stating how it constrains unsolicited transmission would prevent divergent interpretations.
+
+---
+
+5. **Non‑Issues**
+
+- There is **no** place where the protocol becomes unexecutable (no impossible state transitions, no use of fields that cannot exist, no crypto inputs that cannot be computed).  
+- The interaction with container options and encapsulated options (as guided by RFC 7227 §5) remains coherent: the “top‑level only in ORO” rule is clearly scoped, and the exception for options like Prefix Exclude [RFC6603] is explicitly spelled out.  
+- The problem is not stylistic; it is the ambiguity about whether 18.3’s “MAY return additional options” is meant to override or be constrained by 21.7. Clarifying that relationship is enough to remove ambiguity without changing any wire formats or state machines.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Deontic Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: The excerpt defines core DHCPv6 option formats and semantics (especially the Option Request option) and the corresponding client/server behavior. It contains several normative requirements on when options may/shall be sent or requested.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Contradictory rules on whether servers may send unsolicited top-level options (ORO vs. server behavior)
+    - Description: Section 21.7 states: “Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server. Only top-level option codes MAY appear in the Option Request option.” This is a strong normative requirement that, for any top-level option not on the explicit exclusion list in 21.7, servers must not send it unless the client listed its code in the ORO. In contrast, Section 18.3 says: “If the client included an Option Request option … the server includes options in the response message containing configuration parameters for all of the options identified in the Option Request option that the server has been configured to return to the client. The server MAY return additional options to the client if it has been configured to do so.” The “MAY return additional options” explicitly permits sending options that are not in the client’s ORO. There is no qualifying text that restricts this “MAY” only to encapsulated options or to a special subset of top‑level options. As written, implementers cannot simultaneously satisfy both: one requires servers to never send “other top‑level” options unless requested; the other explicitly allows sending additional options beyond those requested. This is not just a stylistic tension; it is a direct normative conflict.
+    - KeyTextSnippets:
+      - Section 21.7: “Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server. Only top-level option codes MAY appear in the Option Request option. … Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server.”
+      - Section 21.7 (preceding list of exceptions): “The Option Request option MUST NOT include the following option codes: * Client Identifier … * Server Identifier … * IA_NA … * IA_PD … * … * Reconfigure Accept …”
+      - Section 18.3: “If the client included an Option Request option (see Section 21.7) in its message, the server includes options in the response message containing configuration parameters for all of the options identified in the Option Request option that the server has been configured to return to the client. The server MAY return additional options to the client if it has been configured to do so.”
+      - Section 18.3.9: “The server MUST include options in the Advertise message containing configuration parameters for all of the options identified in the Option Request option … The server MAY return additional options to the client if it has been configured to do so.”
+      - Section 21.7: “Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server. … Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server. … See [IANA-OPTION-DETAILS] for the authoritative list of which option codes are required, permitted or forbidden.”
+    - Impact: This inconsistency creates real ambiguity for server implementers. A strict reading of Section 21.7 forbids long‑standing, interoperable practice where servers send some configuration options (e.g., DNS servers, domain list, etc.) even if the client omitted them from ORO, while Section 18.3 explicitly allows that behavior. Different implementers may choose different readings, leading to non‑conformant but interoperable servers on one side and conformant but unexpectedly “silent” servers on the other. This can break existing deployments and undermines the value of the new “Client ORO” status in the IANA registry that 21.7 points to. The spec should be made coherent by either:
+      * weakening 21.7 so that it describes a default/request‑driven model but still allows unsolicited options where permitted by the registry, or  
+      * narrowing 18.3’s “MAY return additional options” so that it explicitly excludes top‑level options that are required to be ORO‑driven.
+
+  - Issue-2:
+    - BugType: Underspecification
+    - Title: Ambiguity about how the obsoleted IA_TA option interacts with message-validation rules
+    - Description: Section 21.5, which obsoletes IA_TA, says: “When the server receives IA_TA option, the option SHOULD be ignored and the message processing should continue as usual.” This effectively instructs servers to treat IA_TA like an ignorable/unknown option. However, Section 16’s message-validation rules are phrased generically in terms of “IA options” and, for some messages, require discarding the entire message if *any* IA option is present. For example, Section 16.12: “Servers MUST discard any received Information-request message that … the message includes an IA option.” It is unclear whether “IA option” in Section 16 is intended to include the obsoleted IA_TA, or only currently supported IA types (IA_NA, IA_PD, and possibly IA_LL). If IA_TA is still counted, then 21.5’s guidance to “ignore IA_TA and continue as usual” conflicts with the hard “MUST discard the message” in 16.12 for Information-request messages containing any IA option. If IA_TA is excluded from the “IA option” category for validation, that exclusion is never stated. The current text leaves implementers guessing whether they must discard or process messages that contain an obsoleted IA_TA.
+    - KeyTextSnippets:
+      - Section 21.5: “The Identity Association for Temporary Addresses (IA_TA) option is obsoleted by this document. … The client SHOULD NOT send this option. The server SHOULD NOT send this option. When the server receives IA_TA option, the option SHOULD be ignored and the message processing should continue as usual.”
+      - Section 16 (intro): “For example, an IA option is not allowed to appear in an Information-request message.”
+      - Section 16.12: “Servers MUST discard any received Information-request message that meets any of the following conditions: … * the message includes an IA option.”
+      - Section 4.2, 12, 21.4, 21.21 (terminology for “IA” and “IA option(s)” including IA_TA as an IA type, even though obsoleted).
+    - Impact: This ambiguity is low-risk in practice (IA_TA is obsoleted and “not very popular”), but it is a genuine normative gap. Different implementations may diverge: one might discard an Information-request with IA_TA as invalid per Section 16.12; another might accept the message and ignore IA_TA per Section 21.5. For a bis that is explicitly cleaning up errata and obsoleting IA_TA, it would be better to state explicitly how IA_TA interacts with the generic “IA option” validation rules: e.g., by clarifying that “IA option” in Section 16 excludes IA_TA (now treated like an ignorable, obsolete option), or by downgrading 21.5’s “SHOULD be ignored and processing should continue as usual” to acknowledge that in some contexts the entire message is still invalid.
+
+- IfNoRealIssue:
+  - Not applicable; there are at least two real deontic issues as described above.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## Structural Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Examined Section 21’s option definitions and usage constraints, and the surrounding client/server behavior text (notably Sections 18.3 and 21.7), plus the earlier “encapsulated option” terminology in Section 4.2.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: ORO semantics conflict between Section 21.7 and Section 18.3
+    - LocationHint: Section 21.7 (Option Request Option) vs Section 18.3 (Server Behavior)
+    - Evidence:
+      - Snippet1 (21.7): “Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server. Only top-level option codes MAY appear in the Option Request option.… Option codes encapsulated in a container option SHOULD NOT appear in an Option Request option; … options MAY be defined that specify exceptions… For example … Prefix Exclude option [RFC6603].”
+      - Snippet2 (18.3): “If the client included an Option Request option (see Section 21.7) in its message, the server includes options in the response message containing configuration parameters for all of the options identified in the Option Request option that the server has been configured to return to the client. The server MAY return additional options to the client if it has been configured to do so.”
+    - TechnicalExplanation: |
+        Section 21.7 contains a blanket normative statement that “other top-level option codes MUST appear in the Option Request option or they will not be sent by the server”, which, read literally, forbids a server from sending any unsolicited *top‑level* options. In contrast, Section 18.3 explicitly permits a server to “MAY return additional options to the client” beyond those listed in the client’s ORO. Both sections are specifying server behavior for the same structural mechanism (which options can be top‑level in a Reply/Advertise), so their normative requirements must be consistent. As written, they are not: 21.7’s “MUST … or they will not be sent” logically prohibits exactly what 18.3’s “MAY return additional options” allows. The rest of the document and RFC 7227’s guidance on ORO usage and the IANA “Client ORO” hints assume that some options *can* be sent without being requested, while particular options like SOL_MAX_RT or INF_MAX_RT have more restrictive, per‑option rules. Leaving this contradiction unresolved makes it impossible for an implementation to simultaneously conform to both sections and introduces ambiguity about whether longstanding server behavior (sending some unsolicited options) is still valid.
+    - PatchSuggestion: |
+        Clarify the global rule in Section 21.7 so it does not contradict Section 18.3, e.g. by weakening or scoping the “MUST” to options that explicitly require ORO, and making the rest descriptive. For example, in Section 21.7 replace:
+
+          “Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server. Only top-level option codes MAY appear in the Option Request option.”
+
+        with text along the lines of:
+
+          “For most options, servers normally only send a given top-level option if its option code appears in the client’s Option Request option. Some options are defined to require the client to list them in the Option Request option (see per‑option specifications and the IANA ‘Client ORO’ column); servers MUST NOT send such options unless requested. Only top-level option codes MAY appear in the Option Request option.”
+
+        and explicitly reference Section 18.3 to say that, subject to those per‑option rules, a server MAY include additional top‑level options even if they are not requested in the ORO.
+
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: Mispointed cross-reference for IA Address / IA_NA encapsulation
+    - LocationHint: Section 4.2, definition of “encapsulated option”
+    - Evidence:
+      - Snippet1 (4.2): “encapsulated option … For example, the IA Address option is contained in IA_NA options (see Section 21.5).”
+      - Snippet2 (Section 21 layout): Section 21.4 defines the IA_NA option; Section 21.5 is “Identity Association for Temporary Addresses Option” (IA_TA, obsoleted); Section 21.6 defines the “IA Address Option”.
+    - TechnicalExplanation: |
+        The example in Section 4.2 is intended to illustrate the notion of an encapsulated option by pointing to the IA Address option being carried inside IA_NA. However, it cites “see Section 21.5”, but in this draft Section 21.5 is the IA_TA option (now obsoleted), not IA_NA nor IA Address. IA_NA is defined in Section 21.4 and IA Address in Section 21.6, and the rest of the document consistently states that IA Address options are encapsulated within IA_NA (and IA_PD for prefixes), with Leasequery being the only top‑level IAADDR usage. The section number here is therefore incorrect, likely inherited from a prior numbering where IA_NA or IAADDR was at 21.5. While small, this is a structural cross‑reference bug that can mislead readers into thinking IAADDR is tied to IA_TA, which is explicitly obsoleted in this document.
+    - PatchSuggestion: |
+        Correct the section reference in Section 4.2. For example, change:
+
+          “For example, the IA Address option is contained in IA_NA options (see Section 21.5).”
+
+        to something like:
+
+          “For example, the IA Address option is contained in IA_NA options (see Sections 21.4 and 21.6).”
+
+        or simply:
+
+          “For example, the IA Address option is contained in IA_NA options (see Section 21.6).”
+
+        This keeps the example aligned with the actual definitions of IA_NA and IA Address in Section 21 and avoids tying it to the obsoleted IA_TA option.
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+## CrossRFC Expert
+--------------------------------------------------------------------------------
+
+### Expert Analysis:
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 21 (plus related text) defines the core DHCPv6 option formats and semantics, including ORO behavior, IA_NA/IA_PD/IAADDR/IAPREFIX, authentication, and timing options, and ties them to IANA registries and to other specs such as RFC 7227, RFC 6603, RFC 7598, and RFC 5007.
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: ORO semantics vs server “MAY return additional options”
+    - Description: Section 21.7 states that “Other top-level option codes MUST appear in the Option Request option or they will not be sent by the server. Only top-level option codes MAY appear in the Option Request option. … See [IANA-OPTION-DETAILS] for the authoritative list of which option codes are required, permitted or forbidden.” This reads as a blanket requirement that, apart from the explicitly listed exclusions, servers do not send any top-level options unless their codes are present in the client’s ORO. However, Section 18.3 says that when a client includes an ORO, “the server includes options … identified in the Option Request option that the server has been configured to return to the client. The server MAY return additional options to the client if it has been configured to do so.” This explicitly permits unsolicited top-level options, matching long-standing behavior and the way the IANA “Client ORO” column and RFC 7227 treat ORO (as a request mechanism, not an absolute prohibition on extra options).   If implementers follow 21.7 literally, they will consider servers that send additional top-level options (as allowed by 18.3 and prior practice) non-conformant, while server implementers following 18.3 will violate 21.7, leading to contradictory normative guidance and potential misinterpretation of registry “MUST/MAY/MUST NOT in ORO” flags. I agree with the router’s hypothesis: either 21.7 needs to be softened (e.g., “are normally only sent if requested”) or explicitly scoped to those options whose IANA entry says “MUST appear in ORO”, to align with 18.3, RFC 7227 Section 5, and the IANA option registry.
+    - EntitiesInvolved: ["draft-ietf-dhc-rfc8415bis-12 Section 18.3 (server behavior)", "Section 21.7 (Option Request option)", "IANA DHCPv6 Option Codes registry / IANA-OPTION-DETAILS", "RFC 7227 Section 5 (option formats and ORO guidance)"]
+    - CrossRefsUsed: ["18.3 server MAY return additional options; 21.7 MUST appear in ORO or not sent", "IANA-OPTION-DETAILS summary of Client ORO usage", "RFC 7227 Sections 5, 14, 16 on option usage and ORO"]
+    - Confidence: High
+  - Issue-2:
+    - BugType: Inconsistency
+    - ShortLabel: Mispointed IA Address cross-reference in encapsulated option definition
+    - Description: In the Terminology section, the definition of “encapsulated option” says “For example, the IA Address option is contained in IA_NA options (see Section 21.5).”   In this draft, Section 21.5 is the (now obsoleted) IA_TA option, while IA_NA is defined in Section 21.4 and the IA Address option in Section 21.6.   The intent is clearly to illustrate that IAADDR is encapsulated inside IA_NA (and, historically, IA_TA), but pointing to 21.5 is numerically wrong in the bis layout and suggests a link to IA_TA instead of IA_NA/IAADDR. This is a straightforward cross-section reference bug, likely inherited from earlier numbering, and could mislead readers about where IA_NA and IA Address are actually defined and how encapsulation is structured, especially given that IA_TA is now obsoleted and IAADDR is still used top-level by RFC 5007 Leasequery. The reference should be corrected to point to Section 21.6 (and/or 21.4), not 21.5. I agree with the router’s hypothesis and see no remaining conflict with RFC 5007, since Section 21.6 already explicitly notes its special (non-encapsulated) use there.
+    - EntitiesInvolved: ["draft-ietf-dhc-rfc8415bis-12 Section 4.2 (encapsulated option)", "Section 21.4 (IA_NA)", "Section 21.5 (IA_TA, obsoleted)", "Section 21.6 (IA Address)", "RFC 5007 (Leasequery use of IAADDR)"]
+    - CrossRefsUsed: ["Definition of encapsulated option in 4.2", "Option definitions in Section 21.4–21.6", "RFC 5007 Section 4.3.1/4.4.2 noting top-level IAADDR"]
+    - Confidence: High
+- IfNoIssues:
+  - Comment: n/a
+
+[Used vector stores: vs_6958be89a44481918c2ddd280ca7a32c]
+
+
+Vector Stores Used: vs_6958be89a44481918c2ddd280ca7a32c

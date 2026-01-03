@@ -1,0 +1,66 @@
+{
+  "routing_summary": {
+    "excerpt_summary": "Appendix A summarizes the deltas between RFC 8415 and this bis draft, mainly obsoleting IA_TA, the Server Unicast option, and the UseMulticast status code, plus incorporating errata and a few clarifications.",
+    "overall_bug_likelihood": "None",
+    "dimensions": {
+      "Temporal": {
+        "relevance": "LOW",
+        "explanation": "Appendix A is descriptive about feature status, not sequences or timers."
+      },
+      "ActorDirectionality": {
+        "relevance": "LOW",
+        "explanation": "No new rules about who sends what; it only states that some mechanisms are obsoleted."
+      },
+      "Scope": {
+        "relevance": "LOW",
+        "explanation": "Not explicitly scored by router"
+      },
+      "Causal": {
+        "relevance": "LOW",
+        "explanation": "Not explicitly scored by router"
+      },
+      "Quantitative": {
+        "relevance": "LOW",
+        "explanation": "Not explicitly scored by router"
+      },
+      "Deontic": {
+        "relevance": "LOW",
+        "explanation": "Not explicitly scored by router"
+      },
+      "Structural": {
+        "relevance": "LOW",
+        "explanation": "Not explicitly scored by router"
+      },
+      "CrossRFC": {
+        "relevance": "LOW",
+        "explanation": "Not explicitly scored by router"
+      },
+      "Terminology": {
+        "relevance": "LOW",
+        "explanation": "Not explicitly scored by router"
+      },
+      "Boundary": {
+        "relevance": "LOW",
+        "explanation": "Not explicitly scored by router"
+      }
+    },
+    "candidate_issues": [
+      {
+        "bug_type": "None",
+        "short_label": "No substantive protocol error or underspecification visible in Appendix A",
+        "relevant_dimensions": [],
+        "sketch_for_experts": "Appendix A’s statements about obsoleting IA_TA, the Server Unicast option, and the UseMulticast status code are in line with the detailed treatment in Sections 4.2, 16, 21.5, 21.12, and 21.13. The note about erratum 6159 referring to “the section (6.5)” clearly means Section 6.5 of RFC 8415 (not of the bis draft) and is editorial rather than a protocol rule. There is no apparent inconsistency or new ambiguity introduced by Appendix A that would warrant errata."
+      }
+    ]
+  },
+  "expert_analyses": {},
+  "vector_store_ids": [
+    "vs_6958be89a44481918c2ddd280ca7a32c"
+  ],
+  "metadata": {
+    "model": "gpt-5.1",
+    "router_reasoning_effort": "medium",
+    "expert_reasoning_effort": "medium",
+    "test_mode": "manual"
+  }
+}

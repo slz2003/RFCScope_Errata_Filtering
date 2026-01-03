@@ -1,0 +1,2854 @@
+################################################################################
+Processing: Draft draft-ietf-dhc-rfc8415bis-12, Section 21
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21
+################################################################################
+
+
+================================================================================
+STEP 1: Running stage.py for draft draft-ietf-dhc-rfc8415bis-12, Section 21
+================================================================================
+Preparing IETF draft draft-ietf-dhc-rfc8415bis-12 for analysis by constructing its context.
+Output directory: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21
+
+Extracting references from the references section of the draft.
+References extracted and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/references.json
+
+Parsing the contents of the draft.
+Contents parsed and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/corpus.json
+
+Extracting references from section 21 only.
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/reference_extraction.log
+Logging reference extraction to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/reference_extraction.log
+Focusing on section 21 and its children.
+Processing section 21. DHCP Options
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 1/3 [00:02<00:05,  2.71s/it]Splitting content into chunks:  67%|██████▋   | 2/3 [00:59<00:34, 34.68s/it]Splitting content into chunks: 100%|██████████| 3/3 [01:07<00:00, 22.19s/it]Splitting content into chunks: 100%|██████████| 3/3 [01:07<00:00, 22.37s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Options are used to carry additional information and parameters in
+   DHCP messages.  Every option shares a common base format, as
+   described in Section 21.1.  All values in options are represent...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.1'
+  Match Type: Exact match
+  Result: Matched to Section 21.1
+  Section Title: Format of DHCP Options
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This document specifies the DHCP options defined as part of this base
+   DHCP specification.  Other options have been or may be defined in the
+   future in separate documents.  See [RFC7227] for gu...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 25
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC7227
+  Reference Type: TEXT
+  Reference Value (keywords/section): guidelines regarding the definition of new options
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '25'
+  Match Type: Exact match
+  Result: Matched to Section 25
+  Section Title: Obsoleted Mechanisms
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7227:
+  Search Keywords: 'guidelines regarding the definition of new options'
+  Result: Found in Section 14
+  Section Title: Considerations for Creating New Formats
+  Content Preview:    When defining new options, one specific consideration to evaluate is
+   whether or not options of...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Options that are allowed to appear only once are called "singleton
+   options".  The only non-singleton options defined in this document
+   are the IA_NA (see Section 21.4), Vendor Class (see Secti...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.4
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.16
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.17
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.21
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.6
+
+Reference 6:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.22
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.4'
+  Match Type: Exact match
+  Result: Matched to Section 21.4
+  Section Title: Identity Association for Non-temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.16'
+  Match Type: Exact match
+  Result: Matched to Section 21.16
+  Section Title: Vendor Class Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.17'
+  Match Type: Exact match
+  Result: Matched to Section 21.17
+  Section Title: Vendor-specific Information Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.21'
+  Match Type: Exact match
+  Result: Matched to Section 21.21
+  Section Title: Identity Association for Prefix Delegation Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.6'
+  Match Type: Exact match
+  Result: Matched to Section 21.6
+  Section Title: IA Address Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.22'
+  Match Type: Exact match
+  Result: Matched to Section 21.22
+  Section Title: IA Prefix Option
+---------------------------------------------------------------------------
+
+Warning: Section 21 not found. Processing all sections.
+Processing section 21.1. Format of DHCP Options
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 5/5 [00:04<00:00,  1.24it/s]Splitting content into chunks: 100%|██████████| 5/5 [00:04<00:00,  1.24it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The format of DHCP options is:
+
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   option-code             An unsigned integer identifying the specific
+                           option type carried in this option.
+                           A 2-octet field.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   option-len              An unsigned integer giving the length of the
+                           option-data field in this option in octets.
+                           A 2-octet field.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   option-data             The data for the option; the format of this
+                           data depends on the definition of the option.
+                           A variable-length field (the ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP options are scoped by using encapsulation.  Some options apply
+   generally to the client, some are specific to an IA, and some are
+   specific to the addresses within an IA.  These latter two...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.4
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.5
+
+Reference 3:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.4'
+  Match Type: Exact match
+  Result: Matched to Section 21.4
+  Section Title: Identity Association for Non-temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.5'
+  Match Type: Exact match
+  Result: Matched to Section 21.5
+  Section Title: Identity Association for Temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.6'
+  Match Type: Exact match
+  Result: Matched to Section 21.6
+  Section Title: IA Address Option
+---------------------------------------------------------------------------
+
+Processing section 21.2. Client Identifier Option
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:02<00:02,  2.58s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:02<00:00,  1.29s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Client Identifier option is used to carry a DUID (see Section 11)
+   that identifies the client.  The format of the Client Identifier
+   option is:
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '11'
+  Match Type: Exact match
+  Result: Matched to Section 11
+  Section Title: DHCP Unique Identifier (DUID)
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+Processing section 21.3. Server Identifier Option
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:01<00:01,  1.54s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:01<00:00,  1.30it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Server Identifier option is used to carry a DUID (see Section 11)
+   that identifies the server.  The format of the Server Identifier
+   option is:
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 11
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '11'
+  Match Type: Exact match
+  Result: Matched to Section 11
+  Section Title: DHCP Unique Identifier (DUID)
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+Processing section 21.4. Identity Association for Non-temporary Addresses Option
+Splitting content into chunks:   0%|          | 0/13 [00:00<?, ?it/s]Splitting content into chunks:  15%|█▌        | 2/13 [00:01<00:07,  1.44it/s]Splitting content into chunks:  54%|█████▍    | 7/13 [00:02<00:02,  2.59it/s]Splitting content into chunks:  69%|██████▉   | 9/13 [00:04<00:01,  2.05it/s]Splitting content into chunks:  85%|████████▍ | 11/13 [00:05<00:01,  1.82it/s]Splitting content into chunks:  92%|█████████▏| 12/13 [00:07<00:00,  1.39it/s]Splitting content into chunks: 100%|██████████| 13/13 [00:07<00:00,  1.81it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Identity Association for Non-temporary Addresses (IA_NA) option
+   is used to carry an IA_NA, the parameters associated with the IA_NA,
+   and the non-temporary addresses associated with the IA...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client that needs a short-term / special purpose address can use a
+   new IA_NA binding to request an address and release it when finished
+   with it.
+
+   Note: Addresses appearing in an IA_NA op...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.5
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.5'
+  Match Type: Exact match
+  Result: Matched to Section 21.5
+  Section Title: Identity Association for Temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IAID                    The unique identifier for this IA_NA; the
+                           IAID must be unique among the identifiers for
+                           all of this client's IA_NAs.  T...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   T2                      The time interval after which the client
+                           should contact any available server to extend
+                           the lifetimes of the addresses a...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IA_NA-options           Options associated with this IA_NA.  A
+                           variable-length field (12 octets less than
+                           the value in the option-len field).
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The IA_NA-options field encapsulates those options that are specific
+   to this IA_NA.  For example, all of the IA Address options (see Section 21.6) carrying the addresses associated with this IA_...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.6'
+  Match Type: Exact match
+  Result: Matched to Section 21.6
+  Section Title: IA Address Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each IA_NA carries one "set" of non-temporary addresses; it is up to
+   the server policy to determine how many addresses are assigned, but
+   typically at most one address is assigned from each pr...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   An IA_NA option may only appear in the options area of a DHCP
+   message.  A DHCP message may contain multiple IA_NA options (though
+   each must have a unique IAID).
+
+   The status of any operatio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Note that an IA_NA has no explicit "lifetime" or "lease length" of
+   its own.  When the valid lifetimes of all of the addresses in an
+   IA_NA have expired, the IA_NA can be considered as having e...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   In a message sent by a client to a server, the T1 and T2 fields
+   SHOULD be set to 0.  The server MUST ignore any values in these
+   fields in messages received from a client. 
+   In a message sen...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.7
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '7.7'
+  Match Type: Exact match
+  Result: Matched to Section 7.7
+  Section Title: Representation of Time Values and "Infinity" as a Time Value
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The server selects the T1 and T2 values to allow the client to extend
+   the lifetimes of any addresses in the IA_NA before the lifetimes
+   expire, even if the server is unavailable for some short...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 14.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '14.2'
+  Match Type: Exact match
+  Result: Matched to Section 14.2
+  Section Title: Client Behavior when T1 and/or T2 Are 0
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If a client receives an IA_NA with T1 greater than T2 and both T1 and
+   T2 are greater than 0, the client discards the IA_NA option and
+   processes the remainder of the message as though the serv...
+################################################################################
+Processing section 21.5. Identity Association for Temporary Addresses Option
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks:  33%|███▎      | 1/3 [03:54<07:49, 234.59s/it]Splitting content into chunks: 100%|██████████| 3/3 [03:54<00:00, 78.20s/it] 
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Identity Association for Temporary Addresses (IA_TA) option is
+   obsoleted.  Please refer to [RFC8415] for historical information on
+   this option.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): historical information
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'historical information'
+  Result: Found in Section 26
+  Section Title: References
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The client SHOULD NOT send this option.  The server SHOULD NOT send
+   this option.  When the server receives IA_TA option, the option
+   SHOULD be ignored and the message processing should continu...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   As this option was never popular among server or client
+   implementations before being deprecated, any implementations that
+   still attempt to send it are unlikely to have the option processed.
+################################################################################
+Processing section 21.6. IA Address Option
+Splitting content into chunks:   0%|          | 0/9 [00:00<?, ?it/s]Splitting content into chunks:  11%|█         | 1/9 [00:29<03:55, 29.48s/it]Splitting content into chunks: 100%|██████████| 9/9 [00:32<00:00,  2.78s/it]Splitting content into chunks: 100%|██████████| 9/9 [00:32<00:00,  3.67s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The IA Address option is used to specify an address.  In this
+   document it is only specified to be encapsulated within an IA_NA.
+   DHCPv6 Leasequery [RFC5007] makes use of the IA Address Option
+...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC5007
+  Reference Type: TEXT
+  Reference Value (keywords/section): DHCPv6 Leasequery
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5007:
+  Search Keywords: 'DHCPv6 Leasequery'
+  Result: Found in Section 4.4
+  Section Title: DHCPv6 Leasequery Server Behavior
+  Content Preview:    A DHCPv6 server sends LEASEQUERY-REPLY messages in response to valid
+   LEASEQUERY messages it re...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IPv6-address            An IPv6 address.  A client MUST NOT form an
+                           implicit prefix with a length other than 128
+                           for this address.  A 16-octet ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   preferred-lifetime      The preferred lifetime for the address in the
+                           option, expressed in units of seconds.  A
+                           4-octet field containing an uns...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   valid-lifetime          The valid lifetime for the address in the
+                           option, expressed in units of seconds.  A
+                           4-octet field containing an unsigne...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IAaddr-options          Options associated with this address.  A
+                           variable-length field (24 octets less than
+                           the value in the option-len field).
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   In a message sent by a client to a server, the preferred-lifetime and
+   valid-lifetime fields SHOULD be set to 0.  The server MUST ignore any
+   received values. 
+   The client SHOULD NOT send the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   In a message sent by a server to a client, the client MUST use the
+   values in the preferred-lifetime and valid-lifetime fields for the
+   preferred and valid lifetimes.  The values in these field...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   As per Section 7.7, if the valid lifetime of an address is
+   0xffffffff, it is taken to mean "infinity" and should be used
+   carefully.
+
+   More than one IA Address option can appear in an IA_NA ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.7
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '7.7'
+  Match Type: Exact match
+  Result: Matched to Section 7.7
+  Section Title: Representation of Time Values and "Infinity" as a Time Value
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+Processing section 21.7. Option Request Option
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks:  75%|███████▌  | 3/4 [00:25<00:08,  8.36s/it]Splitting content into chunks: 100%|██████████| 4/4 [01:13<00:00, 21.22s/it]Splitting content into chunks: 100%|██████████| 4/4 [01:13<00:00, 18.33s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Option Request option is used to identify a list of options in a
+   message between a client and a server.  The format of the Option
+   Request option is:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   requested-option-code-n      The option code for an option requested
+                                by the client.  Each option code is a
+                                2-octet field containing a...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.2
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.3
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.4
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.5
+
+Reference 5:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.21
+
+Reference 6:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.6
+
+Reference 7:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.22
+
+Reference 8:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.9
+
+Reference 9:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.8
+
+Reference 10:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.10
+
+Reference 11:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.11
+
+Reference 12:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.12
+
+Reference 13:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+
+Reference 14:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.14
+
+Reference 15:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.15
+
+Reference 16:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.16
+
+Reference 17:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.18
+
+Reference 18:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.19
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.2'
+  Match Type: Exact match
+  Result: Matched to Section 21.2
+  Section Title: Client Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.3'
+  Match Type: Exact match
+  Result: Matched to Section 21.3
+  Section Title: Server Identifier Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.4'
+  Match Type: Exact match
+  Result: Matched to Section 21.4
+  Section Title: Identity Association for Non-temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.5'
+  Match Type: Exact match
+  Result: Matched to Section 21.5
+  Section Title: Identity Association for Temporary Addresses Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.21'
+  Match Type: Exact match
+  Result: Matched to Section 21.21
+  Section Title: Identity Association for Prefix Delegation Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.6'
+  Match Type: Exact match
+  Result: Matched to Section 21.6
+  Section Title: IA Address Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.22'
+  Match Type: Exact match
+  Result: Matched to Section 21.22
+  Section Title: IA Prefix Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.9'
+  Match Type: Exact match
+  Result: Matched to Section 21.9
+  Section Title: Elapsed Time Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.8'
+  Match Type: Exact match
+  Result: Matched to Section 21.8
+  Section Title: Preference Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.10'
+  Match Type: Exact match
+  Result: Matched to Section 21.10
+  Section Title: Relay Message Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.11'
+  Match Type: Exact match
+  Result: Matched to Section 21.11
+  Section Title: Authentication Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.12'
+  Match Type: Exact match
+  Result: Matched to Section 21.12
+  Section Title: Server Unicast Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.14'
+  Match Type: Exact match
+  Result: Matched to Section 21.14
+  Section Title: Rapid Commit Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.15'
+  Match Type: Exact match
+  Result: Matched to Section 21.15
+  Section Title: User Class Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.16'
+  Match Type: Exact match
+  Result: Matched to Section 21.16
+  Section Title: Vendor Class Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.18'
+  Match Type: Exact match
+  Result: Matched to Section 21.18
+  Section Title: Interface-Id Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.19'
+  Match Type: Exact match
+  Result: Matched to Section 21.19
+  Section Title: Reconfigure Message Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  Reconfigure Accept (see Section 21.20)
+   Other top-level option codes MUST appear in the Option Request option
+   or they will not be sent by the server.  Only top-level option codes
+   MAY app...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.20
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: IANA-OPTION-DETAILS
+  Reference Type: TEXT
+  Reference Value (keywords/section): Option Codes
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC6603
+  Reference Type: TEXT
+  Reference Value (keywords/section): Prefix Exclude Option
+
+Reference 4:
+  Document Type: RFC
+  Document Tag: RFC7598
+  Reference Type: TEXT
+  Reference Value (keywords/section): DHCPv6 Options for Configuration of Softwire Address and Port-Mapped Clients
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.20'
+  Match Type: Exact match
+  Result: Matched to Section 21.20
+  Section Title: Reconfigure Accept Option
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6603:
+  Search Keywords: 'Prefix Exclude Option'
+  Result: Found in Section 4.2
+  Section Title: Prefix Exclude Option
+  Content Preview:     0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 ...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC7598:
+  Search Keywords: 'DHCPv6 Options for Configuration of Softwire Address and Port-Mapped Clients'
+  Result: Found in Section 3
+  Section Title: Softwire46 Overview
+  Content Preview:    This document describes a set of common DHCPv6 options for
+   configuring the Mapping of Address ...
+---------------------------------------------------------------------------
+
+Processing section 21.8. Preference Option
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 3/3 [00:01<00:00,  1.66it/s]Splitting content into chunks: 100%|██████████| 3/3 [00:01<00:00,  1.66it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Preference option is sent by a server to a client to control the
+   selection of a server by the client.
+
+   The format of the Preference option is:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A server MAY include a Preference option in an Advertise message to
+   control the selection of a server by the client.  See Section 18.2.9   for information regarding the use of the Preference opt...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.2.9
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '18.2.9'
+  Match Type: Exact match
+  Result: Matched to Section 18.2.9
+  Section Title: Receipt of Advertise Messages
+---------------------------------------------------------------------------
+
+Processing section 21.9. Elapsed Time Option
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 3/3 [00:00<00:00, 711.54it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   elapsed-time            The amount of time since the client began its
+                           current DHCP transaction.  This time is
+                           expressed in hundredths of a seco...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client MUST include an Elapsed Time option in messages to indicate
+   how long the client has been trying to complete a DHCP message
+   exchange.  The elapsed time is measured from the time at wh...
+################################################################################
+Processing section 21.10. Relay Message Option
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 300.54it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Relay Message option carries a DHCP message in a Relay-forward or
+   Relay-reply message.
+
+   The format of the Relay Message option is:
+       0                   1                   2        ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   DHCP-relay-message      In a Relay-forward message, the received
+                           message, relayed verbatim to the next relay
+                           agent or server; in a Relay-reply ...
+################################################################################
+Processing section 21.11. Authentication Option
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  17%|█▋        | 1/6 [00:01<00:07,  1.54s/it]Splitting content into chunks: 100%|██████████| 6/6 [00:01<00:00,  3.85it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Authentication option carries authentication information to
+   authenticate the identity and contents of DHCP messages.  The use of
+   the Authentication option is described in Section 20.  The...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 20
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '20'
+  Match Type: Exact match
+  Result: Matched to Section 20
+  Section Title: Authentication of DHCP Messages
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   protocol                        The authentication protocol used in
+                                   this Authentication option.  A
+                                   1-octet unsigned integer.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   algorithm                       The algorithm used in the
+                                   authentication protocol.  A 1-octet
+                                   unsigned integer.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   RDM                             The replay detection method used in
+                                   this Authentication option.  A
+                                   1-octet unsigned integer.
+
+ ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   authentication information      The authentication information, as
+                                   specified by the protocol and
+                                   algorithm used in this Authent...
+################################################################################
+Processing section 21.12. Server Unicast Option
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks:  50%|█████     | 1/2 [00:01<00:01,  1.63s/it]Splitting content into chunks: 100%|██████████| 2/2 [00:01<00:00,  1.22it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Server Unicast option is obsolete.  Please refer to [RFC8415] for
+   historical information on this option.
+
+   The client SHOULD NOT request this option in the Option Request
+   option.  The s...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): historical information
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   As this option was not very popular and it typically required special
+   configuration by those server implementations that did support it,
+   clients still requesting this option in the Option Req...
+################################################################################
+Processing section 21.13. Status Code Option
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  67%|██████▋   | 4/6 [00:00<00:00,  4.38it/s]Splitting content into chunks: 100%|██████████| 6/6 [00:00<00:00,  6.49it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This option returns a status indication related to the DHCP message
+   or option in which it appears.  The format of the Status Code
+   option is:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   status-code             The numeric code for the status encoded in
+                           this option.  A 2-octet field containing an
+                           unsigned integer.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   status-message          A UTF-8 encoded [RFC3629] text string
+                           suitable for display to an end user.
+                           MUST NOT be null-terminated.  A variable-
+  ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3629
+  Reference Type: SECTION
+  Reference Value (keywords/section): TEXT
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3629:
+  Looking for Section: 'TEXT'
+  Match Type: Fuzzy match (score: 0.0)
+  Result: Matched to Section 1
+  Section Title: Introduction
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A Status Code option may appear in the "options" field of a DHCP
+   message and/or in the "options" field of another option.  If the
+   Status Code option does not appear in a message in which the ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The status-code values are:
+       +===============+======+===================================+
+       | Name          | Code | Description                       |
+       +===============+======+==...
+################################################################################
+Processing section 21.14. Rapid Commit Option
+Splitting content into chunks:   0%|          | 0/5 [00:00<?, ?it/s]Splitting content into chunks:  40%|████      | 2/5 [00:02<00:03,  1.21s/it]Splitting content into chunks:  80%|████████  | 4/5 [00:53<00:15, 15.58s/it]Splitting content into chunks: 100%|██████████| 5/5 [00:53<00:00, 10.74s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The Rapid Commit option is used to signal the use of the two-message
+   exchange for address assignment.  The format of the Rapid Commit
+   option is:
+       0                   1                  ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client MAY include this option in a Solicit message if the client
+   is prepared to perform the Solicit/Reply message exchange described
+   in Section 18.2.1.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '18.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 18.2.1
+  Section Title: Creation and Transmission of Solicit Messages
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A server MUST include this option in a Reply message sent in response
+   to a Solicit message when completing the Solicit/Reply message
+   exchange.
+
+   DISCUSSION:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+      Each server that responds with a Reply to a Solicit that includes
+      a Rapid Commit option will commit the leases in the Reply message
+      to the client but will not receive any confirmatio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC4704
+  Reference Type: TEXT
+  Reference Value (keywords/section): DNS address information
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC5007
+  Reference Type: TEXT
+  Reference Value (keywords/section): leasequery requests
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC4704:
+  Search Keywords: 'DNS address information'
+  Result: Found in Section 5.4
+  Section Title: Domain Name and DNS Update Issues
+  Content Preview:    As there is a possibility that the DHCPv6 server is configured to
+   complete or replace a domain...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC5007:
+  Search Keywords: 'leasequery requests'
+  Result: Found in Section 4.3.1
+  Section Title: Creation of LEASEQUERY
+  Content Preview:    The requestor sets the "msg-type" field to LEASEQUERY.  The requestor
+   generates a transaction ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+      The problem of unused leases can be minimized by designing the
+      DHCP service so that only one server responds to the Solicit or by
+      using relatively short lifetimes for newly assigned ...
+################################################################################
+Processing section 21.15. User Class Option
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 6/6 [00:00<00:00, 786.31it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The User Class option is used by a client to identify the type or
+   category of users or applications it represents.
+
+   The format of the User Class option is:
+       0                   1       ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   user-class-data         The user classes carried by the client.  The
+                           length, in octets, is specified by
+                           option-len.
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The information contained in the data area of this option is
+   contained in one or more opaque fields that represent the user class
+   or classes of which the client is a member.  A server selects...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The data area of the User Class option MUST contain one or more
+   instances of user-class-data information.  Each instance of
+   user-class-data is formatted as follows:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...-+-+-+-+-+-+-+
+      |        user-class-len         |          opaque-data          |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-.....
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A server interprets the classes identified in this option according
+   to its configuration to select the appropriate configuration
+   information for the client.  A server may use only those user ...
+################################################################################
+Processing section 21.16. Vendor Class Option
+Splitting content into chunks:   0%|          | 0/7 [00:00<?, ?it/s]Splitting content into chunks:  43%|████▎     | 3/7 [00:01<00:01,  2.60it/s]Splitting content into chunks: 100%|██████████| 7/7 [00:01<00:00,  6.02it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This option is used by a client to identify the vendor that
+   manufactured the hardware on which the client is running.  The
+   information contained in the data area of this option is contained i...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   enterprise-number       The vendor's registered Enterprise Number as
+                           maintained by IANA [IANA-PEN ].  A 4-octet
+                           field containing an unsigned in...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-PEN
+  Reference Type: TEXT
+  Reference Value (keywords/section): Private Enterprise Numbers
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   vendor-class-data       The hardware configuration of the node on
+                           which the client is running.  A
+                           variable-length field (4 octets less than the...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The vendor-class-data field is composed of a series of separate
+   items, each of which describes some characteristic of the client's
+   hardware configuration.  Examples of vendor-class-data insta...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Each instance of vendor-class-data is formatted as follows:
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...-+-+-+-+-+-+-+
+      |       vendor-class-len        |          opaque-data     ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Servers and clients MUST NOT include more than one instance of
+   OPTION_VENDOR_CLASS with the same Enterprise Number.  Each instance
+   of OPTION_VENDOR_CLASS can carry multiple vendor-class-data
+...
+################################################################################
+Processing section 21.17. Vendor-specific Information Option
+Splitting content into chunks:   0%|          | 0/11 [00:00<?, ?it/s]Splitting content into chunks:  45%|████▌     | 5/11 [00:03<00:04,  1.38it/s]Splitting content into chunks:  82%|████████▏ | 9/11 [00:05<00:01,  1.71it/s]Splitting content into chunks: 100%|██████████| 11/11 [00:05<00:00,  2.00it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This option is used by clients and servers to exchange vendor-
+   specific information.
+
+   The format of the Vendor-specific Information option is:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   enterprise-number       The vendor's registered Enterprise Number as
+                           maintained by IANA [IANA-PEN ].  A 4-octet
+                           field containing an unsigned in...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: EXTERNAL
+  Document Tag: IANA-PEN
+  Reference Type: TEXT
+  Reference Value (keywords/section): Private Enterprise Numbers
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   vendor-option-data      Vendor options, interpreted by vendor-
+                           specific code on the clients and servers.  A
+                           variable-length field (4 octets les...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The vendor-option-data field MUST be encoded as a sequence of
+   code/length/value fields of format identical to the DHCP options (see Section 21.1).  The suboption codes are defined by the vendor
+...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.1'
+  Match Type: Exact match
+  Result: Matched to Section 21.1
+  Section Title: Format of DHCP Options
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.1'
+  Match Type: Exact match
+  Result: Matched to Section 21.1
+  Section Title: Format of DHCP Options
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   suboption-len           An unsigned integer giving the length of the
+                           suboption-data field in this suboption in
+                           octets.  A 2-octet field.
+
+   su...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Multiple instances of the Vendor-specific Information option may
+   appear in a DHCP message.  Each instance of the option is interpreted
+   according to the option codes defined by the vendor iden...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  MUST specify the Vendor-specific Information option in an Option
+      Request option. 
+   *  MAY specify an associated Vendor Class option (see Section 21.16).
+
+   *  MAY specify the Vendor-spe...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.16
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.16'
+  Match Type: Exact match
+  Result: Matched to Section 21.16
+  Section Title: Vendor Class Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  MAY use the Enterprise Numbers in the associated Vendor Class
+      options to restrict the set of Enterprise Numbers in the
+      Vendor-specific Information options returned.
+
+   *  MAY return...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  MAY use other information in the message or in its configuration
+      to determine which set of Enterprise Numbers in the Vendor-
+      specific Information options to return.
+################################################################################
+Processing section 21.18. Interface-Id Option
+Splitting content into chunks:   0%|          | 0/4 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 4/4 [00:00<00:00, 340.33it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The relay agent MAY send the Interface-Id option to identify the
+   interface on which the client message was received.  If a relay agent
+   receives a Relay-reply message with an Interface-Id opti...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   interface-id            An opaque value of arbitrary length generated
+                           by the relay agent to identify one of the
+                           relay agent's interfaces.  The ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Servers MAY use the interface-id field for parameter assignment
+   policies.  The interface-id value SHOULD be considered an opaque
+   value, with policies based on exact match only; that is, the
+ ...
+################################################################################
+Processing section 21.19. Reconfigure Message Option
+Splitting content into chunks:   0%|          | 0/3 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 3/3 [00:00<00:00, 346.35it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A server includes a Reconfigure Message option in a Reconfigure
+   message to indicate to the client whether the client responds with a
+   Renew message, a Rebind message, or an Information-request...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   msg-type                5 for Renew message, 6 for Rebind message,
+                           11 for Information-request message.  A
+                           1-octet unsigned integer.
+
+   The Rec...
+################################################################################
+Processing section 21.20. Reconfigure Accept Option
+Splitting content into chunks:   0%|          | 0/2 [00:00<?, ?it/s]Splitting content into chunks: 100%|██████████| 2/2 [00:00<00:00, 330.99it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client uses the Reconfigure Accept option to announce to the server
+   whether the client is willing to accept Reconfigure messages, and a
+   server uses this option to tell the client whether or...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+Processing section 21.21. Identity Association for Prefix Delegation Option
+Splitting content into chunks:   0%|          | 0/12 [00:00<?, ?it/s]Splitting content into chunks:  58%|█████▊    | 7/12 [00:01<00:01,  4.11it/s]Splitting content into chunks:  67%|██████▋   | 8/12 [00:03<00:01,  2.05it/s]Splitting content into chunks:  92%|█████████▏| 11/12 [00:05<00:00,  1.91it/s]Splitting content into chunks: 100%|██████████| 12/12 [00:05<00:00,  2.35it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The IA_PD option is used to carry a prefix delegation identity
+   association, the parameters associated with the IA_PD, and the
+   prefixes associated with it.  The format of the IA_PD option is:
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   option-len              12 + length of IA_PD-options field. 
+   IAID                    The unique identifier for this IA_PD; the
+                           IAID must be unique among the identifier...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   T1                      The time interval after which the client
+                           should contact the server from which the
+                           prefixes in the IA_PD were obtained t...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   T2                      The time interval after which the client
+                           should contact any available server to extend
+                           the lifetimes of the prefixes as...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IA_PD-options           Options associated with this IA_PD.  A
+                           variable-length field (12 octets less than
+                           the value in the option-len field).
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The IA_PD-options field encapsulates those options that are specific
+   to this IA_PD.  For example, all of the IA Prefix options (see Section 21.22) carrying the prefixes associated with this IA_P...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.22
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '21.22'
+  Match Type: Exact match
+  Result: Matched to Section 21.22
+  Section Title: IA Prefix Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   An IA_PD option may only appear in the options area of a DHCP
+   message.  A DHCP message may contain multiple IA_PD options (though
+   each must have a unique IAID).
+
+   The status of any operatio...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   Note that an IA_PD has no explicit "lifetime" or "lease length" of
+   its own.  When the valid lifetimes of all of the prefixes in an IA_PD
+   have expired, the IA_PD can be considered as having ex...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   In a message sent by a server to a client, the client MUST use the
+   values in the T1 and T2 fields for the T1 and T2 timers, unless
+   values in those fields are 0.  The values in the T1 and T2 f...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The server selects the T1 and T2 times to allow the client to extend
+   the lifetimes of any prefixes in the IA_PD before the lifetimes
+   expire, even if the server is unavailable for some short p...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 14.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '14.2'
+  Match Type: Exact match
+  Result: Matched to Section 14.2
+  Section Title: Client Behavior when T1 and/or T2 Are 0
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If a client receives an IA_PD with T1 greater than T2 and both T1 and
+   T2 are greater than 0, the client discards the IA_PD option and
+   processes the remainder of the message as though the serv...
+################################################################################
+Processing section 21.22. IA Prefix Option
+Splitting content into chunks:   0%|          | 0/8 [00:00<?, ?it/s]Splitting content into chunks:  12%|█▎        | 1/8 [00:01<00:12,  1.78s/it]Splitting content into chunks:  25%|██▌       | 2/8 [00:03<00:09,  1.64s/it]Splitting content into chunks:  62%|██████▎   | 5/8 [00:19<00:13,  4.35s/it]Splitting content into chunks:  75%|███████▌  | 6/8 [00:21<00:07,  3.68s/it]Splitting content into chunks:  88%|████████▊ | 7/8 [00:25<00:03,  3.68s/it]Splitting content into chunks: 100%|██████████| 8/8 [00:26<00:00,  3.14s/it]Splitting content into chunks: 100%|██████████| 8/8 [00:26<00:00,  3.34s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The IA Prefix option is used to specify a prefix associated with an
+   IA_PD.  The IA Prefix option must be encapsulated in the
+   IA_PD-options field of an IA_PD option (see Section 21.21). 
+     ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.21
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.21'
+  Match Type: Exact match
+  Result: Matched to Section 21.21
+  Section Title: Identity Association for Prefix Delegation Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   preferred-lifetime      The preferred lifetime for the prefix in the
+                           option, expressed in units of seconds.  A
+                           value of 0xffffffff represents "...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.7
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '7.7'
+  Match Type: Exact match
+  Result: Matched to Section 7.7
+  Section Title: Representation of Time Values and "Infinity" as a Time Value
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   valid-lifetime          The valid lifetime for the prefix in the
+                           option, expressed in units of seconds.  A
+                           value of 0xffffffff represents "infi...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IAprefix-options        Options associated with this prefix.  A
+                           variable-length field (25 octets less than
+                           the value in the option-len field). ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The client SHOULD NOT send an IA Prefix option with 0 in the
+   "prefix-length" field (and an unspecified value (::) in the
+   "IPv6-prefix" field).  A client MAY send a non-zero value in the
+   "p...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8168
+  Reference Type: TEXT
+  Reference Value (keywords/section): prefix-length hints
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8168:
+  Search Keywords: 'prefix-length hints'
+  Result: Found in Section 1
+  Section Title: Introduction
+  Content Preview:    DHCPv6 Prefix Delegation [RFC3633] allows a client to include a
+   prefix-length hint value in th...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The values in the preferred-lifetime and valid-lifetime fields are
+   the number of seconds remaining in each lifetime.  See Section 18.2.10.1 for more details on how these values are used for
+   d...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.2.10.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '18.2.10.1'
+  Match Type: Exact match
+  Result: Matched to Section 18.2.10.1
+  Section Title: Reply for Solicit (with Rapid Commit), Request, Renew, or
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   As per Section 7.7, the value of 0xffffffff for the preferred
+   lifetime or the valid lifetime is taken to mean "infinity" and should
+   be used carefully.
+
+   An IA Prefix option may appear only ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.7
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.7
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '7.7'
+  Match Type: Exact match
+  Result: Matched to Section 7.7
+  Section Title: Representation of Time Values and "Infinity" as a Time Value
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '7.7'
+  Match Type: Exact match
+  Result: Matched to Section 7.7
+  Section Title: Representation of Time Values and "Infinity" as a Time Value
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The status of any operations involving this IA Prefix option is
+   indicated in a Status Code option (see Section 21.13) in the
+   IAprefix-options field.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.13
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.13'
+  Match Type: Exact match
+  Result: Matched to Section 21.13
+  Section Title: Status Code Option
+---------------------------------------------------------------------------
+
+Processing section 21.23. Information Refresh Time Option
+Splitting content into chunks:   0%|          | 0/9 [00:00<?, ?it/s]Splitting content into chunks:  44%|████▍     | 4/9 [00:01<00:02,  2.19it/s]Splitting content into chunks:  78%|███████▊  | 7/9 [00:03<00:01,  1.73it/s]Splitting content into chunks:  89%|████████▉ | 8/9 [00:05<00:00,  1.33it/s]Splitting content into chunks: 100%|██████████| 9/9 [00:05<00:00,  1.68it/s]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This option is requested by clients and returned by servers to
+   specify an upper bound for how long a client should wait before
+   refreshing information retrieved from a DHCP server.  It is only...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The format of the Information Refresh Time option is:
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   ...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   information-refresh-time      Time duration relative to the current
+                                 time, expressed in units of seconds.  A
+                                 4-octet field containin...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DHCP client MUST request this option in the Option Request option
+   (see Section 21.7) when sending Information-request messages.  A
+   client MUST NOT request this option in the Option Request ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.7
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.7'
+  Match Type: Exact match
+  Result: Matched to Section 21.7
+  Section Title: Option Request Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A server sending a Reply to an Information-request message SHOULD
+   include this option if it is requested in the Option Request option
+   of the Information-request.  The option value MUST NOT be...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If the Reply to an Information-request message does not contain this
+   option, the client MUST behave as if the option with the value
+   IRT_DEFAULT was provided.
+
+   A client MUST use the refresh...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   As per Section 7.7, the value 0xffffffff is taken to mean "infinity"
+   and implies that the client should not refresh its configuration data
+   without some other trigger (such as detecting moveme...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.7
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '7.7'
+  Match Type: Exact match
+  Result: Matched to Section 7.7
+  Section Title: Representation of Time Values and "Infinity" as a Time Value
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If a client contacts the server to obtain new data or refresh some
+   existing data before the refresh time expires, then it SHOULD also
+   refresh all data covered by this option. 
+   When the cli...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.2.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '18.2.6'
+  Match Type: Exact match
+  Result: Matched to Section 18.2.6
+  Section Title: Creation and Transmission of Information-request Messages
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A client MAY have a maximum value for the refresh time, where that
+   value is used whenever the client receives this option with a value
+   higher than the maximum.  This also means that the maxim...
+################################################################################
+Processing section 21.24. SOL_MAX_RT Option
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  17%|█▋        | 1/6 [00:02<00:11,  2.26s/it]Splitting content into chunks:  67%|██████▋   | 4/6 [00:04<00:01,  1.06it/s]Splitting content into chunks:  83%|████████▎ | 5/6 [00:07<00:01,  1.71s/it]Splitting content into chunks: 100%|██████████| 6/6 [00:07<00:00,  1.31s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DHCP server sends the SOL_MAX_RT option to a client to override the
+   default value of SOL_MAX_RT.  The value of SOL_MAX_RT in the option
+   replaces the default value defined in Section 7.6.  O...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '7.6'
+  Match Type: Exact match
+  Result: Matched to Section 7.6
+  Section Title: Transmission and Retransmission Parameters
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   SOL_MAX_RT value        Overriding value for SOL_MAX_RT in seconds;
+                           MUST be in this range: 60 <= "value" <= 86400
+                           (1 day).  A 4-octet field con...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DHCP client MUST include the SOL_MAX_RT option code in any Option
+   Request option (see Section 21.7) it sends in a Solicit message. 
+   The DHCP server MAY include the SOL_MAX_RT option in any ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.7
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.7'
+  Match Type: Exact match
+  Result: Matched to Section 21.7
+  Section Title: Option Request Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If a DHCP client receives a message containing a SOL_MAX_RT option
+   that has a valid value for SOL_MAX_RT, the client MUST set its
+   internal SOL_MAX_RT parameter to the value contained in the
+ ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 15
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.2.1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '15'
+  Match Type: Exact match
+  Result: Matched to Section 15
+  Section Title: Reliability of Client-Initiated Message Exchanges
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '18.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 18.2.1
+  Section Title: Creation and Transmission of Solicit Messages
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The purpose of this mechanism is to give network administrators a way
+   to avoid excessive DHCP traffic if all DHCP servers become
+   unavailable.  Therefore, this value is expected to be retained...
+################################################################################
+Processing section 21.25. INF_MAX_RT Option
+Splitting content into chunks:   0%|          | 0/6 [00:00<?, ?it/s]Splitting content into chunks:  17%|█▋        | 1/6 [00:01<00:06,  1.36s/it]Splitting content into chunks:  67%|██████▋   | 4/6 [00:03<00:01,  1.20it/s]Splitting content into chunks: 100%|██████████| 6/6 [00:06<00:00,  1.16s/it]Splitting content into chunks: 100%|██████████| 6/6 [00:06<00:00,  1.11s/it]
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DHCP server sends the INF_MAX_RT option to a client to override the
+   default value of INF_MAX_RT.  The value of INF_MAX_RT in the option
+   replaces the default value defined in Section 7.6.  O...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 7.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '7.6'
+  Match Type: Exact match
+  Result: Matched to Section 7.6
+  Section Title: Transmission and Retransmission Parameters
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   INF_MAX_RT value        Overriding value for INF_MAX_RT in seconds;
+                           MUST be in this range: 60 <= "value" <= 86400
+                           (1 day).  A 4-octet field con...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   A DHCP client MUST include the INF_MAX_RT option code in any Option
+   Request option (see Section 21.7) it sends in an Information-request
+   message.
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: SECTION
+  Reference Value (keywords/section): 21.7
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for draft-ietf-dhc-rfc8415bis-12:
+  Looking for Section: '21.7'
+  Match Type: Exact match
+  Result: Matched to Section 21.7
+  Section Title: Option Request Option
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   The DHCP server MAY include the INF_MAX_RT option in any response it
+   sends to a client that has included the INF_MAX_RT option code in an
+   Option Request option.  The INF_MAX_RT option is a to...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   If a DHCP client receives a message containing an INF_MAX_RT option
+   that has a valid value for INF_MAX_RT, the client MUST set its
+   internal INF_MAX_RT parameter to the value contained in the
+...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 15
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: SECTION
+  Reference Value (keywords/section): 18.2.6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '15'
+  Match Type: Exact match
+  Result: Matched to Section 15
+  Section Title: Reliability of Client-Initiated Message Exchanges
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC8415:
+  Looking for Section: '18.2.6'
+  Match Type: Exact match
+  Result: Matched to Section 18.2.6
+  Section Title: Creation and Transmission of Information-request Messages
+---------------------------------------------------------------------------
+
+Reference extraction log saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/reference_extraction.log
+References extracted and /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/corpus.json updated with extracted references.
+
+Consolidating and resolving references for section 21 only.
+Focusing on section 21 and its children for dependency graph.
+References resolved and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/section_dependencies.json
+
+Creating prompts for section 21...
+Creating expert prompt for section 21 with dependencies...
+Expert prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/focus_section_21_prompt_expert.md
+Expert prompt token count: 89,901 tokens
+Creating router prompt for section 21...
+Router prompt created and saved to /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/focus_section_21_prompt_router.md
+Router prompt token count: 76,357 tokens
+
+IETF draft draft-ietf-dhc-rfc8415bis-12 staged successfully for analysis. All files are saved in /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21.
+
+✓ stage.py completed successfully
+
+✓ Found vector store ID: vs_6958be89a44481918c2ddd280ca7a32c
+
+================================================================================
+STEP 2: Running test_router_experts_manual.py for draft draft-ietf-dhc-rfc8415bis-12, Section 21
+================================================================================
+2026-01-03 03:34:19,760 - __main__ - INFO - Loading router user prompt...
+2026-01-03 03:34:19,761 - __main__ - INFO - Router prompt length: 403973 chars
+2026-01-03 03:34:19,761 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:34:19,761 - __main__ - INFO - TESTING ROUTER
+2026-01-03 03:34:19,761 - __main__ - INFO - ================================================================================
+2026-01-03 03:34:19,833 - __main__ - INFO - Invoking router with manual prompt...
+2026-01-03 03:34:19,833 - __main__ - INFO - User prompt length: 403973 chars
+2026-01-03 03:35:44,974 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:35:45,148 - __main__ - INFO - Router analysis complete. Bug likelihood: Medium
+2026-01-03 03:35:45,149 - __main__ - INFO - Using existing vector store(s): vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:35:45,149 - __main__ - INFO - 
+================================================================================
+2026-01-03 03:35:45,149 - __main__ - INFO - TESTING ALL EXPERTS FROM ROUTER OUTPUT
+2026-01-03 03:35:45,149 - __main__ - INFO - ================================================================================
+2026-01-03 03:35:45,150 - __main__ - INFO - 
+Invoking expert: Scope (MEDIUM)
+2026-01-03 03:35:45,273 - __main__ - INFO - Invoking expert Scope with manual prompt...
+2026-01-03 03:35:45,273 - __main__ - INFO - User prompt length: 408610 chars
+2026-01-03 03:35:45,273 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:36:54,099 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:36:54,144 - __main__ - INFO - Expert Scope analysis complete
+2026-01-03 03:36:54,145 - __main__ - INFO - 
+Invoking expert: Causal (MEDIUM)
+2026-01-03 03:36:54,395 - __main__ - INFO - Invoking expert Causal with manual prompt...
+2026-01-03 03:36:54,395 - __main__ - INFO - User prompt length: 408612 chars
+2026-01-03 03:36:54,396 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:38:17,414 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:38:17,417 - __main__ - INFO - Expert Causal analysis complete
+2026-01-03 03:38:17,418 - __main__ - INFO - 
+Invoking expert: Deontic (HIGH)
+2026-01-03 03:38:17,668 - __main__ - INFO - Invoking expert Deontic with manual prompt...
+2026-01-03 03:38:17,668 - __main__ - INFO - User prompt length: 408591 chars
+2026-01-03 03:38:17,668 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:39:17,706 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:39:17,709 - __main__ - INFO - Expert Deontic analysis complete
+2026-01-03 03:39:17,709 - __main__ - INFO - 
+Invoking expert: Structural (MEDIUM)
+2026-01-03 03:39:17,892 - __main__ - INFO - Invoking expert Structural with manual prompt...
+2026-01-03 03:39:17,892 - __main__ - INFO - User prompt length: 410922 chars
+2026-01-03 03:39:17,893 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:40:06,139 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:40:06,141 - __main__ - INFO - Expert Structural analysis complete
+2026-01-03 03:40:06,142 - __main__ - INFO - 
+Invoking expert: CrossRFC (MEDIUM)
+2026-01-03 03:40:06,259 - __main__ - INFO - Invoking expert CrossRFC with manual prompt...
+2026-01-03 03:40:06,259 - __main__ - INFO - User prompt length: 410908 chars
+2026-01-03 03:40:06,259 - __main__ - INFO - Vector stores: vs_6958be89a44481918c2ddd280ca7a32c
+2026-01-03 03:40:52,229 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-01-03 03:40:52,231 - __main__ - INFO - Expert CrossRFC analysis complete
+2026-01-03 03:40:52,235 - utils.router_expert_workflow - INFO - Saved formatted analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/test_analysis.md
+2026-01-03 03:40:52,243 - utils.router_expert_workflow - INFO - Saved JSON analysis to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21/test_analysis.json
+2026-01-03 03:40:52,243 - __main__ - INFO - 
+Results saved to: /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-21
+
+================================================================================
+ROUTING SUMMARY
+================================================================================
+
+Excerpt Summary: Section 21 defines the base DHCPv6 option formats and semantics (Client/Server IDs, IA_NA/IA_PD, IA Address/Prefix, ORO, status codes, timers, vendor options, etc.), plus some surrounding text that constrains their use.
+Overall Bug Likelihood: Medium
+
+Dimensions:
+  - Temporal: LOW - Option definitions mostly concern static format/semantics; no sequencing or timers beyond basic lifetimes/T1/T2 already specified elsewhere.
+  - ActorDirectionality: LOW - Roles (client/server/relay) are clear for each option; no evident sender/receiver inversions within section 21.
+  - Scope: MEDIUM - There are subtle distinctions between “top-level” vs encapsulated options and per-interface vs global parameters that affect how ORO and some options are supposed to apply.
+  - Causal: MEDIUM - If implementers follow some of the normative text literally (especially around ORO), some widely deployed behaviors become non‑conformant and could break client expectations.
+  - Quantitative: LOW - Lengths and field sizes in the option formats are internally consistent; no obvious off‑by‑N or range errors.
+  - Deontic: HIGH - There is at least one clear tension between “MUST/MAY” requirements in different sections (especially around whether servers may send unsolicited options).
+  - Structural: MEDIUM - One clear intra‑document cross‑reference error involving a section 21 option, plus structural interaction between option scoping and RFC 7227 / IANA guidance.
+  - CrossRFC: MEDIUM - Behavior of IAADDR and some ORO guidance interacts with RFC 5007, RFC 6603, RFC 7227, and the IANA option registry; worth a careful cross‑check.
+  - Terminology: LOW - Terminology around IA/IA_NA/IA_PD, “top-level option”, “encapsulated option”, etc., is fairly consistent; issues are more about cross‑section references than naming.
+  - Boundary: LOW - Edge cases (e.g., T1/T2=0, infinity values) are already carefully constrained; section 21 just references those rules.
+
+Candidate Issues: 2
+
+  Issue 1:
+    Type: Inconsistency
+    Label: Conflict between ORO semantics in Section 21.7 and server behavior allowed in Section 18.3
+    Relevant Dimensions: Deontic, Structural, Scope, Causal, CrossRFC
+    Sketch: Section 21.7 says:  
+      > “Other top-level option codes MUST appear in the Option Request option ...
+
+  Issue 2:
+    Type: Inconsistency
+    Label: Mispointed cross-reference for IA Address as “encapsulated option” (points to Section 21.5 instead of 21.6)
+    Relevant Dimensions: Structural, CrossRFC
+    Sketch: In Section 4.2 (“encapsulated option”), the text says:  
+      > “For example, the IA Address option...
+
+Response ID: resp_00f38045f4dc0b35006958d48c5fe081959dc2649707fa1676
+
+## Scope Expert Analysis
+--------------------------------------------------------------------------------
+ScopeAnalysis:
+- ExcerptSummary: Section 21.7 defines the Option Request option (ORO), including which option codes may/must appear in it and how that controls what options servers send. Section 18.3 describes general server behavior when replying, including whether servers may send options beyond those explicitly requested in the ORO.
+
+- ScopeModel:
+  - Targets:
+    - DHCPv6 top-level options in server-to-client replies (e.g., DNS options, SOL_MAX_RT/INF_MAX_RT, Vendor options).
+    - The Optio...
+
+## Causal Expert Analysis
+--------------------------------------------------------------------------------
+1. **Summary**
+
+Section 21.7 and Section 18.3 give slightly different stories about whether a server may send top‑level options that the client did *not* request in ORO. This is a real normative tension, but it does *not* make the protocol unimplementable or cause inherent state‑machine failure. If everyone follows the text strictly in the same way, the protocol still works; the main risk is ambiguity and loss of backwards‑compatible behavior, not fundamental breakage.
+
+---
+
+2. **Causal Analysis...
+
+## Deontic Expert Analysis
+--------------------------------------------------------------------------------
+DeonticAnalysis:
+- ExcerptSummary: The excerpt defines core DHCPv6 option formats and semantics (especially the Option Request option) and the corresponding client/server behavior. It contains several normative requirements on when options may/shall be sent or requested.
+
+- OverallDeonticRisk: Medium
+
+- Issues:
+
+  - Issue-1:
+    - BugType: Inconsistency
+    - Title: Contradictory rules on whether servers may send unsolicited top-level options (ORO vs. server behavior)
+    - Description: Section ...
+
+## Structural Expert Analysis
+--------------------------------------------------------------------------------
+AnalysisSummary:
+- ExcerptSummary: Examined Section 21’s option definitions and usage constraints, and the surrounding client/server behavior text (notably Sections 18.3 and 21.7), plus the earlier “encapsulated option” terminology in Section 4.2.
+- OverallBugLikelihood: High
+
+Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: ORO semantics conflict between Section 21.7 and Section 18.3
+    - LocationHint: Section 21.7 (Option Request Option) vs Section 18.3 (Server Behavior)
+  ...
+
+## CrossRFC Expert Analysis
+--------------------------------------------------------------------------------
+CrossRFCReport:
+- ExcerptSummary: Section 21 (plus related text) defines the core DHCPv6 option formats and semantics, including ORO behavior, IA_NA/IA_PD/IAADDR/IAPREFIX, authentication, and timing options, and ties them to IANA registries and to other specs such as RFC 7227, RFC 6603, RFC 7598, and RFC 5007.
+- OverallCrossRFCLikelihood: High
+- Issues:
+  - Issue-1:
+    - BugType: Inconsistency
+    - ShortLabel: ORO semantics vs server “MAY return additional options”
+    - Description: Section 2...
+
+================================================================================
+TEST SUMMARY
+================================================================================
+Router: ✓ Complete
+  Bug Likelihood: Medium
+Experts: ✓ 5 invoked
+  Dimensions: Scope, Causal, Deontic, Structural, CrossRFC
+Vector Stores: vs_6958be89a44481918c2ddd280ca7a32c
+
+✓ test_router_experts_manual.py completed successfully
+
+################################################################################
+✓ Successfully completed Draft draft-ietf-dhc-rfc8415bis-12, Section 21
+################################################################################
+

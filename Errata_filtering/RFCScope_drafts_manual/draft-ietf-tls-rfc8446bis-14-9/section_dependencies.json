@@ -1,0 +1,287 @@
+[
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "8439",
+    "reference_type": "SECTION",
+    "reference_value": "6.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "B.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "GCM",
+    "reference_type": "TEXT",
+    "reference_value": "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/NIST.SP.800-38D",
+    "reference_text": "Dworkin, M., \"Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC\", NIST Special Publication 800-38D, November 2007, <https://doi.org/10.6028/NIST.SP.800-38D >.",
+    "reference_summary": "NIST Special Publication 800-38D, authored by Morris Dworkin and published in November 2007, specifies the Galois/Counter Mode (GCM) and its variant, Galois Message Authentication Code (GMAC), as modes of operation for symmetric key block ciphers. ([nist.gov](https://www.nist.gov/publications/recommendation-block-cipher-modes-operation-galoiscounter-mode-gcm-and-gmac?utm_source=openai))\n\n**Galois/Counter Mode (GCM):**\nGCM is an authenticated encryption algorithm designed to provide both confidentiality and data integrity. It operates by combining the Counter (CTR) mode of encryption with a Galois field multiplication-based authentication mechanism. This combination allows for efficient parallel processing, making GCM suitable for high-throughput applications. GCM can process associated data (AD) that is not encrypted but needs authentication, ensuring the integrity of both the ciphertext and the associated data. ([nist.gov](https://www.nist.gov/publications/recommendation-block-cipher-modes-operation-galoiscounter-mode-gcm-and-gmac?utm_source=openai))\n\n**Galois Message Authentication Code (GMAC):**\nGMAC is a specialization of GCM that provides message authentication without encryption. It generates a Message Authentication Code (MAC) for data that requires integrity verification but does not need to be kept confidential. GMAC is particularly useful in scenarios where data authenticity is critical, but encryption is either unnecessary or handled separately. ([nist.gov](https://www.nist.gov/publications/recommendation-block-cipher-modes-operation-galoiscounter-mode-gcm-and-gmac?utm_source=openai))\n\n**Key Features:**\n- **Authenticated Encryption:** GCM ensures that the data is both encrypted and authenticated, protecting against unauthorized access and modifications.\n- **Efficiency:** The mode is designed for high performance, capable of achieving high throughput with minimal computational overhead, which is beneficial for applications requiring rapid data processing.\n- **Parallelizability:** Both encryption and authentication processes in GCM can be parallelized, leveraging modern multi-core processors to enhance performance.\n- **Flexibility:** GCM and GMAC support initialization vectors (IVs) of arbitrary length, providing flexibility in implementation and integration into various protocols.\n\n**Security Considerations:**\nThe security of GCM heavily relies on the uniqueness of the initialization vector (IV) for each encryption operation with the same key. Reusing an IV with the same key can compromise the confidentiality and integrity of the data. Therefore, it is crucial to implement mechanisms that ensure IV uniqueness, such as using a counter or a random number generator with a sufficiently large space to minimize the probability of repetition. ([nist.gov](https://www.nist.gov/publications/recommendation-block-cipher-modes-operation-galoiscounter-mode-gcm-and-gmac?utm_source=openai))\n\nFor a comprehensive understanding of GCM and GMAC, including detailed specifications, mathematical foundations, and implementation guidelines, refer to the full text of NIST Special Publication 800-38D. ([nist.gov](https://www.nist.gov/publications/recommendation-block-cipher-modes-operation-galoiscounter-mode-gcm-and-gmac?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.1",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.2",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.7",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.8",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "1.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9"
+    },
+    "document_type": "RFC",
+    "document_tag": "5116",
+    "reference_type": "SECTION",
+    "reference_value": "5.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9"
+    },
+    "document_type": "RFC",
+    "document_tag": "8439",
+    "reference_type": "SECTION",
+    "reference_value": "2.8",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9"
+    },
+    "document_type": "RFC",
+    "document_tag": "6066",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9"
+    },
+    "document_type": "RFC",
+    "document_tag": "5116",
+    "reference_type": "SECTION",
+    "reference_value": "5.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9"
+    },
+    "document_type": "RFC",
+    "document_tag": "8439",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "9"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "7",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

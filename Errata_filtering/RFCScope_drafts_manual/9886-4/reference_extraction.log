@@ -1,0 +1,281 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/9886-4/reference_extraction.log
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Per [RFC9434], all information classified as public is stored in the
+   DNS, specifically authoritative name servers, to satisfy REG-1 from
+   [RFC9153].
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9434
+  Reference Type: TEXT
+  Reference Value (keywords/section): all information classified as public
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9153
+  Reference Type: TEXT
+  Reference Value (keywords/section): REG-1
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9434:
+  Search Keywords: 'all information classified as public'
+  Result: Found in Section 4.1
+  Section Title: Public Information Registry
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9153:
+  Search Keywords: 'REG-1'
+  Result: Found in Section 4.4
+  Section Title: Registries
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   Authoritative name servers use domain names as identifiers and data
+   is stored in Resource Records (RRs) with associated RRTypes.  This
+   document defines two new RRTypes, one for HHIT metadata ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.1
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: SECTION
+  Reference Value (keywords/section): 5.2
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '5.1'
+  Match Type: Exact match
+  Result: Matched to Section 5.1
+  Section Title: HHIT Resource Record
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9886:
+  Looking for Section: '5.2'
+  Match Type: Exact match
+  Result: Matched to Section 5.2
+  Section Title: UAS Broadcast RID Resource Record
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble
+   reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an
+   HHIT RRType.  Depending on local circumstances or additional...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3596
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.5
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: SECTION
+  Reference Value (keywords/section): 3.1.2.1
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: TEXT
+  Reference Value (keywords/section): DRIP Entity Tag (DET) Authentication Formats and Protocols for Broadcast Remote Identification (RID)
+
+Reference 4:
+  Document Type: EXTERNAL
+  Document Tag: STD88
+  Reference Type: TEXT
+  Reference Value (keywords/section): DNS Extensions to Support IP Version 6
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3596:
+  Looking for Section: '2.5'
+  Match Type: Exact match
+  Result: Matched to Section 2.5
+  Section Title: IP6.ARPA Domain
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC9575:
+  Looking for Section: '3.1.2.1'
+  Match Type: Exact match
+  Result: Matched to Section 3.1.2.1
+  Section Title: DIME Endorsements of Subordinate DETs
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9575:
+  Search Keywords: 'DRIP Entity Tag (DET) Authentication Formats and Protocols for Broadcast Remote Identification (RID)'
+  Result: Found in Section 1.1
+  Section Title: DRIP Entity Tag (DET) Authentication Goals for Broadcast RID
+  Content Preview:    ASTM [F3411] Authentication Messages (Message Type 0x2), when used
+   with DET-based formats [RFC...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   DNSSEC MUST be used for apex entities (those which use a self-signed
+   Canonical Registration Certificate) and is RECOMMENDED for other
+   entities.  When a DIME decides to use DNSSEC, they SHOULD...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9886
+  Reference Type: TEXT
+  Reference Value (keywords/section): apex entities
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC6841
+  Reference Type: TEXT
+  Reference Value (keywords/section): framework for cryptographic algorithms and key management
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9886:
+  Search Keywords: 'apex entities'
+  Result: Found in Section 6.2.2.3
+  Section Title: Initial Values
+  Content Preview:    The following values are defined by this document:
+
+     +=======+===============================...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6841:
+  Search Keywords: 'framework for cryptographic algorithms and key management'
+  Result: Found in Section 5
+  Section Title: Outline of a Set of Provisions
+  Content Preview:    This section contains a recommended outline for a set of provisions,
+   intended to serve as a ch...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   A DET IPv6 address gets mapped into domain names using the scheme
+   defined in Section 2.5 of RFC 3596 [STD88].  However, DNS lookups of
+   these names query for HHIT and/or BRID resource records ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3596
+  Reference Type: SECTION
+  Reference Value (keywords/section): 2.5
+
+Reference 2:
+  Document Type: EXTERNAL
+  Document Tag: STD88
+  Reference Type: TEXT
+  Reference Value (keywords/section): Internet Standard 88
+================================================================================
+
+
+---------------------------------------------------------------------------
+SECTION REFERENCE for RFC3596:
+  Looking for Section: '2.5'
+  Match Type: Exact match
+  Result: Matched to Section 2.5
+  Section Title: IP6.ARPA Domain
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC88:
+  Search Keywords: 'Internet Standard 88'
+  Result: Found in Section D
+  Section Title: Checking
+  Content Preview:    The nature of remote job entry service is such that a low rate of
+   undetected errors is mandato...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC 9886 EXCERPT:
+################################################################################
+   The HHIT RRType provides the public key for signature verification
+   and URIs via the certificate.  The BRID RRType provides static
+   Broadcast RID information such as the Broadcast Endorsements ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC9575
+  Reference Type: TEXT
+  Reference Value (keywords/section): Broadcast Endorsements
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC9575:
+  Search Keywords: 'Broadcast Endorsements'
+  Result: Found in Section B.2
+  Section Title: Full Authentication Example
+  Content Preview:    This example (Figure 13) is focused on showing that 100% of ASTM
+   Messages can be authenticated...
+---------------------------------------------------------------------------
+

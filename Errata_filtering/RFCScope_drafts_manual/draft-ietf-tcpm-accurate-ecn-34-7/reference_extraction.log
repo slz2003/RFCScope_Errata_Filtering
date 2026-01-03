@@ -1,0 +1,191 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-tcpm-accurate-ecn-34-7/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This document reassigns the TCP header flag at bit offset 7 to the
+   AccECN protocol.  This bit was previously called the Nonce Sum (NS)
+   flag [RFC3540], but RFC 3540 has been reclassified as hi...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3540
+  Reference Type: TEXT
+  Reference Value (keywords/section): Nonce Sum (NS) flag
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): reclassified as historic
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3540:
+  Search Keywords: 'Nonce Sum (NS) flag'
+  Result: Found in Section 9
+  Section Title: IANA Considerations
+  Content Preview:    The Nonce Sum (NS) is carried in a reserved TCP header bit that must
+   be allocated.  This docum...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8311:
+  Search Keywords: 'reclassified as historic'
+  Result: Found in Section 7
+  Section Title: IANA Considerations
+  Content Preview:    To reflect the reclassification of RFC 3540 as Historic, IANA has
+   updated the "Transmission Co...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+     +=====+==============+===========+==============================+
+     | Bit | Name         | Reference | Assignment Notes             |
+     +=====+==============+===========+===================...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3540
+  Reference Type: TEXT
+  Reference Value (keywords/section): Nonce Sum
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): historic
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC3540:
+  Search Keywords: 'Nonce Sum'
+  Result: Found in Section 2
+  Section Title: Overview
+  Content Preview:    The ECN-nonce builds on the existing ECN-Echo and Congestion Window
+   Reduced (CWR) signaling me...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8311:
+  Search Keywords: 'historic'
+  Result: Found in Section 9
+  Section Title: References
+  Content Preview: 
+
+
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+                   Table 6: TCP header flag reassignment 
+   [TO BE REMOVED: IANA is requested to update the existing entry in the
+   TCP Header Flags registry (https://www.iana.org/assignments/tcp-
+ ...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC3540
+  Reference Type: TEXT
+  Reference Value (keywords/section): Nonce Sum
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8311
+  Reference Type: TEXT
+  Reference Value (keywords/section): historic
+================================================================================
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   This document also defines two new TCP options for AccECN, assigned
+   values of 172 and 174 (decimal) from the TCP option space.  These
+   values are defined as the following in the "TCP Option Ki...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+      +======+========+================================+===========+
+      | Kind | Length | Meaning                        | Reference |
+      +======+========+================================+======...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   [TO BE REMOVED: These registrations have taken place using the early
+   registration procedure, which may be temporary if this draft does not
+   proceed, at the following location: http://www.iana....
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   Early experimental implementations of the two AccECN Options used
+   experimental option 254 per [RFC6994] with the 16-bit magic numbers
+   0xACC0 and 0xACC1 respectively for Order 0 and 1, as allo...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC6994
+  Reference Type: TEXT
+  Reference Value (keywords/section): experimental option 254
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC6994:
+  Search Keywords: 'experimental option 254'
+  Result: Found in Section 4
+  Section Title: Reducing the Impact of False Positives
+  Content Preview:    False positives occur where the registered ExID of an experiment
+   matches the value of an optio...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   [TO BE REMOVED: IANA is requested to replace the references for all
+   three of the above experimental options (0xACC0, 0xACC1 and 0xACCE)
+   with a reference to the present RFC XXXX.]
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-tcpm-accurate-ecn-34 EXCERPT:
+################################################################################
+   [TO BE REMOVED: If the early registrations, which may be temporary,
+   do not proceed, the three references to them in the TCP ExIDs
+   registry at the following location will also need to be edite...
+################################################################################

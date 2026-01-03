@@ -1,0 +1,332 @@
+[
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "5869",
+    "reference_type": "SECTION",
+    "reference_value": "3",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "9147",
+    "reference_type": "SECTION",
+    "reference_value": "5.9",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.1"
+    },
+    "document_type": "RFC",
+    "document_tag": "9147",
+    "reference_type": "SECTION",
+    "reference_value": "4.1",
+    "importance": "informative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.1"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "7.4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4.6.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.2"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "7.3",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.4.1"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "NIST.SP.800-56AR3",
+    "reference_type": "TEXT",
+    "reference_value": "Recommendation for pair-wise key-establishment schemes using discrete logarithm cryptography",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": "NIST Special Publication 800-56A Revision 3 (SP 800-56A Rev. 3), titled \"Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography,\" provides comprehensive guidelines for establishing shared secret keys between two parties using discrete logarithm-based cryptographic methods. ([csrc.nist.gov](https://csrc.nist.gov/pubs/sp/800/56/a/r3/final?utm_source=openai))\n\nThe document details key-agreement schemes that utilize public-key techniques based on the discrete logarithm problem, including both finite field cryptography and elliptic curve cryptography. These schemes are designed to ensure that two parties can securely compute a shared secret without directly transmitting the secret itself. The shared secret is then used, along with other exchanged or known data, to derive the secret keying material. ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/nist.sp.800-56Ar3.pdf?utm_source=openai))\n\nSP 800-56A Rev. 3 specifies several processes associated with key establishment, such as generating domain parameters and deriving secret keying material from a shared secret. It also emphasizes the importance of implementation security, recommending practices like destroying sensitive data that is no longer needed to limit opportunities for unauthorized access. ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/nist.sp.800-56Ar3.pdf?utm_source=openai))\n\nAs of July 2025, NIST has proposed updates to SP 800-56A Rev. 3 to approve x-coordinate-only implementations of certain elliptic curve cryptography (ECC) key-agreement schemes, align with curve requirements specified in SP 800-186, and improve editorial quality. Notably, NIST does not propose to approve the X25519 and X448 key exchange schemes at this time, considering new schemes as secondary in the ongoing transition to post-quantum cryptography. ([nist.gov](https://www.nist.gov/news-events/news/2025/07/nist-proposes-update-sp-800-56a-and-revise-sp-800-56c?utm_source=openai))\n\nFor a detailed understanding of the recommended pair-wise key-establishment schemes using discrete logarithm cryptography, you can refer to the full document available at: ([nvlpubs.nist.gov](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/nist.sp.800-56Ar3.pdf?utm_source=openai)) "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.4.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "KEYAGREEMENT",
+    "reference_type": "SECTION",
+    "reference_value": "5.6.1.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.sp.800-56ar3",
+    "reference_text": "Barker, E., Chen, L., Roginsky, A., Vassilev, A., and R. Davis, \"Recommendation for pair-wise key-establishment schemes using discrete logarithm cryptography\", National Institute of Standards and Technology, DOI 10.6028/nist.sp.800-56ar3, April 2018, <https://doi.org/10.6028/nist.sp.800-56ar3>.",
+    "reference_summary": "In NIST Special Publication 800-56A Revision 3, Section 5.6.1.2 outlines the process for generating an ephemeral key pair in elliptic curve cryptography (ECC). This involves selecting a random integer as the private key and computing the corresponding public key by multiplying this integer with the elliptic curve's base point. The section also emphasizes the importance of validating the generated public key to ensure it lies on the curve and meets all necessary criteria. Proper generation and validation of these keys are crucial for maintaining the security and integrity of ECC-based key establishment schemes. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.4.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "KEYAGREEMENT",
+    "reference_type": "SECTION",
+    "reference_value": "5.7.1.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.sp.800-56ar3",
+    "reference_text": "Barker, E., Chen, L., Roginsky, A., Vassilev, A., and R. Davis, \"Recommendation for pair-wise key-establishment schemes using discrete logarithm cryptography\", National Institute of Standards and Technology, DOI 10.6028/nist.sp.800-56ar3, April 2018, <https://doi.org/10.6028/nist.sp.800-56ar3>.",
+    "reference_summary": "Section 5.7.1.2 of NIST Special Publication 800-56A Revision 3, titled \"Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) Primitive,\" defines the process for two parties to establish a shared secret using elliptic curve cryptography. This primitive is fundamental to key-agreement schemes that rely on the elliptic curve Diffie-Hellman (ECDH) method.\n\n**Inputs:**\n\n- A set of domain parameters, denoted as \\( D = (q, FR, a, b, G, n, h) \\), where:\n  - \\( q \\): The field size.\n  - \\( FR \\): The field representation.\n  - \\( a \\) and \\( b \\): Coefficients defining the elliptic curve equation.\n  - \\( G \\): The base point on the elliptic curve.\n  - \\( n \\): The order of the base point \\( G \\).\n  - \\( h \\): The cofactor.\n- Party U's private key \\( d_{s,U} \\).\n- Party V's public key \\( Q_{s,V} \\).\n\n**Process:**\n\n1. **Validation of Public Key:**\n   - Verify that \\( Q_{s,V} \\) is a valid point on the elliptic curve defined by the domain parameters \\( D \\).\n   - Ensure that \\( Q_{s,V} \\) is not the identity element (the point at infinity).\n   - Confirm that \\( h \\times Q_{s,V} \\neq O \\), where \\( O \\) is the identity element.\n\n2. **Computation of Shared Secret \\( Z \\):**\n   - Compute the point \\( P = d_{s,U} \\times Q_{s,V} \\).\n   - If \\( P = O \\), output an error indicator and terminate the process.\n   - Otherwise, the x-coordinate of \\( P \\) (denoted as \\( x_P \\)) is used as the shared secret \\( Z \\).\n\n**Output:**\n\n- The shared secret \\( Z \\), which is the x-coordinate of the computed point \\( P \\).\n\nThis ECC CDH primitive ensures that both parties can securely derive a common secret value, which can then be used for cryptographic purposes such as key derivation or encryption. "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.4.2"
+    },
+    "document_type": "EXTERNAL",
+    "document_tag": "KEYAGREEMENT",
+    "reference_type": "SECTION",
+    "reference_value": "4.2.8.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "https://doi.org/10.6028/nist.sp.800-56ar3",
+    "reference_text": "Barker, E., Chen, L., Roginsky, A., Vassilev, A., and R. Davis, \"Recommendation for pair-wise key-establishment schemes using discrete logarithm cryptography\", National Institute of Standards and Technology, DOI 10.6028/nist.sp.800-56ar3, April 2018, <https://doi.org/10.6028/nist.sp.800-56ar3>.",
+    "reference_summary": "In NIST Special Publication 800-56A Revision 3, Section 4.2.8.2 addresses the \"Use of Static Public Keys.\" This section outlines the requirements and considerations for utilizing static public keys within key-establishment schemes based on discrete logarithm cryptography. It emphasizes the importance of proper validation and assurance of these keys to maintain the security and integrity of the cryptographic processes.\n\nFor a comprehensive understanding, you can refer to the full document available at:\n\n "
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.4.2"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "7",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "5705",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.5"
+    },
+    "document_type": "DRAFT",
+    "document_tag": "draft-ietf-tls-rfc8446bis-14",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "unknown",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7.5"
+    },
+    "document_type": "RFC",
+    "document_tag": "5705",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7"
+    },
+    "document_type": "RFC",
+    "document_tag": "2104",
+    "reference_type": "SECTION",
+    "reference_value": "2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7"
+    },
+    "document_type": "RFC",
+    "document_tag": "5705",
+    "reference_type": "SECTION",
+    "reference_value": "4",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "7",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7"
+    },
+    "document_type": "RFC",
+    "document_tag": "5869",
+    "reference_type": "SECTION",
+    "reference_value": "2.1",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7"
+    },
+    "document_type": "RFC",
+    "document_tag": "5869",
+    "reference_type": "SECTION",
+    "reference_value": "2.2",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "6",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  },
+  {
+    "source": {
+      "rfc_number": "draft-ietf-tls-rfc8446bis-14",
+      "section_id": "7"
+    },
+    "document_type": "RFC",
+    "document_tag": "7748",
+    "reference_type": "SECTION",
+    "reference_value": "5",
+    "importance": "normative",
+    "updates": false,
+    "url": "",
+    "reference_text": "",
+    "reference_summary": ""
+  }
+]

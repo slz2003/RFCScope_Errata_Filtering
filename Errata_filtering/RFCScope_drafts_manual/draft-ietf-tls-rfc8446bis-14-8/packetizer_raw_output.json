@@ -1,0 +1,31 @@
+{
+  "reports": [
+    {
+      "label": "Candidate Issue with Missing Information in 0‑RTT Security Model",
+      "bug_type": "Candidate Issue / Underspecification",
+      "explanation": "The analysis flags a candidate issue in Section 8 about the 0‑RTT security model for TLS 1.3 without providing detailed information or a descriptive label.",
+      "justification": [
+        "The candidate issue is noted as 'Candidate Issues: 1' where Issue 1 shows 'Type: None', an empty Label, and a placeholder in the Sketch ('Sketch: ...'), indicating a lack of detail (E1)."
+      ],
+      "evidence": {
+        "snippets": [
+          {
+            "id": "E1",
+            "text": "Candidate Issues: 1\n\n  Issue 1:\n    Type: None\n    Label: \n    Relevant Dimensions: \n    Sketch: ..."
+          }
+        ],
+        "summary": [
+          "(E1) The candidate issue is identified with no explicit label, type 'None', and a sketch placeholder, indicating missing detailed information."
+        ]
+      },
+      "fix_direction": null,
+      "severity": "Low",
+      "severity_basis": "All dimensions in the analysis are rated LOW and the overall bug likelihood is None, suggesting minimal risk despite the underspecification in the candidate issue.",
+      "confidence": "Medium",
+      "experts": [
+        "Router Analysis: Issue 1"
+      ],
+      "report_id": "draft-ietf-tls-rfc8446bis-14-8-1"
+    }
+  ]
+}

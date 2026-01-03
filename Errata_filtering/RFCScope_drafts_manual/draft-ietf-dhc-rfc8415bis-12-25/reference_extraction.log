@@ -1,0 +1,142 @@
+Reference extraction log initialized at /u/zgr3et/RFCScope_base/RFCScope/RFCScope/RFCScope_drafts_manual/draft-ietf-dhc-rfc8415bis-12-25/reference_extraction.log
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   This document does not define any new DHCP name spaces or
+   definitions.
+
+   The publication of this document does not change the assignment rules
+   for new values for message types, option codes...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): new DHCP name spaces or definitions
+
+Reference 2:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): assignment rules for new values for message types, option codes, DUID types, or status codes
+
+Reference 3:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): assigned values used in DHCPv6
+
+Reference 4:
+  Document Type: DRAFT
+  Document Tag: draft-ietf-dhc-rfc8415bis-12
+  Reference Type: TEXT
+  Reference Value (keywords/section): IANA update references to RFC8415
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-dhc-rfc8415bis-12:
+  Search Keywords: 'new DHCP name spaces or definitions'
+  Result: Found in Section 4.2
+  Section Title: DHCP Terminology
+  Content Preview:    Terminology specific to DHCP can be found below.
+
+   appropriate to the link   An address is "app...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-dhc-rfc8415bis-12:
+  Search Keywords: 'assignment rules for new values for message types, option codes, DUID types, or status codes'
+  Result: Found in Section 16
+  Section Title: Message Validation
+  Content Preview:    This section describes which options are valid in which kinds of
+   message types and explains wh...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'assigned values used in DHCPv6'
+  Result: Found in Section 21.17
+  Section Title: Vendor-specific Information Option
+  Content Preview:    This option is used by clients and servers to exchange vendor-
+   specific information.
+
+   The f...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for draft-ietf-dhc-rfc8415bis-12:
+  Search Keywords: 'IANA update references to RFC8415'
+  Result: Found in Section 25
+  Section Title: IANA Considerations
+  Content Preview:    This document does not define any new DHCP name spaces or
+   definitions.
+
+   The publication of ...
+---------------------------------------------------------------------------
+
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   IANA is requested to add a new column "Status" to all registries on
+   the DHCPv6 parameters page at <https://www.iana.org/assignments/
+   dhcpv6-parameters > and leave each entry blank except as i...
+################################################################################
+
+################################################################################
+ANALYZING RFC draft-ietf-dhc-rfc8415bis-12 EXCERPT:
+################################################################################
+   *  In the Option Code registry, set the "Status" column value to
+      "Obsolete" for the IA_TA (option code 4) and UNICAST (option code
+      12) rows.
+
+   *  In the Status Codes registry, set the...
+################################################################################
+
+================================================================================
+EXTRACTED REFERENCES FROM OPENAI:
+================================================================================
+
+Reference 1:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): Obsolete for IA_TA (option code 4) and UNICAST (option code 12)
+
+Reference 2:
+  Document Type: RFC
+  Document Tag: RFC8415
+  Reference Type: TEXT
+  Reference Value (keywords/section): Obsolete for UseMulticast (status code 5)
+================================================================================
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'Obsolete for IA_TA (option code 4) and UNICAST (option code 12)'
+  Result: Found in Section 21.22
+  Section Title: IA Prefix Option
+  Content Preview:    The IA Prefix option is used to specify a prefix associated with an
+   IA_PD.  The IA Prefix opti...
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+SEMANTIC SEARCH for RFC8415:
+  Search Keywords: 'Obsolete for UseMulticast (status code 5)'
+  Result: Found in Section 18.2.10
+  Section Title: Receipt of Reply Messages
+  Content Preview:    Upon the receipt of a valid Reply message in response to a Solicit
+   with a Rapid Commit option ...
+---------------------------------------------------------------------------
+
