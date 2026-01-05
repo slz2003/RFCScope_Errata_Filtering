@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 10
+Total reports: 4
 
 ---
+
 
 ## Report 1: 9815-6-1
 
@@ -41,177 +42,6 @@ Replace the duplicated clause with a symmetric check: verify that the Current-Li
 
 ---
 
-## Report 2: 9815-6-2
-
-**Label:** Ambiguous NLRI selection rule ordering affecting convergence
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The document does not explicitly state that the NLRI selection rules, particularly preferring self-originated NLRIs over those with higher sequence numbers, must be applied in a strict order, creating potential divergence in convergence behavior.
-
-**Justification:**
-
-- Experts highlighted that the intended precedence between rule #1 (self-originated preference) and rule #3 (highest sequence number) is not clearly mandated.
-- This ambiguity could result in some routers erroneously retaining stale NLRIs after a restart.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  1.  NLRIs self‑originated from directly connected BGP SPF peers are preferred… This rule assures that a stale NLRI is updated even if a BGP SPF router loses its sequence number state due to a cold start.
-
-- **E2:**
-
-  3.  The NLRI with the most recent Sequence Number TLV, i.e., the highest sequence number is selected.
-
-**Evidence Summary:**
-
-- (E1) Indicates a preference for self-originated NLRIs, while (E2) uses highest sequence number, but the relative ordering is not explicitly defined.
-- (E1, E2) The lack of a strict tie-break order may lead to different implementations resolving conflicts inconsistently.
-
-**Fix Direction:**
-
-Add explicit language stating that the NLRI selection rules are to be applied in the listed order, with rule (1) (self-originated) taking precedence over rule (3) (highest sequence number).
-
-
-**Severity:** High
-  *Basis:* Incorrect rule ordering can force routers to keep stale routes, undermining the convergence guarantee after sequence number resets.
-
-**Confidence:** High
-
----
-
-## Report 3: 9815-6-3
-
-**Label:** Ambiguous handling of prefix NLRI missing Prefix Metric TLV (TLV 1155)
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The specification does not clearly define whether a Prefix NLRI lacking the mandatory Prefix Metric TLV should be treated as malformed, preserved but ignored for SPF, or assigned a default metric, which could lead to divergent implementation behavior.
-
-**Justification:**
-
-- The text mandates that the Prefix Metric MUST be advertised for route calculation, yet references to RFC 9552 suggest its absence implies no reachability.
-- Experts worry that the lack of explicit error-handling could cause inconsistencies in SPF computation.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The Prefix Metric (TLV 1155) MUST be advertised to be considered for route calculation.
-
-- **E2:**
-
-  The cost for each prefix is the metric advertised in the Prefix Attribute Prefix Metric (TLV 1155) added to the cost to reach the Current-Node.
-
-**Evidence Summary:**
-
-- (E1) Specifies that TLV 1155 is essential for route calculation, while (E2) shows that SPF calculation depends on its value.
-- (E1, E2) The document does not specify the behavior if TLV 1155 is missing, leading to ambiguity.
-
-**Fix Direction:**
-
-Clarify in Section 5.2.3 or 7.1 that a Prefix NLRI missing the Prefix Metric TLV must either be treated as malformed (triggering a withdrawal) or preserved solely for LS propagation while being excluded from SPF calculations.
-
-
-**Severity:** Low
-  *Basis:* While divergent treatments do not affect basic route installation, they can result in inconsistent SPF topology views across different implementations.
-
-**Confidence:** High
-
----
-
-## Report 4: 9815-6-4
-
-**Label:** Inconsistent scope definition for the SPF-based Decision Process
-
-**Bug Type:** Both
-
-**Explanation:**
-
-The document provides conflicting statements about whether the SPF-based Decision Process applies solely to the BGP-LS-SPF SAFI or more broadly to IPv4/IPv6 unicast, leading to potential misimplementation of routing behavior.
-
-**Justification:**
-
-- The Introduction suggests the modifications apply to IPv4/IPv6 as underlay unicast SAFIs, while Section 5.1 restricts the process to the BGP-LS-SPF SAFI.
-- Section 6 unconditionally states that the SPF-based Decision Process replaces the standard BGP process, which may mislead some implementers.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The modifications to [RFC4271] for BGP SPF described herein only apply to IPv4 and IPv6 as underlay unicast Subsequent Address Family Identifiers (SAFIs).
-
-- **E2:**
-
-  The SPF-based Decision Process (Section 6) applies only to the BGP-LS-SPF SAFI and MUST NOT be used with other combinations of the BGP-LS AFI (16388).
-
-- **E3:**
-
-  The SPF-based Decision Process replaces the BGP Decision Process described in [RFC4271].
-
-**Evidence Summary:**
-
-- (E1) implies a scope limited to certain unicast SAFIs, while (E2) confines SPF to BGP-LS-SPF.
-- (E3) suggests a global replacement of the BGP process, creating a conflict.
-
-**Fix Direction:**
-
-Clarify that the SPF-based Decision Process strictly applies only to BGP-LS-SPF NLRI and does not affect the decision process for standard IPv4/IPv6 unicast SAFIs.
-
-
-**Severity:** High
-  *Basis:* Misinterpreting the scope could lead to applying SPF semantics to inappropriate SAFIs, causing severe routing anomalies.
-
-**Confidence:** High
-
----
-
-## Report 5: 9815-6-5
-
-**Label:** Inconsistent mandatory TLV requirements versus attr-discard handling
-
-**Bug Type:** Both
-
-**Explanation:**
-
-There is a conflict between the requirement for mandatory TLVs (such as the Sequence Number and IGP Metric) for BGP-LS-SPF NLRIs and the recommendation to preserve and propagate NLRI lacking the BGP-LS Attribute, leading to divergent error-handling behaviors.
-
-**Justification:**
-
-- Section 5.2.2 and 5.2.4 mandate that certain TLVs must be present, otherwise the NLRI is considered malformed.
-- Section 7.1 instructs that NLRI without the BGP-LS Attribute, which would lack these TLVs, must not be used in SPF but should be preserved for propagation.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The IGP Metric (TLV 1095) MUST be advertised. If a BGP speaker receives a Link NLRI without an IGP Metric attribute TLV, then it MUST consider the received NLRI as malformed and is handled as described in Section 7.1.
-
-- **E2:**
-
-  When a BGP speaker receives a BGP Update that does not contain any BGP-LS Attributes, it is most likely an indication of ‘Attribute Discard’ fault handling, and the BGP speaker SHOULD preserve and propagate the BGP-LS-SPF NLRI as described in Section 8.2.2 of [RFC9552].
-
-**Evidence Summary:**
-
-- (E1) enforces mandatory presence of TLVs for normal operation, while (E2) calls for preservation of NLRI even if the attribute is missing.
-- (E1, E2) This discrepancy creates ambiguity on how to treat NLRI resulting from attribute discard.
-
-**Fix Direction:**
-
-Revise the language to specify that TLVs are mandatory only for NLRIs that participate in SPF computation, and that attr-discarded NLRI may be preserved without these TLVs.
-
-
-**Severity:** Medium
-  *Basis:* Divergent interpretations may lead to inconsistencies in LSDB contents and SPF calculation, affecting interoperability.
-
-**Confidence:** High
-
----
 
 ## Report 6: 9815-6-6
 
@@ -255,6 +85,7 @@ Replace 'Node-ID' with a clearly defined term, such as 'Node Descriptors', or pr
 
 ---
 
+
 ## Report 7: 9815-6-7
 
 **Label:** Incorrect use of 'Node Descriptors' instead of 'Link Descriptors' for link NLRI fields
@@ -291,6 +122,7 @@ Change references from 'Node Descriptors' to 'Link Descriptors' in the context o
 **Confidence:** High
 
 ---
+
 
 ## Report 8: 9815-6-8
 
@@ -332,79 +164,4 @@ Standardize all references to use 'BGP-LS-SPF Prefix NLRI' consistently througho
 
 **Confidence:** High
 
----
-
-## Report 9: 9815-6-9
-
-**Label:** Ambiguous terminology for 'Local-RIB' and 'GLOBAL-RIB' conflicting with RFC 4271
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The document introduces the terms 'Local-RIB' and 'GLOBAL-RIB' in a manner that conflicts with the standard RFC 4271 terminology, potentially causing confusion about the roles of these routing tables.
-
-**Justification:**
-
-- The specification redefines these terms in the context of SPF computation without clearly distinguishing them from RFC 4271’s Loc-RIB and RIB.
-- This overlap in terminology can lead to misinterpretation of routing table interactions within BGP implementations.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Local Route Information Base (Local-RIB): A routing table that contains reachability information ... GLOBAL-RIB: The RIB containing the current routes that are installed in the router's forwarding plane.
-
-**Evidence Summary:**
-
-- (E1) demonstrates that the document’s usage of 'Local-RIB' and 'GLOBAL-RIB' may be confused with the standard terms defined in RFC 4271.
-
-**Fix Direction:**
-
-Include a clarifying note to distinguish the algorithm-specific 'Local-RIB' and 'GLOBAL-RIB' from the standard Loc-RIB and RIB as defined in RFC 4271.
-
-
-**Severity:** Low
-  *Basis:* This issue is mainly a clarity concern and is unlikely to cause major interoperability problems if addressed.
-
-**Confidence:** High
-
----
-
-## Report 10: 9815-6-10
-
-**Label:** Undefined handling for self-originated NLRI with lower sequence number
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The specification does not define the behavior when a self-originated NLRI is received with a sequence number lower than the local copy, leaving a gap in error-handling for this common boundary condition.
-
-**Justification:**
-
-- Boundary Expert noted that while special processing is described for received self-originated NLRIs with higher sequence numbers or attribute differences, the case where the sequence number is lower is not addressed.
-- This undefined behavior can result in divergent implementations regarding stale NLRI treatment.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  No rule is given for the case where the received self-originated NLRI has a smaller sequence number than the local node's sequence number (or where seq is smaller and attributes differ).
-
-**Evidence Summary:**
-
-- (E1) highlights the absence of defined behavior for self-originated NLRIs with lower sequence numbers, which is a common boundary condition.
-
-**Fix Direction:**
-
-Define explicit behavior for self-originated NLRI reception when the sequence number is lower than the local value, such as treating the update as stale and ignoring it.
-
-
-
-
-**Severity:** Medium
-  *Basis:* Ambiguity in this case may lead to inconsistencies in LSDB state and slow or erratic convergence in the network.
-
-**Confidence:** High
 ---

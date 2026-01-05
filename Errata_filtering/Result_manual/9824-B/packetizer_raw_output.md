@@ -4,6 +4,7 @@ Total reports: 1
 
 ---
 
+
 ## Report 1: 9824-B-1
 
 **Label:** Misnamed Oracle Cloud Initiative Instead of Oracle Cloud Infrastructure in Historical Note

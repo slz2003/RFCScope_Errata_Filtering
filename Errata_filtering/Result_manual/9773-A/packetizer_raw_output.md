@@ -4,6 +4,7 @@ Total reports: 5
 
 ---
 
+
 ## Report 1: 9773-A-1
 
 **Label:** Polling Timing Conflict: Stop Polling vs. Mandatory Retry-After Fetch
@@ -49,6 +50,7 @@ Clarify that the Retry-After and six-hour re-fetch obligations apply only if the
 **Confidence:** High
 
 ---
+
 
 ## Report 2: 9773-A-2
 
@@ -96,6 +98,7 @@ Explicitly specify whether the polling dictated by Retry-After should continue e
 
 ---
 
+
 ## Report 3: 9773-A-3
 
 **Label:** Semantic Tension in Retry-After Timing Versus Client-Imposed Polling Bounds
@@ -136,6 +139,7 @@ Clarify the acceptable range of deviation from the Retry-After value and specify
 **Confidence:** High
 
 ---
+
 
 ## Report 4: 9773-A-4
 
@@ -182,6 +186,7 @@ Explicitly require that the (AKI keyIdentifier, serial) tuple be unique within t
 **Confidence:** High
 
 ---
+
 
 ## Report 5: 9773-A-5
 

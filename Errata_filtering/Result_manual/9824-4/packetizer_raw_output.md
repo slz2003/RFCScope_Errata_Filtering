@@ -1,56 +1,9 @@
 # Errata Reports
 
-Total reports: 4
+Total reports: 3
 
 ---
 
-## Report 1: 9824-4-1
-
-**Label:** NXNAME Meta‑TYPE bit in NSEC3 Type Bit Maps conflicts with RFC 5155 'MUST be 0' rule
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-RFC 9824 mandates that for responses to nonexistent names the NXNAME bit must be set in the NSEC3 Type Bit Maps, while RFC 5155 requires that all Meta‑TYPE bits be cleared, creating a normative conflict.
-
-**Justification:**
-
-- RFC 9824 §4 states that 'In responses for nonexistent names, the Type Bit Maps field will contain only the NXNAME Meta-TYPE. In responses to ENT names, the Type Bit Maps field will be empty.' (Evidence: E1)
-- RFC 5155 §3.2.1 requires that 'Bits representing Meta-TYPEs or QTYPEs ... MUST be set to 0 ...' (Evidence: E2)
-- RFC 9824 §7.1 explicitly updates RFC 4034 to carve out an exception for NXNAME in NSEC records but does not update RFC 5155, leaving a conflicting requirement. (Evidence: E3)
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  RFC 9824 §4 (NSEC3 mode) states: “In responses for nonexistent names, the Type Bit Maps field will contain only the NXNAME Meta-TYPE. In responses to ENT names, the Type Bit Maps field will be empty.”
-
-- **E2:**
-
-  RFC 5155 §3.2.1 (for NSEC3 Type Bit Maps) says: “Bits representing Meta-TYPEs or QTYPEs as specified in Section 3.1 of [RFC2929] or within the range reserved for assignment only to QTYPEs and Meta-TYPEs MUST be set to 0, since they do not appear in zone data. If encountered, they must be ignored upon reading.”
-
-- **E3:**
-
-  RFC 9824 §7.1 explicitly updates RFC 4034 §4.1.2 to allow the NXNAME pseudo-type in responses for nonexistent names, but makes no corresponding update to RFC 5155.
-
-**Evidence Summary:**
-
-- (E1) NXNAME is mandated in the Type Bit Maps for nonexistent names according to RFC 9824 §4.
-- (E2) RFC 5155 §3.2.1 states that all Meta‑TYPE bits must be 0.
-- (E3) The update in RFC 9824 does not extend to RFC 5155, causing the conflict.
-
-**Fix Direction:**
-
-Update RFC 5155 §3.2.1 to explicitly permit the NXNAME Meta‑TYPE in NSEC3 Type Bit Maps for Compact Denial of Existence, similar to the exception provided for NSEC in RFC 9824 §7.1.
-
-
-**Severity:** High
-  *Basis:* The conflict is normative and could lead to diverging behavior in authoritative implementations and validators, undermining the intended signaling of nonexistent names.
-
-**Confidence:** High
-
----
 
 ## Report 2: 9824-4-2
 
@@ -100,6 +53,7 @@ Clarify in RFC 9824 that for Compact Denial of Existence the Next Hashed Owner N
 
 ---
 
+
 ## Report 3: 9824-4-3
 
 **Label:** Undefined wrap-around behavior for Next Hashed Owner Name 'hash+1' computation
@@ -141,6 +95,7 @@ Define the hash+1 operation as modular arithmetic (mod 2^N, where N is the hash 
 **Confidence:** High
 
 ---
+
 
 ## Report 4: 9824-4-4
 

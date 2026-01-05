@@ -1,50 +1,9 @@
 # Errata Reports
 
-Total reports: 3
+Total reports: 2
 
 ---
 
-## Report 1: 9815-7-1
-
-**Label:** Ambiguous use of 'malformed' for semantic errors in BGP‑LS‑SPF versus RFC 9552
-
-**Bug Type:** Both
-
-**Explanation:**
-
-RFC 9815 mandates treating certain semantic violations (e.g., missing IGP Metric TLV, invalid SPF Status values, missing Sequence Number TLV) as 'malformed' and subjecting them to treat‑as‑withdraw, which conflicts with RFC 9552 where 'malformed' is restricted to syntactic errors.
-
-**Justification:**
-
-- Multiple sections note that RFC 9552 forbids calling semantic issues 'malformed' while RFC 9815 applies that label to semantic failures for SAFI 80.
-- This inconsistency creates confusion regarding whether errors should trigger transport-level error handling or only SPF computation rejection.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  RFC 9552, Fault Management: “A Link-State NLRI MUST NOT be considered malformed or invalid based on the inclusion/exclusion of TLVs or contents of the TLV fields (i.e., semantic errors)… A BGP‑LS Attribute MUST NOT be considered malformed or invalid based on the inclusion/exclusion of TLVs or contents of the TLV fields (i.e., semantic errors)…
-
-- **E2:**
-
-  RFC 9815, Link NLRI usage: “The IGP Metric (TLV 1095) MUST be advertised. If a BGP speaker receives a Link NLRI without an IGP Metric attribute TLV, then it MUST consider the received NLRI as malformed and is handled as described in Section 7.1.”
-
-**Evidence Summary:**
-
-- (E1) Indicates that RFC 9552 restricts the term 'malformed' to syntactic issues.
-- (E2) Demonstrates that RFC 9815 applies 'malformed' to semantic violations like a missing IGP Metric TLV.
-
-**Fix Direction:**
-
-Clarify that the 'malformed' designation for SAFI 80 applies only to consumer-side SPF computation (or use distinct terminology for semantic failures) so as not to conflict with RFC 9552's restrictions on semantic validation in BGP‑LS propagation.
-
-
-**Severity:** High
-  *Basis:* This ambiguity may lead to inconsistent error handling and divergent LSDB states across implementations, adversely affecting SPF computation and overall interoperability.
-
-**Confidence:** High
-
----
 
 ## Report 2: 9815-7-2
 
@@ -87,6 +46,7 @@ Amend Section 7.1 to indicate that the Address Family Link Descriptor TLV is loc
 **Confidence:** High
 
 ---
+
 
 ## Report 3: 9815-7-3
 

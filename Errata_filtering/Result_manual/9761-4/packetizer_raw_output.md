@@ -4,6 +4,7 @@ Total reports: 3
 
 ---
 
+
 ## Report 1: 9761-4-1
 
 **Label:** Misstatement of (D)TLS 1.3 Handshake Encryption Boundary and EncryptedExtensions
@@ -50,6 +51,7 @@ Update Section 4 to state that in (D)TLS 1.3 only the handshake messages after t
 
 ---
 
+
 ## Report 2: 9761-4-2
 
 **Label:** Misassigned ECH Behavior for ECH-unaware TLS Proxies
@@ -91,6 +93,7 @@ Clarify that only proxies which implement the ECH extension may follow Section 6
 **Confidence:** High
 
 ---
+
 
 ## Report 3: 9761-4-3
 

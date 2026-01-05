@@ -4,6 +4,7 @@ Total reports: 1
 
 ---
 
+
 ## Report 1: 9745-6-1
 
 **Label:** Deprecation Link Relation Registry Description Inconsistency (Section 3 vs. Section 6.2)

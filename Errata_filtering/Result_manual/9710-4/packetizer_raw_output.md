@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
+
 
 ## Report 1: 9710-4-1
 
@@ -46,48 +47,6 @@ Replace '16-bit source port identifiers' with '16-bit destination port identifie
 
 **Severity:** Low
   *Basis:* This is an editorial inconsistency that does not affect the underlying operational or encoding behavior, but could cause confusion during implementation.
-
-**Confidence:** High
-
----
-
-## Report 2: 9710-4-2
-
-**Label:** forwardingStatus IE ambiguous handling of high-order bits (bits 8–31)
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The forwardingStatus IE update specifies that only the least-significant byte is structured and should be exported using reduced‑size encoding, but it fails to clarify how the remaining bits of the 32‑bit unsigned integer are to be handled.
-
-**Justification:**
-
-- The text explains that a structure is associated only with the least-significant byte and that future versions may define meanings for the remaining bits, yet does not instruct whether exporters should set bits 8–31 to zero or if collectors must ignore them.
-- The phrase 'exported as unsigned8' conflates the abstract type with the reduced-size encoding, creating a semantic grey area regarding the treatment of the high-order bits.
-
-**Evidence Snippets:**
-
-- **E4:**
-
-  NotedAmbiguities: For forwardingStatus, the text notes that only the least-significant byte is structured and that future versions may be defined to associate meanings with the remaining bits. However, it does not explicitly state what current exporters/collectors must do with bits 8–31 (set to zero vs. ignore), leaving a small semantic grey area.
-
-- **E5:**
-
-  Causal Analysis observed: 'The wording “exported as unsigned8” is a mild causal underspecification in wording (conflating encoding size with abstract type) but not enough to cause real breakage', implying ambiguity in the handling of the full 32-bit value.
-
-**Evidence Summary:**
-
-- (E4) highlights the lack of explicit instructions for the handling of bits 8–31 in the forwardingStatus IE.
-- (E5) points out that the ambiguous phrase 'exported as unsigned8' creates potential misinterpretation regarding the full 32‑bit value.
-
-**Fix Direction:**
-
-Clarify the forwardingStatus specification by explicitly stating that exporters SHOULD set bits 8–31 to zero and that collectors SHALL ignore these bits.
-
-
-**Severity:** Low
-  *Basis:* The ambiguity is limited to wording and does not impact interoperability in compliance with IPFIX reduced‑size encoding rules, though it may lead to minor implementation differences.
 
 **Confidence:** High
 

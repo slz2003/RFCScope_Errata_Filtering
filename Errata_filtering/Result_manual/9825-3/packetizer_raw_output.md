@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 3
+Total reports: 1
 
 ---
+
 
 ## Report 1: 9825-3-1
 
@@ -43,79 +44,5 @@ Specify explicit duplicate handling behavior in RFC 9825, either by mandating at
   *Basis:* Divergent behavior in handling multiple instances could lead to inconsistent administrative tag sets and interoperability issues across implementations.
 
 **Confidence:** Medium
-
----
-
-## Report 2: 9825-3-2
-
-**Label:** Ambiguous relationship between Route-Tag and Administrative Tag Sub‑TLVs on External-Prefix TLVs
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-RFC 9825 does not clearly define how the new Administrative Tag Sub‑TLV interacts with the pre-existing Route-Tag sub‑TLV on External-Prefix TLVs, leading to potential inconsistencies in tag interpretation.
-
-**Justification:**
-
-- Section 4 of RFC 9825 mandates use of the existing tag for the first administrative tag while allowing additional tags via the new sub‑TLV, but it never clarifies if the existing tag refers to the Route-Tag sub‑TLV value or the first element in the new sub‑TLV list.
-- This ambiguity may cause divergent implementations, with some treating the two sub‑TLVs as separate namespaces and others expecting them to be consistent.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  RFC 8362 defines the Route-Tag sub-TLV (type 3 in the “OSPFv3 Extended-LSA Sub-TLVs” registry) for the External-Prefix TLV, stating that it has “identical semantics to the optional External Route Tag” of RFC 5340 and is the way to carry that single 32-bit external route tag in Extended AS-External and NSSA LSAs. RFC 9825 then introduces a new Administrative Tag Sub-TLV in the same “OSPFv3 Extended-LSA Sub-TLVs” registry and explicitly allows it under the External-Prefix TLV in both the E-AS-External-LSA and E-NSSA-LSA. Section 4 of RFC 9825 says that “when tags are advertised for AS External or NSSA LSA prefixes, the existing tag in the OSPFv2 and OSPFv3 AS-External-LSA and NSSA-LSA encodings MUST be utilized for the first tag; additional tags MAY be advertised using the Administrative Tag Sub-TLV.” However, RFC 9825 never explicitly states that, for Extended LSAs, this “existing tag” is the Route-Tag sub-TLV of RFC 8362, nor does it state whether the value of that Route-Tag sub-TLV MUST be equal to the first element in the Administrative Tag Sub-TLV list (i.e., are they logically the same thing, or two distinct tag namespaces that may diverge?).
-
-**Evidence Summary:**
-
-- (E1) Explains the lack of explicit instructions regarding the mapping between the Route-Tag sub‑TLV and the Administrative Tag Sub‑TLV on External-Prefix TLVs, leading to ambiguity in which tag should be considered primary.
-
-**Fix Direction:**
-
-Include explicit clarification in RFC 9825 on how the Route-Tag sub‑TLV relates to the Administrative Tag Sub‑TLV on External-Prefix TLVs, and whether their values must match or how they should interact.
-
-
-**Severity:** Medium
-  *Basis:* The ambiguity may result in inconsistent tag interpretation and non-interoperable behavior in systems that rely on a consistent notion of primary administrative tags.
-
-**Confidence:** Medium
-
----
-
-## Report 3: 9825-3-3
-
-**Label:** No explicit instruction for handling Administrative Tag Sub‑TLV under unexpected parent TLVs
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The specification does not state what should occur if an Administrative Tag Sub‑TLV appears under a TLV that is not one of the designated valid parent TLVs.
-
-**Justification:**
-
-- The analysis notes that there is no explicit instruction on handling an Administrative Tag Sub‑TLV attached to an unexpected TLV (e.g., OSPFv3 TLVs other than the three prefix TLVs).
-- Although by analogy with RFC 8362 such sub‑TLVs would likely be ignored, the absence of explicit guidance can lead to inconsistent implementation behavior.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  There is no explicit instruction on what to do if an Administrative Tag Sub‑TLV appears under an unexpected TLV (e.g., OSPFv3 TLVs other than the three prefix TLVs), although by analogy with RFC 8362 this would presumably just be ignored and not treated as an error.
-
-**Evidence Summary:**
-
-- (E1) Indicates that the specification lacks explicit guidance on how to handle Administrative Tag Sub‑TLVs received under non-designated parent TLVs.
-
-**Fix Direction:**
-
-Add explicit guidance in RFC 9825 for handling cases where an Administrative Tag Sub‑TLV is attached to an unexpected parent TLV, such as by mandating it be ignored.
-
-
-**Severity:** Low
-  *Basis:* While unlikely to affect normal operation since such cases might be ignored, the omission may cause minor implementation inconsistencies.
-
-**Confidence:** Inferred
 
 ---

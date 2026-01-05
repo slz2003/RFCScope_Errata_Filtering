@@ -4,6 +4,7 @@ Total reports: 2
 
 ---
 
+
 ## Report 1: 9761-8-1
 
 **Label:** Ambiguous Ordering of Proxy Interception vs Two-Stage ACL Matching
@@ -49,6 +50,7 @@ Clarify in Section 8 whether ACL matching is to be enforced in a pre-decryption 
 **Confidence:** High
 
 ---
+
 
 ## Report 2: 9761-8-2
 

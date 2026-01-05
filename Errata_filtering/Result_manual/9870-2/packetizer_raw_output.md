@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
+
 
 ## Report 1: 9870-2-1
 
@@ -49,46 +50,4 @@ Revise RFC9870 Section 2 to reference the precise terms 'IP datagram' and/or 'Us
 
 **Confidence:** High
 
----
-
-## Report 2: 9870-2-2
-
-**Label:** Inconsistent IE Naming: 'udpExID' Deviates from RFC7012 Lowercase Acronym Guidance
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-While RFC9870 claims adherence to RFC7012 naming conventions, the IE name 'udpExID' uses an uppercase acronym, deviating from the guideline that all letters after the first should be lowercase, making it a stylistic inconsistency.
-
-**Justification:**
-
-- RFC9870 Section 2 asserts that the document adheres to the naming conventions for Information Elements per RFC7012, yet the IANA table defines the IE 'udpExID' in a form inconsistent with the lowercase acronym guideline (Terminology Expert Issue-2).
-- RFC7012 Section 2.3 specifies that except for the initial letter, all letters should be lowercase, which 'udpExID' does not follow.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  RFC 9870 Section 2:  The document adheres to the naming conventions for Information Elements per Section 2.3 of [RFC7012].
-
-- **E2:**
-
-  Defined IE names in RFC 9870 / IANA table: udpSafeOptions, udpUnsafeOptions, udpExID, udpSafeExIDList, udpUnsafeExIDList.
-
-- **E3:**
-
-  RFC 7012 Section 2.3:  Names of Information Elements MUST start with lowercase letters. Composed names MUST use capital letters for the first letter of each component (except for the first one). All other letters are lowercase, even for acronyms. ... Examples are "sourceMacAddress" and "destinationIPv4Address".
-
-**Evidence Summary:**
-
-- (E1) RFC9870 claims adherence to RFC7012 IE naming conventions.
-- (E2) The IANA table in RFC9870 includes 'udpExID', which does not conform to the expected lowercase style.
-- (E3) RFC7012 mandates that all letters after the first of each component should be lowercase, highlighting the deviation.
-
-
-**Severity:** Low
-  *Basis:* The stylistic deviation is minor, does not impact functionality, and is primarily an editorial issue.
-
-**Confidence:** High
 ---

@@ -4,6 +4,7 @@ Total reports: 2
 
 ---
 
+
 ## Report 1: 9745-7-1
 
 **Label:** Conflicting guidance on resource behavior after deprecation date in Sections 5 vs. 7
@@ -51,6 +52,7 @@ Clarify the temporal semantics by explicitly distinguishing between the current 
 **Confidence:** High
 
 ---
+
 
 ## Report 2: 9745-7-2
 

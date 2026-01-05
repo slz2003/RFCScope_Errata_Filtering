@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 6
+Total reports: 3
 
 ---
+
 
 ## Report 1: 9761-11-1
 
@@ -56,47 +57,6 @@ Update Section 11.1 and the JSON example in Section 7 to reference the correct n
 
 ---
 
-## Report 2: 9761-11-2
-
-**Label:** Misattribution of spki-pin-set and certificate-authority Parameters to IANA-Maintained Module
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-Section 5.3 erroneously claims that the spki-pin-set and certificate-authority parameters belong to the iana-tls-profile module, while in reality they are defined in the ietf-acl-tls module.
-
-**Justification:**
-
-- The text in Section 5.3 lists spki-pin-set and certificate-authority among parameters in the iana-tls-profile module.
-- The actual iana-tls-profile module does not define these parameters; they are defined in the ietf-acl-tls module.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Section 5.3: “The values for all the parameters in the "iana-tls-profile" YANG module are defined in the TLS and DTLS IANA registries excluding the tls-version, dtls-version, spki-pin-set, and certificate-authority parameters. The values of spki-pin-set and certificate-authority parameters will be specific to the IoT device.”
-
-- **E2:**
-
-  ietf-acl-tls YANG: defines typedef spki-pin-set and typedef certificate-authority; in contrast, the iana-tls-profile module does not include these typedefs.
-
-**Evidence Summary:**
-
-- (E1) Section 5.3 misattributes spki-pin-set and certificate-authority as parts of iana-tls-profile.
-- (E2) Actual YANG modules show these parameters are defined in ietf-acl-tls.
-
-**Fix Direction:**
-
-Revise Section 5.3 to correctly attribute spki-pin-set and certificate-authority to the ietf-acl-tls module, or update the iana-tls-profile module if that was the intended design.
-
-
-**Severity:** Medium
-  *Basis:* Misattribution may lead to misunderstandings regarding module boundaries and IANA’s role in maintaining parameter definitions.
-
-**Confidence:** High
-
----
 
 ## Report 3: 9761-11-3
 
@@ -140,6 +100,7 @@ Modify Section 11.2 so that it instructs the use of a new 'typedef' statement (w
 
 ---
 
+
 ## Report 4: 9761-11-4
 
 **Label:** Wrong YANG Prefix in IANA Module Names Registry for ietf-acl-tls
@@ -179,84 +140,5 @@ Update the IANA registry entry in Section 11.1 to reflect the correct YANG prefi
   *Basis:* This mismatch can confuse tool developers and implementers who rely on the registry for accurate module metadata.
 
 **Confidence:** High
-
----
-
-## Report 5: 9761-11-5
-
-**Label:** Missing NACM 'default-deny-write' Extension in YANG Modules
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-Although Sections 9.3 and 9.4 claim that the NACM extension 'default-deny-write' is set for all data nodes, the provided YANG modules lack the required import of ietf-netconf-acm and do not include any nacm:default-deny-write extensions.
-
-**Justification:**
-
-- Section 9.3/9.4 explicitly state that the NACM 'default-deny-write' extension has been set on all data nodes in the modules.
-- Review of the YANG modules shows neither an import of ietf-netconf-acm nor any use of the nacm:default-deny-write extension.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Section 9.3: “For this reason, the NACM extension "default-deny-write" has been set for all data nodes defined in this module.”
-
-- **E2:**
-
-  The shown YANG modules do not import ietf-netconf-acm and contain no nacm:default-deny-write extensions.
-
-**Evidence Summary:**
-
-- (E1) The text claims that the NACM 'default-deny-write' extension is applied to all nodes.
-- (E2) The actual YANG modules lack the necessary import and extension use for NACM.
-
-**Fix Direction:**
-
-Either update the YANG modules to import ietf-netconf-acm and attach the nacm:default-deny-write extension to all appropriate nodes, or modify the descriptive text to remove the incorrect claim.
-
-
-**Severity:** Medium
-  *Basis:* Operators might assume enhanced security controls are enforced by the schema when they are not, leading to misconfigurations.
-
-**Confidence:** High
-
----
-
-## Report 6: 9761-11-6
-
-**Label:** Underspecification in TLS/DTLS Version Registry Cross-Reference
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-Section 11.5 does not explicitly clarify that the tls-version and dtls-version values are to be sourced from the new ACL TLS/DTLS Version Codes registries rather than from the TLS/DTLS Parameters registry, leading to potential ambiguity.
-
-**Justification:**
-
-- A ResidualUncertainties note indicates that though the interaction is mostly clear when read together, Section 11.5 omits explicit reference to the registry source for tls-version and dtls-version values.
-- This omission may leave room for misinterpretation about where the version values should be drawn from.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  ResidualUncertainties: The interaction between Section 11.5’s description of the “ACL (D)TLS Parameters” registry and Sections 11.3/11.4 (version-code registries) is mostly clear when read together, but 11.5 does not explicitly say that tls-version/dtls-version values come from the new version registries.
-
-**Evidence Summary:**
-
-- (E1) Section 11.5 lacks an explicit statement that tls-version and dtls-version values derive from the new ACL TLS/DTLS Version Codes registries.
-
-**Fix Direction:**
-
-Clarify in Section 11.5 that the tls-version and dtls-version values are specifically drawn from the ACL TLS/DTLS Version Codes registries.
-
-
-**Severity:** Low
-  *Basis:* While the ambiguity is minor and likely inferrable by experienced implementers, explicit clarification would help prevent potential misunderstandings.
-
-**Confidence:** Medium
 
 ---

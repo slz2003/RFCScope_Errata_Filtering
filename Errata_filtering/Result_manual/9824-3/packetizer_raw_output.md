@@ -1,86 +1,9 @@
 # Errata Reports
 
-Total reports: 7
+Total reports: 4
 
 ---
 
-## Report 1: 9824-3-1
-
-**Label:** NXNAME Allowed Location Inconsistency: NSEC vs. NSEC3 Type Bitmaps
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The document restricts NXNAME to the NSEC type bitmap in Section 3.5, yet other sections mandate its use in both NSEC and NSEC3 responses, creating a normative inconsistency.
-
-**Justification:**
-
-- Section 3.5 states: NXNAME is a Meta-TYPE that SHOULD NOT appear anywhere in a DNS message apart from the NSEC type bitmap of a Compact Answer response for a nonexistent name.
-- Sections 2 and 4 specify that NXNAME is added to the Type Bit Maps field for responses to nonexistent names – and for NSEC3 the NXNAME is the sole entry – which conflicts with the narrow scope in Section 3.5.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  NXNAME is a Meta-TYPE that SHOULD NOT appear anywhere in a DNS message apart from the NSEC type bitmap of a Compact Answer response for a nonexistent name. (Section 3.5)
-
-- **E2:**
-
-  This RR type is added to the NSEC Type Bit Maps field for responses to nonexistent names, in addition to the mandated RRSIG and NSEC types. If NSEC3 is being used, this RR type is the sole entry in the Type Bit Maps field. (Section 2)
-
-**Evidence Summary:**
-
-- (E1) shows the narrow restriction in Section 3.5, while (E2) shows that NXNAME is also mandated in NSEC3 responses.
-
-**Fix Direction:**
-
-Amend Section 3.5 to clarify that the exception for NXNAME applies to the Type Bit Maps field of both NSEC and NSEC3 resource records in Compact Answer responses.
-
-
-**Severity:** Medium
-  *Basis:* This inconsistency may lead to divergent implementation interpretations, potentially affecting interoperability.
-
-**Confidence:** High
-
----
-
-## Report 2: 9824-3-2
-
-**Label:** NXNAME in NSEC3 Bitmaps Conflicts with RFC 5155's Meta-Type Restrictions
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-RFC 9824 mandates inclusion of NXNAME in NSEC3 Type Bit Maps, but RFC 5155 requires that bits representing Meta-TYPEs be set to 0, resulting in a direct cross-RFC conflict.
-
-**Justification:**
-
-- RFC 5155’s NSEC3 definition states that Bits representing Meta-TYPEs or QTYPEs MUST be set to 0 and ignored if encountered.
-- RFC 9824, however, instructs that for NSEC3 responses the Type Bit Maps field will contain only the NXNAME Meta-TYPE, creating a normative conflict.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  RFC 5155’s NSEC3 definition independently states that in NSEC3 type bit maps, “Bits representing Meta-TYPEs or QTYPEs … MUST be set to 0, since they do not appear in zone data. If encountered, they must be ignored upon reading.” (CrossRFC Expert Issue-1)
-
-**Evidence Summary:**
-
-- (E1) highlights the requirement from RFC 5155 that conflicts with the NXNAME inclusion mandated by RFC 9824.
-
-**Fix Direction:**
-
-Either update RFC 5155 to accommodate the NXNAME Meta-TYPE in NSEC3 bit maps or revise RFC 9824 to use an alternative encoding that does not conflict with RFC 5155.
-
-
-**Severity:** High
-  *Basis:* This is a direct normative conflict between RFCs that can lead to interoperability failures if implementations follow different interpretations.
-
-**Confidence:** High
-
----
 
 ## Report 3: 9824-3-3
 
@@ -119,6 +42,7 @@ Revise the description to remove or qualify the 'immediate lexicographic success
 
 ---
 
+
 ## Report 4: 9824-3-4
 
 **Label:** Unsigned-Referral Epsilon Function Lacks 'No Coverage' Check
@@ -155,6 +79,7 @@ Amend Section 3.4 to explicitly require that authoritative servers verify no oth
 **Confidence:** Medium
 
 ---
+
 
 ## Report 5: 9824-3-5
 
@@ -193,42 +118,6 @@ Provide explicit fallback behavior or additional conditions for selecting an alt
 
 ---
 
-## Report 6: 9824-3-6
-
-**Label:** Incomplete Normative Guidance for Resolver Behavior on NXNAME Queries
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-While the document mandates that receiving an explicit NXNAME query must result in a FORMERR response and that resolvers must not forward such queries, it does not fully specify the complete expected behavior.
-
-**Justification:**
-
-- Section 3.5 states that if an explicit query for the NXNAME RR type is received, the DNS server MUST return a Format Error (FORMERR) and that resolvers MUST NOT forward these queries.
-- The lack of detailed response instructions leaves room for divergent behaviors among resolver implementations.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  If an explicit query for the NXNAME RR type is received, the DNS server MUST return a Format Error (response code FORMERR). … A resolver MUST NOT forward these queries upstream or attempt iterative resolution. (Deontic Expert Issue-2)
-
-**Evidence Summary:**
-
-- (E1) highlights that while a FORMERR response is required, the precise response behavior is not fully normed.
-
-**Fix Direction:**
-
-Clarify the complete expected response behavior for resolvers handling NXNAME queries, including any use of Extended DNS Error codes, to ensure consistency.
-
-
-**Severity:** Low
-  *Basis:* Although this gap does not impact fundamental DNSSEC validation, inconsistent error signaling may hinder troubleshooting and client expectations.
-
-**Confidence:** High
-
----
 
 ## Report 7: 9824-3-7
 

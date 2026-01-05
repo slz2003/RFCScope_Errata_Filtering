@@ -4,6 +4,7 @@ Total reports: 2
 
 ---
 
+
 ## Report 1: 9803-2-1
 
 **Label:** XSD uniqueness on @for blocks multiple custom RR types in Policy Mode
@@ -49,6 +50,7 @@ Modify the uniqueness constraint to include the @custom attribute for elements w
 
 ---
 
+
 ## Report 2: 9803-2-2
 
 **Label:** Undefined behavior for omitted policy attribute on <ttl:info>
@@ -93,5 +95,3 @@ Insert an explicit normative statement that an omitted policy attribute must be 
 **Confidence:** High
 
 ---
-
-

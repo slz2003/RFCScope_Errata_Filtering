@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 3
+Total reports: 1
 
 ---
+
 
 ## Report 1: 9904-3-1
 
@@ -61,105 +62,5 @@ Clarify in the RFC whether non‑DNSSEC or omitted entries should have explicit 
 **Experts mentioning this issue:**
 
 - Scope Expert: Issue-1
-
----
-
-## Report 2: 9904-3-2
-
-**Label:** Over-broad Claim on Transcription of 'Implement for' Values from RFC 8624
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-RFC 9904 claims that all 'Implement for' values are transcribed from RFC 8624, but several entries are newly defined rather than directly transcribed.
-
-**Justification:**
-
-- Section 2.2 of RFC 9904 states that the 'Implement for' values are transcribed from RFC 8624, yet RFC 8624 only provides explicit values for algorithms 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, and 16, omitting algorithms 17, 23, 253, and 254 (E1, E2).
-- For DS digest algorithms, RFC 8624 covers digest types 0–4 and is silent on types 5 and 6, yet RFC 9904 assigns them the value 'MAY', indicating new assignments (E4).
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The following sections state the initial values that have been populated into these columns.  The values in the ‘Implement for’ columns are transcribed from [RFC8624].  The ‘Use for’ columns are set to the same values as those in the ‘Implement for’ columns…
-
-- **E2:**
-
-  Section 3.1 of RFC 8624 lists implementation recommendations for DNSKEY algorithms only for numbers 1, 3, 5, 6, 7, 8, 10, 12, 13, 14, 15, and 16, with no rows for algorithms 17 (SM2SM3), 23 (ECC-GOST12), 253 (PRIVATEDNS), or 254 (PRIVATEOID).
-
-- **E3:**
-
-  Appendix A.1 of RFC 4034 lists 253 [PRIVATEDNS] and 254 [PRIVATEOID] with “Status” = OPTIONAL, but without any BCP 14 “MUST/SHOULD/MAY” implementation requirement levels.
-
-- **E4:**
-
-  Section 3.3 of RFC 8624 lists digest types 0–4 only; there are no rows for digest algorithms 5 or 6.
-
-**Evidence Summary:**
-
-- (E1) RFC 9904 asserts all 'Implement for' values are directly transcribed from RFC 8624.
-- (E2) RFC 8624 does not provide entries for algorithms 17, 23, 253, or 254.
-- (E4) RFC 8624 similarly lacks entries for digest types 5 and 6.
-
-**Fix Direction:**
-
-Revise the provenance statement to apply only where RFC 8624 provides explicit definitions and note that for entries not covered, RFC 9904 assigns 'MAY' based on generic guidelines.
-
-**Severity:** Medium
-  *Basis:* This inconsistency in provenance may mislead implementers or IANA reviewers regarding the origin of the recommendation levels.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- Structural Expert: Issue-1
-- CrossRFC Expert: Issue-1
-
----
-
-## Report 3: 9904-3-3
-
-**Label:** ECDSAP384SHA384 Implementation Requirement Conflict Between RFC 6605 and RFC 8624/9904
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-There is a normative conflict for algorithm 14 where RFC 6605 mandates MUST support while RFC 8624/9904 assign a lower, optional requirement level.
-
-**Justification:**
-
-- RFC 6605 Section 4 mandates that conformant implementations MUST implement signing and verification for algorithm 14 (ECDSAP384SHA384) (E1).
-- RFC 8624’s DNSKEY algorithm table assigns algorithm 14 a value of 'MAY' for signing and 'RECOMMENDED' for validation, which RFC 9904 directly copies (E2).
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  RFC 6605 Section 4 states that “Conformant implementations that create records to be put into the DNS MUST implement signing and verification for both of the above algorithms… Conformant DNSSEC verifiers MUST implement verification for both of the above algorithms.”
-
-- **E2:**
-
-  In RFC 8624’s DNSKEY algorithm table, algorithm 14 (ECDSAP384SHA384) is set to ‘MAY’ for signing and ‘RECOMMENDED’ for validation, and RFC 9904 copies these values into the new columns.
-
-**Evidence Summary:**
-
-- (E1) RFC 6605 mandates a MUST requirement for algorithm 14.
-- (E2) RFC 8624/9904 assign a lower requirement level (MAY/RECOMMENDED) for algorithm 14.
-
-**Fix Direction:**
-
-Clarify in RFC 9904 that the later BCP recommendations relax RFC 6605's requirements for algorithm 14 or specify how implementers should reconcile the conflicting normative statements.
-
-**Severity:** Medium
-  *Basis:* The conflicting requirement levels for a key DNSSEC algorithm may lead to non-conformant implementations.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- CrossRFC Expert: Issue-2
 
 ---

@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
+
 
 ## Report 1: 9830-6-1
 
@@ -43,72 +44,5 @@ Update the IANA registry in Section 6.9 to indicate that Type 3 is reserved, for
   *Basis:* Multiple experts noted that while the normative text clearly defines receiver behavior, the 'Unassigned' label in the registry may mislead implementers and future authors regarding the code point's intended use.
 
 **Confidence:** High
-
----
-
-## Report 2: 9830-6-2
-
-**Label:** SR Policy Segment Flags Inconsistency: Conflicting B-Flag Bit Position
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-There is a conflict in the bit assignment for the B-Flag: the flag diagram in Section 2.4.4.2.3 indicates one bit position while the IANA registry table in Section 6.8 assigns it to a different bit, potentially leading to misinterpretation of the flag.
-
-**Justification:**
-
-- The diagram in Section 2.4.4.2.3 (Figure 13) shows the B-Flag positioned as implied by the flag layout (bit positioned in the third slot alongside V-Flag) (E1).
-- In contrast, the IANA registry in Section 6.8 (Table 8) assigns the B-Flag to bit 3, with bits 1–2 marked as unassigned, creating an encoding conflict (E2).
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Section 2.4.4.2.3 (SR Policy Segment Flags), Figure 13:
-
-          0 1 2 3 4 5 6 7  
-          +-+-+-+-+-+-+-+-+  
-          |V|   |B|       |  
-          +-+-+-+-+-+-+-+-+
-
-          and the following text:
-          The Segment Type sub-TLVs described above may contain the following SR Policy Segment Flags in their Flags field. Also refer to Section 6.8: …
-          * When the B-Flag is set, it indicates the presence of the "SRv6 Endpoint Behavior & SID Structure" encoding specified in Section 2.4.4.2.4.
-
-- **E2:**
-
-  Section 6.8 (IANA registry “SR Policy Segment Flags”), Table 8:
-
-          +=====+====================================+===========+
-          | Bit | Description                        | Reference |
-          +=====+====================================+===========+
-          | 0   | Segment Verification Flag (V-Flag) | RFC 9830  |
-          | 1-2 | Unassigned                         |           |
-          | 3   | SRv6 Endpoint Behavior & SID       | RFC 9830  |
-          |     | Structure Flag (B-Flag)            |           |
-          | 4-7 | Unassigned                         |           |
-          +-----+------------------------------------------------+
-
-**Evidence Summary:**
-
-- (E1) The flag diagram in Section 2.4.4.2.3 positions the B-Flag in a different bit location.
-- (E2) The IANA registry table in Section 6.8 assigns the B-Flag to bit 3, conflicting with the diagram.
-
-**Fix Direction:**
-
-Align the IANA registry table in Section 6.8 with the flag diagram in Section 2.4.4.2.3 by reassigning the B-Flag to the appropriate bit (e.g., bit 2) to ensure consistent wire encoding.
-
-
-**Severity:** High
-  *Basis:* This inconsistency directly impacts wire-level encoding and decoding, causing potential misinterpretation of the presence of the SRv6 Endpoint Behavior & SID Structure.
-
-**Confidence:** High
-
-**Severity:** High
-  *Basis:* This inconsistency directly impacts wire-level encoding and decoding, causing potential misinterpretation of the presence of the SRv6 Endpoint Behavior & SID Structure.
-
-**Confidence:** High
-
 
 ---

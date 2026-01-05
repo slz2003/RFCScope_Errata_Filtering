@@ -1,54 +1,9 @@
 # Errata Reports
 
-Total reports: 3
+Total reports: 2
 
 ---
 
-## Report 1: 9825-2-1
-
-**Label:** OSPFv3 YANG Augments Use Global Absolute 'when' Conditions Causing Mis‐Scoping
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The YANG augments for OSPFv3 prefix TLVs employ an absolute XPath in their 'when' conditions that is evaluated over the entire datastore rather than relative to the control‐plane-protocol instance, potentially enabling the administrative tag sub‑TLV in non‑OSPFv3 contexts.
-
-**Justification:**
-
-- Scope Expert notes that the absolute 'when' condition (e.g. using '/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:type = 'ospf:ospfv3'') causes the augment to be applied regardless of the protocol instance.
-- Other augments in the module use relative tests (e.g. derived-from-or-self(...)) to correctly scope the condition, highlighting the inconsistency.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  augment "/rt:routing" + "/rt:control-plane-protocols/rt:control-plane-protocol" + "/ospf:ospf/ospf:areas/ospf:area/ospf:database" + "/ospf:area-scope-lsa-type/ospf:area-scope-lsas" + "/ospf:area-scope-lsa/ospf:version" + "/ospf:ospfv3/ospf:ospfv3/ospf:body" + "/ospfv3-e-lsa:e-intra-area-prefix" + "/ospfv3-e-lsa:e-intra-prefix-tlvs" + "/ospfv3-e-lsa:intra-prefix-tlv" {
-  when "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:type = 'ospf:ospfv3'" { ... }
-}
-
-- **E2:**
-
-  augment "/rt:routing" + "/rt:control-plane-protocols/rt:control-plane-protocol" + "/ospf:ospf/ospf:areas/ospf:area/ospf:database" + "/ospf:area-scope-lsa-type/ospf:area-scope-lsas" + "/ospf:area-scope-lsa/ospf:version" + "/ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-nssa" + "/ospfv3-e-lsa:e-external-tlvs" + "/ospfv3-e-lsa:external-prefix-tlv" {
-  when "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol/rt:type = 'ospf:ospfv3'" { ... }
-}
-
-**Evidence Summary:**
-
-- (E1) Absolute XPath 'when' condition in the augment for the OSPFv3 Intra‑Area‑Prefix TLV.
-- (E2) Similar absolute XPath 'when' condition in the augment for the OSPFv3 E‑NSSA‑LSA External‑Prefix TLV.
-
-**Fix Direction:**
-
-Change the absolute XPath 'when' conditions to relative, parent‑anchored tests using 'derived-from-or-self(...)' to ensure the condition applies only to the containing control‐plane-protocol instance.
-
-
-**Severity:** Medium
-  *Basis:* Mis‑scoping may cause administrative tag sub‑TLVs to appear under non‑OSPFv3 protocol entries, affecting management visibility and validation.
-
-**Confidence:** High
-
----
 
 ## Report 2: 9825-2-2
 
@@ -92,6 +47,7 @@ Amend RFC 9825 to explicitly state whether multiple Administrative Tag sub‑TLV
 **Confidence:** High
 
 ---
+
 
 ## Report 3: 9825-2-3
 

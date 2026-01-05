@@ -4,6 +4,7 @@ Total reports: 1
 
 ---
 
+
 ## Report 1: 9736-2-1
 
 **Label:** Ambiguous Scope and Field Naming for String TLVs in RFC 9736 Section 2

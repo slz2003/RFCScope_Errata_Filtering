@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 4
+Total reports: 3
 
 ---
+
 
 ## Report 1: 9729-6-1
 
@@ -51,6 +52,7 @@ Clarify Section 7 so that its TLS requirements apply only to the client‐facing
 
 ---
 
+
 ## Report 2: 9729-6-2
 
 **Label:** Ambiguous forwarding of Proxy-Authorization header in split deployments
@@ -98,6 +100,7 @@ Clarify the intended use and forwarding rules for the Proxy-Authorization header
 
 ---
 
+
 ## Report 3: 9729-6-3
 
 **Label:** Undefined backend handling when key exporter output is missing or untrusted
@@ -140,48 +143,6 @@ Require explicitly that if a valid and trusted key exporter output is not presen
 
 **Severity:** High
   *Basis:* Undefined handling in the absence of a proper exporter output may lead to inconsistent or insecure authentication processing.
-
-**Confidence:** High
-
----
-
-## Report 4: 9729-6-4
-
-**Label:** Mismatch between ABNF and numeric range for 's' parameter
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The ABNF definition for the integer parameter 's' only permits 2-5 digit numbers (or '0') while the prose allows single-digit numbers and requires a value between 0 and 65535, leading to acceptance of out-of-range values and rejection of valid ones.
-
-**Justification:**
-
-- Figure 4’s ABNF specifies: concealed-integer-param-value =  %x31-39 1*4( DIGIT ) / "0", which disallows single-digit integers like '1'.
-- The accompanying prose states that the 's' parameter is an integer between 0 and 65535 with no leading zeroes, creating a conflict between the grammar and the intended numerical range.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  concealed-integer-param-value =  %x31-39 1*4( DIGIT ) / "0" (Figure 4: Authentication Parameter Value ABNF)
-
-- **E2:**
-
-  Prose just above the ABNF: “The integer below is encoded without a minus and without leading zeroes. In other words, the value of this integer authentication parameter MUST NOT include any characters other than digits and MUST NOT start with a zero unless the full value is "0".” Definition of the s parameter: “Its value is an integer between 0 and 65535 inclusive from the IANA 'TLS SignatureScheme' registry…” (Section 4.4) Frontend/backend behavior: both MUST “validate that all the required authentication parameters are present and can be parsed correctly as defined in Section 4” (Sections 6.1 and 6.3)
-
-**Evidence Summary:**
-
-- (E1) The ABNF in Figure 4 allows only a non-zero digit followed by 1-4 digits or the value "0".
-- (E2) The prose requires the 's' parameter to be between 0 and 65535 with no leading zeroes, which conflicts with the ABNF by disallowing valid single-digit values and accepting numbers up to 99999.
-
-**Fix Direction:**
-
-Revise the ABNF to allow single-digit non-zero integers and restrict accepted values through either the grammar or an additional numeric check enforcing the 0–65535 range.
-
-
-**Severity:** High
-  *Basis:* This inconsistency can lead to interoperability issues where valid authentication credentials might be rejected or out-of-range values accepted.
 
 **Confidence:** High
 

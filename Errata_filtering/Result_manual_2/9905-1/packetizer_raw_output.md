@@ -4,6 +4,7 @@ Total reports: 2
 
 ---
 
+
 ## Report 1: 9905-1-1
 
 **Label:** Incorrect Attribution of DNSSEC Origin to RFC 3110 in Section 1
@@ -49,6 +50,7 @@ In Section 1, remove or revise the parenthetical '(originally defined in [RFC311
 - Terminology: Issue-1
 
 ---
+
 
 ## Report 2: 9905-1-2
 

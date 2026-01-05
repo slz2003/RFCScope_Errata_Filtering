@@ -1,123 +1,9 @@
 # Errata Reports
 
-Total reports: 4
+Total reports: 2
 
 ---
 
-## Report 1: draft-ietf-tls-rfc8446bis-14-4-1
-
-**Label:** Global Handshake Ordering vs Post‑Handshake Message Flexibility
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The specification mandates that protocol messages are sent in a strict order (per Section 4.4.1 and the diagrams in Section 2), yet later sections allow post‐handshake messages (e.g. NewSessionTicket, post‑handshake CertificateRequest, and KeyUpdate) to be interleaved with application data.
-
-**Justification:**
-
-- The text states: Protocol messages MUST be sent in the order defined in Section 4.4.1 and shown in the diagrams in Section 2.  A peer which receives a handshake message in an unexpected order MUST abort the handshake with an ‘unexpected_message’ alert.
-- Section 4.6.1 describes that after the server receives the client Finished message, it MAY send a NewSessionTicket message, allowing multiple tickets at different times.
-- Section 4.6.2 explains that a server MAY request certificate-based client authentication at any time after the handshake by sending a CertificateRequest, with an allowance for interleaving of other messages.
-- The KeyUpdate message is defined to be sent by either peer after sending a Finished message, with no fixed placement relative to the main handshake messages.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  “Protocol messages MUST be sent in the order defined in Section 4.4.1 and shown in the diagrams in Section 2.  A peer which receives a handshake message in an unexpected order MUST abort the handshake with an ‘unexpected_message’ alert.”
-
-- **E2:**
-
-  “At any time after the server has received the client Finished message, it MAY send a NewSessionTicket message. … Servers MAY send multiple tickets on a single connection, either immediately after each other or after specific events…”
-
-- **E3:**
-
-  “When the client has sent the ‘post_handshake_auth’ extension … a server MAY request certificate-based client authentication at any time after the handshake has completed by sending a CertificateRequest message. … servers MUST be prepared for some delay, including receiving an arbitrary number of other messages between sending the CertificateRequest and receiving a response.”
-
-- **E4:**
-
-  “The KeyUpdate handshake message is used to indicate that the sender is updating its sending cryptographic keys.  This message can be sent by either peer after it has sent a Finished message.”
-
-**Evidence Summary:**
-
-- (E1) Stipulates a strict ordering for handshake messages per Section 4.4.1 and the diagrams in Section 2.
-- (E2) Permits NewSessionTicket messages to be sent at arbitrary later times after Finished.
-- (E3) Allows post‑handshake CertificateRequest interleaved with other messages.
-- (E4) Defines KeyUpdate as a post‑handshake message with flexible ordering.
-
-**Fix Direction:**
-
-Clarify the global ordering requirement so that it explicitly applies only to the main handshake messages, thereby excluding post‑handshake messages from this strict ordering.
-
-**Severity:** Medium
-  *Basis:* The conflicting prescriptions can lead to divergent implementations that either reject valid post‑handshake sequences or misinterpret the rules for message ordering.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- Temporal: T1
-
----
-
-## Report 2: draft-ietf-tls-rfc8446bis-14-4-2
-
-**Label:** Unclear Global Scope for ‘PSK or Certificate, but not both’ Requirement
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The statement in Section 4.1.1 that either a PSK or a certificate must be used is too global, while later sections allow combinations (e.g. post‑handshake client authentication and use of external PSKs per RFC8773), creating ambiguity in its intended scope.
-
-**Justification:**
-
-- Section 4.1.1 states: In TLS 1.3 as defined by this document, either a PSK or a certificate is always used, but not both. Future documents may define how to use them together.
-- The text in Section 2.2 / Figure 3 indicates that when a server is authenticating via a PSK, it does not send a Certificate or CertificateVerify message.
-- Section 4.4 notes that certificate-based client authentication is not available in PSK handshake flows (including 0‑RTT), yet Sections 4.3.2 and 4.6.2 allow for post‑handshake client authentication.
-- Additionally, the draft references RFC8773 as an extension to permit the combination of certificates with an external PSK, contradicting the global prohibition.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  In TLS 1.3 as defined by this document, either a PSK or a certificate is always used, but not both. Future documents may define how to use them together.
-
-- **E2:**
-
-  Section 2.2 / Figure 3 shows a PSK resumption handshake without server certificates and then says: “As the server is authenticating via a PSK, it does not send a Certificate or a CertificateVerify message.”
-
-- **E3:**
-
-  Section 4.4: Certificate description ends with: “Note that certificate-based client authentication is not available in PSK handshake flows (including 0‑RTT).”
-
-- **E4:**
-
-  Section 4.3.2: “Servers which are authenticating with a PSK MUST NOT send the CertificateRequest message in the main handshake, though they MAY send it in post‑handshake authentication …” and later references RFC8773 as providing an extension to permit combining with an external PSK.
-
-**Evidence Summary:**
-
-- (E1) Provides the global rule that either a PSK or a certificate must be used.
-- (E2) Illustrates the intended use in PSK-only handshakes.
-- (E3) States that certificate-based client authentication is not allowed in PSK handshake flows.
-- (E4) Introduces an exception via post‑handshake authentication and RFC8773 for external PSKs.
-
-**Fix Direction:**
-
-Revise the phrasing in Section 4.1.1 to explicitly limit the rule to server authentication in the main handshake and to clarify that exceptions (e.g. for post‑handshake authentication or external PSKs via RFC8773) are permitted.
-
-**Severity:** Medium
-  *Basis:* Ambiguity in the rule’s scope may mislead implementers into erroneously rejecting valid PSK and certificate combinations under extended conditions.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- Scope: Issue-1
-- CrossRFC: Issue-2
-
----
 
 ## Report 3: draft-ietf-tls-rfc8446bis-14-4-3
 
@@ -169,6 +55,7 @@ Either adjust the minimum length of ClientHello.extensions to 7 bytes for the so
 - Quantitative: Issue-1
 
 ---
+
 
 ## Report 4: draft-ietf-tls-rfc8446bis-14-4-4
 

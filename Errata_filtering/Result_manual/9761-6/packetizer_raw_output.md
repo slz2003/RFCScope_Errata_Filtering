@@ -1,55 +1,9 @@
 # Errata Reports
 
-Total reports: 6
+Total reports: 3
 
 ---
 
-## Report 1: 9761-6-1
-
-**Label:** Ambiguous GREASE Handling and Recognized/Unrecognized Terminology for TLS Parameters
-
-**Bug Type:** Underspecification / Terminology
-
-**Explanation:**
-
-The specification ambiguously defines how GREASE values should be treated, allowing them to be classified as either recognized or unrecognized, which may lead to blocking of GREASE values contrary to the intended behavior of ignoring them.
-
-**Justification:**
-
-- Section 5 mandates that MUD (D)TLS profiles MUST NOT include GREASE values, yet Section 6 distinguishes between recognized and unrecognized parameters without clarifying that GREASE values must be treated as unrecognized.
-- Multiple expert analyses (Scope, Deontic, CrossRFC, Terminology, Boundary) note that a firewall that is aware of GREASE codepoints may treat these as recognized and thus trigger blocking or alerts, undermining GREASE’s purpose.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  the (D)TLS profile parameters defined in the YANG module by this document MUST NOT include the GREASE values for extension types, named groups, signature algorithms, (D)TLS versions, pre-shared key exchange modes, cipher suites, and any other TLS parameters defined in future RFCs.
-
-- **E2:**
-
-  If the (D)TLS parameter observed in a (D)TLS session is not specified in the MUD (D)TLS profile and the parameter is recognized by the firewall, it can identify unexpected (D)TLS usage, which can indicate the presence of unauthorized software or malware… The firewall can take several actions, such as blocking the (D)TLS session or raising an alert…
-
-- **E3:**
-
-  This rule also ensures that the network security service will ignore the GREASE values advertised by TLS peers and interoperate with the implementations advertising GREASE values.
-
-**Evidence Summary:**
-
-- (E1) mandates exclusion of GREASE values from the profile.
-- (E2) defines behavior for recognized parameters not in the profile.
-- (E3) claims that GREASE values will be ignored, creating an ambiguity.
-
-**Fix Direction:**
-
-Amend Section 6 to explicitly state that GREASE values, even if numerically recognized, MUST be treated as unrecognized for the purposes of enforcement, and provide a clear definition of 'recognized' for TLS parameters.
-
-
-**Severity:** High
-  *Basis:* Blocking GREASE values can lead to ossification and interoperability failures, directly contradicting the intended extensibility benefits of GREASE.
-
-**Confidence:** High
-
----
 
 ## Report 2: 9761-6-2
 
@@ -93,6 +47,7 @@ Add explicit normative language specifying that if a parameter is present in the
 
 ---
 
+
 ## Report 3: 9761-6-3
 
 **Label:** Ambiguous Interaction of TLS-Profile Parameter Rules with MUD Default Deny Semantics
@@ -135,6 +90,7 @@ Clarify that for TLS parameters, the non-blocking rule explicitly overrides the 
 
 ---
 
+
 ## Report 4: 9761-6-4
 
 **Label:** Misleading Equivalence to RFC 8446 §9.3 Middlebox Invariants
@@ -174,89 +130,5 @@ Revise the text to accurately describe the differences from RFC 8446 §9.3 and r
   *Basis:* Incorrect equivalence may lead to design decisions that compromise proper TLS processing and security invariants.
 
 **Confidence:** Medium
-
----
-
-## Report 5: 9761-6-5
-
-**Label:** JSON MUD Example Naming Inconsistency
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The JSON example provided in Section 7 does not correctly reflect the YANG node and leaf names defined in the specification, which may cause interoperability and validation issues.
-
-**Justification:**
-
-- Terminology Expert highlights that the JSON example uses incorrect node names such as 'client-profile' instead of 'client-profiles' and 'tls-dtls-profiles' instead of 'tls-dtls-profile'.
-- The discrepancy violates the RFC 7951 JSON encoding rules that require exact name matching with the YANG definitions.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Section 5.1 tree: +--rw client-profiles {match-on-tls-dtls}? and +--rw tls-dtls-profile* [name]
-
-- **E2:**
-
-  JSON example in Section 7: "ietf-acl-tls:client-profile" : { ... "tls-dtls-profiles" : [ ... ], "supported-tls-versions" : ["tls13"], "extension-types" : [10,11,13,16,24] }
-
-**Evidence Summary:**
-
-- (E1) provides the correct YANG node names.
-- (E2) shows the JSON example with naming mismatches that do not align with the YANG definitions.
-
-**Fix Direction:**
-
-Correct the JSON example to use the exact YANG node names: 'client-profiles', 'tls-dtls-profile', 'supported-tls-version', and 'extension-type'.
-
-
-**Severity:** Medium
-  *Basis:* Naming inconsistencies may lead to JSON validation errors and interoperability issues with YANG-based tooling.
-
-**Confidence:** High
-
----
-
-## Report 6: 9761-6-6
-
-**Label:** Misstatement of Parameter Ownership Between YANG Modules
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The document incorrectly attributes the spki-pin-set and certificate-authority parameters to the iana-tls-profile module instead of the ietf-acl-tls module, which can cause confusion for implementers.
-
-**Justification:**
-
-- Terminology Expert points out that the introductory text in Section 5.3 incorrectly lists these parameters as part of the iana-tls-profile module even though they are defined in the ietf-acl-tls module.
-- This misstatement may mislead implementers regarding where to find the correct definitions for these parameters.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Section 5.3 introductory text: “The values for all the parameters in the ‘iana-tls-profile’ YANG module are defined in the TLS and DTLS IANA registries excluding the tls-version, dtls-version, spki-pin-set, and certificate-authority parameters. The values of spki-pin-set and certificate-authority parameters will be specific to the IoT device.”
-
-- **E2:**
-
-  Section 5.3 YANG module iana-tls-profile does not include any typedefs or leafs named spki-pin-set or certificate-authority, whereas Section 5.2 YANG module ietf-acl-tls defines these parameters.
-
-**Evidence Summary:**
-
-- (E1) shows the misstatement in the introductory text regarding parameter ownership.
-- (E2) contrasts the actual module definitions between iana-tls-profile and ietf-acl-tls.
-
-**Fix Direction:**
-
-Revise the text in Section 5.3 to correctly attribute the spki-pin-set and certificate-authority parameters to the ietf-acl-tls module.
-
-
-**Severity:** Low
-  *Basis:* The error is primarily editorial and is unlikely to cause significant technical problems, though it may mislead implementers.
-
-**Confidence:** High
 
 ---

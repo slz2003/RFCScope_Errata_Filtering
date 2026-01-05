@@ -1,92 +1,9 @@
 # Errata Reports
 
-Total reports: 5
+Total reports: 3
 
 ---
 
-## Report 1: 9799-4-1
-
-**Label:** Ambiguous Timing for Descriptor Propagation and Challenge Expiration
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The specification lacks clear, concrete timing bounds for the client’s waiting period and the challenge expiration deadline during descriptor propagation, which may lead to mismatches between ACME servers and Hidden Services.
-
-**Justification:**
-
-- The text states: It MUST wait some (indeterminate) amount of time for the new descriptor to propagate, with guidance that it should take no more than a few minutes, while also stating that ACME servers MUST NOT expire challenges before a 'reasonable time'—recommended at least 30 minutes but left to operator preference.
-- This vagueness can result in disparate implementations that choose significantly different timeouts, causing validation failures.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  It MUST wait some (indeterminate) amount of time for the new descriptor to propagate the Tor Hidden Service directory servers before proceeding with responding to the challenge. This should take no more than a few minutes. This specification does not set a fixed time as changes in the operation of the Tor network can affect this propagation time in the future.
-
-- **E2:**
-
-  ACME servers MUST NOT expire challenges before a reasonable time to allow publication of the new descriptor. It is RECOMMENDED the server allow at least 30 minutes; however, it is entirely up to operator preference.
-
-**Evidence Summary:**
-
-- (E1) indicates an indeterminate waiting period for descriptor propagation.
-- (E2) provides a vague, operator-dependent requirement for challenge expiration.
-
-**Fix Direction:**
-
-Define explicit quantitative timing requirements or clearly bound the conditions under which these timeouts apply specifically to .onion challenges.
-
-
-**Severity:** Medium
-  *Basis:* Ambiguous timing can cause the server and client to operate with incompatible assumptions, leading to systematic validation failures.
-
-**Confidence:** High
-
----
-
-## Report 2: 9799-4-2
-
-**Label:** Directory Metadata Field Name Mismatch: inBandOnionCAARequired vs onionCAARequired
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The specification uses different names for the same directory metadata field in its body and IANA registration, which can cause interoperability issues between ACME servers and clients.
-
-**Justification:**
-
-- The document body and example define the field as inBandOnionCAARequired, while the IANA registration table lists the field as onionCAARequired.
-- This naming discrepancy may lead to misinterpretation of whether in-band CAA is required.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  To support signaling the server's support for fetching CAA record sets over Tor, a new field is defined in the directory ‘meta’ object to signal this. inBandOnionCAARequired (optional, boolean): If true, the ACME server requires the client to provide the CAA record set in the finalize request.
-
-- **E2:**
-
-  IANA registration: | Field name       | Field type | Reference | ... | onionCAARequired | boolean    | RFC 9799  |
-
-**Evidence Summary:**
-
-- (E1) shows the field defined as inBandOnionCAARequired in the document text.
-- (E2) shows the IANA registration defines the field as onionCAARequired.
-
-**Fix Direction:**
-
-Align the field name across the document and the IANA registration—either update IANA to use inBandOnionCAARequired or clarify the intended mapping between the two names.
-
-
-**Severity:** High
-  *Basis:* A mismatch in the JSON field names can directly lead to incompatibility between implementations, causing miscommunication of CAA requirements.
-
-**Confidence:** High
-
----
 
 ## Report 3: 9799-4-3
 
@@ -127,6 +44,7 @@ Explicitly state in the specification which challenge types (e.g., http-01 and t
 
 ---
 
+
 ## Report 4: 9799-4-4
 
 **Label:** Mis-scoped Test for Hidden Service Client Authentication Requirement
@@ -164,6 +82,7 @@ Revise the test so that a non-matching CLIENT-ID indicates that the ACME server 
 **Confidence:** High
 
 ---
+
 
 ## Report 5: 9799-4-5
 

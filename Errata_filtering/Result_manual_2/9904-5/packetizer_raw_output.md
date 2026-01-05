@@ -4,6 +4,7 @@ Total reports: 2
 
 ---
 
+
 ## Report 1: 9904-5-1
 
 **Label:** Over‑broad scope of 'not known to be broken' claim for validation‐only SHA‑1 algorithms
@@ -66,6 +67,7 @@ Revise Section 5 to either restrict the 'not known to be broken' claim to algori
 - Deontic Expert: Issue-1
 
 ---
+
 
 ## Report 2: 9904-5-2
 

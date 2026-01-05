@@ -4,6 +4,7 @@ Total reports: 1
 
 ---
 
+
 ## Report 1: 9773-6-1
 
 **Label:** Ambiguous Normative Update for RenewalInfo GET Access vs RFC 8555 POST-as-GET

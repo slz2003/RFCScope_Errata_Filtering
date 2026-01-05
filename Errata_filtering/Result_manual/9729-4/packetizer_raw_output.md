@@ -4,6 +4,7 @@ Total reports: 1
 
 ---
 
+
 ## Report 1: 9729-4-1
 
 **Label:** Inconsistent ABNF for Integer Parameter 's' Excludes Single-Digit Non-Zero Values and Permits Out-of-Range Values

@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
+
 
 ## Report 1: 9868-9-1
 
@@ -41,48 +42,6 @@ Clarify Section 8 to explicitly state that the invariant applies to the combinat
 
 **Severity:** High
   *Basis:* This inconsistency may lead implementers to follow different interpretations, resulting in divergent OCS computations and potential interoperability failures, especially regarding middlebox checksum recalculations.
-
-**Confidence:** High
-
----
-
-## Report 2: 9868-9-2
-
-**Label:** Underspecified Handling for Computed OCS Value of Zero When UDP Checksum is Non-Zero
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The document does not specify how to handle the case when the computed 16-bit Internet checksum for OCS naturally evaluates to 0x0000 while the UDP checksum is non-zero, even though it mandates that OCS MUST be non-zero in such cases.
-
-**Justification:**
-
-- Section 9 requires that 'The OCS MUST be non-zero when the UDP checksum is non-zero' and uses a value of zero to indicate an unused checksum.
-- There is no normative rule to remap a naturally computed zero (0x0000) to a non-zero value (such as 0xFFFF), leaving ambiguity in sender behavior and causing potential receiver discrepancies.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Section 9: “The OCS consists of a 16-bit Internet checksum [RFC1071]…” and “>> The OCS MUST be non-zero when the UDP checksum is non-zero.”
-
-- **E2:**
-
-  Section 9: “When not used (i.e., containing zero), the OCS is assumed to be ‘correct’ for the purpose of accepting UDP datagrams at a receiver (see Section 14).”
-
-**Evidence Summary:**
-
-- (E1) indicates the requirement for a non-zero OCS when the UDP checksum is non-zero.
-- (E2) shows that a zero value signals that OCS is not in use, thus creating ambiguity when the computed checksum is zero.
-
-**Fix Direction:**
-
-Introduce an explicit mapping rule (for example, mapping a computed 0x0000 to an on‑wire value of 0xFFFF) for cases where the checksum naturally evaluates to zero while the UDP checksum is non-zero, analogous to the handling in UDP/TCP protocols.
-
-
-**Severity:** High
-  *Basis:* Without a defined rule, rare packets with a naturally computed zero OCS may be inconsistently handled between different implementations, leading to misinterpretation of OCS usage and potential loss of option processing.
 
 **Confidence:** High
 

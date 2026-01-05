@@ -1,57 +1,9 @@
 # Errata Reports
 
-Total reports: 4
+Total reports: 1
 
 ---
 
-## Report 1: 9857-8-1
-
-**Label:** Metric Type Registry Scope Misdescription in Section 8.6
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-Section 8.6 describes the BGP‐LS SR Policy Metric Types registry as applying only to the Metric Type field in Section 5.7.2, even though the Metric Type field in Section 5.6.6 also normatively depends on the same registry.
-
-**Justification:**
-
-- Both Metric Type fields in Sections 5.6.6 and 5.7.2 use the SR Policy Metric Types registry, but Section 8.6 only mentions the field in Section 5.7.2, which may confuse designated experts.
-- The discrepancy in registry scope description could lead to misinterpretation during registry maintenance.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Section 5.6.6 (SR Metric Constraint sub‑TLV), Metric Type field: “The metric type code points that may be used in this sub-TLV are also listed in Section 8.6 of this document. Note that the metric types in this field are taken from the ‘BGP-LS SR Policy Metric Types’ IANA registry…”
-
-- **E2:**
-
-  Section 5.7.2 (SR Segment List Metric sub‑TLV), Metric Type field: “The semantics are the same as the metric type field in the SR Metric Constraint sub-TLV in Section 5.6.6 of this document.”
-
-- **E3:**
-
-  Section 8.6: “This registry contains the code points allocated to the metric type field defined in Section 5.7.2.”
-
-**Evidence Summary:**
-
-- (E1) Section 5.6.6 directs that its Metric Type code points are listed in Section 8.6 from the BGP-LS SR Policy Metric Types registry.
-- (E2) Section 5.7.2 reuses the same semantics as Section 5.6.6.
-- (E3) Section 8.6 mentions only the field in Section 5.7.2, omitting the explicit reference to Section 5.6.6.
-
-**Fix Direction:**
-
-Update the wording in Section 8.6 to reference both the Metric Type fields in Sections 5.6.6 and 5.7.2.
-
-
-
-
-**Severity:** Low
-  *Basis:* The issue is editorial; it affects clarity in IANA considerations without impacting actual protocol interoperability.
-
-**Confidence:** High
-
----
 
 ## Report 3: 9857-8-3
 
@@ -90,43 +42,6 @@ Revise the field definition to either exclude 0 entirely or clearly permit 0 as 
 
 **Severity:** Low
   *Basis:* The contradiction is minor and is unlikely to affect interoperability, although it may confuse implementers.
-
-**Confidence:** High
-
----
-
-## Report 4: 9857-8-4
-
-**Label:** Underspecified Scope for SR Policy Protocol‐Origin Registry
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The registry for the Protocol‐Origin field is described solely in reference to Section 4, yet the document hints that the same semantic space might be used by other SR Policy encodings, leaving its intended scope ambiguous.
-
-**Justification:**
-
-- The Residual Uncertainties note raises the possibility that the registry’s description is either intentionally BGP‑LS‐focused or under‑scoped for broader SR Policy use.
-- This ambiguity could lead to confusion in future extensions or in interpreting the registry’s applicability outside of the BGP‑LS context.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The SR Policy Protocol-Origin registry created in Section 8.4 is described as containing code points for the “Protocol-Origin” field defined in Section 4. In practice, the same semantic space may also be used by other SR Policy encodings defined outside this RFC, but without those documents in view, it is unclear whether the description here is intentionally BGP-LS-focused or somewhat under-scoped for the broader SR ecosystem.
-
-**Evidence Summary:**
-
-- (E1) The text in the Residual Uncertainties section questions whether the registry’s scope is meant to be limited to BGP‑LS or extended to other SR Policy implementations.
-
-**Fix Direction:**
-
-Clarify the intended scope of the SR Policy Protocol‐Origin registry in Section 8.4 to indicate whether it applies solely to the BGP‑LS Protocol-Origin field or to a broader set of SR Policy encodings.
-
-
-**Severity:** Low
-  *Basis:* The issue is editorial and affects interpretative clarity rather than protocol functionality.
 
 **Confidence:** High
 

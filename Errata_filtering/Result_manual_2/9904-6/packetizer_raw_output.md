@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
+
 
 ## Report 1: 9904-6-1
 
@@ -49,50 +50,5 @@ Revise RFC 9904 Section 6 to clarify that RFC 7583 provides timing consideration
 - ScopeExpert: Issue-1
 - DeonticExpert: Issue-1
 - CrossRFCExpert: Issue-1
-
----
-
-## Report 2: 9904-6-2
-
-**Label:** Underspecified Procedure for DS Digest Algorithm Rollover Prior to KSK Roll
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-RFC 9904 mandates that DS digest algorithm changes must precede KSK rollovers, but it fails to provide concrete procedural details or timing guidelines for the DS digest algorithm rollover.
-
-**Justification:**
-
-- RFC 9904 §6 states that upgrading the DS algorithm concurrently with a KSK rollover will cause validation failures and mandates upgrading the DS algorithm first.
-- There is no accompanying detailed phase or timing model in RFC 9904, RFC 6781, or RFC 7583 that explains the exact sequence, wait intervals, or record coexistence needed for a safe DS digest algorithm change.
-
-**Evidence Snippets:**
-
-- **E3:**
-
-  RFC 9904 §6 introduces a strict temporal ordering between two operations: changing the DS “algorithm” (i.e., the DS digest algorithm) and rolling the KSK key. It states that upgrading the DS algorithm at the same time as rolling to a new KSK “will lead to DNSSEC validation failures” and that users MUST change the DS algorithm first before rolling to a new KSK.
-
-- **E4:**
-
-  However, neither RFC 9904 nor the cited guidance in RFC 6781 and RFC 7583 specify a concrete phase/timing model for DS-digest-algorithm rollovers analogous to the detailed key and algorithm-rollover timelines given for DNSKEYs.
-
-**Evidence Summary:**
-
-- (E3) RFC 9904 mandates that the DS algorithm must be upgraded before a new KSK is rolled to avoid validation failures.
-- (E4) The documents lack a detailed procedural or timing model for how the DS digest algorithm rollover should be executed.
-
-**Fix Direction:**
-
-Provide explicit procedural instructions and timing guidelines for DS digest algorithm rollovers, including the steps for DS record publication, coexisting multiple digest algorithms, and required wait intervals before initiating a KSK rollover.
-
-**Severity:** Medium
-  *Basis:* The underspecification may lead to varying interpretations by implementers, which could result in intermittent DNSSEC validation failures across different caching scenarios.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- TemporalExpert: T2
 
 ---

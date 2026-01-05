@@ -4,6 +4,7 @@ Total reports: 1
 
 ---
 
+
 ## Report 1: 9774-7-1
 
 **Label:** Ambiguous 'obsoleting' vs 'deprecating' AS_SET/AS_CONFED_SET in RFC 9774

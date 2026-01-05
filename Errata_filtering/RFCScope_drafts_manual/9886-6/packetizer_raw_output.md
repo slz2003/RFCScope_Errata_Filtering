@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 4
+Total reports: 3
 
 ---
+
 
 ## Report 1: 9886-6-1
 
@@ -53,6 +54,7 @@ Either update the IANA HHIT Entity Types registry to explicitly include or reser
 - Scope Expert: Issue-1
 
 ---
+
 
 ## Report 2: 9886-6-2
 
@@ -105,50 +107,6 @@ Add an explicit change controller field to the HHIT Entity Types registry or cla
 
 ---
 
-## Report 3: 9886-6-3
-
-**Label:** Inconsistency between universal nibble-split delegation and exclusion for Private Use RAAs
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The document asserts that each RAA is given 4 delegations via nibble-split but then states that RAAs within the Private Use range (15360–16383) are not delegated, resulting in a contradictory instruction.
-
-**Justification:**
-
-- Section 6.2.1.3 describes that every RAA gets 4 delegations by borrowing bits from the HDA space.
-- Section 6.2.1.5 specifies that for RAAs in the Private Use range, IANA will not delegate any value, conflicting with the nibble-split rule.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  To support DNS delegation in 3.0.0.1.0.0.2.ip6.arpa., a single RAA is given 4 delegations by borrowing the upper two bits of HDA space … These HDAs (0, 4096, 8192 and 12288) are reserved for the RAA.
-
-- **E2:**
-
-  …the RAAs (with its subordinate HDAs) in this range [15360–16383] may be used in like manner and IANA will not delegate any value in this range to any party (as per Private Use, Section 4.1 of [RFC8126]).
-
-**Evidence Summary:**
-
-- (E1) Nibble-split delegation assigns 4 delegations per RAA
-- (E2) Private Use RAAs are explicitly stated to receive no delegation
-
-**Fix Direction:**
-
-Clarify in the text that the nibble-split delegation rule applies only to non–Private Use RAAs, or revise the delegation instructions to avoid the contradiction.
-
-**Severity:** Medium
-  *Basis:* The contradiction in delegation rules could lead to confusion over DNS delegation practices, despite not affecting on-wire encoding.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- Boundary Expert: Finding-1
-
----
 
 ## Report 4: 9886-6-4
 

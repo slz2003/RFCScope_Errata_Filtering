@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 6
+Total reports: 3
 
 ---
+
 
 ## Report 1: 9799-3-1
 
@@ -46,47 +47,6 @@ Clarify in Section 4 that only the Hidden Service operator (acting via the ACME 
 
 ---
 
-## Report 2: 9799-3-2
-
-**Label:** Unspecified algorithm for verifying CSR public key corresponds to .onion identifier
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The specification requires that the CSR public key corresponds to the .onion identifier but fails to provide explicit normative guidance on how to derive and compare the public key from the .onion hostname.
-
-**Justification:**
-
-- The text mandates that the CSR public key 'MUST be the public key corresponding to the '.onion' Special-Use Domain Name' without detailing the derivation process.
-- This lack of specificity may lead to divergent implementations and affect interoperability.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The public key presented in this CSR MUST be the public key corresponding to the '.onion' Special-Use Domain Name being validated. It MUST NOT be the same public key presented in the CSR to finalize the order.
-
-- **E2:**
-
-  The public key in the CSR corresponds to the '.onion' Special-Use Domain Name being validated.
-
-**Evidence Summary:**
-
-- (E1) Provides the client-side requirement without an accompanying algorithm.
-- (E2) Highlights the absence of an explicit derivation and matching method for the public key.
-
-**Fix Direction:**
-
-Add explicit normative text referencing the Tor specification that describes how to derive the expected Ed25519 public key from the .onion identifier and perform a byte-for-byte comparison with the CSR's subjectPublicKeyInfo.
-
-
-**Severity:** Medium
-  *Basis:* The lack of an explicit algorithm may lead to inconsistent implementations and compromise interoperability.
-
-**Confidence:** High
-
----
 
 ## Report 3: 9799-3-3
 
@@ -130,6 +90,7 @@ Revise the specification to require a minimum length (e.g., at least 8 bytes) fo
 
 ---
 
+
 ## Report 4: 9799-3-4
 
 **Label:** Metadata field name mismatch between inBandOnionCAARequired and onionCAARequired
@@ -167,80 +128,6 @@ Harmonize the field name throughout the document and IANA registration by choosi
 
 **Severity:** Medium
   *Basis:* An inconsistent field name can lead to misinterpretation of server policies and cause interoperability failures between clients and servers.
-
-**Confidence:** High
-
----
-
-## Report 5: 9799-3-5
-
-**Label:** Ambiguous identifier scope for onion-csr-01 challenge
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The specification only prohibits the use of onion-csr-01 for issuing certificates for Special-Use Domain Names that are not '.onion', without explicitly clarifying that the challenge is solely applicable to .onion identifiers.
-
-**Justification:**
-
-- The text states that onion-csr-01 MUST NOT be used for non-.onion Special-Use Domain Names but does not expressly limit its application to .onion names.
-- This omission may lead to differing interpretations about whether ordinary DNS names might be inadvertently processed with onion-csr-01.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The explicit prohibition is only that onion-csr-01 MUST NOT be used to issue certificates for Special-Use Domain Names that are not '.onion'... but is silent on ordinary DNS names; the broader document context strongly suggests onion-csr-01 is intended only for .onion, but the exact identifier scope for this method is not spelled out as a positive constraint.
-
-**Evidence Summary:**
-
-- (E1) Indicates that while non-.onion special-use names are excluded, there is no explicit positive restriction against using onion-csr-01 for ordinary DNS names.
-
-**Fix Direction:**
-
-Explicitly state that the onion-csr-01 challenge is exclusively applicable to .onion identifiers by providing clear validation rules for acceptable identifier formats.
-
-
-**Severity:** Low
-  *Basis:* Although primarily a documentation ambiguity, it may cause minor interoperability confusion without affecting core protocol functionality.
-
-**Confidence:** Medium
-
----
-
-## Report 6: 9799-3-6
-
-**Label:** Ambiguous authKey usage in onion-csr-01 challenge
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The specification introduces an authKey field for the onion-csr-01 challenge and defers its definition to Section 4, yet it does not clearly define when or how this field should be used in this context.
-
-**Justification:**
-
-- The authKey field is defined for onion-csr-01 but Section 4 primarily discusses its use for other challenge types such as http-01 and tls-alpn-01.
-- This results in an ambiguity regarding the required presence and specific usage of authKey for onion-csr-01 challenges.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  The authKey field is defined on the onion-csr-01 challenge and 'further defined in Section 4', but Section 4 narrates it primarily in terms of enabling http-01 and tls-alpn-01 against hidden services that require client authentication, leaving somewhat implicit when/how authKey is expected to be present for onion-csr-01.
-
-**Evidence Summary:**
-
-- (E1) Highlights that the role and required conditions for authKey in the onion-csr-01 challenge are not clearly specified.
-
-**Fix Direction:**
-
-Clarify the intended conditions, presence, and usage of the authKey field for onion-csr-01 challenges within Section 4 and related sections.
-
-
-**Severity:** Low
-  *Basis:* This ambiguity is unlikely to impact core functionality but may cause minor implementation inconsistencies.
 
 **Confidence:** High
 

@@ -1,56 +1,9 @@
 # Errata Reports
 
-Total reports: 4
+Total reports: 3
 
 ---
 
-## Report 1: 9859-4-1
-
-**Label:** Ambiguous EDNS0 Report-Channel Option Usage in NOTIFY Messages vs RFC 9567
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-RFC 9859 permits senders to include an EDNS0 Report-Channel option in NOTIFY messages whereas RFC 9567 mandates that this option must not be included in queries, creating an ambiguity that could lead to divergent interpretations and implementations.
-
-**Justification:**
-
-- RFC 9859 Section 4.2.1 explicitly allows the inclusion of the EDNS0 Report-Channel option in NOTIFY messages to request error reporting, while RFC 9567 Section 6.1 states that the option MUST NOT be included in queries.
-- This discrepancy in scope—where one document narrows the prohibition to resolver queries and the other does not—could result in inconsistent handling of NOTIFY messages.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  RFC 9859, Section 4.2.1: “senders MAY include an EDNS0 Report-Channel option [RFC9567] in the NOTIFY message to request that the receiving side report any errors by making a report query… (The prohibition of this option in queries ([RFC9567], Section 6.1) only applies to resolver queries and thus does not cover NOTIFY messages.)”
-
-- **E2:**
-
-  RFC 9567, Section 6.1 (Reporting Resolver Specification): “The EDNS0 Report-Channel option MUST NOT be included in queries.”
-
-**Evidence Summary:**
-
-- (E1) shows RFC 9859 granting permission to include the option in NOTIFY messages.
-- (E2) shows RFC 9567’s blanket prohibition on including the option in queries.
-
-**Fix Direction:**
-
-Clarify the relationship between RFC 9859 and RFC 9567 by explicitly stating that NOTIFY messages are exempt from the prohibition, or update RFC 9567 to allow the option in this specific context.
-
-**Severity:** Medium
-  *Basis:* This issue may lead to implementation differences and interoperability risks if some implementations reject NOTIFY messages containing the Report-Channel option while others accept them.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- Scope: Issue-1
-- Causal: Issue 1
-- Structural: Issue-1
-- CrossRFC: Issue-1
-
----
 
 ## Report 2: 9859-4-2
 
@@ -100,6 +53,7 @@ Add explicit normative guidelines that specify which DNSSEC validation outcomes 
 
 ---
 
+
 ## Report 3: 9859-4-3
 
 **Label:** Ambiguous Enforcement of Agent-Domain NS-Subordination for EDNS0 Report-Channel
@@ -144,6 +98,7 @@ Clarify the text to specify whether the sender must select an agent domain that 
 - Scope: Issue-3
 
 ---
+
 
 ## Report 4: 9859-4-4
 

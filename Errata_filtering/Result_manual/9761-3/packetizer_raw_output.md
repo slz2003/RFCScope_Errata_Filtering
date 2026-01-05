@@ -4,6 +4,7 @@ Total reports: 2
 
 ---
 
+
 ## Report 1: 9761-3-1
 
 **Label:** Ambiguous Is-Supported Attribute Role (Manufacturer vs. MUD Manager)
@@ -50,6 +51,7 @@ Clarify the phrasing so that the MUD manager only uses the manufacturer-set 'is-
 **Confidence:** High
 
 ---
+
 
 ## Report 2: 9761-3-2
 

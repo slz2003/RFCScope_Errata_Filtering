@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 5
+Total reports: 3
 
 ---
+
 
 ## Report 1: 9824-5-1
 
@@ -51,6 +52,7 @@ Clarify in Section 5.1 the normative requirements for resolver behavior – incl
 
 ---
 
+
 ## Report 2: 9824-5-2
 
 **Label:** Ambiguous Definition of Non‑DNSSEC‑Enabled Queries Excluding Non‑EDNS Queries
@@ -93,6 +95,7 @@ Clarify in Section 5 that non‑DNSSEC‑enabled queries include both queries wi
 
 ---
 
+
 ## Report 3: 9824-5-3
 
 **Label:** Terminology Inconsistency: 'NODATA response' with RCODE=NXDOMAIN
@@ -130,90 +133,6 @@ Revise Section 5.1 to either refrain from using the term 'NODATA response' when 
 
 **Severity:** Medium
   *Basis:* The conflicting terminology may mislead implementers about the expected header values and the classification of negative responses.
-
-**Confidence:** High
-
----
-
-## Report 4: 9824-5-4
-
-**Label:** EDNS CO Flag Bit Position Inconsistency between Diagram and IANA Table
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The document’s diagram places the CO flag in the second most significant bit of the EDNS flags field, while the IANA table assigns it to Bit 1, resulting in a mismatch that could lead to incompatible implementations.
-
-**Justification:**
-
-- The narrative and diagram in Section 5.1 clearly designate the CO flag as the second most significant bit, immediately following the DO bit.
-- Section 9, Table 2, however, allocates the CO flag as 'Bit 1', which under the EDNS header flags numbering convention does not correspond to the second most significant bit.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  A new EDNS0 … header flag is defined in the second most significant bit of the flags field in the EDNS0 OPT header. … [diagram] 2: |DO|CO|                 Z                       |
-
-- **E2:**
-
-  IANA has also allocated the following flag in the ‘EDNS Header Flags (16 bits)’ registry… Table 2: ‘Bit 1 | CO | Compact Answers OK | RFC 9824’
-
-**Evidence Summary:**
-
-- (E1) specifies the CO flag as the second most significant bit next to DO.
-- (E2) shows the IANA table incorrectly assigning the CO flag to Bit 1.
-
-**Fix Direction:**
-
-Revise Section 9, Table 2 to assign the CO flag the correct bit number (e.g., Bit 14) so that it aligns with the diagram and the standard EDNS header flags numbering.
-
-
-**Severity:** High
-  *Basis:* An incorrect bit assignment can change the wire encoding, leading to interoperability failures between implementations following different interpretations.
-
-**Confidence:** High
-
----
-
-## Report 5: 9824-5-5
-
-**Label:** Ambiguous Use of CO Flag with DO=0
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The specification does not explicitly define the behavior when the CO flag is set in queries that do not also set the DO bit, leading to ambiguity in handling non‑DNSSEC‑enabled queries.
-
-**Justification:**
-
-- While Section 5.1 outlines CO flag behavior in DNSSEC-enabled (DO=1) queries, it does not address what should happen when CO is sent with DO=0.
-- RFC 3225 mandates that DNSSEC security RRs must not be returned when the DO bit is cleared, which creates a potential conflict if CO semantics are applied to a DO=0 query.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  This is generally possible for non-DNSSEC-enabled queries, namely those that do not set the DO bit (‘DNSSEC answer OK’) in the EDNS0 OPT header.
-
-- **E2:**
-
-  The DO bit cleared (set to zero) indicates the resolver is unprepared to handle DNSSEC security RRs and those RRs MUST NOT be returned in the response (unless DNSSEC security RRs are explicitly queried for).
-
-**Evidence Summary:**
-
-- (E1) illustrates that non‑DNSSEC-enabled queries are defined by the absence of the DO bit.
-- (E2) emphasizes that with DO=0, DNSSEC security RRs should not be returned, conflicting with potential CO semantics.
-
-**Fix Direction:**
-
-Explicitly state in the specification that the CO flag is only applicable when DO=1, or provide detailed guidance on how CO should be handled when DO=0.
-
-
-**Severity:** Medium
-  *Basis:* Ambiguity in the DO/CO interaction could lead to implementations erroneously treating non‑DNSSEC queries with CO, potentially violating established DNSSEC requirements.
 
 **Confidence:** High
 

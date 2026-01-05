@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 6
+Total reports: 5
 
 ---
+
 
 ## Report 1: 9886-4-1
 
@@ -54,51 +55,6 @@ Clarify that the unconditional MUST in Section 4 applies only when a DET is in a
 
 ---
 
-## Report 2: 9886-4-2
-
-**Label:** Unspecified Timing for DNS Publication Leading to Races
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-The document does not specify precise temporal requirements for when DNS records for a DET should be published relative to its operational use, leaving potential gaps during which lookups may fail.
-
-**Justification:**
-
-- Section 3.1 describes Dynamic DRIP registration where HHIT records are added before a flight and deleted afterwards without specifying exact timings.
-- The text states that 'Optimally this requires that the UAS somehow signal to the DIME that a flight using a Specific Session ID will soon be underway or complete,' but gives no concrete guidance.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  Dynamic DRIP registration is another possible solution, for example when the operator of a UAS device registers its corresponding HHIT record and other resources before a flight and deletes them afterwards.
-
-- **E2:**
-
-  Optimally this requires that the UAS somehow signal to the DIME that a flight using a Specific Session ID will soon be underway or complete.
-
-**Evidence Summary:**
-
-- (E1) The registration and deletion pattern is described without precise time bounds.
-- (E2) The expected signaling for publication is mentioned without detailed timing requirements.
-
-**Fix Direction:**
-
-Introduce explicit timing constraints for the publication and retention of DNS records, including requirements on minimum publication windows and handling of negative caching.
-
-**Severity:** Medium
-  *Basis:* Ambiguity in timing may lead to race conditions where DET lookups intermittently fail, impacting interoperability without necessarily breaking conformance.
-
-**Confidence:** High
-
-**Experts mentioning this issue:**
-
-- TemporalExpert: T2
-- CausalExpert
-
----
 
 ## Report 3: 9886-4-3
 
@@ -144,6 +100,7 @@ Refine the specification to explicitly list the DET types for which the BRID RRT
 - ScopeExpert: Issue-2
 
 ---
+
 
 ## Report 4: 9886-4-4
 
@@ -191,6 +148,7 @@ Adjust the CDDL to allow a range (e.g., 9 to 15 characters) or otherwise align t
 - StructuralExpert: Issue-1
 
 ---
+
 
 ## Report 5: 9886-4-5
 
@@ -255,6 +213,7 @@ Revise the CDDL and/or the examples to clearly indicate whether the arrays must 
 - QuantitativeExpert: Issue-2
 
 ---
+
 
 ## Report 6: 9886-4-6
 

@@ -1,8 +1,9 @@
 # Errata Reports
 
-Total reports: 2
+Total reports: 1
 
 ---
+
 
 ## Report 1: 9868-17-1
 
@@ -46,48 +47,6 @@ Replace references to 'UDP Length field' with 'Checksum Coverage field' in UDP-L
 
 **Severity:** Medium
   *Basis:* The misnaming introduces conceptual confusion about UDP-Lite's header structure, which may mislead implementers even though it does not directly affect core functionality.
-
-**Confidence:** High
-
----
-
-## Report 2: 9868-17-2
-
-**Label:** Overly broad prohibition of UDP Options in UDP-Lite
-
-**Bug Type:** Underspecification
-
-**Explanation:**
-
-Section 17 asserts that UDP-Lite cannot support UDP Options 'in any other form', overstepping the intended scope by precluding alternate future mechanisms.
-
-**Justification:**
-
-- RFC 9868 Section 17 concludes with an overly broad statement that implies UDP-Lite can never support any form of UDP Options, even though the actual limitation applies only to the surplus-area based mechanism.
-- Experts indicate that this blanket restriction extends beyond the technical reality and normative purview, potentially hindering future legitimate extensions.
-
-**Evidence Snippets:**
-
-- **E4:**
-
-  RFC 9868 Section 17 concludes: “UDP-Lite cannot support UDP Options, either as proposed here or in any other form, because the entire payload of the UDP packet is already defined as user data and there is no additional field in which to indicate a surplus area for options.”
-
-- **E5:**
-
-  Section 17 goes beyond the technical limitation by stating that UDP-Lite cannot support UDP Options in any form, which implicitly restricts future transport option mechanisms that do not rely on a surplus area.
-
-**Evidence Summary:**
-
-- (E4) Section 17 explicitly asserts that UDP-Lite cannot support UDP Options in any form due to header constraints.
-- (E5) The language overreaches by implying a blanket prohibition, potentially limiting future extension methods.
-
-**Fix Direction:**
-
-Rephrase the prohibition to specifically disallow only the surplus-area based UDP Options mechanism for UDP-Lite, rather than a general ban on any form of UDP Options.
-
-
-**Severity:** Low
-  *Basis:* The issue is chiefly editorial and does not immediately impact interoperability, though it may unnecessarily constrain future protocol developments.
 
 **Confidence:** High
 
