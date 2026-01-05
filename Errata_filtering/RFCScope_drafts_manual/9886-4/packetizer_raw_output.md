@@ -7,40 +7,47 @@ Total reports: 5
 
 ## Report 1: 9886-4-1
 
-**Label:** Conflicting DET DNS Publication Requirements: Unconditional MUST vs. Just-in-Time Recommendation
+**Label:** Ambiguous Applicability of HHIT/BRID Publication “MUST” vs. Optional Pre-Use Withholding (“Just-in-Time”)
 
-**Bug Type:** Both
+**Bug Type:** Underspecification
 
 **Explanation:**
 
-The specification unconditionally requires that every DET’s reverse-DNS name must resolve to an HHIT RR (and include a BRID RR for UAS RID), yet later recommends withholding all RR types (just‐in‐time publication) until external use. This normative conflict creates ambiguity about when DNS records must be present.
+The document uses unconditional “MUST resolve” / “BRID MUST be present” language for DET reverse-DNS lookups, but later recommends (when practical) withholding all RRTypes under a DET name until needed. This is likely intended as a lifecycle distinction (records required once a DET is published/used), but the current text does not explicitly state when the Section 4 MUSTs apply (e.g., “for published/active DETs”), which can lead to divergent implementations and compliance interpretations.
 
 **Justification:**
 
-- Section 4 states: DETs ... MUST resolve to an HHIT RRType and, for UAS RID, the BRID RRType MUST be present.
-- Section 7.2 recommends that no RRTypes be published until and unless they are required for use, which would mean the HHIT RRType is absent.
+- Section 4 states that a DET’s reverse-DNS name MUST resolve to an HHIT RRType and, for UAS RID, the BRID RRType MUST be present—without an explicit condition such as “when published for use” or “once registered/activated”.
+- Section 7.2 RECOMMENDS delaying publication of any RRTypes under the DET name until required by other parties, explicitly noting this would mean at least the HHIT RRType is absent.
+- Without an explicit applicability condition, an implementer could reasonably conclude either:
+
+(A) HHIT/BRID must always be present for every allocated DET (continuous publication), or
+
+(B) HHIT/BRID may be absent until operational need arises (just-in-time publication),
+resulting in inconsistent expectations for observers performing lookups and for registries asserting compliance.
 
 **Evidence Snippets:**
 
 - **E1:**
 
-  DETs, being IPv6 addresses, are to be under ip6.arpa. (nibble reversed per Section 2.5 of RFC 3596 [STD88]) and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present to provide the Broadcast Endorsements (BEs) defined in Section 3.1.2.1 of [RFC9575].
+  “DETs, being IPv6 addresses, are to be under ip6.arpa. … and MUST resolve to an HHIT RRType. … For UAS RID, the BRID RRType MUST be present …”
 
 - **E2:**
 
-  When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS, protecting the public key in the certificate from being exposed before its needed.
+  “When practical, it is RECOMMENDED that no RRTypes under a DET's specific domain name be published unless and until it is required for use by other parties. Such action would cause at least the HHIT RRType to not be in the DNS …”
 
 **Evidence Summary:**
 
-- (E1) Section 4 mandates constant presence of HHIT (and BRID for UAS RID).
-- (E2) Section 7.2 recommends withholding RRTypes until they are needed.
+- (E1) uses unconditional MUST language for HHIT/BRID presence in DNS for DET lookups.
+- (E2) recommends withholding RRTypes pre-use, implying HHIT (and thus BRID) may be absent until needed.
+Suggested clarification: qualify Section 4 MUSTs with an explicit condition such as “for DETs published for public discovery / in active use” or similar lifecycle wording.
 
 **Fix Direction:**
 
-Clarify that the unconditional MUST in Section 4 applies only when a DET is in active use or subject to public lookup, or alternatively modify Section 7.2 to indicate that just‐in‐time publication is a privacy optimization applicable only pre-activation.
+The fix should clarify applicability and lifecycle of existing MUST/RECOMMENDED language, e.g., by qualifying when the Section 4 MUSTs apply (“for published / active / discoverable DETs”) or by adding a short cross-reference note between Sections 4 and 7.2.
 
 **Severity:** High
-  *Basis:* The conflicting requirements could lead to divergent implementations, breaking the intended public lookup and validation mechanisms and impacting security.
+  *Basis:* Interoperability risk
 
 **Confidence:** High
 
@@ -60,7 +67,7 @@ Clarify that the unconditional MUST in Section 4 applies only when a DET is in a
 
 **Label:** Ambiguous Scope for Mandatory BRID RRType in UAS RID
 
-**Bug Type:** Inconsistency
+**Bug Type:** Underspecification
 
 **Explanation:**
 
