@@ -111,7 +111,7 @@ Introduce explicit timing constraints for the publication and retention of DNS r
 
 **Label:** Ambiguous Scope for Mandatory BRID RRType in UAS RID
 
-**Bug Type:** Inconsistency
+**Bug Type:** Underspecification
 
 **Explanation:**
 
