@@ -1,46 +1,11 @@
 # Errata Reports
 
-Total reports: 4
+Total reports: 2
 
 ---
 
 
-## Report 1: 9815-6-1
 
-**Label:** Unnumbered-link bidirectional matching rule error in Section 6.3
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The SPF algorithm’s unnumbered link matching rule repeats the same identifier check, omitting the necessary verification of the Current-Link’s Local Identifier against the Remote-Link’s Remote Identifier.
-
-**Justification:**
-
-- Multiple experts noted that the rule is duplicated, leaving out the required cross-check.
-- The duplicated clause forces implementations to rely on a single comparison which can cause mis‐association of parallel unnumbered links.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  For unnumbered links to match during the IPv4 or IPv6 SPF computation, the Current-Link and Remote-Link's Address Family Link Descriptor TLV must match the address family of the IPv4 or IPv6 SPF computation, the Current-Link's Remote Identifier MUST match the Remote-Link's Local Identifier, and the Current-Link's Remote Identifier MUST match the Remote-Link's Local Identifier. Since the Link's Remote Identifier may not be known, a value of 0 is considered a wildcard and will match any Current or Remote Link's Local Identifier (see TLV 258 [RFC9552]).
-
-**Evidence Summary:**
-
-- (E1) The rule duplicates the condition 'Current-Link's Remote Identifier MUST match the Remote-Link's Local Identifier', neglecting to check the Current-Link's Local Identifier against the Remote-Link's Remote Identifier.
-
-**Fix Direction:**
-
-Replace the duplicated clause with a symmetric check: verify that the Current-Link’s Local Identifier matches the Remote-Link’s Remote Identifier as well as ensuring Current-Link’s Remote Identifier matches Remote-Link’s Local Identifier.
-
-
-**Severity:** Medium
-  *Basis:* An incorrect bidirectional match can lead to mis-pairing of unnumbered links and incorrect SPF topology computation, especially under misconfiguration or parallel link scenarios.
-
-**Confidence:** High
-
----
 
 
 ## Report 6: 9815-6-6
@@ -124,43 +89,6 @@ Change references from 'Node Descriptors' to 'Link Descriptors' in the context o
 ---
 
 
-## Report 8: 9815-6-8
-
-**Label:** Inconsistent naming of prefix NLRIs: 'BGP-LS-Prefix NLRI' vs 'BGP-LS-SPF Prefix NLRI'
-
-**Bug Type:** Inconsistency
-
-**Explanation:**
-
-The specification inconsistently refers to prefix NLRIs using both 'BGP-LS-Prefix NLRI' and 'BGP-LS-SPF Prefix NLRI', which may confuse implementers about the intended use and scope of these NLRIs.
-
-**Justification:**
-
-- One section describes the prefix NLRI advertised with SPF Status using the term 'BGP-LS-Prefix NLRI', while another mandates that updates must be for 'BGP-LS-SPF Prefix NLRI'.
-- Such inconsistent naming can lead to misinterpretation regarding the applicability of SPF-specific behaviors.
-
-**Evidence Snippets:**
-
-- **E1:**
-
-  the BGP-LS-Prefix NLRI is advertised with SPF Status indicating the prefix is unreachable prior to withdrawal.
-
-- **E2:**
-
-  the BGP-LS-SPF Prefix NLRI MUST advertise a more recent version of the BGP-LS-SPF Prefix NLRI without the SPF Status TLV...
-
-**Evidence Summary:**
-
-- (E1) and (E2) show conflicting usage of the naming conventions for prefix NLRIs.
-- The inconsistency may result in ambiguity over which NLRIs the SPF procedures apply to.
-
-**Fix Direction:**
-
-Standardize all references to use 'BGP-LS-SPF Prefix NLRI' consistently throughout the document.
-
-
-**Severity:** Low
-  *Basis:* The naming inconsistency is primarily cosmetic but could lead to minor implementation confusion.
 
 **Confidence:** High
 
